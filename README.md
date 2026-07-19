@@ -1,9 +1,12 @@
-<h1 align="center">Semaphore</h1>
-
-<p align="center"><em>把任何图片,变成一面字符旗语。</em></p>
+<div align="center">
+  <img src="docs/images/logo.svg" width="120" alt="Semaphore logo" />
+  <h1>Semaphore</h1>
+  <p><em>把任何图片,变成一面字符旗语。</em></p>
+</div>
 
 <p align="center">
   <a href="https://github.com/can4hou6joeng4/Semaphore/stargazers"><img src="https://img.shields.io/github/stars/can4hou6joeng4/Semaphore?style=flat-square" alt="stars"></a>
+  <a href="https://github.com/can4hou6joeng4/Semaphore/releases"><img src="https://img.shields.io/github/v/tag/can4hou6joeng4/Semaphore?label=version&style=flat-square" alt="version"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/can4hou6joeng4/Semaphore?style=flat-square" alt="license"></a>
   <a href="https://github.com/can4hou6joeng4/Semaphore/commits/main"><img src="https://img.shields.io/github/commit-activity/m/can4hou6joeng4/Semaphore?style=flat-square" alt="commit activity"></a>
   <img src="https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square" alt="TypeScript">
@@ -16,7 +19,13 @@
 
 ## 为什么叫 Semaphore
 
-Semaphore(旗语)是水手的通信术:不借助电报与网络,只靠一双手、两面旗,把消息拆成一个个字符打给远方。这个工具做的是同一件事——把一张图片拆成一个个字符,让它能去往任何纯文本能到达的地方:终端、代码注释、README、聊天窗口。**Harbor** 停泊知识,**Beacon** 预警风险,**Atlas** 丈量航程,**Semaphore** 把图像打成旗语。
+Semaphore(旗语)是水手的通信术:不借助电报与网络,只靠一双手、两面旗,把消息拆成一个个字符打给远方。这个工具做的是同一件事——把一张图片拆成一个个字符,让它能去往任何纯文本能到达的地方:终端、代码注释、README、聊天窗口。[Harbor](https://github.com/can4hou6joeng4/Harbor) 停泊知识,[Beacon](https://github.com/can4hou6joeng4/Beacon) 预警风险,[Atlas](https://github.com/can4hou6joeng4/Atlas) 丈量航程,**Semaphore** 把图像打成旗语。
+
+## 上手即见
+
+落地页的照片会在你眼前被逐字符"擦"成 ASCII;工具页则是完整的转换工作台:
+
+![转换工具](docs/images/tool.png)
 
 ## 功能
 
