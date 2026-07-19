@@ -88,7 +88,11 @@ function composeScene(w: number, h: number): HTMLCanvasElement {
   heroCanvas.width = Math.round(w * dpr);
   heroCanvas.height = Math.round(h * dpr);
   const ctx = heroCanvas.getContext("2d")!;
-  ctx.scale(dpr, dpr);
+  /* draw in explicit device-pixel coordinates with the transform
+     pinned to identity — relying on ctx.scale(dpr) proved fragile
+     in real browsers during load (the draw could land at css-pixel
+     size inside the device-pixel buffer, desyncing photo & ascii) */
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
 
@@ -97,7 +101,8 @@ function composeScene(w: number, h: number): HTMLCanvasElement {
      across it with no pane seating and no synthetic dark field    */
   const r = AsciiEngine.coverRect(
     hero!.naturalWidth, hero!.naturalHeight, w, h, 0.5, 0.42);
-  ctx.drawImage(hero!, r.sx, r.sy, r.sw, r.sh, 0, 0, w, h);
+  ctx.drawImage(hero!, r.sx, r.sy, r.sw, r.sh,
+    0, 0, heroCanvas.width, heroCanvas.height);
   return heroCanvas;
 }
 
@@ -223,6 +228,10 @@ document.fonts.addEventListener("loadingdone", function () { renderAll(); });
       AsciiEngine.loadImage("/assets/sample-portrait.png")
     ]);
     hero = loaded[0];
+    /* make sure both bitmaps are fully decoded before first draw */
+    await Promise.all(loaded.map(function (im) {
+      return im.decode ? im.decode().catch(function () { /* drawable anyway */ }) : Promise.resolve();
+    }));
     portrait = loaded[1];
     renderAll();
     setTimeout(introSweep, 750);
