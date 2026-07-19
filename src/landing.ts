@@ -119,6 +119,18 @@ function renderHero(): void {
   });
   heroPre.textContent = res.text;
   Util.fitPre(heroPre, res.cols, { container: asciiPane, padding: 0 });
+  /* register the glyph run to the stage exactly, like the photo's
+     cover-fill: font metrics can differ between the advance-ratio
+     measurement and the finally-rendered face (late webfont swap,
+     blocked font CDN), which shrinks the text run inside its box.
+     Measuring the run and scaling it onto the stage is immune.    */
+  heroPre.style.transform = "none";
+  const tw = heroPre.scrollWidth;
+  const th = heroPre.scrollHeight;
+  if (tw > 0 && th > 0 && (Math.abs(tw - w) > 1 || Math.abs(th - h) > 1)) {
+    heroPre.style.transformOrigin = "0 0";
+    heroPre.style.transform = "scale(" + w / tw + ", " + h / th + ")";
+  }
   Site.setRight([res.cols + "×" + res.rows, "charset: detailed", res.ms + "ms"]);
 }
 
@@ -198,6 +210,8 @@ window.addEventListener("resize", function () {
   clearTimeout(resizeTimer);
   resizeTimer = window.setTimeout(renderAll, 150);
 });
+/* a late-arriving webfont changes mono metrics — re-register */
+document.fonts.addEventListener("loadingdone", function () { renderAll(); });
 
 (async function init() {
   // mono metrics must be final (and chrome injected) before first fit
