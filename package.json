@@ -1,5 +1,5 @@
 {
-  "name": "img2ascii",
+  "name": "semaphore",
   "version": "1.0.0",
   "description": "Turn any image into ASCII art \u2014 free, in-browser, no upload.",
   "scripts": {
