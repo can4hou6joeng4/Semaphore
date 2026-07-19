@@ -1,0 +1,18 @@
+{
+  "name": "img2ascii",
+  "version": "1.0.0",
+  "description": "Turn any image into ASCII art \u2014 free, in-browser, no upload.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.1.5"
+  },
+  "private": true
+}

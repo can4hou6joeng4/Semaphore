@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turn any image into ASCII art — Image to ASCII</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Turn any image into ASCII art — Image to ASCII">
+<meta property="og:description" content="Convert any image to ASCII art right in your browser — free, no upload, no account. Six charsets from classic ramps to braille dots, live preview, export as plain text, .txt or .png.">
+<meta property="og:image" content="/assets/sample-hero.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#050a06">
+<meta name="description" content="Convert any image to ASCII art right in your browser — free, no upload, no account. Six charsets from classic ramps to braille dots, live preview, export as plain text, .txt or .png.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  /* ---- landing layout only (colors via tokens) ---- */
+
+  /* hero before/after — a REGISTERED reveal: one wide photograph
+     is drawn to a canvas (cover-fill); the photo layer shows that
+     canvas and the ascii layer converts the SAME canvas, so both
+     are pixel-aligned. Dragging only moves the clip boundary —
+     the ascii "wipes" across the photo. --ba-pos 0–100. */
+  .ba-stage {
+    --ba-pos: 50;
+    position: relative;
+    overflow: hidden;
+    /* the stage fills the (now 1760-capped) content column and keeps
+       the plate's native 1760×854 ratio, so on a large monitor it
+       renders pixel-exact. max-height only guards genuinely short
+       windows — on 1080p+ it stays full width, matching the sections
+       below; the ratio then trims width to keep it centered, no crop. */
+    aspect-ratio: 1760 / 854;
+    width: 100%;
+    max-width: 1760px;
+    max-height: 82vh;
+    margin-inline: auto;
+    background: var(--bg-deep);
+    border-bottom: 1px solid var(--line);
+    cursor: ew-resize;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .ba-photo, .ba-ascii { position: absolute; inset: 0; overflow: hidden; }
+  /* photo (composed scene canvas) revealed LEFT of the divider */
+  .ba-photo { clip-path: inset(0 calc((100 - var(--ba-pos)) * 1%) 0 0); }
+  .ba-photo canvas { width: 100%; height: 100%; display: block; }
+  /* ascii of the same scene revealed RIGHT of the divider */
+  .ba-ascii {
+    background: var(--bg-deep);
+    clip-path: inset(0 0 0 calc(var(--ba-pos) * 1%));
+  }
+  .ba-ascii .ascii-pre { position: absolute; top: 0; left: 0; margin: 0; opacity: .9; }
+  .ba-label {
+    position: absolute; top: 22px; z-index: 3;
+    font-size: var(--fs-xs); letter-spacing: .12em;
+    color: var(--green);
+    text-shadow: 0 0 8px var(--bg-deep), var(--glow);
+    pointer-events: none;
+    transition: opacity .25s ease;
+  }
+  .ba-label { z-index: 6; }
+  .ba-label--before { left: 22px; }
+  .ba-label--after  {
+    right: 22px;
+    /* plain text like the mock — brighter ink + dark halo over dense glyphs */
+    color: color-mix(in oklab, var(--green) 35%, white);
+    text-shadow:
+      0 0 3px var(--bg-deep), 0 0 6px var(--bg-deep),
+      0 0 10px var(--bg-deep), 0 1px 2px var(--bg-deep);
+  }
+  [data-theme="paper"] .ba-label--after { color: var(--ink); text-shadow: none; }
+  /* the photo stays dark in every theme — keep its label light */
+  [data-theme="paper"] .ba-label--before { color: var(--panel); text-shadow: 0 1px 2px var(--ink); }
+  .ba-line {
+    position: absolute; top: 0; bottom: 0; left: calc(var(--ba-pos) * 1%); z-index: 4;
+    width: 1px; background: var(--green-soft);
+    box-shadow: var(--glow);
+    pointer-events: none;
+  }
+  .ba-handle {
+    position: absolute; top: 50%; left: calc(var(--ba-pos) * 1%); z-index: 5;
+    transform: translate(-50%, -50%);
+    width: 44px; height: 44px; border-radius: 50%;
+    display: grid; place-items: center; padding: 0;
+    background: var(--bg-deep);
+    border: 1px solid var(--line-strong);
+    color: var(--green);
+    font-family: var(--mono); font-size: 15px; line-height: 1;
+    letter-spacing: .18em; text-indent: .18em;
+    cursor: ew-resize;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .ba-handle:hover { border-color: var(--green-soft); box-shadow: var(--glow); }
+
+  /* hero copy grid */
+  .sec[data-screen-label="hero-copy"] { border-top: 0; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+    gap: 48px; align-items: center;
+  }
+  /* the original mock sets the headline in phosphor green */
+  .hero-grid .display {
+    color: var(--green);
+    text-shadow: var(--glow);
+    font-size: clamp(36px, 4.3vw, 58px);
+  }
+  [data-theme="paper"] .hero-grid .display { text-shadow: none; }
+  .hero-cta { justify-self: end; text-align: right; }
+
+  /* charset showcase 2×2 */
+  .charset-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px; margin-top: 34px;
+  }
+  .charset-grid .term-body {
+    height: 230px; overflow: hidden;
+    display: grid; place-items: center;
+  }
+
+  /* faq teaser list */
+  .qa-list { border-top: 1px solid var(--line); }
+
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+    .hero-cta { justify-self: start; text-align: left; }
+    .charset-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  /* ---- live-demo stage (section: live-demo) ---- */
+  .demo-term { margin: 34px 0 0; }
+  .demo-stage {
+    position: relative;
+    height: 400px;
+    padding: 18px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 18px;
+    pointer-events: none; /* the stage is a replay, not a control */
+  }
+  .demo-left {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    justify-items: start;
+    transition: opacity .35s ease;
+  }
+  .demo-chip {
+    width: 108px;
+    padding: 9px 9px 7px;
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    background: var(--panel);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    transition: transform .75s cubic-bezier(.4, 0, .2, 1),
+                opacity .75s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .demo-chip img { width: 68px; height: 56px; object-fit: cover; object-position: 74% 30%; }
+  .demo-chip-name { color: var(--ink-dim); line-height: 1.5; }
+  .demo-chip.is-hover { transform: translateY(-2px); border-color: var(--green-soft); }
+  .demo-chip.is-held { border-color: var(--green-soft); box-shadow: var(--glow); }
+  .demo-chip.is-dropped { transition-duration: .24s; opacity: 0; }
+  .demo-drop {
+    width: 100%;
+    padding: 20px 10px;
+    display: grid;
+    place-items: center;
+    font-size: var(--fs-xs);
+    letter-spacing: .08em;
+  }
+  .demo-drop.is-flash {
+    border-color: var(--green);
+    color: var(--green);
+    background: color-mix(in oklab, var(--green) 14%, transparent);
+    box-shadow: var(--glow);
+  }
+  .demo-right {
+    min-width: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 8px;
+    transition: opacity .35s ease;
+  }
+  .demo-cmd, .demo-status {
+    min-height: 21px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .demo-out { min-height: 0; display: grid; place-items: center; overflow: hidden; }
+  .demo-cursor {
+    position: absolute; left: 0; top: 0; z-index: 6;
+    width: 16px; height: 16px;
+    pointer-events: none;
+    opacity: 0;
+    transition: transform .75s cubic-bezier(.4, 0, .2, 1), opacity .35s ease;
+    will-change: transform;
+  }
+  .demo-stage.is-live .demo-cursor { opacity: 1; }
+  .demo-cursor::after {
+    content: "";
+    position: absolute; left: -5px; top: -1px;
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 15px solid var(--ink);
+    transform-origin: 5px 1px;
+    transform: rotate(-38deg);
+    transition: transform .18s ease;
+    filter: drop-shadow(1px 1px 0 var(--bg-deep));
+  }
+  .demo-cursor.is-down::after { transform: rotate(-38deg) scale(.88); }
+  .demo-stage.is-fade .demo-left,
+  .demo-stage.is-fade .demo-right,
+  .demo-stage.is-fade .demo-cursor { opacity: 0; }
+  @media (max-width: 760px) {
+    .demo-stage {
+      height: 470px;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+    .demo-left {
+      grid-template-columns: 108px minmax(0, 1fr);
+      align-items: stretch;
+      justify-items: stretch;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .demo-cursor { display: none; }
+  }
+</style>
+</head>
+<body data-page="home" data-path="~/main">
+<main class="frame">
+
+  <section class="sec sec--flush" data-screen-label="hero-slider">
+    <div class="ba-stage" id="baStage">
+      <div class="ba-photo">
+        <canvas id="heroPhoto" aria-hidden="true"></canvas>
+      </div>
+      <div class="ba-ascii" id="baAsciiPane">
+        <pre class="ascii-pre" id="heroAscii" aria-hidden="true"></pre>
+      </div>
+      <span class="ba-label ba-label--before">Before</span>
+      <span class="ba-label ba-label--after">After</span>
+      <div class="ba-line" aria-hidden="true"></div>
+      <button class="ba-handle" id="baHandle" type="button" role="slider" tabindex="0"
+        aria-label="compare photo and ascii" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">‹ ›</button>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="hero-copy">
+    <div class="hero-grid">
+      <div>
+        <h1 class="display">Turn any<br>image to ASCII<br><span class="accent">{</span><span class="cursor-blink"></span><span class="accent">}</span></h1>
+        <p class="lede" style="margin-top:26px"><span class="text-green">Turn any photo into ASCII art on your own device, or <a href="tool.html">start right here</a>.</span><br>Nothing ever leaves your browser — tune the charset, density and color, then drop the result anywhere plain text lives.</p>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn--green btn--lg" href="tool.html">Open the tool</a>
+        <div class="fs-xs text-faint" style="margin-top:14px">$ no upload · no account · free</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="how-it-works">
+    <div class="kicker">[ how_it_works ]</div>
+    <div class="grid-3">
+      <article class="card">
+        <h3 class="card-title"><span class="p">01</span> drop an image</h3>
+        <p>png · jpg · webp · gif — decoded locally by your browser, never uploaded.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">02</span> tune the output</h3>
+        <p>six charsets from classic ramps to braille dots; adjust columns, brightness, contrast, invert and color.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">03</span> export anywhere</h3>
+        <p>copy as plain text, download a .txt, or render a crisp .png.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="live-demo" id="demoSection">
+    <div class="kicker">[ live_demo ]</div>
+    <h2 class="h2">Watch the whole flow</h2>
+    <p class="lede" style="margin-top:18px">Drop, convert, retune — replayed live by the real engine, not a video.</p>
+    <figure class="term demo-term" id="demoTerm" aria-hidden="true">
+      <figcaption class="term-head">
+        <span class="term-title"><span class="p">$</span> img2ascii --interactive</span>
+        <span class="term-dots">– □ ✕</span>
+      </figcaption>
+      <div class="term-body demo-stage" id="demoStage">
+        <div class="demo-left">
+          <div class="demo-chip" id="demoChip">
+            <img src="/assets/sample-portrait.png" alt="" width="68" height="56">
+            <span class="fs-xs demo-chip-name">portrait.png</span>
+          </div>
+          <div class="dropzone demo-drop" id="demoDrop">[ drop here ]</div>
+        </div>
+        <div class="demo-right">
+          <div class="fs-xs text-faint demo-cmd" id="demoCmd">$ img2ascii portrait.png --charset detailed</div>
+          <div class="demo-out" id="demoOut"><pre class="ascii-pre" id="demoPre"></pre></div>
+          <div class="fs-xs text-faint demo-status" id="demoStatus"></div>
+        </div>
+        <div class="demo-cursor" id="demoCursor"></div>
+      </div>
+    </figure>
+    <p class="fs-s text-faint" style="margin-top:18px">captured live from the engine on this page — <a href="tool.html">open the tool</a> to drive it yourself.</p>
+  </section>
+
+  <section class="sec" data-screen-label="charsets">
+    <div class="kicker">[ charsets ]</div>
+    <h2 class="h2">One photo. Six alphabets.</h2>
+    <p class="lede" style="margin-top:18px">The charset decides the texture. Four of the six, converted live from the same portrait — minimal and detailed round out the set in the tool.</p>
+    <div class="charset-grid" id="charsetGrid">
+      <figure class="term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p">$</span> img2ascii portrait.png --charset standard</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body"><pre class="ascii-pre" data-charset="standard" aria-hidden="true"></pre></div>
+      </figure>
+      <figure class="term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p">$</span> img2ascii portrait.png --charset blocks</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body"><pre class="ascii-pre" data-charset="blocks" aria-hidden="true"></pre></div>
+      </figure>
+      <figure class="term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p">$</span> img2ascii portrait.png --charset binary</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body"><pre class="ascii-pre" data-charset="binary" aria-hidden="true"></pre></div>
+      </figure>
+      <figure class="term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p">$</span> img2ascii portrait.png --charset braille</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body"><pre class="ascii-pre" data-charset="braille" aria-hidden="true"></pre></div>
+      </figure>
+    </div>
+    <p class="fs-s text-faint" style="margin-top:18px">rendered live in your browser by the same engine that powers the tool — <a href="tool.html">try your own photo</a>.</p>
+  </section>
+
+  <section class="sec" data-screen-label="usecases-teaser">
+    <div class="kicker">[ usecases ]</div>
+    <h2 class="h2">Where ASCII still wins</h2>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> readme banners</h3>
+        <p>a logo that renders in every git host, no image hosting required.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> cli splash screens</h3>
+        <p>greet users of your tools where only text exists.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> plain-text everywhere</h3>
+        <p>emails, forums, comments, MOTDs — if it takes characters, it takes art.</p>
+      </article>
+    </div>
+    <a class="btn btn--ghost" href="usecases.html" style="margin-top:26px">browse all usecases</a>
+  </section>
+
+  <section class="sec" data-screen-label="faq-teaser">
+    <div class="kicker">[ faq ]</div>
+    <div class="qa-list">
+      <details class="qa">
+        <summary>Do my images get uploaded?</summary>
+        <div class="qa-a"><p>Never — conversion runs entirely in your browser. It even works offline once the page is loaded.</p></div>
+      </details>
+      <details class="qa">
+        <summary>Is it free?</summary>
+        <div class="qa-a"><p>Yes — free, no account, no watermark.</p></div>
+      </details>
+      <details class="qa">
+        <summary>Which formats work?</summary>
+        <div class="qa-a"><p>Anything your browser can decode: png, jpg, webp and gif (first frame).</p></div>
+      </details>
+    </div>
+    <a class="btn btn--ghost" href="faq.html" style="margin-top:26px">read the full faq</a>
+  </section>
+
+  <footer class="site-foot">
+    <span>© 2026 image2ascii — plain text is forever</span>
+    <nav><a href="usecases.html">usecases</a><a href="faq.html">faq</a><a href="tool.html">open tool</a></nav>
+  </footer>
+
+</main>
+<script type="module" src="/src/main-index.ts"></script>
+</body>
+</html>

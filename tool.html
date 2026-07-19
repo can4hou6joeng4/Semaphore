@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The tool — Image to ASCII</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The tool — Image to ASCII">
+<meta property="og:description" content="The working converter: drop an image, tune charset, columns, brightness, contrast and color, then copy or download your ASCII art as .txt or .png. Runs 100% in your browser — nothing is uploaded.">
+<meta property="og:image" content="/assets/sample-hero.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#050a06">
+<meta name="description" content="The working converter: drop an image, tune charset, columns, brightness, contrast and color, then copy or download your ASCII art as .txt or .png. Runs 100% in your browser — nothing is uploaded.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  /* ---- tool workbench layout (colors via tokens only) ---- */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: 312px minmax(0, 1fr);
+    min-height: calc(100vh - var(--header-h) - var(--statusbar-h));
+  }
+  .tool-grid figure.term { margin: 0; }
+
+  /* left rail: source + parameters */
+  .tool-side {
+    display: flex; flex-direction: column; gap: 24px;
+    padding: 24px;
+    border-right: 1px solid var(--line);
+    overflow-y: auto;
+  }
+  .side-block { display: grid; gap: 10px; }
+  .drop-title {
+    font-size: var(--fs-m); color: var(--green-soft);
+    letter-spacing: .03em; margin-bottom: 6px;
+  }
+  .samples { display: flex; gap: 14px; }
+  .sample-item { display: grid; gap: 5px; justify-items: center; }
+  .sample {
+    width: 68px; height: 56px; padding: 0; overflow: hidden; cursor: pointer;
+    background: var(--bg-deep);
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .sample:hover, .sample:focus-visible { border-color: var(--green); box-shadow: var(--glow); }
+  .sample img, .sample canvas { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* right rail: readout + actions + output stage */
+  .tool-main {
+    display: flex; flex-direction: column; gap: 14px;
+    padding: 24px;
+    min-width: 0;
+  }
+  .cmdline { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .actions { justify-content: space-between; }
+  .actions input[type="range"] { width: 150px; }
+  input[type="range"]:disabled { opacity: .35; cursor: default; }
+
+  .out-term { flex: 1; display: flex; flex-direction: column; min-height: 440px; }
+  .out-body { flex: 1; overflow: auto; position: relative; display: flex; }
+  .out-body .ascii-pre { margin: auto; }
+  .ascii-pre.is-empty { font-size: var(--fs-s); color: var(--ink-faint); text-shadow: none; }
+
+  @media (max-width: 960px) {
+    .tool-grid { grid-template-columns: minmax(0, 1fr); }
+    .tool-side { border-right: 0; border-bottom: 1px solid var(--line); overflow-y: visible; }
+    .out-term { min-height: 380px; }
+  }
+
+  /* ---- share card modal (tokens only) ---- */
+  .cardmodal {
+    position: fixed; inset: 0; z-index: 800;
+    display: grid; place-items: center;
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    padding: 20px;
+  }
+  .cardmodal-panel { width: min(780px, calc(100vw - 40px)); margin: 0; }
+  .cardmodal-close {
+    font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .06em;
+    background: transparent; color: var(--ink-faint);
+    border: 1px solid transparent; border-radius: 2px;
+    padding: 2px 6px; cursor: pointer; flex: none;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .cardmodal-close:hover { color: var(--green); border-color: var(--line); }
+  .cardmodal-preview {
+    border: 1px solid var(--line); border-radius: 2px;
+    background: var(--bg-deep);
+    max-height: 46vh; overflow: auto;
+  }
+  .cardmodal-preview img { margin-inline: auto; }
+  .cardmodal-controls { margin-top: 14px; }
+  .cardmodal-seg { flex: none; }
+  .cardmodal-seg button { flex: none; padding: 8px 18px; }
+  #cardCaption { flex: 1 1 180px; width: auto; min-width: 150px; }
+</style>
+</head>
+<body data-page="tool" data-path="~/tool">
+<main class="frame">
+
+  <section class="sec sec--flush" data-screen-label="tool-workbench">
+    <div class="tool-grid">
+
+      <aside class="tool-side" aria-label="source and parameters">
+
+        <div class="side-block">
+          <div class="field-label">source</div>
+          <div class="dropzone" id="drop" role="button" tabindex="0" aria-label="choose an image">
+            <div class="drop-title">[ drop image here ]</div>
+            <div class="fs-xs text-faint">or click to browse — png · jpg · webp · gif</div>
+          </div>
+          <input type="file" id="file" accept="image/*" class="hidden">
+        </div>
+
+        <figure class="term hidden" id="srcInfo">
+          <figcaption class="term-head">
+            <span class="term-title"><span class="p">$</span> file info</span>
+            <span class="term-dots">– □ ✕</span>
+          </figcaption>
+          <div class="term-body" style="padding:12px">
+            <img id="srcThumb" src="/assets/sample-portrait.png" alt="loaded source preview" style="max-height:110px;margin-inline:auto">
+            <div class="fs-xs text-faint" id="srcMeta" style="text-align:center;margin-top:8px">—</div>
+          </div>
+        </figure>
+
+        <div class="side-block">
+          <div class="field-label">samples</div>
+          <div class="samples">
+            <div class="sample-item">
+              <button class="sample" id="samplePortrait" type="button" aria-label="load sample: portrait">
+                <img src="/assets/sample-portrait.png" alt="">
+              </button>
+              <span class="fs-xs text-faint">portrait</span>
+            </div>
+            <div class="sample-item">
+              <button class="sample" id="samplePlanet" type="button" aria-label="load sample: planet">
+                <canvas id="planetThumb" width="136" height="112"></canvas>
+              </button>
+              <span class="fs-xs text-faint">planet</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="side-block">
+          <div class="field-label">parameters</div>
+          <div class="stack">
+            <div class="field">
+              <label class="field-label" for="charset">charset</label>
+              <div class="selectwrap">
+                <select class="input" id="charset">
+                  <option value="standard">standard</option>
+                  <option value="detailed" selected>detailed</option>
+                  <option value="blocks">blocks</option>
+                  <option value="minimal">minimal</option>
+                  <option value="binary">binary</option>
+                  <option value="braille">braille (2×4 dots)</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="cols">columns <span class="val" id="colsv">120</span></label>
+              <input type="range" id="cols" min="40" max="240" step="2" value="120">
+            </div>
+            <div class="field">
+              <label class="field-label" for="bright">brightness <span class="val" id="brightv">0</span></label>
+              <input type="range" id="bright" min="-100" max="100" step="1" value="0">
+            </div>
+            <div class="field">
+              <label class="field-label" for="contrast">contrast <span class="val" id="contrastv">0</span></label>
+              <input type="range" id="contrast" min="-100" max="100" step="1" value="0">
+            </div>
+            <button class="toggle" id="invert" type="button" aria-pressed="false">invert</button>
+            <button class="toggle" id="dither" type="button" aria-pressed="true">dither (braille)</button>
+            <div class="field">
+              <div class="field-label">color</div>
+              <div class="seg" role="radiogroup" aria-label="color">
+                <button type="button" data-color="green" aria-pressed="true">green</button>
+                <button type="button" data-color="gray" aria-pressed="false">gray</button>
+                <button type="button" data-color="original" aria-pressed="false">original</button>
+              </div>
+            </div>
+            <button class="btn btn--ghost btn--sm" id="reset" type="button">reset params</button>
+          </div>
+        </div>
+
+      </aside>
+
+      <div class="tool-main">
+
+        <div class="fs-xs text-faint cmdline" id="cmdline">$ img2ascii --charset detailed --cols 120 --color green</div>
+
+        <div class="row actions">
+          <div class="row">
+            <label class="field-label" for="zoom">zoom</label>
+            <input type="range" id="zoom" min="3" max="18" step="0.5" value="8" disabled>
+            <button class="toggle" id="fit" type="button" aria-pressed="true">fit width</button>
+          </div>
+          <div class="row">
+            <button class="btn btn--ghost btn--sm is-disabled" id="copy" type="button">copy text</button>
+            <button class="btn btn--ghost btn--sm is-disabled" id="savetxt" type="button">download .txt</button>
+            <button class="btn btn--ghost btn--sm is-disabled" id="sharecard" type="button">share card</button>
+            <button class="btn btn--green btn--sm is-disabled" id="savepng" type="button">download .png</button>
+          </div>
+        </div>
+
+        <figure class="term out-term">
+          <figcaption class="term-head">
+            <span class="term-title" id="outTitle"><span class="p">$</span> ~/output — waiting for source</span>
+            <span class="term-dots">– □ ✕</span>
+          </figcaption>
+          <div class="term-body out-body" id="outBody">
+<pre class="ascii-pre is-empty" id="out">┌──────────────────────────────┐
+│                              │
+│    drop an image to begin    │
+│                              │
+└──────────────────────────────┘</pre>
+          </div>
+        </figure>
+
+      </div>
+
+    </div>
+
+    <div class="cardmodal hidden" id="cardModal" role="dialog" aria-modal="true" aria-label="share card">
+      <figure class="term cardmodal-panel">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p">$</span> share card — preview</span>
+          <button class="cardmodal-close" id="cardClose" type="button" aria-label="close share card preview">[ x ]</button>
+        </figcaption>
+        <div class="term-body">
+          <div class="cardmodal-preview">
+            <img id="cardPreview" alt="share card preview" style="max-width:100%">
+          </div>
+          <div class="row cardmodal-controls">
+            <div class="seg cardmodal-seg" role="radiogroup" aria-label="card theme">
+              <button type="button" data-ctheme="crt" aria-pressed="true">crt</button>
+              <button type="button" data-ctheme="paper" aria-pressed="false">paper</button>
+            </div>
+            <input class="input" id="cardCaption" maxlength="60" value="made with img2ascii" aria-label="caption">
+            <button class="btn btn--ghost btn--sm" id="cardSvg" type="button">download .svg</button>
+            <button class="btn btn--green btn--sm" id="cardPng" type="button">download .png</button>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <footer class="site-foot">
+    <span>© 2026 image2ascii — plain text is forever</span>
+    <nav><a href="usecases.html">usecases</a><a href="faq.html">faq</a><a href="tool.html">open tool</a></nav>
+  </footer>
+
+</main>
+<script type="module" src="/src/main-tool.ts"></script>
+</body>
+</html>

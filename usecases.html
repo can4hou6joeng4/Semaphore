@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Usecases — Image to ASCII</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Usecases — Image to ASCII">
+<meta property="og:description" content="Where ASCII art beats pixels — readme banners, ssh splash screens, code comment headers, plain-text mail, terminal ricing and print. Six usecases for img2ascii.">
+<meta property="og:image" content="/assets/sample-hero.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#050a06">
+  <meta name="description" content="Where ASCII art beats pixels — readme banners, ssh splash screens, code comment headers, plain-text mail, terminal ricing and print. Six usecases for img2ascii.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* usecases page — layout only, colors from tokens */
+    section[data-screen-label="usecases-grid"] .grid-2 {
+      gap: 18px;
+    }
+    section[data-screen-label="usecases-grid"] .term {
+      margin: 0;
+    }
+    section[data-screen-label="usecases-grid"] .term-body {
+      height: 200px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+    section[data-screen-label="usecases-grid"] .ascii-pre {
+      font-size: 10px;
+      line-height: 1;
+    }
+    section[data-screen-label="usecases-grid"] .card-title {
+      margin-top: 18px;
+    }
+    section[data-screen-label="usecases-grid"] .card .row {
+      margin-top: 14px;
+    }
+    section[data-screen-label="usecases-cta"] {
+      text-align: center;
+    }
+    section[data-screen-label="usecases-cta"] .lede {
+      margin-inline: auto;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body data-page="usecases" data-path="~/usecases">
+  <main class="frame">
+
+    <section class="sec" data-screen-label="usecases-head">
+      <div class="kicker"><b>~/usecases</b> · where plain text wins</div>
+      <h1 class="h2">ASCII belongs everywhere text goes</h1>
+      <p class="lede" style="margin-top:18px">Six places where an image made of characters beats an image made of pixels — no attachments, no rendering engines, no broken links.</p>
+    </section>
+
+    <section class="sec" data-screen-label="usecases-grid">
+      <div class="grid-2">
+
+        <article class="card">
+          <figure class="term">
+            <figcaption class="term-head">
+              <span class="term-title"><span class="p">$</span> cat README.md</span>
+              <span class="term-dots">– □ ✕</span>
+            </figcaption>
+            <div class="term-body">
+<pre class="ascii-pre">
+ ████   █████  █████ ██████ ██████
+██  ██ ██     ██       ██     ██
+██████  ████  ██       ██     ██
+██  ██     ██ ██       ██     ██
+██  ██ █████   █████ ██████ ██████
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓</pre>
+            </div>
+          </figure>
+          <h3 class="card-title"><span class="p">$</span> readme banners</h3>
+          <p>Your project logo rendered in every git host on earth, with zero image hosting. Pull requests deserve a marquee too.</p>
+          <div class="row">
+            <span class="tag">github</span>
+            <span class="tag">markdown</span>
+            <span class="tag tag--green">plain text</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <figure class="term">
+            <figcaption class="term-head">
+              <span class="term-title"><span class="p">$</span> ssh deploy@prod</span>
+              <span class="term-dots">– □ ✕</span>
+            </figcaption>
+            <div class="term-body">
+<pre class="ascii-pre">
+        ░▒▓██▓▒░
+       ░▒▓████▓▒░
+        ░▒▓██▓▒░
+
+img2ascii deploy console
+ v2.4.1 · 3 nodes ready
+────────────────────────
+$ _                     </pre>
+            </div>
+          </figure>
+          <h3 class="card-title"><span class="p">$</span> cli splash screens</h3>
+          <p>Greet the humans inside your terminals — login MOTDs, build banners, version splashes. The only art form guaranteed to render over ssh.</p>
+          <div class="row">
+            <span class="tag">motd</span>
+            <span class="tag tag--green">devtools</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <figure class="term">
+            <figcaption class="term-head">
+              <span class="term-title"><span class="p">$</span> vim api/routes.ts</span>
+              <span class="term-dots">– □ ✕</span>
+            </figcaption>
+            <div class="term-body">
+<pre class="ascii-pre">
+/* ================================== */
+/* =                                = */
+/* =   ▓▒░  ROUTES · public api     = */
+/* =   ▓▒░  keep handlers thin      = */
+/* =                                = */
+/* ================================== */</pre>
+            </div>
+          </figure>
+          <h3 class="card-title"><span class="p">$</span> code comment headers</h3>
+          <p>Section dividers your future self can spot from three screens away. Works in any language that has comments.</p>
+          <div class="row">
+            <span class="tag">source code</span>
+            <span class="tag tag--green">headers</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <figure class="term">
+            <figcaption class="term-head">
+              <span class="term-title"><span class="p">$</span> mutt</span>
+              <span class="term-dots">– □ ✕</span>
+            </figcaption>
+            <div class="term-body">
+<pre class="ascii-pre">
+--
+  ░▓▓░
+  ▓██▓    ── ada @ img2ascii
+  ░▓▓░
+ ▒▓▓▓▓▒
+............................</pre>
+            </div>
+          </figure>
+          <h3 class="card-title"><span class="p">$</span> plain-text mail &amp; forums</h3>
+          <p>Signatures, forum posts and newsletters that survive text-only clients untouched. No blocked-image icon, ever.</p>
+          <div class="row">
+            <span class="tag">email</span>
+            <span class="tag tag--green">usenet energy</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <figure class="term">
+            <figcaption class="term-head">
+              <span class="term-title"><span class="p">$</span> neofetch</span>
+              <span class="term-dots">– □ ✕</span>
+            </figcaption>
+            <div class="term-body">
+<pre class="ascii-pre">
+  ░▒▓▓▒░
+ ▒▓████▓▒    os      img2ascii os
+ ▓██▓▓██▓    shell   zsh 5.9
+ ▓██████▓    uptime  247 days
+ ▒▓████▓▒    memory  64 KiB of pure text
+  ░▒▓▓▒░                                </pre>
+            </div>
+          </figure>
+          <h3 class="card-title"><span class="p">$</span> terminal wallpaper</h3>
+          <p>Fetch scripts, prompt art and tmux dashboards — decorate the place you actually live. Your terminal is a room; hang something on the wall.</p>
+          <div class="row">
+            <span class="tag">ricing</span>
+            <span class="tag tag--green">dotfiles</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <figure class="term">
+            <figcaption class="term-head">
+              <span class="term-title"><span class="p">$</span> lpr poster.txt</span>
+              <span class="term-dots">– □ ✕</span>
+            </figcaption>
+            <div class="term-body">
+<pre class="ascii-pre">
+████████████████████████▓▓▓▓▓▒▒▒▒▒░░░░░
+█████████████████████▓▓▓▓▓▒▒▒▒▒░░░░░
+██████████████████▓▓▓▓▓▒▒▒▒▒░░░░░
+███████████████▓▓▓▓▓▒▒▒▒▒░░░░░
+████████████▓▓▓▓▓▒▒▒▒▒░░░░░
+█████████▓▓▓▓▓▒▒▒▒▒░░░░░
+██████▓▓▓▓▓▒▒▒▒▒░░░░░
+███▓▓▓▓▓▒▒▒▒▒░░░░░
+▓▓▓▓▓▒▒▒▒▒░░░░░</pre>
+            </div>
+          </figure>
+          <h3 class="card-title"><span class="p">$</span> prints &amp; merch</h3>
+          <p>Monospace posters, tees and zine pages — ASCII plots beautifully because it is ink-native. Vector sharpness, typewriter soul.</p>
+          <div class="row">
+            <span class="tag">print</span>
+            <span class="tag tag--green">risograph safe</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="sec sec--tight" data-screen-label="usecases-cta">
+      <h2 class="h2">Got pixels? Make characters.</h2>
+      <p class="lede">Every example on this page came out of the same little engine — feed it your own photo.</p>
+      <a class="btn btn--green btn--lg" href="tool.html" style="margin-top:26px">Open the tool</a>
+    </section>
+
+    <footer class="site-foot">
+      <span>© 2026 image2ascii — plain text is forever</span>
+      <nav><a href="usecases.html">usecases</a><a href="faq.html">faq</a><a href="tool.html">open tool</a></nav>
+    </footer>
+
+  </main>
+
+<script type="module" src="/src/main-usecases.ts"></script>
+</body>
+</html>

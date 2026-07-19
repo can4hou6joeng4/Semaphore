@@ -1,0 +1,480 @@
+/* ============================================================
+   img2ascii — CRT terminal design system
+   Single source of truth for tokens + components.
+   Pages may add page-specific layout in a local <style>, but
+   colors/fonts/radii MUST come from these tokens.
+   ============================================================ */
+
+:root {
+  color-scheme: dark;
+
+  /* -- palette: phosphor green on near-black ------------------ */
+  --bg:        oklch(0.145 0.012 150);
+  --bg-deep:   oklch(0.115 0.010 150);
+  --panel:     oklch(0.175 0.014 150);
+  --panel-2:   oklch(0.205 0.016 150);
+  --ink:       oklch(0.880 0.055 148);
+  --ink-dim:   oklch(0.660 0.045 148);
+  --ink-faint: oklch(0.490 0.035 148);
+  --green:     oklch(0.870 0.230 148);
+  --green-soft:oklch(0.800 0.160 148);
+  --green-deep:oklch(0.350 0.090 148);
+  --amber:     oklch(0.800 0.155 72);
+  --amber-hi:  oklch(0.880 0.130 80);
+  --black-ink: oklch(0.150 0.020 150);   /* text on green/amber fills */
+
+  --line:        color-mix(in oklab, var(--green) 13%, transparent);
+  --line-strong: color-mix(in oklab, var(--green) 30%, transparent);
+  --glow:        0 0 12px color-mix(in oklab, var(--green) 30%, transparent);
+  --glow-amber:  0 0 14px color-mix(in oklab, var(--amber) 35%, transparent);
+
+  /* -- type ---------------------------------------------------- */
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+  --fs-xs: 12px;
+  --fs-s:  13px;
+  --fs-m:  15px;
+  --fs-l:  17px;
+
+  /* -- layout -------------------------------------------------- */
+  /* the content column: full-bleed on laptops (≤1760), centered with
+     margins only on large external monitors. Wide enough to never feel
+     cramped, capped so ultra-wide sections don't stretch sparse.      */
+  --rail-max: 1760px;
+  --pad-x: clamp(40px, 4.5vw, 96px);
+  --header-h: 60px;
+  --statusbar-h: 30px;
+}
+
+/* ============================== base ======================== */
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(1100px 480px at 50% -120px,
+      color-mix(in oklab, var(--green) 6%, transparent), transparent 70%),
+    var(--bg);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: var(--fs-m);
+  line-height: 1.75;
+  font-variant-ligatures: none;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: var(--statusbar-h);
+}
+
+::selection { background: var(--green); color: var(--black-ink); }
+
+a { color: var(--green-soft); text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; }
+a:hover { color: var(--green); text-shadow: var(--glow); }
+
+:focus-visible { outline: 1px solid var(--green); outline-offset: 3px; border-radius: 1px; }
+
+img { display: block; max-width: 100%; }
+pre { font-family: var(--mono); font-variant-ligatures: none; }
+
+h1, h2, h3, h4, p { margin: 0; }
+
+/* custom scrollbars (webkit) */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--panel-2); border: 1px solid var(--line); }
+::-webkit-scrollbar-thumb:hover { background: var(--green-deep); }
+
+/* ========================= CRT overlays ====================== */
+/* injected by shared.js — do not write these divs yourself      */
+.crt-scanlines {
+  position: fixed; inset: 0; z-index: 9990; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg, rgba(0,0,0,.20) 0 1px, transparent 1px 3px);
+  opacity: .55;
+}
+.crt-vignette {
+  position: fixed; inset: 0; z-index: 9991; pointer-events: none;
+  background: radial-gradient(ellipse 120% 90% at 50% 30%,
+    transparent 60%, rgba(0,0,0,.42) 100%);
+}
+
+/* ========================= structure ========================= */
+.rail {
+  width: min(var(--rail-max), 100%);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+/* the framed content column with vertical hairline rails */
+main.frame {
+  width: min(var(--rail-max), 100%);
+  margin-inline: auto;
+  border-inline: 1px solid var(--line);
+  min-height: calc(100vh - var(--header-h) - var(--statusbar-h));
+  background: color-mix(in oklab, var(--bg-deep) 55%, transparent);
+}
+
+.sec { padding: 88px var(--pad-x); border-top: 1px solid var(--line); }
+.sec:first-child { border-top: 0; }
+.sec--flush { padding: 0; }
+.sec--tight { padding-top: 64px; padding-bottom: 64px; }
+
+/* kicker: ──[ label ]── */
+.kicker {
+  display: flex; align-items: center; gap: 16px;
+  font-size: var(--fs-xs); letter-spacing: .14em;
+  color: var(--ink-faint); white-space: nowrap;
+  margin-bottom: 22px;
+}
+.kicker::before, .kicker::after {
+  content: ""; height: 1px; background: var(--line-strong); flex: 0 0 34px;
+}
+.kicker::after { flex: 1; }
+.kicker b { color: var(--green); font-weight: 500; }
+
+/* ========================= typography ======================== */
+.display {
+  font-size: clamp(38px, 6.6vw, 78px);
+  font-weight: 800; line-height: 1.04; letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.display .accent { color: var(--green); text-shadow: var(--glow); }
+
+.h2 { font-size: clamp(25px, 3.2vw, 36px); font-weight: 700; line-height: 1.2; }
+.h3 { font-size: 17px; font-weight: 700; }
+
+.lede { font-size: var(--fs-l); line-height: 1.85; color: var(--ink-dim); max-width: 62ch; }
+.lede .hl { color: var(--green-soft); }
+
+.text-dim   { color: var(--ink-dim); }
+.text-faint { color: var(--ink-faint); }
+.text-green { color: var(--green); }
+.text-amber { color: var(--amber); }
+.fs-s  { font-size: var(--fs-s); }
+.fs-xs { font-size: var(--fs-xs); }
+
+/* blinking block cursor: <span class="cursor-blink"></span> */
+.cursor-blink {
+  display: inline-block; width: .52em; height: .92em;
+  background: var(--green); vertical-align: baseline;
+  transform: translateY(.08em);
+  animation: blink 1.15s steps(2, start) infinite;
+  box-shadow: var(--glow);
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ========================= buttons =========================== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: var(--mono); font-size: 14px; font-weight: 600; letter-spacing: .02em;
+  padding: 13px 24px; border: 1px solid transparent; border-radius: 2px;
+  cursor: pointer; text-decoration: none; white-space: nowrap;
+  transition: background .16s ease, box-shadow .16s ease, border-color .16s ease,
+              color .16s ease, transform .16s ease;
+  user-select: none;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn--amber {
+  background: var(--amber); color: var(--black-ink);
+  box-shadow: inset 3px 0 0 var(--amber-hi);
+}
+.btn--amber:hover { background: var(--amber-hi); box-shadow: inset 3px 0 0 var(--amber-hi), var(--glow-amber); color: var(--black-ink); text-shadow: none; }
+
+.btn--green {
+  background: var(--green); color: var(--black-ink);
+  box-shadow: inset 3px 0 0 color-mix(in oklab, var(--green) 55%, white);
+}
+.btn--green:hover { background: color-mix(in oklab, var(--green) 82%, white); box-shadow: inset 3px 0 0 color-mix(in oklab, var(--green) 55%, white), var(--glow); color: var(--black-ink); text-shadow: none; }
+
+.btn--ghost {
+  background: transparent; color: var(--green-soft);
+  border-color: var(--line-strong);
+}
+.btn--ghost:hover { background: color-mix(in oklab, var(--green) 8%, transparent); border-color: var(--green-soft); color: var(--green); text-shadow: none; }
+
+.btn--sm { padding: 8px 14px; font-size: 13px; }
+.btn--lg { padding: 16px 32px; font-size: 15px; }
+.btn[disabled], .btn.is-disabled { opacity: .45; pointer-events: none; }
+
+/* ====================== terminal window ====================== */
+.term {
+  background: var(--bg-deep);
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.term-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 8px 14px; border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  font-size: var(--fs-xs); color: var(--ink-faint);
+}
+.term-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.term-title .p { color: var(--green); }
+.term-dots { letter-spacing: 6px; color: var(--ink-faint); flex: none; user-select: none; }
+.term-body { padding: 16px; overflow: auto; }
+
+/* ASCII output text */
+.ascii-pre {
+  margin: 0; white-space: pre; line-height: 1;
+  color: var(--green);
+  text-shadow: 0 0 7px color-mix(in oklab, var(--green) 28%, transparent);
+  font-size: var(--ascii-fs, 10px);
+}
+.ascii-pre.is-plain { text-shadow: none; }
+
+/* ========================= cards ============================= */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 26px;
+  transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+.card:hover { border-color: var(--line-strong); transform: translateY(-2px); box-shadow: var(--glow); }
+.card-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+.card-title .p { color: var(--green); margin-right: 8px; }
+.card p { font-size: var(--fs-s); line-height: 1.8; color: var(--ink-dim); }
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+
+/* tags */
+.tag {
+  display: inline-block; font-size: 11px; letter-spacing: .06em;
+  border: 1px solid var(--line); border-radius: 2px;
+  padding: 2px 9px; color: var(--ink-faint);
+}
+.tag--green { color: var(--green-soft); border-color: color-mix(in oklab, var(--green) 30%, transparent); }
+
+/* ========================= forms ============================= */
+.field { display: grid; gap: 8px; }
+.field-label {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: var(--fs-xs); letter-spacing: .1em; color: var(--ink-faint);
+}
+.field-label .val { color: var(--green); letter-spacing: 0; }
+
+.input, select.input {
+  background: var(--bg-deep); color: var(--ink);
+  border: 1px solid var(--line-strong); border-radius: 2px;
+  font-family: var(--mono); font-size: var(--fs-s);
+  padding: 9px 12px; width: 100%;
+}
+.input:focus-visible { outline: none; border-color: var(--green); box-shadow: var(--glow); }
+
+.selectwrap { position: relative; }
+.selectwrap select { appearance: none; padding-right: 34px; cursor: pointer; }
+.selectwrap::after {
+  content: "▾"; position: absolute; right: 12px; top: 50%;
+  transform: translateY(-50%); color: var(--green); pointer-events: none; font-size: 12px;
+}
+
+/* range sliders */
+input[type="range"] { appearance: none; -webkit-appearance: none; width: 100%; height: 24px; background: transparent; cursor: pointer; margin: 0; }
+input[type="range"]::-webkit-slider-runnable-track { height: 2px; background: var(--line-strong); }
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px; margin-top: -6px;
+  background: var(--green); border: 2px solid var(--bg-deep); border-radius: 1px;
+  box-shadow: 0 0 0 1px var(--green-deep);
+}
+input[type="range"]:hover::-webkit-slider-thumb { box-shadow: 0 0 0 1px var(--green), var(--glow); }
+input[type="range"]::-moz-range-track { height: 2px; background: var(--line-strong); }
+input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px; background: var(--green);
+  border: 2px solid var(--bg-deep); border-radius: 1px;
+}
+
+/* toggle button: <button class="toggle" aria-pressed="false">invert</button> */
+.toggle {
+  font-family: var(--mono); font-size: var(--fs-s); letter-spacing: .02em;
+  background: transparent; color: var(--ink-dim);
+  border: 1px solid var(--line); border-radius: 2px;
+  padding: 8px 12px; cursor: pointer; text-align: left;
+  transition: all .15s ease;
+}
+.toggle::before { content: "[ ] "; color: var(--ink-faint); }
+.toggle:hover { border-color: var(--line-strong); color: var(--ink); }
+.toggle[aria-pressed="true"] { color: var(--green); border-color: color-mix(in oklab, var(--green) 35%, transparent); background: color-mix(in oklab, var(--green) 7%, transparent); }
+.toggle[aria-pressed="true"]::before { content: "[x] "; color: var(--green); }
+
+/* segmented radio row: <div class="seg" role="radiogroup"> */
+.seg { display: flex; border: 1px solid var(--line-strong); border-radius: 2px; overflow: hidden; }
+.seg button {
+  flex: 1; font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .04em;
+  background: transparent; color: var(--ink-dim); border: 0; padding: 8px 6px; cursor: pointer;
+  border-left: 1px solid var(--line);
+  transition: all .15s ease;
+}
+.seg button:first-child { border-left: 0; }
+.seg button:hover { color: var(--ink); background: color-mix(in oklab, var(--green) 5%, transparent); }
+.seg button[aria-pressed="true"] { background: var(--green); color: var(--black-ink); font-weight: 700; }
+
+/* dropzone */
+.dropzone {
+  border: 1px dashed var(--line-strong); border-radius: 3px;
+  padding: 30px 20px; text-align: center; color: var(--ink-dim);
+  cursor: pointer; transition: all .18s ease;
+}
+.dropzone:hover { border-color: var(--green-soft); color: var(--ink); }
+.dropzone.is-drag { border-color: var(--green); background: color-mix(in oklab, var(--green) 7%, transparent); box-shadow: var(--glow); }
+
+/* ======================= FAQ accordion ======================= */
+details.qa { border-bottom: 1px solid var(--line); }
+details.qa summary {
+  display: flex; gap: 14px; align-items: baseline;
+  padding: 20px 8px; cursor: pointer; list-style: none;
+  font-size: 15px; font-weight: 600; color: var(--ink);
+  transition: color .15s ease;
+}
+details.qa summary::-webkit-details-marker { display: none; }
+details.qa summary::before {
+  content: ">"; color: var(--green); flex: none;
+  transition: transform .18s ease; transform-origin: center;
+}
+details.qa[open] summary::before { transform: rotate(90deg); }
+details.qa summary:hover { color: var(--green); }
+details.qa .qa-a {
+  padding: 0 8px 24px 30px; max-width: 74ch;
+  font-size: 14px; line-height: 1.85; color: var(--ink-dim);
+}
+details.qa .qa-a code { color: var(--green-soft); background: var(--bg-deep); padding: 1px 6px; border: 1px solid var(--line); border-radius: 2px; font-size: 13px; }
+
+/* ========================= site header ======================= */
+/* injected by shared.js — do not write this markup yourself     */
+.site-head {
+  position: sticky; top: 0; z-index: 500;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.site-head .rail { display: flex; align-items: center; gap: 34px; height: var(--header-h); }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+.brand:hover { text-shadow: var(--glow); color: var(--ink); }
+.brand-mark {
+  width: 27px; height: 27px; display: grid; place-items: center;
+  border: 1px solid var(--line-strong); border-radius: 2px;
+  background: var(--panel); color: var(--green); font-size: 13px; font-weight: 700;
+  text-shadow: var(--glow);
+}
+.brand-name { font-size: 15px; font-weight: 700; letter-spacing: .02em; }
+.site-nav { display: flex; align-items: center; gap: 30px; margin-left: auto; }
+.site-nav a { font-size: 14px; color: var(--ink-dim); text-decoration: none; }
+.site-nav a:hover { color: var(--green); text-shadow: var(--glow); }
+.site-nav a[aria-current="page"]:not(.btn) { color: var(--green); }
+.site-nav a[aria-current="page"]:not(.btn)::before { content: "[ "; color: var(--ink-faint); }
+.site-nav a[aria-current="page"]:not(.btn)::after  { content: " ]"; color: var(--ink-faint); }
+
+/* ========================= status bar ======================== */
+/* injected by shared.js — do not write this markup yourself     */
+.statusbar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 600;
+  height: var(--statusbar-h);
+  display: flex; align-items: stretch;
+  background: var(--bg-deep);
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-xs);
+  overflow: hidden; white-space: nowrap;
+}
+.sb-seg { display: flex; align-items: center; gap: 7px; padding: 0 13px; color: var(--ink-faint); border-right: 1px solid var(--line); }
+.sb-seg--brand { background: var(--green); color: var(--black-ink); font-weight: 700; border-right: 0; }
+.sb-right { margin-left: auto; display: flex; align-items: stretch; }
+.sb-right .sb-seg { border-right: 0; border-left: 1px solid var(--line); }
+.sb-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: var(--glow); animation: sbpulse 2.4s ease-in-out infinite; }
+.sb-dot--busy { background: var(--amber); box-shadow: var(--glow-amber); animation-duration: .7s; }
+@keyframes sbpulse { 50% { opacity: .45; } }
+.sb-toast { color: var(--green); background: color-mix(in oklab, var(--green) 10%, transparent); }
+
+/* ========================= footer ============================ */
+.site-foot {
+  border-top: 1px solid var(--line);
+  padding: 34px var(--pad-x);
+  display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+  font-size: var(--fs-s); color: var(--ink-faint);
+}
+.site-foot nav { display: flex; gap: 22px; }
+.site-foot a { color: var(--ink-faint); text-decoration: none; }
+.site-foot a:hover { color: var(--green); }
+
+/* ========================= utilities ========================= */
+.row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.stack { display: grid; gap: 18px; }
+.hidden { display: none !important; }
+
+/* ======================= responsive ========================== */
+@media (max-width: 900px) {
+  :root { --pad-x: 28px; }
+  .grid-3 { grid-template-columns: minmax(0, 1fr); }
+  .grid-2 { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 680px) {
+  :root { --pad-x: 20px; }
+  .site-head .rail { gap: 14px; padding-inline: 16px; }
+  .site-nav { gap: 14px; }
+  .site-nav a:not(.btn) { display: none; }
+  .sb-hide-m { display: none; }
+  .sec { padding-top: 64px; padding-bottom: 64px; }
+}
+@media (max-width: 400px) {
+  .brand-name { font-size: 13px; }
+  .site-nav .btn--sm { padding: 7px 11px; font-size: 12px; }
+}
+
+/* ==================== reduced motion ========================= */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation: none !important; transition: none !important; }
+  .cursor-blink { opacity: 1; }
+}
+
+/* ============================================================
+   PAPER THEME — print / typewriter light mode
+   Activated via html[data-theme="paper"] (shared.js toggle).
+   Every component keeps working because all colors flow
+   through the tokens below.
+   ============================================================ */
+[data-theme="paper"] {
+  color-scheme: light;
+
+  --bg:        oklch(0.955 0.014 92);
+  --bg-deep:   oklch(0.925 0.016 92);
+  --panel:     oklch(0.975 0.009 95);
+  --panel-2:   oklch(0.905 0.015 92);
+  --ink:       oklch(0.285 0.018 110);
+  --ink-dim:   oklch(0.425 0.022 110);
+  --ink-faint: oklch(0.560 0.022 105);
+  --green:     oklch(0.470 0.115 152);   /* deep ink-green      */
+  --green-soft:oklch(0.430 0.085 152);
+  --green-deep:oklch(0.800 0.060 150);
+  --amber:     oklch(0.625 0.150 60);    /* burnt print orange  */
+  --amber-hi:  oklch(0.700 0.140 65);
+  --black-ink: oklch(0.975 0.009 95);    /* text on green/amber fills = paper */
+
+  --line:        color-mix(in oklab, var(--ink) 16%, transparent);
+  --line-strong: color-mix(in oklab, var(--ink) 36%, transparent);
+  --glow:        0 0 0 rgba(0, 0, 0, 0); /* print does not glow */
+  --glow-amber:  0 0 0 rgba(0, 0, 0, 0);
+}
+
+[data-theme="paper"] body {
+  background: var(--bg);
+}
+[data-theme="paper"] .crt-scanlines,
+[data-theme="paper"] .crt-vignette { display: none; }
+[data-theme="paper"] .ascii-pre { text-shadow: none; }
+[data-theme="paper"] .cursor-blink { box-shadow: none; }
+[data-theme="paper"] ::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+
+/* header theme toggle — injected by shared.js */
+.theme-toggle {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .04em;
+  background: transparent; color: var(--ink-faint);
+  border: 1px solid var(--line); border-radius: 2px;
+  padding: 6px 10px; cursor: pointer; white-space: nowrap;
+  transition: color .15s ease, border-color .15s ease;
+}
+.theme-toggle:hover { color: var(--ink); border-color: var(--line-strong); }
+.theme-toggle [data-theme-label] { color: var(--green); }
+@media (max-width: 400px) {
+  .theme-toggle { padding: 5px 7px; font-size: 11px; }
+}

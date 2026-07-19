@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ — Image to ASCII</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="FAQ — Image to ASCII">
+<meta property="og:description" content="Short answers to common img2ascii questions — privacy, supported formats, braille mode, color modes, licensing and size limits.">
+<meta property="og:image" content="/assets/sample-hero.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#050a06">
+  <meta name="description" content="Short answers to common img2ascii questions — privacy, supported formats, braille mode, color modes, licensing and size limits.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* faq page — layout only, colors from tokens */
+    .qa-list {
+      max-width: 820px;
+      border-top: 1px solid var(--line);
+    }
+    section[data-screen-label="faq-cta"] {
+      text-align: center;
+    }
+    section[data-screen-label="faq-cta"] .lede {
+      margin-inline: auto;
+    }
+  </style>
+</head>
+<body data-page="faq" data-path="~/faq">
+  <main class="frame">
+
+    <section class="sec" data-screen-label="faq-head">
+      <div class="kicker"><b>~/faq</b> · man img2ascii</div>
+      <h1 class="h2">Questions, answered</h1>
+      <p class="lede" style="margin-top:18px">Short answers to the things people actually ask. Can't find yours? Open the tool and poke it — it can't break anything.</p>
+    </section>
+
+    <section class="sec" data-screen-label="faq-list">
+      <div class="qa-list">
+
+        <details class="qa" open>
+          <summary>Do my images get uploaded anywhere?</summary>
+          <div class="qa-a">
+            <p>Never. The conversion runs entirely in your browser using the canvas API; once the page has loaded it even works offline.</p>
+            <p>If you're the trust-but-verify type, open devtools and watch the network tab stay silent.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Is it free?</summary>
+          <div class="qa-a">
+            <p>Yes — free, no account, no watermark, no daily quota. The whole tool ships as static files.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Which image formats can I feed it?</summary>
+          <div class="qa-a">
+            <p>Anything your browser can decode: <code>png</code>, <code>jpg</code>, <code>webp</code> and <code>gif</code> (first frame). Drop it, paste it, or browse for it.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>How do I get a sharper result?</summary>
+          <div class="qa-a">
+            <p>Start from a high-contrast image with a tight crop. Push <code>columns</code> up to 160-200, nudge contrast +15, and try <code>invert</code> if your subject is dark-on-light.</p>
+            <p>For photographic detail, the braille charset is the sharp one.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>What does braille mode actually do?</summary>
+          <div class="qa-a">
+            <p>Each character becomes a 2×4 grid of dots from the Unicode braille block, dithered with Floyd–Steinberg — roughly eight times the spatial resolution of a classic ramp.</p>
+            <p>It needs a font with braille glyphs, which every modern OS has.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Can I keep the original colors?</summary>
+          <div class="qa-a">
+            <p>Yes. Color mode <code>original</code> samples the source color per character, <code>gray</code> keeps neutral tones, and <code>green</code> is the classic phosphor look.</p>
+            <p>Color survives in the .png export; plain-text copies are characters only, by nature.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Can I use the output commercially?</summary>
+          <div class="qa-a">
+            <p>The output is yours — posters, readmes, merch, client work, anything. We don't claim rights over your art.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Any size limits?</summary>
+          <div class="qa-a">
+            <p>Sources are downsampled to at most 300 columns, so even huge photos convert in milliseconds. If a very dense braille render feels slow on an old machine, lower the column count.</p>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <section class="sec sec--tight" data-screen-label="faq-cta">
+      <p class="lede">Still curious? The tool answers most questions in about ten seconds.</p>
+      <a class="btn btn--ghost" href="tool.html" style="margin-top:22px">open the tool</a>
+    </section>
+
+    <footer class="site-foot">
+      <span>© 2026 image2ascii — plain text is forever</span>
+      <nav><a href="usecases.html">usecases</a><a href="faq.html">faq</a><a href="tool.html">open tool</a></nav>
+    </footer>
+
+  </main>
+
+<script type="module" src="/src/main-faq.ts"></script>
+</body>
+</html>
