@@ -27,15 +27,14 @@
     --ba-pos: 50;
     position: relative;
     overflow: hidden;
-    /* the stage fills the (now 1760-capped) content column and keeps
-       the plate's native 1760×854 ratio, so on a large monitor it
-       renders pixel-exact. max-height only guards genuinely short
-       windows — on 1080p+ it stays full width, matching the sections
-       below; the ratio then trims width to keep it centered, no crop. */
+    /* the stage keeps the plate's native 1760×854 ratio at every
+       viewport. The height cap (82vh on short windows) is folded into
+       the width formula instead of max-height: with aspect-ratio +
+       max-height the photo canvas cover-fills the squashed box while
+       the ascii pre keeps its own ratio — the two layers de-register.
+       Deriving width from the same cap keeps both layers pixel-aligned. */
     aspect-ratio: 1760 / 854;
-    width: 100%;
-    max-width: 1760px;
-    max-height: 82vh;
+    width: min(100%, 1760px, calc(82vh * 1760 / 854));
     margin-inline: auto;
     background: var(--bg-deep);
     border-bottom: 1px solid var(--line);

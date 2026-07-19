@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="36" viewBox="0 0 620 36" role="img" aria-label="semaphore v1.0.0 · MIT · TypeScript strict · Vite 8 · 0 upload">
+  <style>text{font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13px}</style>
+  <rect width="620" height="36" rx="6" fill="#050a06"/>
+  <rect x=".5" y=".5" width="619" height="35" rx="5.5" fill="none" stroke="#173d24"/>
+  <rect x="8" y="8" width="96" height="20" rx="3" fill="#39ff7a"/>
+  <text x="56" y="22" text-anchor="middle" fill="#050a06" font-weight="700">semaphore</text>
+  <text x="122" y="22" fill="#39ff7a" font-weight="700">v1.0.0</text>
+  <text x="182" y="22" fill="#2a6a41">|</text>
+  <text x="200" y="22" fill="#8af5b0">MIT</text>
+  <text x="238" y="22" fill="#2a6a41">|</text>
+  <text x="256" y="22" fill="#8af5b0">TypeScript·strict</text>
+  <text x="398" y="22" fill="#2a6a41">|</text>
+  <text x="416" y="22" fill="#8af5b0">Vite·8</text>
+  <text x="474" y="22" fill="#2a6a41">|</text>
+  <text x="492" y="22" fill="#ffb347">0·upload</text>
+</svg>
