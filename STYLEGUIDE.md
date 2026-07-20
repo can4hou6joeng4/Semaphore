@@ -1,4 +1,4 @@
-# img2ascii — page authoring contract (BINDING)
+# semaphore — page authoring contract (BINDING)
 
 Design language: refined CRT terminal. Phosphor green on near-black, JetBrains Mono
 everywhere, amber reserved for the primary "open tool" action. Sharp corners (2–3px),
@@ -110,7 +110,7 @@ cells, Floyd–Steinberg dithered — the sharp one). Ramps are dark→light for
 
 ## Copy voice
 
-- Product name in chrome: "Image to ASCII"; in terminal contexts: `img2ascii`.
+- Product name in chrome: "Image to ASCII"; in terminal contexts: `semaphore`.
 - English. Terminal-laconic. Sentence case for headings, lowercase for kickers/labels
   (`[ how_it_works ]`, `~/usecases`). Prompts use `$`. It's fine to end a hero line
   with a blinking cursor.

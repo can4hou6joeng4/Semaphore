@@ -1,5 +1,5 @@
 /* ============================================================
-   img2ascii — tool page
+   semaphore — tool page
    The live workbench: source loading (drop / browse / paste /
    samples), parameter panel, rAF-coalesced conversion, fit/zoom
    sizing, exports. Header + statusbar come from shared.ts.
@@ -272,7 +272,7 @@ function applySizing(): void {
 
 /* ------------------------- readouts --------------------------- */
 function updateCmdline(): void {
-  els.cmdline.textContent = "$ img2ascii" +
+  els.cmdline.textContent = "$ semaphore" +
     (state.name ? " " + state.name : "") +
     " --charset " + params.charset +
     " --cols " + params.cols +

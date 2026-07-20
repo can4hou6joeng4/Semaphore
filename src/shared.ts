@@ -1,5 +1,5 @@
 /* ============================================================
-   img2ascii — shared chrome + helpers
+   semaphore — shared chrome + helpers
    Injects the site header, vim-style status bar, CRT overlays
    and favicon on every page, and exposes small utilities.
 
@@ -148,7 +148,7 @@ function buildStatusbar(page: string, path: string): HTMLElement {
   const bar = el("div", "statusbar");
   bar.setAttribute("role", "status");
   bar.innerHTML =
-    '<div class="sb-seg sb-seg--brand">img2ascii</div>' +
+    '<div class="sb-seg sb-seg--brand">semaphore</div>' +
     '<div class="sb-seg sb-hide-m">' + esc(path) + "</div>" +
     '<div class="sb-seg"><span class="sb-dot" data-sb-dot></span>' +
     '<span data-sb-state>ready</span></div>' +

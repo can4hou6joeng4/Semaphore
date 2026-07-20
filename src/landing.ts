@@ -1,5 +1,5 @@
 /* ============================================================
-   img2ascii — landing page script
+   semaphore — landing page script
    hero: ONE wide photograph cover-fills the whole stage; the
    photo layer and its ascii conversion are both full-bleed and
    pixel-registered, and the draggable curtain wipes between

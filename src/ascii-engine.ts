@@ -1,5 +1,5 @@
 /* ============================================================
-   img2ascii — conversion engine (100% client-side)
+   semaphore — conversion engine (100% client-side)
 
    Exports:
      CHARSETS                      preset map (ramps dark→light)

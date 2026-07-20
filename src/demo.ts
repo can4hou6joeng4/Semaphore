@@ -1,5 +1,5 @@
 /* ============================================================
-   img2ascii — landing "live demo" loop
+   semaphore — landing "live demo" loop
    An auto-playing miniature of the tool flow: a ghost cursor
    drags portrait.png into a dropzone, then the REAL engine's
    cached conversions are replayed charset by charset, forever.
@@ -33,8 +33,8 @@ function main(): void {
   /* --------------------------- constants ----------------------- */
   const COLS = 56;
   const CHARSETS = ["detailed", "blocks", "braille"];
-  const CMD_BASE = "$ img2ascii portrait.png --charset ";
-  const TYPE_CMD = "img2ascii portrait.png --charset detailed";
+  const CMD_BASE = "$ semaphore portrait.png --charset ";
+  const TYPE_CMD = "semaphore portrait.png --charset detailed";
   const TYPE_CONVERT = "converting ░░▒▒▓▓██";
   const DROP_IDLE = "[ drop here ]";
   const DROP_DONE = "portrait.png ✓";

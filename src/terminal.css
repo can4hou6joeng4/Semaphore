@@ -1,5 +1,5 @@
 /* ============================================================
-   img2ascii — CRT terminal design system
+   semaphore — CRT terminal design system
    Single source of truth for tokens + components.
    Pages may add page-specific layout in a local <style>, but
    colors/fonts/radii MUST come from these tokens.

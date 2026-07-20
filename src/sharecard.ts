@@ -1,5 +1,5 @@
 /* ============================================================
-   img2ascii — share card renderer
+   semaphore — share card renderer
    Frames an AsciiEngine result as a polished share image:
    header (mark + product name + args), the art block, footer
    (file/dims + caption). ONE layout drives TWO outputs: a
@@ -11,7 +11,7 @@
 
    opts:
      theme    "crt" | "paper"   (default "crt")
-     caption  string            (default "made with img2ascii")
+     caption  string            (default "made with semaphore.bobochang.cn")
      filename string            (default "image")
      fontSize number, art px    (default 11)
 
@@ -92,7 +92,7 @@ function layout(result: ConvertResult, opts?: ShareCardOptions): Layout {
   const filename = o.filename ? String(o.filename) : "image";
   return {
     pal: (o.theme && PALETTES[o.theme]) || PALETTES.crt,
-    caption: o.caption == null ? "made with img2ascii" : String(o.caption),
+    caption: o.caption == null ? "made with semaphore.bobochang.cn" : String(o.caption),
     fs: fs,
     adv: adv,
     w: Math.ceil(contentW + PAD * 2),
@@ -166,7 +166,7 @@ export function svg(result: ConvertResult, opts?: ShareCardOptions): string {
        p.green + '">▚</text>';
   s += '<text x="' + (PAD + 38) + '" y="' + num(L.headCY) +
        '" dominant-baseline="central" font-size="15" font-weight="700" fill="' +
-       p.ink + '">img2ascii</text>';
+       p.ink + '">semaphore</text>';
   s += '<text x="' + (L.w - PAD) + '" y="' + num(L.headCY) +
        '" text-anchor="end" dominant-baseline="central" font-size="11" fill="' +
        p.faint + '">' + esc(L.meta) + "</text>";
@@ -238,7 +238,7 @@ export function pngBlob(result: ConvertResult, opts?: ShareCardOptions): Promise
     ctx.textAlign = "left";
     ctx.font = "700 15px " + FAMILY;
     ctx.fillStyle = p.ink;
-    ctx.fillText("img2ascii", PAD + 38, L.headCY);
+    ctx.fillText("semaphore", PAD + 38, L.headCY);
 
     ctx.textAlign = "right";
     ctx.font = "11px " + FAMILY;
