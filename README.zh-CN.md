@@ -12,7 +12,7 @@
 
 <p align="center"><a href="README.md">English</a> · 简体中文</p>
 
-![Semaphore hero](docs/images/hero.png)
+![Semaphore hero](docs/images/hero.gif)
 
 ## 为什么叫 Semaphore
 
