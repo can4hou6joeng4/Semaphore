@@ -316,6 +316,15 @@ input[type="range"]::-moz-range-thumb {
 .toggle:hover { border-color: var(--line-strong); color: var(--ink); }
 .toggle[aria-pressed="true"] { color: var(--green); border-color: color-mix(in oklab, var(--green) 35%, transparent); background: color-mix(in oklab, var(--green) 7%, transparent); }
 .toggle[aria-pressed="true"]::before { content: "[x] "; color: var(--green); }
+/* aria-disabled, not [disabled]: the button keeps its tab stop so a
+   keyboard user can still find it and hear that it does not apply
+   here. Declared last so it overrides the pressed colors.        */
+.toggle[aria-disabled="true"],
+.toggle[aria-disabled="true"]:hover {
+  color: var(--ink-faint); border-color: var(--line);
+  background: transparent; cursor: not-allowed;
+}
+.toggle[aria-disabled="true"]::before { color: var(--ink-faint); }
 
 /* segmented radio row: <div class="seg" role="radiogroup"> */
 .seg { display: flex; border: 1px solid var(--line-strong); border-radius: 2px; overflow: hidden; }

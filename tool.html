@@ -179,7 +179,10 @@
               <input type="range" id="contrast" min="-100" max="100" step="1" value="0">
             </div>
             <button class="toggle" id="invert" type="button" aria-pressed="false">invert</button>
-            <button class="toggle" id="dither" type="button" aria-pressed="true">dither (braille)</button>
+            <!-- starts disabled: the default charset is `detailed`, and dithering
+                 only runs in the braille branch — tool.ts keeps this in sync -->
+            <button class="toggle" id="dither" type="button" aria-pressed="true" aria-disabled="true"
+                    title="dithering only applies to the braille charset">dither (braille)</button>
             <div class="field">
               <div class="field-label">color</div>
               <div class="seg" role="radiogroup" aria-label="color">
