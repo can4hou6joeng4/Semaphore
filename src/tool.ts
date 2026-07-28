@@ -186,15 +186,30 @@ function loadPortrait(atBoot: boolean): void {
   );
 }
 
+/* The panel thumbnail is drawn from the DECODED source, never from
+   its object URL — fileToImage revokes that the moment it loads.
+   Downscaling also stops a 600 KB photo from backing a 110px img. */
+const THUMB_MAX = 240;
+
+function thumbDataURL(source: AsciiSource, w: number, h: number): string {
+  const scale = Math.min(1, THUMB_MAX / Math.max(w, h));
+  const cv = document.createElement("canvas");
+  cv.width = Math.max(1, Math.round(w * scale));
+  cv.height = Math.max(1, Math.round(h * scale));
+  const ctx = cv.getContext("2d")!;
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(source, 0, 0, cv.width, cv.height);
+  return cv.toDataURL("image/webp", 0.85);   // falls back to png where unsupported
+}
+
 function setSource(source: AsciiSource, name: string): void {
   fontsReady.then(() => {                          // mono metrics first
     state.source = source;
     state.name = name;
     const d = dims(source);
     state.imgW = d.w; state.imgH = d.h;
-    els.srcThumb.src = (source as HTMLCanvasElement).toDataURL
-      ? (source as HTMLCanvasElement).toDataURL("image/png")
-      : (source as HTMLImageElement).src;
+    els.srcThumb.src = thumbDataURL(source, d.w, d.h);
     els.srcMeta.textContent = name + " — " + d.w + "×" + d.h;
     els.srcInfo.classList.remove("hidden");
     updateCmdline();
