@@ -5,6 +5,25 @@
    colors/fonts/radii MUST come from these tokens.
    ============================================================ */
 
+/* JetBrains Mono — self-hosted variable subset (SIL OFL 1.1; the
+   license ships next to the file at /fonts/OFL.txt).
+
+   Subset to the ~215 codepoints this site actually renders, which
+   INCLUDES the block elements (U+2591-2593, U+2588) and box drawing
+   that Google's `latin` subset never covered — those glyphs used to
+   fall back to a system font mid-render. The weight axis is clipped
+   to 400-800, the only range the design system uses.
+
+   Self-hosting removes the site's last third-party request, so the
+   "watch the network tab stay silent" claim in the FAQ is literal. */
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono-v2.304-subset.woff2") format("woff2");
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   color-scheme: dark;
 
