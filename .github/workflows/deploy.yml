@@ -1,22 +1,39 @@
 name: Deploy
+
 on:
   push:
     branches: [main]
+    # README / docs / workflow edits do not change a single shipped byte
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+      - "LICENSE"
+      - ".github/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+
+# Two pushes in quick succession must queue, never race — and an
+# in-flight deploy is never cancelled halfway.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run build
-      - uses: cloudflare/wrangler-action@v3
+      - run: npm test
+      - run: npm run build          # tsc --noEmit + vite build
+      - uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -92,7 +92,7 @@ export const CHARSETS: Record<string, Charset> = {
 
 const DEFAULT_ASPECT = 1 / 0.6; // mono cell h/w at line-height 1
 
-export const VERSION = "1.0.0";
+export const VERSION = "1.0.1"; // keep in sync with package.json
 
 /* ------------------------- helpers -------------------------- */
 function srcSize(source: AsciiSource): { w: number; h: number } {
