@@ -1,0 +1,54 @@
+name: Bug report
+description: Something converts, renders or exports wrong.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Conversion runs entirely in your browser, so the browser and the source
+        image matter more than anything else. Please keep those two fields filled.
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, what you got instead.
+      placeholder: |
+        1. Opened /tool
+        2. Dropped a 4000×3000 JPG
+        3. Switched charset to braille
+        → the output went blank
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and OS
+      placeholder: Chrome 140 / macOS 15
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Source image
+      description: Format and pixel size. Attach it if you can share it — but never attach anything private.
+      placeholder: JPG, 4000×3000
+    validations:
+      required: true
+
+  - type: textarea
+    id: params
+    attributes:
+      label: Parameters
+      description: The `$ semaphore …` line shown above the output already has all of them.
+      placeholder: $ semaphore photo.jpg --charset braille --cols 200 --color green
+      render: text
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Console errors
+      description: DevTools → Console. Leave blank if it is empty.
+      render: text
