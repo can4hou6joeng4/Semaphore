@@ -297,7 +297,9 @@ function updateCmdline(): void {
     " --charset " + params.charset +
     " --cols " + params.cols +
     " --color " + params.color +
-    (params.invert ? " --invert" : "");
+    (params.invert ? " --invert" : "") +
+    /* only surfaced where it does something — see syncDither() */
+    (ditherApplies() && !params.dither ? " --no-dither" : "");
 }
 
 function setExports(on: boolean): void {
@@ -312,8 +314,31 @@ function syncUI(): void {
   els.contrast.value = String(params.contrast);  els.contrastv.textContent = String(params.contrast);
   els.invert.setAttribute("aria-pressed", String(params.invert));
   els.dither.setAttribute("aria-pressed", String(params.dither));
+  syncDither();
   syncRadioGroup(els.seg, (b) => b.dataset.color === params.color);
   updateCmdline();
+}
+
+/* ---------------------- dither availability ------------------- */
+/* Dithering only runs in the braille branch of the engine — on a
+   ramp charset every cell is already one of N grey levels, so
+   error diffusion to pure black/white would just destroy the ramp.
+   The toggle used to stay live on every charset and quietly do
+   nothing, which reads as a broken control.                      */
+function ditherApplies(): boolean {
+  const cs = AsciiEngine.CHARSETS[params.charset];
+  return !!(cs && cs.braille);
+}
+
+/* aria-disabled rather than the disabled property: a disabled
+   button drops out of the tab order entirely, so a keyboard user
+   never learns the control exists. This way it stays reachable and
+   announces itself as unavailable, and the stored preference is
+   preserved for when braille comes back.                         */
+function syncDither(): void {
+  const on = ditherApplies();
+  els.dither.setAttribute("aria-disabled", String(!on));
+  els.dither.title = on ? "" : "dithering only applies to the braille charset";
 }
 
 /* --------------------- radiogroup plumbing -------------------- */
@@ -401,12 +426,14 @@ function wireParams(): void {
 
   els.charset.addEventListener("change", () => {
     params.charset = els.charset.value;
+    syncDither();
     updateCmdline();
     requestConvert();
   });
 
   const bindToggle = (btn: HTMLElement, key: "invert" | "dither") => {
     btn.addEventListener("click", () => {
+      if (btn.getAttribute("aria-disabled") === "true") return;
       params[key] = !params[key];
       btn.setAttribute("aria-pressed", String(params[key]));
       updateCmdline();

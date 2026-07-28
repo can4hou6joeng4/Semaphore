@@ -104,6 +104,10 @@ Tag row          `<div class="row"><span class="tag">readme</span><span class="t
 Field            `<div class="field"><label class="field-label" for="x">columns <span class="val" id="xv">120</span></label><input type="range" id="x"></div>`
 Select           `<div class="selectwrap"><select class="input" id="y">…</select></div>`
 Toggle           `<button class="toggle" aria-pressed="false" id="z">invert</button>`
+                 a toggle that cannot apply under the current params takes
+                 `aria-disabled="true"` — never the `disabled` property, which drops the
+                 control out of the tab order so a keyboard user never learns it exists.
+                 The click handler must return early on it; the stored value stays put.
 Segmented        `<div class="seg" role="radiogroup" aria-label="color">…<button role="radio" aria-checked="true" tabindex="0">green</button>…</div>`
                  a radiogroup's children are radios, NOT toggles: `aria-checked` (never
                  `aria-pressed`) plus a roving `tabindex` so the group is one tab stop.
