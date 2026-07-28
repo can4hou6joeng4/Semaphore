@@ -27,8 +27,9 @@ These are what the product *is*, not preferences:
 1. **Nothing is uploaded.** Conversion, rendering and export happen on the device.
    Production ships `connect-src 'none'`, so a `fetch()` will pass locally and fail
    in production. Don't add one.
-2. **No third-party requests.** No CDN, no analytics, no webfont host. The font is
-   a self-hosted subset in `public/fonts/`.
+2. **No third-party requests.** No CDN, no in-page analytics beacon, no webfont host.
+   The font is a self-hosted subset in `public/fonts/`. Edge request counts in the
+   Cloudflare dashboard are operator-side only — never open `connect-src` for a beacon.
 3. **No framework.** Vanilla DOM and TypeScript strict.
 4. **Internal links are extensionless** — `/tool`, not `tool.html`.
 

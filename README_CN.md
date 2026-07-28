@@ -59,9 +59,11 @@ npm run preview    # 预览构建产物
 
 ## 隐私
 
-图片用 `<canvas>` 在本地逐像素采样,转换、渲染、导出全部发生在你的浏览器进程里。本站没有后端接口、没有统计脚本、不设 Cookie,也没有任何第三方请求——字体同样是自托管的。
+图片用 `<canvas>` 在本地逐像素采样,转换、渲染、导出全部发生在你的浏览器进程里。本站没有后端接口、**页面里没有统计脚本**、不设 Cookie,也没有任何第三方请求——字体同样是自托管的。
 
-这不只是承诺,而是强制约束:线上页面下发 `Content-Security-Policy: … connect-src 'none'`,页面**无法**向任何地址发起 fetch / XHR / WebSocket。打开 devtools 看着 network 面板保持沉默,然后关掉标签页——一切了无痕迹。
+这不只是承诺,而是强制约束:线上页面下发 `Content-Security-Policy: … connect-src 'none'`,页面**无法**向任何地址发起 fetch / XHR / WebSocket(客户端分析 beacon 会被故意拦住)。打开 devtools 看着 network 面板保持沉默,然后关掉标签页——图片从未离开过这台设备。
+
+运营者仍能在 Cloudflare Pages 上看到**边缘侧的聚合请求计数**(哪些路径被访问过)。那是静态文件自身的 HTTP 流量,不是浏览器再打一次外线,更不包含图片字节。详见 [FAQ](https://semaphore.bobochang.cn/faq)。
 
 ## 工作原理
 
