@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Turn any image into ASCII art — Semaphore</title>
+<title>Image to ASCII Art — Free in Your Browser, No Upload | Semaphore</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Turn any image into ASCII art — Semaphore">
-<meta property="og:description" content="Convert any image to ASCII art right in your browser — free, no upload, no account. Six charsets from classic ramps to braille dots, live preview, export as plain text, .txt or .png.">
+<meta property="og:title" content="Image to ASCII Art — Free in Your Browser, No Upload | Semaphore">
+<meta property="og:description" content="Free image to ASCII converter in your browser. Drop a photo, pick a charset (including braille), export text or PNG. Nothing is uploaded.">
 <meta property="og:url" content="https://semaphore.bobochang.cn/">
 <meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -15,10 +15,10 @@
 <meta property="og:locale" content="en">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="600">
-<meta property="og:image:alt" content="Semaphore — turn any image into ASCII art in your browser">
+<meta property="og:image:alt" content="Semaphore — free image to ASCII converter, nothing uploaded">
 <link rel="canonical" href="https://semaphore.bobochang.cn/">
 <meta name="theme-color" content="#050a06">
-<meta name="description" content="Convert any image to ASCII art right in your browser — free, no upload, no account. Six charsets from classic ramps to braille dots, live preview, export as plain text, .txt or .png.">
+<meta name="description" content="Free image to ASCII converter in your browser. Drop a photo, pick a charset (including braille), export text or PNG. Nothing is uploaded.">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
 <style>
   /* ---- landing layout only (colors via tokens) ---- */
@@ -244,9 +244,9 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Semaphore",
-  "alternateName": "Image to ASCII",
+  "alternateName": ["Image to ASCII", "Image to ASCII converter", "ASCII art generator"],
   "url": "https://semaphore.bobochang.cn/",
-  "description": "Convert any image to ASCII art right in your browser — free, no upload, no account. Six charsets from classic ramps to braille dots, live preview, export as plain text, .txt or .png.",
+  "description": "Free image to ASCII converter that runs entirely in your browser. Drop a photo, choose a charset including braille, export plain text or PNG. Nothing is uploaded.",
   "applicationCategory": "MultimediaApplication",
   "applicationSubCategory": "Image converter",
   "operatingSystem": "Any (runs in a web browser)",
@@ -293,11 +293,11 @@
   <section class="sec" data-screen-label="hero-copy">
     <div class="hero-grid">
       <div>
-        <h1 class="display">Turn any<br>image to ASCII<br><span class="accent">{</span><span class="cursor-blink"></span><span class="accent">}</span></h1>
-        <p class="lede" style="margin-top:26px"><span class="text-green">Turn any photo into ASCII art on your own device, or <a href="/tool">start right here</a>.</span><br>Nothing ever leaves your browser — tune the charset, density and color, then drop the result anywhere plain text lives.</p>
+        <h1 class="display">Image to<br>ASCII art<br><span class="accent">{</span><span class="cursor-blink"></span><span class="accent">}</span></h1>
+        <p class="lede" style="margin-top:26px"><span class="text-green">A free image to ASCII converter that runs on your device — <a href="/tool">open the tool</a> and drop a photo.</span><br>Nothing is uploaded. Tune charset, density and color, then paste the ASCII art into a terminal, README, chat, or comment.</p>
       </div>
       <div class="hero-cta">
-        <a class="btn btn--green btn--lg" href="/tool">Open the tool</a>
+        <a class="btn btn--green btn--lg" href="/tool">Convert image to ASCII</a>
         <div class="fs-xs text-faint" style="margin-top:14px">$ no upload · no account · free</div>
       </div>
     </div>
@@ -305,26 +305,49 @@
 
   <section class="sec" data-screen-label="how-it-works">
     <div class="kicker">[ how_it_works ]</div>
-    <div class="grid-3">
+    <h2 class="h2">How the image to ASCII converter works</h2>
+    <p class="lede" style="margin-top:18px">Three steps, all local. Your browser samples the image on a canvas, maps luminance to characters, and redraws live as you tweak parameters.</p>
+    <div class="grid-3" style="margin-top:34px">
       <article class="card">
         <h3 class="card-title"><span class="p">01</span> drop an image</h3>
-        <p>png · jpg · webp · gif — decoded locally by your browser, never uploaded.</p>
+        <p>png · jpg · webp · gif — decoded locally by your browser, never uploaded to a server.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">02</span> tune the output</h3>
+        <h3 class="card-title"><span class="p">02</span> tune the ASCII</h3>
         <p>six charsets from classic ramps to braille dots; adjust columns, brightness, contrast, invert and color.</p>
       </article>
       <article class="card">
         <h3 class="card-title"><span class="p">03</span> export anywhere</h3>
-        <p>copy as plain text, download a .txt, or render a crisp .png.</p>
+        <p>copy plain text, download a .txt, render a .png, or build a share card with the settings printed on it.</p>
       </article>
     </div>
   </section>
 
+  <section class="sec" data-screen-label="why-local">
+    <div class="kicker">[ why_local ]</div>
+    <h2 class="h2">Image to ASCII without uploading</h2>
+    <p class="lede" style="margin-top:18px">Most online ASCII art generators ask you to send the file to their servers. Semaphore never does. Pixels are read on a local <code>&lt;canvas&gt;</code>; conversion, preview and export stay inside the tab. That makes this image to ASCII converter safe for private photos, work screenshots, and anything you would not drop into a random form.</p>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> no phone-home</h3>
+        <p>Production ships <code>Content-Security-Policy: connect-src 'none'</code>, so the page cannot open a fetch, XHR or WebSocket — even if a future bug tried. Open devtools and watch the network stay quiet after load.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> works offline</h3>
+        <p>Once the static files and font are cached, the image to ASCII pipeline keeps working without a network. Close the tab and nothing about your photo is left on a remote disk.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> no account wall</h3>
+        <p>Free, no sign-up, no watermark, no daily quota. The whole site is static files on Cloudflare Pages — open the <a href="/tool">ASCII converter</a> and start.</p>
+      </article>
+    </div>
+    <p class="fs-s text-faint" style="margin-top:26px">Privacy details and edge traffic notes live in the <a href="/faq">FAQ</a>. The engine source is on <a href="https://github.com/can4hou6joeng4/Semaphore">GitHub</a>.</p>
+  </section>
+
   <section class="sec" data-screen-label="live-demo" id="demoSection">
     <div class="kicker">[ live_demo ]</div>
-    <h2 class="h2">Watch the whole flow</h2>
-    <p class="lede" style="margin-top:18px">Drop, convert, retune — replayed live by the real engine, not a video.</p>
+    <h2 class="h2">Watch an image become ASCII</h2>
+    <p class="lede" style="margin-top:18px">Drop, convert, retune — replayed live by the real engine, not a video. Same converter you drive by hand on the tool page.</p>
     <figure class="term demo-term" id="demoTerm" aria-hidden="true">
       <figcaption class="term-head">
         <span class="term-title"><span class="p">$</span> semaphore --interactive</span>
@@ -346,13 +369,13 @@
         <div class="demo-cursor" id="demoCursor"></div>
       </div>
     </figure>
-    <p class="fs-s text-faint" style="margin-top:18px">captured live from the engine on this page — <a href="/tool">open the tool</a> to drive it yourself.</p>
+    <p class="fs-s text-faint" style="margin-top:18px">captured live from the engine on this page — <a href="/tool">open the image to ASCII tool</a> to drive it yourself.</p>
   </section>
 
   <section class="sec" data-screen-label="charsets">
     <div class="kicker">[ charsets ]</div>
-    <h2 class="h2">One photo. Six alphabets.</h2>
-    <p class="lede" style="margin-top:18px">The charset decides the texture. Four of the six, converted live from the same portrait — minimal and detailed round out the set in the tool.</p>
+    <h2 class="h2">ASCII art charsets for every texture</h2>
+    <p class="lede" style="margin-top:18px">The charset is the alphabet of your image to ASCII conversion. Classic ramps read well in any monospace font; blocks suit posters; binary leans cyberpunk; braille packs a 2×4 dithered dot matrix for photographic detail. Four of the six run live below from the same portrait — minimal and detailed wait in the tool.</p>
     <div class="charset-grid" id="charsetGrid">
       <figure class="term">
         <figcaption class="term-head">
@@ -383,51 +406,98 @@
         <div class="term-body"><pre class="ascii-pre" data-charset="braille" aria-hidden="true"></pre></div>
       </figure>
     </div>
-    <p class="fs-s text-faint" style="margin-top:18px">rendered live in your browser by the same engine that powers the tool — <a href="/tool">try your own photo</a>.</p>
+    <p class="fs-s text-faint" style="margin-top:18px">rendered live in your browser by the same engine that powers the converter — <a href="/tool">try your own photo as ASCII art</a>.</p>
+  </section>
+
+  <section class="sec" data-screen-label="export-and-use">
+    <div class="kicker">[ export ]</div>
+    <h2 class="h2">From photo to plain-text ASCII art</h2>
+    <p class="lede" style="margin-top:18px">ASCII art earns its keep where images cannot go. Convert once, then ship characters through any channel that only accepts text.</p>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> copy or .txt</h3>
+        <p>One click copies the glyph grid to the clipboard, or download a .txt for READMEs, code comments, IRC, Discord, and commit messages.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> PNG render</h3>
+        <p>Need a still for a slide or social post? Export a crisp PNG of the ASCII art while keeping the monospace look intact.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> share card</h3>
+        <p>Bake charset, columns and color into a branded card so someone else can reproduce the conversion — or just admire the result.</p>
+      </article>
+    </div>
   </section>
 
   <section class="sec" data-screen-label="usecases-teaser">
     <div class="kicker">[ usecases ]</div>
-    <h2 class="h2">Where ASCII still wins</h2>
+    <h2 class="h2">Where image to ASCII still wins</h2>
+    <p class="lede" style="margin-top:18px">Pixels need hosts, CDNs and alt text. Character grids travel as plain text — that is the whole point of an image to ASCII workflow.</p>
     <div class="grid-3" style="margin-top:34px">
       <article class="card">
         <h3 class="card-title"><span class="p">$</span> readme banners</h3>
-        <p>a logo that renders in every git host, no image hosting required.</p>
+        <p>A logo that renders on every git host with no image hosting and no broken hotlinks.</p>
       </article>
       <article class="card">
         <h3 class="card-title"><span class="p">$</span> cli splash screens</h3>
-        <p>greet users of your tools where only text exists.</p>
+        <p>Greet users of your tools where only a terminal exists — MOTDs, installers, TUI headers.</p>
       </article>
       <article class="card">
         <h3 class="card-title"><span class="p">$</span> plain-text everywhere</h3>
-        <p>emails, forums, comments, MOTDs — if it takes characters, it takes art.</p>
+        <p>Email, forums, code review comments, chat — if the medium takes characters, it takes ASCII art.</p>
       </article>
     </div>
-    <a class="btn btn--ghost" href="/usecases" style="margin-top:26px">browse all usecases</a>
+    <a class="btn btn--ghost" href="/usecases" style="margin-top:26px">browse ASCII art usecases</a>
+  </section>
+
+  <section class="sec" data-screen-label="vs-upload">
+    <div class="kicker">[ vs_upload_converters ]</div>
+    <h2 class="h2">Not another upload-based ASCII generator</h2>
+    <p class="lede" style="margin-top:18px">Upload converters are fine for throwaway memes. They are the wrong tool for private photos, work screenshots, or anything you would not paste into a stranger's form.</p>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">01</span> your bytes stay put</h3>
+        <p>Semaphore samples the image in-process. There is no upload API, no processing queue, and no "we delete after 24h" promise to trust.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">02</span> live, not a queue</h3>
+        <p>Columns, brightness, contrast, invert and color re-run every change. You see the ASCII art update immediately instead of waiting on a job id.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">03</span> verifiable policy</h3>
+        <p>The CSP is part of the product: <code>connect-src 'none'</code> is enforced in production headers, not only claimed in marketing copy. <a href="/faq">Read how we measure traffic</a> without in-page beacons.</p>
+      </article>
+    </div>
+    <a class="btn btn--green" href="/tool" style="margin-top:26px">Start converting — image to ASCII</a>
   </section>
 
   <section class="sec" data-screen-label="faq-teaser">
     <div class="kicker">[ faq ]</div>
-    <div class="qa-list">
-      <details class="qa">
+    <h2 class="h2">Image to ASCII FAQ</h2>
+    <div class="qa-list" style="margin-top:34px">
+      <details class="qa" open>
         <summary>Do my images get uploaded?</summary>
-        <div class="qa-a"><p>Never — conversion runs entirely in your browser. It even works offline once the page is loaded.</p></div>
+        <div class="qa-a"><p>Never — the image to ASCII conversion runs entirely in your browser on a local canvas. It even works offline once the page is loaded. Production CSP blocks any outbound connect.</p></div>
       </details>
       <details class="qa">
-        <summary>Is it free?</summary>
-        <div class="qa-a"><p>Yes — free, no account, no watermark.</p></div>
+        <summary>Is this ASCII art generator free?</summary>
+        <div class="qa-a"><p>Yes — free, no account, no watermark, no quota. Static files only.</p></div>
       </details>
       <details class="qa">
-        <summary>Which formats work?</summary>
-        <div class="qa-a"><p>Anything your browser can decode: png, jpg, webp and gif (first frame).</p></div>
+        <summary>Which image formats can I convert to ASCII?</summary>
+        <div class="qa-a"><p>Anything your browser can decode: png, jpg, webp and gif (first frame). Drop it on the <a href="/tool">converter</a> or pick a sample.</p></div>
+      </details>
+      <details class="qa">
+        <summary>How do I get sharper ASCII art from a photo?</summary>
+        <div class="qa-a"><p>Start from a high-contrast crop. Raise columns toward 160–200, nudge contrast up, and try the braille charset when you need photographic detail at the same width.</p></div>
       </details>
     </div>
-    <a class="btn btn--ghost" href="/faq" style="margin-top:26px">read the full faq</a>
+    <a class="btn btn--ghost" href="/faq" style="margin-top:26px">read the full FAQ</a>
   </section>
 
   <footer class="site-foot">
     <span>© 2026 Semaphore — plain text is forever</span>
-    <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/tool">open tool</a></nav>
+    <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/tool">image to ASCII tool</a></nav>
   </footer>
 
 </main>

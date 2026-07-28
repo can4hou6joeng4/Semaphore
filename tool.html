@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Image to ASCII converter — Semaphore</title>
+<title>Image to ASCII Converter — Live Preview, No Upload | Semaphore</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Image to ASCII converter — Semaphore">
-<meta property="og:description" content="The working converter: drop an image, tune charset, columns, brightness, contrast and color, then copy or download your ASCII art as .txt or .png. Runs 100% in your browser — nothing is uploaded.">
+<meta property="og:title" content="Image to ASCII Converter — Live Preview, No Upload | Semaphore">
+<meta property="og:description" content="Convert any image to ASCII art in your browser. Six charsets including braille, live controls, export text or PNG. Nothing is uploaded.">
 <meta property="og:url" content="https://semaphore.bobochang.cn/tool">
 <meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -15,10 +15,10 @@
 <meta property="og:locale" content="en">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="600">
-<meta property="og:image:alt" content="Semaphore — the ASCII art conversion workbench">
+<meta property="og:image:alt" content="Semaphore — image to ASCII converter workbench">
 <link rel="canonical" href="https://semaphore.bobochang.cn/tool">
 <meta name="theme-color" content="#050a06">
-<meta name="description" content="The working converter: drop an image, tune charset, columns, brightness, contrast and color, then copy or download your ASCII art as .txt or .png. Runs 100% in your browser — nothing is uploaded.">
+<meta name="description" content="Convert any image to ASCII art in your browser. Six charsets including braille, live controls, export text or PNG. Nothing is uploaded.">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
 <style>
   /* ---- tool workbench layout (colors via tokens only) ---- */
@@ -107,6 +107,12 @@
 <body data-page="tool" data-path="~/tool">
 <main class="frame">
 
+  <section class="sec sec--tight" data-screen-label="tool-head">
+    <div class="kicker"><b>~/tool</b> · image to ascii</div>
+    <h1 class="h2">Image to ASCII converter</h1>
+    <p class="lede" style="margin-top:14px">Drop a photo, pick a charset, tune columns and color — ASCII art updates live. Everything runs in this tab; nothing is uploaded. New here? Skim the <a href="/">overview</a> or the <a href="/faq">FAQ</a>.</p>
+  </section>
+
   <section class="sec sec--flush" data-screen-label="tool-workbench">
     <div class="tool-grid">
 
@@ -114,9 +120,9 @@
 
         <div class="side-block">
           <div class="field-label">source</div>
-          <div class="dropzone" id="drop" role="button" tabindex="0" aria-label="choose an image">
+          <div class="dropzone" id="drop" role="button" tabindex="0" aria-label="choose an image to convert to ASCII">
             <div class="drop-title">[ drop image here ]</div>
-            <div class="fs-xs text-faint">or click to browse — png · jpg · webp · gif</div>
+            <div class="fs-xs text-faint">or click to browse — png · jpg · webp · gif → ASCII</div>
           </div>
           <input type="file" id="file" accept="image/*" class="hidden">
         </div>
@@ -259,7 +265,7 @@
 
   <footer class="site-foot">
     <span>© 2026 Semaphore — plain text is forever</span>
-    <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/tool">open tool</a></nav>
+    <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 
 </main>
