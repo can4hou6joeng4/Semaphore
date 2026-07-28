@@ -177,8 +177,8 @@ function loadFile(file: File | null | undefined): void {
 
 function loadPortrait(atBoot: boolean): void {
   Site.setState("loading sample…", { busy: true });
-  AsciiEngine.loadImage("/assets/sample-portrait.png").then(
-    (img) => setSource(img, "portrait.png"),
+  AsciiEngine.loadImage("/static/sample-portrait.webp").then(
+    (img) => setSource(img, "portrait.webp"),
     () => {
       Site.setState(atBoot ? "no source" : "ready");
       if (!atBoot) Site.toast("sample failed to load ✕");
