@@ -40,7 +40,7 @@ window.addEventListener("unhandledrejection", function (e) {
 /* "crt" (default, phosphor dark) | "paper" (print light).
    Priority: ?theme= URL param (preview, not persisted) >
    localStorage > default. Applied to <html data-theme> ASAP.   */
-const THEME_KEY = "img2ascii-theme";
+const THEME_KEY = "semaphore-theme";
 
 function detectTheme(): string {
   try {
@@ -80,8 +80,8 @@ paintTheme(_theme); // before chrome injection, pre-paint
 
 /* ------------------------- data ----------------------------- */
 const NAV = [
-  { id: "usecases", href: "usecases.html", label: "usecases" },
-  { id: "faq",      href: "faq.html",      label: "faq" }
+  { id: "usecases", href: "/usecases", label: "usecases" },
+  { id: "faq",      href: "/faq",      label: "faq" }
 ];
 
 const FAVICON =
@@ -110,10 +110,10 @@ function buildHeader(page: string): HTMLElement {
   const rail = el("div", "rail");
 
   const brand = el("a", "brand") as HTMLAnchorElement;
-  brand.href = "index.html";
-  brand.setAttribute("aria-label", "image to ascii — home");
+  brand.href = "/";
+  brand.setAttribute("aria-label", "semaphore — home");
   brand.innerHTML = '<span class="brand-mark" aria-hidden="true">▚</span>' +
-                    '<span class="brand-name">Image to ASCII</span>';
+                    '<span class="brand-name">Semaphore</span>';
   rail.appendChild(brand);
 
   const nav = el("nav", "site-nav");
@@ -135,7 +135,7 @@ function buildHeader(page: string): HTMLElement {
   nav.appendChild(tt);
 
   const cta = el("a", "btn btn--amber btn--sm", "► open tool") as HTMLAnchorElement;
-  cta.href = "tool.html";
+  cta.href = "/tool";
   if (page === "tool") cta.setAttribute("aria-current", "page");
   nav.appendChild(cta);
 
