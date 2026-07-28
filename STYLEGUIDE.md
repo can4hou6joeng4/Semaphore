@@ -91,7 +91,7 @@ Subpages (usecases, faq) open with a page-head section:
 ## Component recipes (use these verbatim)
 
 Kicker           `<div class="kicker">[ how_it_works ]</div>` (may include `<b>` for green)
-Display title    `<h1 class="display">Turn any image<br>to ASCII <span class="accent">{</span><span class="cursor-blink"></span><span class="accent">}</span></h1>`
+Display title    `<h1 class="display">Image to<br>ASCII art<br><span class="accent">{</span><span class="cursor-blink"></span><span class="accent">}</span></h1>`
 Lede             `<p class="lede">… <span class="hl">highlight</span> …</p>`
 Buttons          `<a class="btn btn--green btn--lg" href="/tool">Open the tool</a>`
                  `<a class="btn btn--ghost" href="/usecases">browse usecases</a>`
