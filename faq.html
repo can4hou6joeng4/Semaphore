@@ -7,7 +7,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:title" content="FAQ — Semaphore">
-<meta property="og:description" content="Short answers to common Semaphore questions — privacy, supported formats, braille mode, color modes, licensing and size limits.">
+<meta property="og:description" content="Short answers to common Semaphore questions — privacy, in-page analytics, supported formats, braille mode, color modes, licensing and size limits.">
 <meta property="og:url" content="https://semaphore.bobochang.cn/faq">
 <meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -18,7 +18,7 @@
 <meta property="og:image:alt" content="Semaphore — frequently asked questions">
 <link rel="canonical" href="https://semaphore.bobochang.cn/faq">
 <meta name="theme-color" content="#050a06">
-  <meta name="description" content="Short answers to common Semaphore questions — privacy, supported formats, braille mode, color modes, licensing and size limits.">
+  <meta name="description" content="Short answers to common Semaphore questions — privacy, in-page analytics, supported formats, braille mode, color modes, licensing and size limits.">
   <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
   <style>
     /* faq page — layout only, colors from tokens */
@@ -44,6 +44,14 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Never. The conversion runs entirely in your browser using the canvas API; once the page has loaded it even works offline. If you're the trust-but-verify type, open devtools and watch the network tab stay silent."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you run analytics in my browser?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The page ships no analytics script, no cookies, and a Content-Security-Policy with connect-src 'none', so it cannot open a fetch, XHR or WebSocket to anywhere — including Cloudflare Web Analytics beacons. The operator only sees aggregate HTTP request counts at the Cloudflare edge (which paths were hit, roughly how many times). Your image bytes never leave the device and are never part of those counts."
         }
       },
       {
@@ -123,6 +131,14 @@
           <div class="qa-a">
             <p>Never. The conversion runs entirely in your browser using the canvas API; once the page has loaded it even works offline.</p>
             <p>If you're the trust-but-verify type, open devtools and watch the network tab stay silent.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Do you run analytics in my browser?</summary>
+          <div class="qa-a">
+            <p>No. The page ships no analytics script, no cookies, and a <code>Content-Security-Policy</code> with <code>connect-src 'none'</code>, so it <strong>cannot</strong> open a fetch, XHR or WebSocket to anywhere — including a Cloudflare Web Analytics beacon.</p>
+            <p>What the operator <em>can</em> see is aggregate HTTP traffic at the Cloudflare edge: which paths were requested and roughly how often. Those are server logs of the page load itself, not a second phone-home from your tab. Your image bytes never leave the device and are never part of those counts.</p>
           </div>
         </details>
 

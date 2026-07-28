@@ -8,9 +8,14 @@ or personal overrides in `AGENTS.local.md` / `CLAUDE.local.md`; both are gitigno
 
 Semaphore is a static, client-side image-to-ASCII converter: four hand-written HTML
 pages, a TypeScript conversion engine, and a Vite build that ships to Cloudflare Pages.
-There is no backend, no database, no accounts, and no telemetry. The privacy claim is
-the product, so anything that could send bytes off the device is a correctness bug, not
-a preference.
+There is no backend, no database, no accounts, and **no client-side telemetry**. The
+privacy claim is the product, so anything that could send *user content* (especially
+image bytes) off the device is a correctness bug, not a preference.
+
+Edge HTTP request counts in the Cloudflare dashboard are fine — they are server logs of
+static file hits, not a script running in the visitor's tab. Do **not** add a Cloudflare
+Web Analytics (or any other) beacon: it needs `connect-src` holes and would falsify the
+`connect-src 'none'` guarantee.
 
 ## Product Direction
 
@@ -27,7 +32,8 @@ general converter, and not a place to add an account system.
 ### What Semaphore Should Not Do
 
 - Upload anything, anywhere, for any reason — including "just for analytics".
-- Add a third-party request. No CDN, no font host, no error reporter.
+- Add a third-party request. No CDN, no font host, no error reporter, no in-page
+  analytics beacon (Cloudflare Web Analytics included).
 - Grow a framework. Vanilla DOM and TypeScript strict is the whole stack.
 
 ## Repository Map
