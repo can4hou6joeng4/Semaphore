@@ -327,7 +327,7 @@ input[type="range"]::-moz-range-thumb {
 }
 .seg button:first-child { border-left: 0; }
 .seg button:hover { color: var(--ink); background: color-mix(in oklab, var(--green) 5%, transparent); }
-.seg button[aria-pressed="true"] { background: var(--green); color: var(--black-ink); font-weight: 700; }
+.seg button[aria-checked="true"] { background: var(--green); color: var(--black-ink); font-weight: 700; }
 
 /* dropzone */
 .dropzone {
