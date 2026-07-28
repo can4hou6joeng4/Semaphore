@@ -1,0 +1,29 @@
+name: Feature request
+description: A charset, an export format, a control that should exist.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What can't you do today
+      description: Describe the situation, not the solution — it usually suggests a better one.
+    validations:
+      required: true
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: What you have in mind
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Fits the project's constraints
+      description: >
+        Semaphore is a static site with no backend, no accounts and no third-party
+        requests. Ideas that need a server are out of scope by design.
+      options:
+        - label: This works entirely client-side, with nothing uploaded
+          required: true
