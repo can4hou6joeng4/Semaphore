@@ -3,20 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Turn any image into ASCII art — Image to ASCII</title>
+<title>Turn any image into ASCII art — Semaphore</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Turn any image into ASCII art — Image to ASCII">
+<meta property="og:title" content="Turn any image into ASCII art — Semaphore">
 <meta property="og:description" content="Convert any image to ASCII art right in your browser — free, no upload, no account. Six charsets from classic ramps to braille dots, live preview, export as plain text, .txt or .png.">
 <meta property="og:url" content="https://semaphore.bobochang.cn/">
-<meta property="og:image" content="https://semaphore.bobochang.cn/assets/sample-hero.png">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — turn any image into ASCII art in your browser">
 <link rel="canonical" href="https://semaphore.bobochang.cn/">
 <meta name="theme-color" content="#050a06">
 <meta name="description" content="Convert any image to ASCII art right in your browser — free, no upload, no account. Six charsets from classic ramps to braille dots, live preview, export as plain text, .txt or .png.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
 <style>
   /* ---- landing layout only (colors via tokens) ---- */
 
@@ -236,6 +239,37 @@
     .demo-cursor { display: none; }
   }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Semaphore",
+  "alternateName": "Image to ASCII",
+  "url": "https://semaphore.bobochang.cn/",
+  "description": "Convert any image to ASCII art right in your browser — free, no upload, no account. Six charsets from classic ramps to braille dots, live preview, export as plain text, .txt or .png.",
+  "applicationCategory": "MultimediaApplication",
+  "applicationSubCategory": "Image converter",
+  "operatingSystem": "Any (runs in a web browser)",
+  "browserRequirements": "Requires JavaScript and HTML5 canvas",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Converts PNG, JPG, WebP and GIF to ASCII art",
+    "Runs 100% client-side — images are never uploaded",
+    "Six charsets including a dithered 2x4 braille mode",
+    "Live controls for columns, brightness, contrast, invert and color",
+    "Export as plain text, .txt, .png or a share card"
+  ],
+  "screenshot": "https://semaphore.bobochang.cn/static/social-card.jpg",
+  "license": "https://opensource.org/licenses/MIT",
+  "codeRepository": "https://github.com/can4hou6joeng4/Semaphore",
+  "privacyPolicy": "https://semaphore.bobochang.cn/faq"
+}
+</script>
 </head>
 <body data-page="home" data-path="~/main">
 <main class="frame">
