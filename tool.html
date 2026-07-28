@@ -183,9 +183,9 @@
             <div class="field">
               <div class="field-label">color</div>
               <div class="seg" role="radiogroup" aria-label="color">
-                <button type="button" data-color="green" aria-pressed="true">green</button>
-                <button type="button" data-color="gray" aria-pressed="false">gray</button>
-                <button type="button" data-color="original" aria-pressed="false">original</button>
+                <button type="button" role="radio" data-color="green" aria-checked="true" tabindex="0">green</button>
+                <button type="button" role="radio" data-color="gray" aria-checked="false" tabindex="-1">gray</button>
+                <button type="button" role="radio" data-color="original" aria-checked="false" tabindex="-1">original</button>
               </div>
             </div>
             <button class="btn btn--ghost btn--sm" id="reset" type="button">reset params</button>
@@ -218,7 +218,7 @@
             <span class="term-dots">– □ ✕</span>
           </figcaption>
           <div class="term-body out-body" id="outBody">
-<pre class="ascii-pre is-empty" id="out">┌──────────────────────────────┐
+<pre class="ascii-pre is-empty" id="out" role="img" aria-label="ascii output — no source loaded yet">┌──────────────────────────────┐
 │                              │
 │    drop an image to begin    │
 │                              │
@@ -242,8 +242,8 @@
           </div>
           <div class="row cardmodal-controls">
             <div class="seg cardmodal-seg" role="radiogroup" aria-label="card theme">
-              <button type="button" data-ctheme="crt" aria-pressed="true">crt</button>
-              <button type="button" data-ctheme="paper" aria-pressed="false">paper</button>
+              <button type="button" role="radio" data-ctheme="crt" aria-checked="true" tabindex="0">crt</button>
+              <button type="button" role="radio" data-ctheme="paper" aria-checked="false" tabindex="-1">paper</button>
             </div>
             <input class="input" id="cardCaption" maxlength="60" value="made with semaphore.bobochang.cn" aria-label="caption">
             <button class="btn btn--ghost btn--sm" id="cardSvg" type="button">download .svg</button>
