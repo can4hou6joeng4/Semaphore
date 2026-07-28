@@ -59,9 +59,11 @@ Six charsets, six textures — every ramp runs dark to bright, and the engine ma
 
 ## Privacy
 
-Your image is sampled pixel by pixel on a local `<canvas>`; conversion, rendering and export all happen inside your browser process. This site has no backend API, no analytics scripts, no cookies, and not a single third-party request — the font is self-hosted too.
+Your image is sampled pixel by pixel on a local `<canvas>`; conversion, rendering and export all happen inside your browser process. This site has no backend API, **no analytics scripts in the page**, no cookies, and not a single third-party request — the font is self-hosted too.
 
-That is enforced, not just promised: the deployed pages ship `Content-Security-Policy: … connect-src 'none'`, so the page **cannot** open a fetch, XHR or WebSocket to anywhere. Open devtools, watch the network tab stay silent, then close the tab — nothing is left behind.
+That is enforced, not just promised: the deployed pages ship `Content-Security-Policy: … connect-src 'none'`, so the page **cannot** open a fetch, XHR or WebSocket to anywhere (a client-side analytics beacon would be blocked on purpose). Open devtools, watch the network tab stay silent, then close the tab — your image never left the device.
+
+The operator still sees **aggregate edge request counts** on Cloudflare Pages (which paths were hit). That is HTTP traffic for the static files themselves, not a second phone-home from your browser, and it never includes image bytes. Details: [FAQ](https://semaphore.bobochang.cn/faq).
 
 ## How It Works
 

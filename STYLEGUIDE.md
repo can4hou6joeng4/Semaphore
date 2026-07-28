@@ -44,7 +44,7 @@ Required `<head>` (exact, in this order):
 ```
 
 No third-party requests. The font is self-hosted (`@font-face` lives in
-`terminal.css`) and there is no analytics, no CDN, no Google Fonts — the
+`terminal.css`) and there is no in-page analytics, no CDN, no Google Fonts — the
 deployed CSP is `connect-src 'none'`, so anything that tries would be blocked
 in production but pass locally. Do not add one.
 

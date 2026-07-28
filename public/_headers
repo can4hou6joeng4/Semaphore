@@ -13,6 +13,8 @@
 #            claim instead of just asserting it: connect-src 'none' means the
 #            page cannot open a fetch/XHR/WebSocket to anywhere, so a dropped
 #            image has no route off the device even if the code tried.
+#            This also blocks Cloudflare Web Analytics (and any other) beacons
+#            on purpose — traffic is observed only as edge HTTP request counts.
 
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
