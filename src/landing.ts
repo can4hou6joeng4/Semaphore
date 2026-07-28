@@ -224,8 +224,8 @@ document.fonts.addEventListener("loadingdone", function () { renderAll(); });
   Site.setState("converting…", { busy: true });
   try {
     const loaded = await Promise.all([
-      AsciiEngine.loadImage("/assets/sample-hero.png"),
-      AsciiEngine.loadImage("/assets/sample-portrait.png")
+      AsciiEngine.loadImage("/static/sample-hero.webp"),
+      AsciiEngine.loadImage("/static/sample-portrait.webp")
     ]);
     hero = loaded[0];
     /* make sure both bitmaps are fully decoded before first draw */

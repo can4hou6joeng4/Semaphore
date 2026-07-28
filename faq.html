@@ -3,20 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FAQ — Image to ASCII</title>
+  <title>FAQ — Semaphore</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:type" content="website">
-<meta property="og:title" content="FAQ — Image to ASCII">
+<meta property="og:title" content="FAQ — Semaphore">
 <meta property="og:description" content="Short answers to common Semaphore questions — privacy, supported formats, braille mode, color modes, licensing and size limits.">
 <meta property="og:url" content="https://semaphore.bobochang.cn/faq">
-<meta property="og:image" content="https://semaphore.bobochang.cn/assets/sample-hero.png">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — frequently asked questions">
 <link rel="canonical" href="https://semaphore.bobochang.cn/faq">
 <meta name="theme-color" content="#050a06">
   <meta name="description" content="Short answers to common Semaphore questions — privacy, supported formats, braille mode, color modes, licensing and size limits.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
   <style>
     /* faq page — layout only, colors from tokens */
     .qa-list {
@@ -30,6 +33,78 @@
       margin-inline: auto;
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Do my images get uploaded anywhere?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Never. The conversion runs entirely in your browser using the canvas API; once the page has loaded it even works offline. If you're the trust-but-verify type, open devtools and watch the network tab stay silent."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is it free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes — free, no account, no watermark, no daily quota. The whole tool ships as static files."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which image formats can I feed it?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Anything your browser can decode: png, jpg, webp and gif (first frame). Drop it, paste it, or browse for it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I get a sharper result?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Start from a high-contrast image with a tight crop. Push columns up to 160-200, nudge contrast +15, and try invert if your subject is dark-on-light. For photographic detail, the braille charset is the sharp one."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does braille mode actually do?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Each character becomes a 2x4 grid of dots from the Unicode braille block, dithered with Floyd-Steinberg — roughly eight times the spatial resolution of a classic ramp. It needs a font with braille glyphs, which every modern OS has."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I keep the original colors?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Color mode original samples the source color per character, gray keeps neutral tones, and green is the classic phosphor look. Color survives in the .png export; plain-text copies are characters only, by nature."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use the output commercially?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The output is yours — posters, readmes, merch, client work, anything. We don't claim rights over your art."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Any size limits?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sources are downsampled to at most 300 columns, so even huge photos convert in milliseconds. If a very dense braille render feels slow on an old machine, lower the column count."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body data-page="faq" data-path="~/faq">
   <main class="frame">
@@ -108,12 +183,12 @@
 
     <section class="sec sec--tight" data-screen-label="faq-cta">
       <p class="lede">Still curious? The tool answers most questions in about ten seconds.</p>
-      <a class="btn btn--ghost" href="tool.html" style="margin-top:22px">open the tool</a>
+      <a class="btn btn--ghost" href="/tool" style="margin-top:22px">open the tool</a>
     </section>
 
     <footer class="site-foot">
-      <span>© 2026 image2ascii — plain text is forever</span>
-      <nav><a href="usecases.html">usecases</a><a href="faq.html">faq</a><a href="tool.html">open tool</a></nav>
+      <span>© 2026 Semaphore — plain text is forever</span>
+      <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/tool">open tool</a></nav>
     </footer>
 
   </main>

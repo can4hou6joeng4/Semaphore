@@ -7,13 +7,14 @@ sample assets. No lorem ipsum — every string is real copy.
 
 ## Files & load order
 
-Every page is a sibling of `assets/`:
+Pages live at the repo root; `public/` is copied to the site root verbatim,
+so `public/static/x` is served at `/static/x`. Vite's own content-hashed
+bundles land in `/assets/` — never put stable-named files there:
 
 ```
-designs/img2ascii/
-  index.html  tool.html  usecases.html  faq.html
-  assets/terminal.css   assets/shared.js   assets/ascii-engine.js
-  assets/sample-portrait.png   (391×344 b/w portrait)
+index.html  tool.html  usecases.html  faq.html
+  src/terminal.css   src/shared.ts   src/ascii-engine.ts
+  public/static/sample-portrait.webp   (1100×1069 b/w portrait)
 ```
 
 Required `<head>` (exact, in this order):
@@ -21,22 +22,41 @@ Required `<head>` (exact, in this order):
 ```html
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>…page-specific… — Image to ASCII</title>
+<title>…page-specific keyword phrase… — Semaphore</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="…same as <title>…">
+<meta property="og:description" content="…same as description…">
+<meta property="og:url" content="https://semaphore.bobochang.cn/…">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="…">
+<link rel="canonical" href="https://semaphore.bobochang.cn/…">
+<meta name="theme-color" content="#050a06">
 <meta name="description" content="…">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/terminal.css">
+<link rel="preload" as="font" type="font/woff2"
+      href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
 <style>/* page-specific layout only — tokens from :root, no new colors/fonts */</style>
 ```
 
-Scripts at the END of `<body>` (defer not needed there), in this order:
+No third-party requests. The font is self-hosted (`@font-face` lives in
+`terminal.css`) and there is no analytics, no CDN, no Google Fonts — the
+deployed CSP is `connect-src 'none'`, so anything that tries would be blocked
+in production but pass locally. Do not add one.
+
+`terminal.css` is NOT linked by hand: it is imported by `src/shared.ts`, and
+Vite extracts it into a hashed `/assets/*.css` link at build time.
+
+One module script at the END of `<body>` — Vite bundles the rest:
 
 ```html
-<script src="assets/ascii-engine.js"></script>
-<script src="assets/shared.js"></script>
-<script src="assets/<page>.js"></script>   <!-- only if the page needs one -->
+<script type="module" src="/src/main-<page>.ts"></script>
 ```
+
 
 ## Page skeleton (chrome is INJECTED — never hand-write it)
 
@@ -46,15 +66,15 @@ Scripts at the END of `<body>` (defer not needed there), in this order:
     <section class="sec" data-screen-label="…">…</section>
     …
     <footer class="site-foot">
-      <span>© 2026 image2ascii — plain text is forever</span>
-      <nav><a href="usecases.html">usecases</a><a href="faq.html">faq</a><a href="tool.html">open tool</a></nav>
+      <span>© 2026 Semaphore — plain text is forever</span>
+      <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/tool">open tool</a></nav>
     </footer>
   </main>
   <!-- scripts -->
 </body>
 ```
 
-`shared.js` prepends the sticky header (brand → index.html, nav usecases/faq,
+`shared.ts` prepends the sticky header (brand → `/`, nav usecases/faq,
 amber `► open tool` CTA) and appends the vim statusbar + CRT overlays.
 DO NOT create `.site-head`, `.statusbar`, `.crt-*` yourself.
 
@@ -73,8 +93,8 @@ Subpages (usecases, faq) open with a page-head section:
 Kicker           `<div class="kicker">[ how_it_works ]</div>` (may include `<b>` for green)
 Display title    `<h1 class="display">Turn any image<br>to ASCII <span class="accent">{</span><span class="cursor-blink"></span><span class="accent">}</span></h1>`
 Lede             `<p class="lede">… <span class="hl">highlight</span> …</p>`
-Buttons          `<a class="btn btn--green btn--lg" href="tool.html">Open the tool</a>`
-                 `<a class="btn btn--ghost" href="usecases.html">browse usecases</a>`
+Buttons          `<a class="btn btn--green btn--lg" href="/tool">Open the tool</a>`
+                 `<a class="btn btn--ghost" href="/usecases">browse usecases</a>`
                  amber is reserved for the header CTA — do not use `.btn--amber` in page bodies.
 Card             `<article class="card"><h3 class="card-title"><span class="p">$</span> runs locally</h3><p>…</p></article>`
 Grid             `<div class="grid-3">…cards…</div>`
@@ -84,7 +104,14 @@ Tag row          `<div class="row"><span class="tag">readme</span><span class="t
 Field            `<div class="field"><label class="field-label" for="x">columns <span class="val" id="xv">120</span></label><input type="range" id="x"></div>`
 Select           `<div class="selectwrap"><select class="input" id="y">…</select></div>`
 Toggle           `<button class="toggle" aria-pressed="false" id="z">invert</button>`
-Segmented        `<div class="seg" role="radiogroup" aria-label="color">…<button aria-pressed="true">green</button>…</div>`
+                 a toggle that cannot apply under the current params takes
+                 `aria-disabled="true"` — never the `disabled` property, which drops the
+                 control out of the tab order so a keyboard user never learns it exists.
+                 The click handler must return early on it; the stored value stays put.
+Segmented        `<div class="seg" role="radiogroup" aria-label="color">…<button role="radio" aria-checked="true" tabindex="0">green</button>…</div>`
+                 a radiogroup's children are radios, NOT toggles: `aria-checked` (never
+                 `aria-pressed`) plus a roving `tabindex` so the group is one tab stop.
+                 `wireRadioGroup()` / `syncRadioGroup()` in `tool.ts` do both.
 
 Statusbar API (page JS): `Site.setState("converting…", {busy:true})`, `Site.setState("ready")`,
 `Site.setRight(["96×54", "charset: blocks", "12ms"])`, `Site.toast("copied ✓")`.
@@ -95,7 +122,7 @@ Utilities: `Util.copyText(str)`, `Util.download(name, textOrBlob, mime)`,
 ## Engine quick reference
 
 ```js
-const img = await AsciiEngine.loadImage("assets/sample-portrait.png");
+const img = await AsciiEngine.loadImage("/static/sample-portrait.webp");
 const res = AsciiEngine.convert(img, { cols: 140, charset: "detailed",
   color: "green", invert: false, brightness: 0, contrast: 0,
   cellAspect: 1 / Util.advanceRatio() });          // match on-screen cell shape
@@ -110,7 +137,9 @@ cells, Floyd–Steinberg dithered — the sharp one). Ramps are dark→light for
 
 ## Copy voice
 
-- Product name in chrome: "Image to ASCII"; in terminal contexts: `semaphore`.
+- Product name everywhere in chrome and copy: "Semaphore"; in terminal contexts the
+  lowercase `semaphore` is the command name. "image to ascii" may appear as a keyword
+  phrase inside a `<title>`/description, never as the product name.
 - English. Terminal-laconic. Sentence case for headings, lowercase for kickers/labels
   (`[ how_it_works ]`, `~/usecases`). Prompts use `$`. It's fine to end a hero line
   with a blinking cursor.
@@ -124,7 +153,7 @@ Two themes live on `html[data-theme]`: **`crt`** (default, phosphor dark) and **
 (print/typewriter light). All tokens are overridden by `[data-theme="paper"]` in
 terminal.css, so components that use tokens theme themselves for free.
 
-- shared.js injects the header theme toggle, persists to `localStorage("img2ascii-theme")`,
+- shared.ts injects the header theme toggle, persists to `localStorage("semaphore-theme")`,
   honors a `?theme=crt|paper` URL param (preview only), and exposes
   `Site.theme.get() / .set(t) / .toggle()`. On change it dispatches a window
   `themechange` CustomEvent with `{detail:{theme}}`.
@@ -144,5 +173,7 @@ terminal.css, so components that use tokens theme themselves for free.
 3. Every interactive control keyboard-reachable; `aria-pressed`/`aria-current` kept in sync.
 4. `data-screen-label` on every top-level section.
 5. Canonical HTML: close every tag, double-quote attributes, no self-closing divs.
-6. Internal links only to: `index.html`, `tool.html`, `usecases.html`, `faq.html` (+ `#anchors` that exist).
+6. Internal links use extensionless roots — `/`, `/tool`, `/usecases`, `/faq` (+ `#anchors`
+   that exist). Never link `*.html`: Cloudflare Pages 308-redirects those, costing a
+   round trip and pointing internal links at a non-canonical URL.
 7. ASCII art embedded as literal strings must contain no `<` or `>` characters (HTML safety) — use the engine or safe glyphs.

@@ -1,16 +1,27 @@
 name: CI
+
+# Pushes to main are covered by Deploy, which runs the same typecheck +
+# build before it ships — doing both here would just double the work.
 on:
-  push:
-    branches: [main]
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - run: npm test
+      - run: npm run build          # tsc --noEmit + vite build
