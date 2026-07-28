@@ -1,40 +1,52 @@
 <div align="center">
   <img src="docs/images/logo.svg" width="120" alt="Semaphore logo" />
   <h1>Semaphore</h1>
-  <p><em>Turn any image into a semaphore of characters.</em></p>
+  <p><em>🚩 Turn any image into ASCII art, right in your browser — no upload, no account.</em></p>
 </div>
 
 <p align="center">
-  <img src="docs/images/statusline.svg" alt="semaphore v1.0.1 · MIT · TypeScript strict · Vite 8 · 0 upload" />
+  <a href="https://github.com/can4hou6joeng4/Semaphore/stargazers"><img src="https://img.shields.io/github/stars/can4hou6joeng4/Semaphore?style=flat-square" alt="Stars"></a>
+  <a href="https://github.com/can4hou6joeng4/Semaphore/releases"><img src="https://img.shields.io/github/v/tag/can4hou6joeng4/Semaphore?label=version&style=flat-square" alt="Version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
+  <a href="https://github.com/can4hou6joeng4/Semaphore/commits"><img src="https://img.shields.io/github/commit-activity/m/can4hou6joeng4/Semaphore?style=flat-square" alt="Commits"></a>
+  <a href="https://semaphore.bobochang.cn"><img src="https://img.shields.io/badge/live-semaphore.bobochang.cn-2ea44f?style=flat-square" alt="Live"></a>
 </p>
 
-<p align="center"><a href="https://semaphore.bobochang.cn"><strong>semaphore.bobochang.cn</strong></a> — free · no upload · no account, everything happens in your browser</p>
-
-<p align="center">English · <a href="README.zh-CN.md">简体中文</a></p>
+<p align="center">English · <a href="README_CN.md">简体中文</a></p>
 
 ![Semaphore hero](docs/images/hero.gif)
 
-## Why "Semaphore"
+## Features
 
-Semaphore is the sailors' way of talking across water: no telegraph, no network — just a pair of arms and two flags, spelling a message out to the distance one character at a time. This tool does the same thing to pictures: it breaks an image into characters so it can travel anywhere plain text can go — terminals, code comments, READMEs, chat windows. [Harbor](https://github.com/can4hou6joeng4/Harbor) shelters knowledge, [Beacon](https://github.com/can4hou6joeng4/Beacon) warns of danger, [Atlas](https://github.com/can4hou6joeng4/Atlas) charts the voyage — **Semaphore** signals the image.
+- **Drop and convert**: PNG / JPG / WebP / GIF — drag it into the browser and the ASCII lands **in milliseconds**
+- **Nothing is uploaded**: pixels are sampled on a local `<canvas>`, and production ships `connect-src 'none'` so the page **cannot** phone home
+- **Six charsets**: from classic luminance ramps to a **dithered 2×4 braille matrix** with 8× the pixel density
+- **Live controls**: columns, brightness, contrast, invert, and green / grayscale / original color — **re-converted every frame**
+- **Flexible export**: copy plain text, download `.txt` or `.png`, or generate a **share card** with the parameters baked in
+- **CRT terminal aesthetics**: scanlines, phosphor glow, and a vim statusbar — **the whole site is one terminal**
 
-## See it happen
+## Quick Start
 
-On the landing page, a photo is wiped into ASCII before your eyes, character by character; the tool page is the full conversion workbench:
+Open **[semaphore.bobochang.cn/tool](https://semaphore.bobochang.cn/tool)** and drop an image in. That is the whole flow — no sign-up, no queue, no watermark.
 
-![The tool](docs/images/tool.png)
+Prefer to run it yourself:
 
-## Quick start
+```bash
+git clone https://github.com/can4hou6joeng4/Semaphore.git
+cd Semaphore
+npm install
+npm run dev        # dev server
+```
 
-Open [semaphore.bobochang.cn/tool](https://semaphore.bobochang.cn/tool) and drop an image in — that's it. No sign-up, no queue, no watermark. Your ASCII art can be:
-
-- **Copied as plain text** — paste it into a terminal, a code comment, a chat window
-- Downloaded as **`.txt`** (raw characters) or **`.png`** (theme-rendered bitmap)
-- Turned into a **share card** with the conversion parameters attached
+```bash
+npm test           # unit tests (vitest)
+npm run build      # type-check + build to dist/
+npm run preview    # serve the built dist/
+```
 
 ## Charsets
 
-Six charsets, six textures — every ramp runs dark to bright (the engine maps each cell by luminance):
+Six charsets, six textures — every ramp runs dark to bright, and the engine maps each cell by luminance:
 
 | Charset | Ramp | Best for |
 |---|---|---|
@@ -47,45 +59,41 @@ Six charsets, six textures — every ramp runs dark to bright (the engine maps e
 
 ## Privacy
 
-Your image is sampled pixel by pixel on a local `<canvas>`; conversion, rendering and export all happen inside your browser process. This site has no backend API, no analytics scripts, no cookies — close the tab and nothing is left behind.
+Your image is sampled pixel by pixel on a local `<canvas>`; conversion, rendering and export all happen inside your browser process. This site has no backend API, no analytics scripts, no cookies, and not a single third-party request — the font is self-hosted too.
 
-## Credits
+That is enforced, not just promised: the deployed pages ship `Content-Security-Policy: … connect-src 'none'`, so the page **cannot** open a fetch, XHR or WebSocket to anywhere. Open devtools, watch the network tab stay silent, then close the tab — nothing is left behind.
 
-- Sample photos from [Wikimedia Commons](https://commons.wikimedia.org) (public domain / CC0)
-- Monospace font: [JetBrains Mono](https://www.jetbrains.com/lp/mono/)
-- Hosted on [Cloudflare Pages](https://pages.cloudflare.com)
-
-## Features
-
-- 🖼️ **Drop & convert**: PNG / JPG / WebP / GIF — drag it into the browser, results are instant
-- 🔒 **Nothing is uploaded**: canvas samples pixels locally, your data never leaves the device
-- ✳️ **Six charsets**: from classic luminance ramps to braille dot matrices (with dithering)
-- 🎛️ **Live controls**: columns, brightness, contrast, invert, green / grayscale / original color
-- 📤 **Flexible export**: copy plain text, download `.txt` / `.png`, generate a share card
-- 📟 **CRT terminal aesthetics**: scanlines and glow — the whole site is one green-phosphor terminal
-
-## How it works
+## How It Works
 
 ```text
   image ──▶ canvas sampling ──▶ luminance grid ──▶ character mapping ──▶ ASCII
             (cover crop)        (per-cell mean)    (ramps / braille)      └─▶ .txt / .png / share card
 ```
 
-## Tech stack
+Vite 8 · TypeScript 7 (strict) · vanilla DOM, zero frameworks · Cloudflare Pages.
 
-Vite 8 · TypeScript 7 (strict) · vanilla DOM, zero frameworks · Cloudflare Pages
+Pages live at the repo root — `index.html` (landing), `tool.html` (the converter), `usecases.html`, `faq.html` — with per-page behavior in the `src/main-*.ts` entries. The conversion engine is `src/ascii-engine.ts`, share cards are `src/sharecard.ts`, and the binding design contract is [STYLEGUIDE.md](STYLEGUIDE.md). Repository maintenance rules and the traps a fresh read will not reveal live in [AGENTS.md](AGENTS.md).
 
-## Local development
+## Why "Semaphore"
 
-```bash
-npm install
-npm run dev        # dev server
-npm run build      # type-check + build to dist/
-npm run preview    # preview the build
-```
+Semaphore is the sailors' way of talking across water: no telegraph, no network — just a pair of arms and two flags, spelling a message out to the distance one character at a time. This tool does the same thing to pictures: it breaks an image into characters so it can travel anywhere plain text can go — terminals, code comments, READMEs, chat windows.
 
-Pages: `index.html` (landing) / `tool.html` (the converter) / `usecases.html` / `faq.html`, with per-page behavior in the `src/main-*.ts` entries; the conversion engine lives in `src/ascii-engine.ts`, share cards in `src/sharecard.ts`, design tokens in `STYLEGUIDE.md`.
+[Harbor](https://github.com/can4hou6joeng4/Harbor) shelters knowledge, [Beacon](https://github.com/can4hou6joeng4/Beacon) warns of danger, [Atlas](https://github.com/can4hou6joeng4/Atlas) charts the voyage — **Semaphore** signals the image.
+
+![The tool](docs/images/tool.webp)
+
+## Credits
+
+- Sample photos from [Wikimedia Commons](https://commons.wikimedia.org) (public domain / CC0)
+- Monospace font: [JetBrains Mono](https://www.jetbrains.com/lp/mono/) — self-hosted as a 15 KB variable subset ([SIL OFL 1.1](public/fonts/OFL.txt))
+- Hosted on [Cloudflare Pages](https://pages.cloudflare.com)
+
+## Support
+
+- If Semaphore saved you a trip to an upload-first converter, give it a star or [share it](https://twitter.com/intent/tweet?url=https://github.com/can4hou6joeng4/Semaphore&text=Semaphore%20-%20turn%20any%20image%20into%20ASCII%20art%2C%20right%20in%20your%20browser.).
+- Found a bug or want a charset that does not exist yet? [Open an issue](https://github.com/can4hou6joeng4/Semaphore/issues/new/choose) — see [CONTRIBUTING.md](CONTRIBUTING.md) first.
+- Questions and ideas go to [Discussions](https://github.com/can4hou6joeng4/Semaphore/discussions).
 
 ## License
 
-[MIT](LICENSE)
+Semaphore is open source under MIT, see [LICENSE](LICENSE). The ASCII art you make with it is yours — posters, readmes, merch, client work, anything.
