@@ -177,13 +177,30 @@ function loadFile(file: File | null | undefined): void {
 
 function loadPortrait(atBoot: boolean): void {
   Site.setState("loading sample…", { busy: true });
-  AsciiEngine.loadImage("/assets/sample-portrait.png").then(
-    (img) => setSource(img, "portrait.png"),
+  AsciiEngine.loadImage("/static/sample-portrait.webp").then(
+    (img) => setSource(img, "portrait.webp"),
     () => {
       Site.setState(atBoot ? "no source" : "ready");
       if (!atBoot) Site.toast("sample failed to load ✕");
     }
   );
+}
+
+/* The panel thumbnail is drawn from the DECODED source, never from
+   its object URL — fileToImage revokes that the moment it loads.
+   Downscaling also stops a 600 KB photo from backing a 110px img. */
+const THUMB_MAX = 240;
+
+function thumbDataURL(source: AsciiSource, w: number, h: number): string {
+  const scale = Math.min(1, THUMB_MAX / Math.max(w, h));
+  const cv = document.createElement("canvas");
+  cv.width = Math.max(1, Math.round(w * scale));
+  cv.height = Math.max(1, Math.round(h * scale));
+  const ctx = cv.getContext("2d")!;
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(source, 0, 0, cv.width, cv.height);
+  return cv.toDataURL("image/webp", 0.85);   // falls back to png where unsupported
 }
 
 function setSource(source: AsciiSource, name: string): void {
@@ -192,9 +209,7 @@ function setSource(source: AsciiSource, name: string): void {
     state.name = name;
     const d = dims(source);
     state.imgW = d.w; state.imgH = d.h;
-    els.srcThumb.src = (source as HTMLCanvasElement).toDataURL
-      ? (source as HTMLCanvasElement).toDataURL("image/png")
-      : (source as HTMLImageElement).src;
+    els.srcThumb.src = thumbDataURL(source, d.w, d.h);
     els.srcMeta.textContent = name + " — " + d.w + "×" + d.h;
     els.srcInfo.classList.remove("hidden");
     updateCmdline();
@@ -205,8 +220,8 @@ function setSource(source: AsciiSource, name: string): void {
 /* ------------------------ conversion -------------------------- */
 /* Param changes coalesce into a single pending tick; the tick
    reads the latest params, so nothing ever queues. rAF is the
-   fast path, with a timeout fallback for throttled/背景 tabs
-   where rAF can stall indefinitely.                             */
+   fast path, with a timeout fallback for throttled/background
+   tabs where rAF can stall indefinitely.                        */
 function requestConvert(): void {
   if (!state.source || pendingFrame) return;
   pendingFrame = true;
@@ -246,6 +261,11 @@ function runConvert(): void {
 function renderResult(res: ConvertResult): void {
   els.out.classList.remove("is-empty");
   els.out.classList.toggle("is-plain", params.color !== "green");
+  /* the <pre> is role=img: without a label a screen reader would
+     read out every one of the cols×rows characters, one by one   */
+  els.out.setAttribute("aria-label",
+    "ascii art output — " + res.cols + " columns by " + res.rows +
+    " rows, charset " + res.charset);
   if (params.color === "green") {
     els.out.textContent = res.text;
   } else {
@@ -277,7 +297,9 @@ function updateCmdline(): void {
     " --charset " + params.charset +
     " --cols " + params.cols +
     " --color " + params.color +
-    (params.invert ? " --invert" : "");
+    (params.invert ? " --invert" : "") +
+    /* only surfaced where it does something — see syncDither() */
+    (ditherApplies() && !params.dither ? " --no-dither" : "");
 }
 
 function setExports(on: boolean): void {
@@ -292,9 +314,65 @@ function syncUI(): void {
   els.contrast.value = String(params.contrast);  els.contrastv.textContent = String(params.contrast);
   els.invert.setAttribute("aria-pressed", String(params.invert));
   els.dither.setAttribute("aria-pressed", String(params.dither));
-  els.seg.forEach((b) =>
-    b.setAttribute("aria-pressed", String(b.dataset.color === params.color)));
+  syncDither();
+  syncRadioGroup(els.seg, (b) => b.dataset.color === params.color);
   updateCmdline();
+}
+
+/* ---------------------- dither availability ------------------- */
+/* Dithering only runs in the braille branch of the engine — on a
+   ramp charset every cell is already one of N grey levels, so
+   error diffusion to pure black/white would just destroy the ramp.
+   The toggle used to stay live on every charset and quietly do
+   nothing, which reads as a broken control.                      */
+function ditherApplies(): boolean {
+  const cs = AsciiEngine.CHARSETS[params.charset];
+  return !!(cs && cs.braille);
+}
+
+/* aria-disabled rather than the disabled property: a disabled
+   button drops out of the tab order entirely, so a keyboard user
+   never learns the control exists. This way it stays reachable and
+   announces itself as unavailable, and the stored preference is
+   preserved for when braille comes back.                         */
+function syncDither(): void {
+  const on = ditherApplies();
+  els.dither.setAttribute("aria-disabled", String(!on));
+  els.dither.title = on ? "" : "dithering only applies to the braille charset";
+}
+
+/* --------------------- radiogroup plumbing -------------------- */
+/* The .seg controls are single-choice, so they are real ARIA
+   radiogroups: role=radio + aria-checked (NOT aria-pressed, which
+   means "toggle" and makes a radiogroup announce zero options),
+   arrow-key navigation, and a roving tabindex so each group is one
+   tab stop rather than N.                                        */
+function syncRadioGroup(buttons: HTMLButtonElement[],
+                        isOn: (b: HTMLButtonElement) => boolean): void {
+  buttons.forEach((b) => {
+    const on = isOn(b);
+    b.setAttribute("aria-checked", String(on));
+    b.tabIndex = on ? 0 : -1;
+  });
+}
+
+function wireRadioGroup(buttons: HTMLButtonElement[],
+                        pick: (btn: HTMLButtonElement) => void): void {
+  const choose = (btn: HTMLButtonElement) => {
+    if (btn.getAttribute("aria-checked") !== "true") pick(btn);
+  };
+  buttons.forEach((btn, i) => {
+    btn.addEventListener("click", () => choose(btn));
+    btn.addEventListener("keydown", (e) => {
+      const dir = (e.key === "ArrowRight" || e.key === "ArrowDown") ? 1
+                : (e.key === "ArrowLeft" || e.key === "ArrowUp") ? -1 : 0;
+      if (!dir) return;
+      e.preventDefault();
+      const next = buttons[(i + dir + buttons.length) % buttons.length];
+      next.focus();
+      choose(next);
+    });
+  });
 }
 
 /* -------------------------- wiring ---------------------------- */
@@ -348,12 +426,14 @@ function wireParams(): void {
 
   els.charset.addEventListener("change", () => {
     params.charset = els.charset.value;
+    syncDither();
     updateCmdline();
     requestConvert();
   });
 
   const bindToggle = (btn: HTMLElement, key: "invert" | "dither") => {
     btn.addEventListener("click", () => {
+      if (btn.getAttribute("aria-disabled") === "true") return;
       params[key] = !params[key];
       btn.setAttribute("aria-pressed", String(params[key]));
       updateCmdline();
@@ -363,13 +443,12 @@ function wireParams(): void {
   bindToggle(els.invert, "invert");
   bindToggle(els.dither, "dither");
 
-  els.seg.forEach((btn) => btn.addEventListener("click", () => {
-    if (params.color === btn.dataset.color) return;
+  wireRadioGroup(els.seg, (btn) => {
     params.color = btn.dataset.color!;
-    els.seg.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    syncRadioGroup(els.seg, (b) => b === btn);
     updateCmdline();
     requestConvert();
-  }));
+  });
 
   els.reset.addEventListener("click", () => {
     params = Object.assign({}, DEFAULTS);
@@ -456,12 +535,37 @@ function renderCard(): void {
   );
 }
 
+/* aria-modal alone does not stop Tab from walking out of the panel
+   into the page behind it — the dialog has to hold focus itself.  */
+function modalFocusables(): HTMLElement[] {
+  return Array.from(els.cardModal.querySelectorAll<HTMLElement>(
+    "button, input, select, textarea, a[href]"
+  )).filter((n) => n.tabIndex >= 0 && !(n as HTMLInputElement).disabled);
+}
+
+function onCardKeydown(e: KeyboardEvent): void {
+  if (e.key === "Escape") { closeCard(); return; }
+  if (e.key !== "Tab") return;
+  const list = modalFocusables();
+  if (!list.length) return;
+  const first = list[0];
+  const last = list[list.length - 1];
+  const inside = els.cardModal.contains(document.activeElement);
+  if (e.shiftKey && (!inside || document.activeElement === first)) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && (!inside || document.activeElement === last)) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
 function openCard(): void {
   if (!state.result) return;
   cardTheme = Site.theme.get();                    // seg defaults to site theme
-  els.cardSeg.forEach((b) =>
-    b.setAttribute("aria-pressed", String(b.dataset.ctheme === cardTheme)));
+  syncRadioGroup(els.cardSeg, (b) => b.dataset.ctheme === cardTheme);
   els.cardModal.classList.remove("hidden");
+  document.addEventListener("keydown", onCardKeydown);
   els.cardClose.focus();
   renderCard();
 }
@@ -469,6 +573,7 @@ function openCard(): void {
 function closeCard(): void {
   if (els.cardModal.classList.contains("hidden")) return;
   els.cardModal.classList.add("hidden");
+  document.removeEventListener("keydown", onCardKeydown);
   clearTimeout(cardTimer);
   if (cardUrl) { URL.revokeObjectURL(cardUrl); cardUrl = null; }
   els.cardPreview.removeAttribute("src");
@@ -481,16 +586,12 @@ function wireShareCard(): void {
   els.cardModal.addEventListener("click", (e) => {
     if (e.target === els.cardModal) closeCard();   // backdrop only, not the panel
   });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeCard();
-  });
 
-  els.cardSeg.forEach((btn) => btn.addEventListener("click", () => {
-    if (cardTheme === btn.dataset.ctheme) return;
+  wireRadioGroup(els.cardSeg, (btn) => {
     cardTheme = btn.dataset.ctheme!;
-    els.cardSeg.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    syncRadioGroup(els.cardSeg, (b) => b === btn);
     renderCard();
-  }));
+  });
 
   els.cardCaption.addEventListener("input", () => {
     clearTimeout(cardTimer);

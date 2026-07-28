@@ -92,7 +92,7 @@ export const CHARSETS: Record<string, Charset> = {
 
 const DEFAULT_ASPECT = 1 / 0.6; // mono cell h/w at line-height 1
 
-export const VERSION = "1.0.0";
+export const VERSION = "1.0.1"; // keep in sync with package.json
 
 /* ------------------------- helpers -------------------------- */
 function srcSize(source: AsciiSource): { w: number; h: number } {
@@ -358,11 +358,17 @@ export function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
+/* The object URL is released as soon as the bitmap is decoded —
+   the loaded <img> keeps its own copy, so drawImage() still works.
+   Callers must NOT read img.src afterwards (it is revoked).      */
 export function fileToImage(file: File): Promise<HTMLImageElement> {
   return new Promise(function (resolve, reject) {
     const url = URL.createObjectURL(file);
     const img = new Image();
-    img.onload = function () { resolve(img); };
+    img.onload = function () {
+      URL.revokeObjectURL(url);
+      resolve(img);
+    };
     img.onerror = function () {
       URL.revokeObjectURL(url);
       reject(new Error("unsupported image file"));

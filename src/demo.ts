@@ -317,7 +317,7 @@ function main(): void {
   }
 
   Promise.all([document.fonts.ready, domReady()])
-    .then(function () { return AsciiEngine.loadImage("/assets/sample-portrait.png"); })
+    .then(function () { return AsciiEngine.loadImage("/static/sample-portrait.webp"); })
     .then(function (img) {
       portrait = img;
       ready = true;

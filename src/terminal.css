@@ -5,6 +5,25 @@
    colors/fonts/radii MUST come from these tokens.
    ============================================================ */
 
+/* JetBrains Mono — self-hosted variable subset (SIL OFL 1.1; the
+   license ships next to the file at /fonts/OFL.txt).
+
+   Subset to the ~215 codepoints this site actually renders, which
+   INCLUDES the block elements (U+2591-2593, U+2588) and box drawing
+   that Google's `latin` subset never covered — those glyphs used to
+   fall back to a system font mid-render. The weight axis is clipped
+   to 400-800, the only range the design system uses.
+
+   Self-hosting removes the site's last third-party request, so the
+   "watch the network tab stay silent" claim in the FAQ is literal. */
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono-v2.304-subset.woff2") format("woff2");
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   color-scheme: dark;
 
@@ -297,6 +316,15 @@ input[type="range"]::-moz-range-thumb {
 .toggle:hover { border-color: var(--line-strong); color: var(--ink); }
 .toggle[aria-pressed="true"] { color: var(--green); border-color: color-mix(in oklab, var(--green) 35%, transparent); background: color-mix(in oklab, var(--green) 7%, transparent); }
 .toggle[aria-pressed="true"]::before { content: "[x] "; color: var(--green); }
+/* aria-disabled, not [disabled]: the button keeps its tab stop so a
+   keyboard user can still find it and hear that it does not apply
+   here. Declared last so it overrides the pressed colors.        */
+.toggle[aria-disabled="true"],
+.toggle[aria-disabled="true"]:hover {
+  color: var(--ink-faint); border-color: var(--line);
+  background: transparent; cursor: not-allowed;
+}
+.toggle[aria-disabled="true"]::before { color: var(--ink-faint); }
 
 /* segmented radio row: <div class="seg" role="radiogroup"> */
 .seg { display: flex; border: 1px solid var(--line-strong); border-radius: 2px; overflow: hidden; }
@@ -308,7 +336,7 @@ input[type="range"]::-moz-range-thumb {
 }
 .seg button:first-child { border-left: 0; }
 .seg button:hover { color: var(--ink); background: color-mix(in oklab, var(--green) 5%, transparent); }
-.seg button[aria-pressed="true"] { background: var(--green); color: var(--black-ink); font-weight: 700; }
+.seg button[aria-checked="true"] { background: var(--green); color: var(--black-ink); font-weight: 700; }
 
 /* dropzone */
 .dropzone {

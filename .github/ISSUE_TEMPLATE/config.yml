@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private Security Report
+    url: https://github.com/can4hou6joeng4/Semaphore/security/advisories/new
+    about: Report a suspected vulnerability privately instead of opening a public issue
+  - name: GitHub Discussions
+    url: https://github.com/can4hou6joeng4/Semaphore/discussions
+    about: Ask questions and share ideas with the community
+  - name: Try It First
+    url: https://semaphore.bobochang.cn/tool
+    about: Most questions answer themselves after ten seconds in the tool
