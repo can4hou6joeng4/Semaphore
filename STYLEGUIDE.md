@@ -42,6 +42,7 @@ Required `<head>` (exact, in this order):
 <link rel="canonical" href="https://semaphore.bobochang.cn/…">
 <meta name="theme-color" content="#050a06">
 <meta name="description" content="…">
+<meta name="google-site-verification" content="…"> <!-- home page only -->
 <link rel="preload" as="font" type="font/woff2"
       href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
 <style>/* page-specific layout only — tokens from :root, no new colors/fonts */</style>
