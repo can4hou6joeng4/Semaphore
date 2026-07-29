@@ -65,6 +65,12 @@ describe("SEO page contract", () => {
     expect(types).toContain("BreadcrumbList");
   });
 
+  it("keeps the Search Console ownership proof on the home page", function () {
+    expect(indexHtml).toMatch(
+      /<meta name="google-site-verification" content="[A-Za-z0-9_-]+">/
+    );
+  });
+
   it.each(["tool.html", "usecases.html", "faq.html", "privacy.html", "charsets/braille.html"])(
     "adds breadcrumbs to %s",
     function (path) {
