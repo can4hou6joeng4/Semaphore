@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy — Nothing Is Uploaded | Semaphore</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Privacy — Nothing Is Uploaded | Semaphore">
+<meta property="og:description" content="Semaphore converts images locally in your browser. No uploads, accounts, cookies, in-page analytics or telemetry.">
+<meta property="og:url" content="https://semaphore.bobochang.cn/privacy">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — private image to ASCII conversion">
+<link rel="canonical" href="https://semaphore.bobochang.cn/privacy">
+<meta name="theme-color" content="#050a06">
+<meta name="description" content="Semaphore converts images locally in your browser. No uploads, accounts, cookies, in-page analytics or telemetry.">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
+<style>
+  .privacy-grid { margin-top: 34px; }
+  .privacy-proof {
+    max-width: 900px;
+    display: grid;
+    gap: 18px;
+  }
+  .privacy-proof .term { margin: 0; }
+  .privacy-proof code { overflow-wrap: anywhere; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "name": "Semaphore Privacy",
+      "url": "https://semaphore.bobochang.cn/privacy",
+      "description": "How Semaphore keeps image conversion local and what limited data exists when static files are requested.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Semaphore",
+        "url": "https://semaphore.bobochang.cn/"
+      },
+      "dateModified": "2026-07-29"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Semaphore",
+          "item": "https://semaphore.bobochang.cn/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Privacy",
+          "item": "https://semaphore.bobochang.cn/privacy"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body data-page="privacy" data-path="~/privacy">
+<main class="frame">
+  <section class="sec" data-screen-label="privacy-head">
+    <div class="kicker"><b>~/privacy</b> · nothing is uploaded</div>
+    <h1 class="h2">Your image stays in your browser</h1>
+    <p class="lede" style="margin-top:18px">Semaphore is a static image to ASCII converter. There is no upload endpoint, account system, analytics script or telemetry pipeline behind it.</p>
+  </section>
+
+  <section class="sec" data-screen-label="privacy-facts">
+    <div class="kicker">[ what_happens_to_your_data ]</div>
+    <div class="grid-3 privacy-grid">
+      <article class="card">
+        <h2 class="card-title"><span class="p">01</span> image bytes stay local</h2>
+        <p>Your browser decodes the selected image and draws it to a local canvas. Conversion, previews and exports happen in the tab. The image is never sent to Semaphore or Cloudflare.</p>
+      </article>
+      <article class="card">
+        <h2 class="card-title"><span class="p">02</span> no tracking state</h2>
+        <p>There are no cookies, tracking pixels, browser analytics or accounts. The only saved preference is the CRT or paper theme in your browser's <code>localStorage</code>.</p>
+      </article>
+      <article class="card">
+        <h2 class="card-title"><span class="p">03</span> exports are explicit</h2>
+        <p>Text reaches your clipboard only when you choose copy. Files and share cards are created locally and downloaded only when you ask. Closing the tab discards the working image.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="privacy-proof">
+    <div class="kicker">[ trust_but_verify ]</div>
+    <h2 class="h2">The browser policy enforces the promise</h2>
+    <div class="privacy-proof" style="margin-top:34px">
+      <figure class="term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p">$</span> inspect content-security-policy</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body">
+          <p>Production pages send <code>connect-src 'none'</code>. That blocks page scripts from opening <code>fetch</code>, XHR or WebSocket connections, including analytics beacons.</p>
+        </div>
+      </figure>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> what Cloudflare can see</h3>
+        <p>Loading any website requires ordinary HTTP requests for its static HTML, scripts, styles, fonts and sample image. Cloudflare may process standard request metadata and provide the operator with aggregate edge request counts. Those requests do not contain your selected image or converted output, and Semaphore runs no second in-page reporting request.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> inspect the implementation</h3>
+        <p>Semaphore is open source. You can inspect the client code and production headers in the <a href="https://github.com/can4hou6joeng4/Semaphore">GitHub repository</a>, or open your browser's network panel while converting.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec sec--tight" data-screen-label="privacy-cta">
+    <p class="lede">Last updated: July 29, 2026.</p>
+    <a class="btn btn--green" href="/tool" style="margin-top:22px">Convert locally</a>
+  </section>
+
+  <footer class="site-foot">
+    <span>© 2026 Semaphore — plain text is forever</span>
+    <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
+  </footer>
+</main>
+<script type="module" src="/src/main-privacy.ts"></script>
+</body>
+</html>

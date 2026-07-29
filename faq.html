@@ -107,8 +107,28 @@
         "name": "Any size limits?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sources are downsampled to at most 300 columns, so even huge photos convert in milliseconds. If a very dense braille render feels slow on an old machine, lower the column count."
+          "text": "The converter supports 40 to 240 output columns, so even huge photos convert in milliseconds. If a very dense braille render feels slow on an old machine, lower the column count."
         }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Semaphore",
+        "item": "https://semaphore.bobochang.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Image to ASCII FAQ",
+        "item": "https://semaphore.bobochang.cn/faq"
       }
     ]
   }
@@ -130,7 +150,7 @@
           <summary>Do my images get uploaded anywhere?</summary>
           <div class="qa-a">
             <p>Never. The conversion runs entirely in your browser using the canvas API; once the page has loaded it even works offline.</p>
-            <p>If you're the trust-but-verify type, open devtools and watch the network tab stay silent.</p>
+            <p>If you're the trust-but-verify type, read the <a href="/privacy">privacy statement</a>, then open devtools and watch the network tab stay silent.</p>
           </div>
         </details>
 
@@ -167,7 +187,7 @@
         <details class="qa">
           <summary>What does braille mode actually do?</summary>
           <div class="qa-a">
-            <p>Each character becomes a 2×4 grid of dots from the Unicode braille block, dithered with Floyd–Steinberg — roughly eight times the spatial resolution of a classic ramp.</p>
+            <p>Each character becomes a 2×4 grid of dots from the Unicode braille block, dithered with Floyd–Steinberg — roughly eight times the spatial resolution of a classic ramp. The <a href="/charsets/braille">braille ASCII guide</a> shows the full pipeline and a live example.</p>
             <p>It needs a font with braille glyphs, which every modern OS has.</p>
           </div>
         </details>
@@ -190,7 +210,7 @@
         <details class="qa">
           <summary>Any size limits?</summary>
           <div class="qa-a">
-            <p>Sources are downsampled to at most 300 columns, so even huge photos convert in milliseconds. If a very dense braille render feels slow on an old machine, lower the column count.</p>
+            <p>The converter supports 40–240 output columns, so even huge photos convert in milliseconds. If a very dense braille render feels slow on an old machine, lower the column count.</p>
           </div>
         </details>
 
@@ -204,7 +224,7 @@
 
     <footer class="site-foot">
       <span>© 2026 Semaphore — plain text is forever</span>
-      <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/tool">image to ASCII</a></nav>
+      <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
     </footer>
 
   </main>
