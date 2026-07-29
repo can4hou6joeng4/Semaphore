@@ -9,6 +9,8 @@ import * as AsciiEngine from "./ascii-engine";
 import type { AsciiSource, ConvertResult } from "./ascii-engine";
 import * as ShareCard from "./sharecard";
 import { Site, Util } from "./shared";
+import { parseToolParams } from "./tool-params";
+import type { ToolParams } from "./tool-params";
 
 /* --------------------------- dom ----------------------------- */
 const $ = (id: string) => document.getElementById(id) as HTMLElement;
@@ -62,18 +64,8 @@ function cacheEls(): void {
 }
 
 /* -------------------------- state ----------------------------- */
-interface Params {
-  charset: string;
-  cols: number;
-  brightness: number;
-  contrast: number;
-  invert: boolean;
-  dither: boolean;
-  color: string;
-}
-
-const DEFAULTS: Params = { charset: "detailed", cols: 120, brightness: 0,
-                           contrast: 0, invert: false, dither: true, color: "green" };
+const DEFAULTS: ToolParams = { charset: "detailed", cols: 120, brightness: 0,
+                               contrast: 0, invert: false, dither: true, color: "green" };
 
 interface State {
   source: AsciiSource | null;
@@ -87,7 +79,7 @@ interface State {
 
 const state: State = { source: null, name: "", imgW: 0, imgH: 0,
                        result: null, fit: true, zoom: 8 };
-let params: Params = Object.assign({}, DEFAULTS);
+let params: ToolParams = Object.assign({}, DEFAULTS);
 
 let pendingFrame = false;
 let resizeTimer: number | undefined;
@@ -452,6 +444,7 @@ function wireParams(): void {
 
   els.reset.addEventListener("click", () => {
     params = Object.assign({}, DEFAULTS);
+    if (location.search) history.replaceState(null, "", location.pathname);
     syncUI();
     requestConvert();
     Site.toast("params reset ✓");
@@ -625,6 +618,7 @@ function wireShareCard(): void {
 /* --------------------------- boot ----------------------------- */
 function boot(): void {
   cacheEls();
+  params = parseToolParams(location.search, DEFAULTS);
   planet = makePlanet();
   els.planetThumb.getContext("2d")!
     .drawImage(planet, 0, 0, els.planetThumb.width, els.planetThumb.height);

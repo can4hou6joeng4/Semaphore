@@ -103,6 +103,52 @@
   .cardmodal-seg button { flex: none; padding: 8px 18px; }
   #cardCaption { flex: 1 1 180px; width: auto; min-width: 150px; }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Semaphore Image to ASCII Converter",
+      "url": "https://semaphore.bobochang.cn/tool",
+      "description": "Convert images to ASCII art locally in your browser with six charsets, live controls, and text or PNG export.",
+      "applicationCategory": "MultimediaApplication",
+      "applicationSubCategory": "Image converter",
+      "operatingSystem": "Any (runs in a web browser)",
+      "browserRequirements": "Requires JavaScript and HTML5 canvas",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Converts PNG, JPG, WebP and GIF to ASCII art",
+        "Runs client-side without uploading images",
+        "Six charsets including dithered braille",
+        "Exports plain text, TXT, PNG and share cards"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Semaphore",
+          "item": "https://semaphore.bobochang.cn/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Image to ASCII Converter",
+          "item": "https://semaphore.bobochang.cn/tool"
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body data-page="tool" data-path="~/tool">
 <main class="frame">
@@ -110,7 +156,7 @@
   <section class="sec sec--tight" data-screen-label="tool-head">
     <div class="kicker"><b>~/tool</b> · image to ascii</div>
     <h1 class="h2">Image to ASCII converter</h1>
-    <p class="lede" style="margin-top:14px">Drop a photo, pick a charset, tune columns and color — ASCII art updates live. Everything runs in this tab; nothing is uploaded. New here? Skim the <a href="/">overview</a> or the <a href="/faq">FAQ</a>.</p>
+    <p class="lede" style="margin-top:14px">Drop a photo, pick a charset, tune columns and color — ASCII art updates live. Everything runs in this tab; nothing is uploaded. New here? Skim the <a href="/">overview</a>, the <a href="/charsets/braille">braille ASCII guide</a>, or the <a href="/faq">FAQ</a>.</p>
   </section>
 
   <section class="sec sec--flush" data-screen-label="tool-workbench">
@@ -265,7 +311,7 @@
 
   <footer class="site-foot">
     <span>© 2026 Semaphore — plain text is forever</span>
-    <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/tool">image to ASCII</a></nav>
+    <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 
 </main>

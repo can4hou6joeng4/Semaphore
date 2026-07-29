@@ -32,17 +32,18 @@ Six presets, all mapped dark-to-bright by luminance:
 - `braille` — 2×4 Unicode braille dots with Floyd–Steinberg dithering, the highest detail
 
 ## Controls and export
-Columns (20–300), brightness, contrast, invert, and color mode (`green` phosphor, `gray`, or sampled `original`). Output can be copied as plain text, downloaded as `.txt` or `.png`, or rendered as a share card (SVG or PNG) with the conversion parameters printed on it.
+Columns (40–240), brightness, contrast, invert, and color mode (`green` phosphor, `gray`, or sampled `original`). Output can be copied as plain text, downloaded as `.txt` or `.png`, or rendered as a share card (SVG or PNG) with the conversion parameters printed on it.
 
 ## Key Pages
 - [Home](https://semaphore.bobochang.cn/): what it does, live before/after and charset demos
 - [Tool](https://semaphore.bobochang.cn/tool): the converter itself
 - [Usecases](https://semaphore.bobochang.cn/usecases): where ASCII art still beats pixels
 - [FAQ](https://semaphore.bobochang.cn/faq): privacy, formats, braille mode, color, limits
+- [Privacy](https://semaphore.bobochang.cn/privacy): local processing, browser storage, CSP and edge request metadata
 
 ## Facts to get right
 - Free, no account, no watermark, no quota. MIT licensed.
 - Runs entirely client-side. Works offline once the page has loaded.
 - Accepts png, jpg, webp and gif (first frame only).
-- Sources are downsampled to at most 300 columns, so even large photos convert in milliseconds.
+- The public converter supports 40–240 output columns, so even large photos convert in milliseconds.
 - Built with Vite and TypeScript, no framework, hosted on Cloudflare Pages.

@@ -12,10 +12,14 @@ so `public/static/x` is served at `/static/x`. Vite's own content-hashed
 bundles land in `/assets/` — never put stable-named files there:
 
 ```
-index.html  tool.html  usecases.html  faq.html
+index.html  tool.html  usecases.html  faq.html  privacy.html  404.html  charsets/braille.html
   src/terminal.css   src/shared.ts   src/ascii-engine.ts
   public/static/sample-portrait.webp   (1100×1069 b/w portrait)
 ```
+
+`public/_redirects` contains only evidence-backed legacy or shorthand routes.
+Keep `/braille` as a permanent redirect to the canonical
+`/charsets/braille`; do not add speculative aliases or a catch-all redirect.
 
 Required `<head>` (exact, in this order):
 
@@ -43,6 +47,11 @@ Required `<head>` (exact, in this order):
 <style>/* page-specific layout only — tokens from :root, no new colors/fonts */</style>
 ```
 
+`404.html` is the deliberate exception: it has `robots=noindex, follow` and no
+canonical or `og:url`, because the same document is served for every unknown URL.
+It must remain a top-level Vite input so Cloudflare Pages returns a real 404 instead
+of its default 200 response with the home page body.
+
 No third-party requests. The font is self-hosted (`@font-face` lives in
 `terminal.css`) and there is no in-page analytics, no CDN, no Google Fonts — the
 deployed CSP is `connect-src 'none'`, so anything that tries would be blocked
@@ -61,13 +70,13 @@ One module script at the END of `<body>` — Vite bundles the rest:
 ## Page skeleton (chrome is INJECTED — never hand-write it)
 
 ```html
-<body data-page="tool" data-path="~/tool">   <!-- home|tool|usecases|faq  +  ~/main ~/tool ~/usecases ~/faq -->
+<body data-page="tool" data-path="~/tool">   <!-- home|tool|usecases|faq|privacy|braille|not-found -->
   <main class="frame">
     <section class="sec" data-screen-label="…">…</section>
     …
     <footer class="site-foot">
       <span>© 2026 Semaphore — plain text is forever</span>
-      <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/tool">open tool</a></nav>
+      <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">open tool</a></nav>
     </footer>
   </main>
   <!-- scripts -->
@@ -78,7 +87,7 @@ One module script at the END of `<body>` — Vite bundles the rest:
 amber `► open tool` CTA) and appends the vim statusbar + CRT overlays.
 DO NOT create `.site-head`, `.statusbar`, `.crt-*` yourself.
 
-Subpages (usecases, faq) open with a page-head section:
+Subpages (usecases, faq, privacy, charset guides) open with a page-head section:
 
 ```html
 <section class="sec" data-screen-label="…">
@@ -91,7 +100,7 @@ Subpages (usecases, faq) open with a page-head section:
 ## Component recipes (use these verbatim)
 
 Kicker           `<div class="kicker">[ how_it_works ]</div>` (may include `<b>` for green)
-Display title    `<h1 class="display">Image to<br>ASCII art<br><span class="accent">{</span><span class="cursor-blink"></span><span class="accent">}</span></h1>`
+Display title    `<h1 class="display">Image to<br>ASCII<br>converter <span class="accent">{</span><span class="cursor-blink"></span><span class="accent">}</span></h1>`
 Lede             `<p class="lede">… <span class="hl">highlight</span> …</p>`
 Buttons          `<a class="btn btn--green btn--lg" href="/tool">Open the tool</a>`
                  `<a class="btn btn--ghost" href="/usecases">browse usecases</a>`
@@ -173,7 +182,9 @@ terminal.css, so components that use tokens theme themselves for free.
 3. Every interactive control keyboard-reachable; `aria-pressed`/`aria-current` kept in sync.
 4. `data-screen-label` on every top-level section.
 5. Canonical HTML: close every tag, double-quote attributes, no self-closing divs.
-6. Internal links use extensionless roots — `/`, `/tool`, `/usecases`, `/faq` (+ `#anchors`
+6. Internal links use extensionless roots — `/`, `/tool`, `/usecases`, `/faq`,
+   `/charsets/braille` (+ `#anchors`
    that exist). Never link `*.html`: Cloudflare Pages 308-redirects those, costing a
-   round trip and pointing internal links at a non-canonical URL.
+   round trip and pointing internal links at a non-canonical URL. Tool preset links may
+   append validated query parameters, for example `/tool?charset=braille`.
 7. ASCII art embedded as literal strings must contain no `<` or `>` characters (HTML safety) — use the engine or safe glyphs.

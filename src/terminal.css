@@ -420,7 +420,7 @@ details.qa .qa-a code { color: var(--green-soft); background: var(--bg-deep); pa
   display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
   font-size: var(--fs-s); color: var(--ink-faint);
 }
-.site-foot nav { display: flex; gap: 22px; }
+.site-foot nav { display: flex; gap: 22px; flex-wrap: wrap; }
 .site-foot a { color: var(--ink-faint); text-decoration: none; }
 .site-foot a:hover { color: var(--green); }
 
