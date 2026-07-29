@@ -78,6 +78,13 @@ describe("SEO page contract", () => {
     }
   );
 
+  it.each(["usecases.html", "privacy.html", "charsets/braille.html"])(
+    "describes content page %s as a WebPage",
+    function (path) {
+      expect(jsonLd(byPath.get(path) || "").flatMap(schemaTypes)).toContain("WebPage");
+    }
+  );
+
   it("publishes every canonical page in the sitemap", () => {
     pages.forEach(function (page) {
       expect(sitemapXml).toContain("<loc>" + page.canonical + "</loc>");

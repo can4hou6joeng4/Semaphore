@@ -55,19 +55,35 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
+    "@graph": [
       {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Semaphore",
-        "item": "https://semaphore.bobochang.cn/"
+        "@type": "WebPage",
+        "name": "ASCII Art Usecases",
+        "url": "https://semaphore.bobochang.cn/usecases",
+        "description": "Where image to ASCII still beats pixels — README banners, SSH splash screens, code comments, mail and terminal ricing.",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "Semaphore",
+          "url": "https://semaphore.bobochang.cn/"
+        },
+        "dateModified": "2026-07-29"
       },
       {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "ASCII Art Usecases",
-        "item": "https://semaphore.bobochang.cn/usecases"
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Semaphore",
+            "item": "https://semaphore.bobochang.cn/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "ASCII Art Usecases",
+            "item": "https://semaphore.bobochang.cn/usecases"
+          }
+        ]
       }
     ]
   }
