@@ -226,11 +226,11 @@ main.frame {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   padding: 8px 14px; border-bottom: 1px solid var(--line);
   background: var(--panel);
-  font-size: var(--fs-xs); color: var(--ink-faint);
+  font-size: var(--fs-xs); color: var(--ink-dim);
 }
 .term-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .term-title .p { color: var(--green); }
-.term-dots { letter-spacing: 6px; color: var(--ink-faint); flex: none; user-select: none; }
+.term-dots { letter-spacing: 6px; color: var(--ink-dim); flex: none; user-select: none; }
 .term-body { padding: 16px; overflow: auto; }
 
 /* ASCII output text */
@@ -389,6 +389,8 @@ details.qa .qa-a code { color: var(--green-soft); background: var(--bg-deep); pa
 .site-nav { display: flex; align-items: center; gap: 30px; margin-left: auto; }
 .site-nav a { font-size: 14px; color: var(--ink-dim); text-decoration: none; }
 .site-nav a:hover { color: var(--green); text-shadow: var(--glow); }
+.site-nav .btn--amber,
+.site-nav .btn--amber:hover { color: var(--black-ink); text-shadow: none; }
 .site-nav a[aria-current="page"]:not(.btn) { color: var(--green); }
 .site-nav a[aria-current="page"]:not(.btn)::before { content: "[ "; color: var(--ink-faint); }
 .site-nav a[aria-current="page"]:not(.btn)::after  { content: " ]"; color: var(--ink-faint); }
@@ -404,7 +406,7 @@ details.qa .qa-a code { color: var(--green-soft); background: var(--bg-deep); pa
   font-size: var(--fs-xs);
   overflow: hidden; white-space: nowrap;
 }
-.sb-seg { display: flex; align-items: center; gap: 7px; padding: 0 13px; color: var(--ink-faint); border-right: 1px solid var(--line); }
+.sb-seg { display: flex; align-items: center; gap: 7px; padding: 0 13px; color: var(--ink-dim); border-right: 1px solid var(--line); }
 .sb-seg--brand { background: var(--green); color: var(--black-ink); font-weight: 700; border-right: 0; }
 .sb-right { margin-left: auto; display: flex; align-items: stretch; }
 .sb-right .sb-seg { border-right: 0; border-left: 1px solid var(--line); }

@@ -14,7 +14,8 @@ bundles land in `/assets/` — never put stable-named files there:
 ```
 index.html  tool.html  usecases.html  faq.html  privacy.html  404.html  charsets/braille.html
   src/terminal.css   src/shared.ts   src/ascii-engine.ts
-  public/static/sample-portrait.webp   (1100×1069 b/w portrait)
+  public/static/sample-portrait.webp         (1100×1069 b/w portrait)
+  public/static/sample-portrait-thumb.webp   (136×112 home demo thumbnail)
 ```
 
 `public/_redirects` contains only evidence-backed legacy or shorthand routes.
@@ -56,7 +57,9 @@ of its default 200 response with the home page body.
 No third-party requests. The font is self-hosted (`@font-face` lives in
 `terminal.css`) and there is no in-page analytics, no CDN, no Google Fonts — the
 deployed CSP is `connect-src 'none'`, so anything that tries would be blocked
-in production but pass locally. Do not add one.
+in production but pass locally. Canonical HTML responses also ship
+`Cache-Control: no-transform`, which prevents edge features from injecting a
+script before CSP has to block it. Do not add one or remove that directive.
 
 `terminal.css` is NOT linked by hand: it is imported by `src/shared.ts`, and
 Vite extracts it into a hashed `/assets/*.css` link at build time.

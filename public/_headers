@@ -9,6 +9,9 @@
 #            the same reasoning applies.
 # /static/*  Stable filenames (samples, share card). Week-long TTL with
 #            background revalidation.
+# Canonical HTML routes are always revalidated and carry no-transform. Besides
+#            preserving source bytes, no-transform prevents Cloudflare features
+#            from injecting an analytics script that the CSP would then reject.
 # /*         Baseline hardening + a content policy that ENFORCES the privacy
 #            claim instead of just asserting it: connect-src 'none' means the
 #            page cannot open a fetch/XHR/WebSocket to anywhere, so a dropped
@@ -24,6 +27,24 @@
 
 /static/*
   Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/tool
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/usecases
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/faq
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/privacy
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/charsets/braille
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
 
 /*
   X-Content-Type-Options: nosniff
