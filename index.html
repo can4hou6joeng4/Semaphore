@@ -198,6 +198,7 @@
     min-height: 21px;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
+  .demo-cmd { color: var(--ink-dim); }
   .demo-out { min-height: 0; display: grid; place-items: center; overflow: hidden; }
   .demo-cursor {
     position: absolute; left: 0; top: 0; z-index: 6;
@@ -357,13 +358,13 @@
       <div class="term-body demo-stage" id="demoStage">
         <div class="demo-left">
           <div class="demo-chip" id="demoChip">
-            <img src="/static/sample-portrait.webp" alt="" width="68" height="56">
+            <img src="/static/sample-portrait-thumb.webp" alt="" width="68" height="56">
             <span class="fs-xs demo-chip-name">portrait.png</span>
           </div>
           <div class="dropzone demo-drop" id="demoDrop">[ drop here ]</div>
         </div>
         <div class="demo-right">
-          <div class="fs-xs text-faint demo-cmd" id="demoCmd">$ semaphore portrait.png --charset detailed</div>
+          <div class="fs-xs demo-cmd" id="demoCmd">$ semaphore portrait.png --charset detailed</div>
           <div class="demo-out" id="demoOut"><pre class="ascii-pre" id="demoPre"></pre></div>
           <div class="fs-xs text-faint demo-status" id="demoStatus"></div>
         </div>

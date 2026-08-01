@@ -9,6 +9,7 @@ import brailleHtml from "../charsets/braille.html?raw";
 import sitemapXml from "../public/sitemap.xml?raw";
 import robotsTxt from "../public/robots.txt?raw";
 import redirectsTxt from "../public/_redirects?raw";
+import headersTxt from "../public/_headers?raw";
 
 const pages = [
   { path: "index.html", canonical: "https://semaphore.bobochang.cn/", html: indexHtml },
@@ -96,6 +97,24 @@ describe("SEO page contract", () => {
     expect(robotsTxt).toContain("Allow: /");
     expect(robotsTxt).not.toMatch(/^Disallow:\s*\/$/m);
     expect(robotsTxt).toContain("Sitemap: https://semaphore.bobochang.cn/sitemap.xml");
+  });
+
+  it("prevents edge features from transforming canonical HTML", function () {
+    ["/", "/tool", "/usecases", "/faq", "/privacy", "/charsets/braille"].forEach(
+      function (path) {
+        const escaped = path.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        expect(headersTxt).toMatch(new RegExp(
+          "^" + escaped + "\\n  Cache-Control: [^\\n]*\\bno-transform\\b",
+          "m"
+        ));
+      }
+    );
+  });
+
+  it("uses a dedicated small asset for the home demo thumbnail", function () {
+    expect(indexHtml).toContain(
+      '<img src="/static/sample-portrait-thumb.webp" alt="" width="68" height="56">'
+    );
   });
 
   it("permanently redirects the common braille shorthand", function () {
