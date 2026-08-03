@@ -13,12 +13,14 @@ npm run build      # tsc --noEmit + vite build
 npm run preview    # serve the built dist/
 ```
 
-## The two documents that bind
+## The documents that bind
 
 - **[STYLEGUIDE.md](STYLEGUIDE.md)** — the page authoring contract. Design tokens,
   the required `<head>`, component recipes, copy voice. Read it before touching
   markup or CSS.
 - **[SECURITY.md](SECURITY.md)** — how to report a vulnerability privately.
+- **[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)** — the participation and moderation
+  standards for issues, discussions and pull requests.
 
 ## Hard constraints
 
