@@ -27,7 +27,7 @@
 
 ## Quick Start
 
-Open **[semaphore.bobochang.cn/tool](https://semaphore.bobochang.cn/tool)** and drop an image in. That is the whole flow — no sign-up, no queue, no watermark.
+Open **[semaphore.bobochang.cn/tool](https://semaphore.bobochang.cn/tool)** and drop an image in. That is the whole flow — no sign-up, no queue, no watermark. For photographic detail, try the [image to braille ASCII art guide](https://semaphore.bobochang.cn/charsets/braille) and open its one-click Braille preset.
 
 Prefer to run it yourself:
 
@@ -55,7 +55,7 @@ Six charsets, six textures — every ramp runs dark to bright, and the engine ma
 | `blocks` | ` ░▒▓█` | Pixel art, low-res posters |
 | `minimal` | ` .:*#` | Minimal logos, tiny avatars |
 | `binary` | ` 01` | Cyberpunk, code-rain looks |
-| `braille` | 2×4 braille dots + dithering | 8× pixel density at the same width — the detail king |
+| [`braille`](https://semaphore.bobochang.cn/charsets/braille) | 2×4 braille dots + dithering | 8× pixel density at the same width — the detail king |
 
 ## Privacy
 
