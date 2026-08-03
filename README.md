@@ -5,11 +5,11 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/can4hou6joeng4/Semaphore/stargazers"><img src="https://img.shields.io/github/stars/can4hou6joeng4/Semaphore?style=flat-square" alt="Stars"></a>
-  <a href="https://github.com/can4hou6joeng4/Semaphore/releases"><img src="https://img.shields.io/github/v/tag/can4hou6joeng4/Semaphore?label=version&style=flat-square" alt="Version"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
-  <a href="https://github.com/can4hou6joeng4/Semaphore/commits"><img src="https://img.shields.io/github/commit-activity/m/can4hou6joeng4/Semaphore?style=flat-square" alt="Commits"></a>
-  <a href="https://semaphore.bobochang.cn"><img src="https://img.shields.io/badge/live-semaphore.bobochang.cn-2ea44f?style=flat-square" alt="Live"></a>
+  <a href="https://github.com/can4hou6joeng4/Semaphore/actions/workflows/deploy.yml?branch=main"><img src="https://img.shields.io/github/actions/workflow/status/can4hou6joeng4/Semaphore/deploy.yml?branch=main&style=for-the-badge" alt="Build status"></a>
+  <a href="https://github.com/can4hou6joeng4/Semaphore/releases"><img src="https://img.shields.io/github/v/release/can4hou6joeng4/Semaphore?include_prereleases&style=for-the-badge" alt="GitHub release"></a>
+  <a href="https://github.com/can4hou6joeng4/Semaphore/stargazers"><img src="https://img.shields.io/github/stars/can4hou6joeng4/Semaphore?style=for-the-badge" alt="Stars"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge" alt="License"></a>
+  <a href="https://semaphore.bobochang.cn"><img src="https://img.shields.io/badge/live-open-2ea44f?style=for-the-badge" alt="Live site"></a>
 </p>
 
 <p align="center">English · <a href="README_CN.md">简体中文</a></p>
