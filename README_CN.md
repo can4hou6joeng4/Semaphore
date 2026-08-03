@@ -27,7 +27,7 @@
 
 ## 快速开始
 
-打开 **[semaphore.bobochang.cn/tool](https://semaphore.bobochang.cn/tool)** 拖一张图进去,就这样。不用注册,不排队,没有水印。
+打开 **[semaphore.bobochang.cn/tool](https://semaphore.bobochang.cn/tool)** 拖一张图进去,就这样。不用注册,不排队,没有水印。需要保留照片细节时,可以先看[图片转盲文 ASCII 指南](https://semaphore.bobochang.cn/charsets/braille),再使用预设直接转换。
 
 想自己跑:
 
@@ -55,7 +55,7 @@ npm run preview    # 预览构建产物
 | `blocks` | ` ░▒▓█` | 像素画、低分辨率海报 |
 | `minimal` | ` .:*#` | 极简 logo、小尺寸头像 |
 | `binary` | ` 01` | 赛博朋克、代码雨质感 |
-| `braille` | 盲文 2×4 点阵 + 抖动 | 同宽度下 8 倍像素密度,细节之王 |
+| [`braille`](https://semaphore.bobochang.cn/charsets/braille) | 盲文 2×4 点阵 + 抖动 | 同宽度下 8 倍像素密度,细节之王 |
 
 ## 隐私
 
