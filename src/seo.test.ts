@@ -72,6 +72,12 @@ describe("SEO page contract", () => {
     );
   });
 
+  it("keeps the home title concise and aligned with converter intent", function () {
+    const title = headContent(indexHtml, /<title>([^<]+)<\/title>/);
+    expect(title).toContain("Image to ASCII Art Converter");
+    expect(title.length).toBeLessThanOrEqual(60);
+  });
+
   it.each(["tool.html", "usecases.html", "faq.html", "privacy.html", "charsets/braille.html"])(
     "adds breadcrumbs to %s",
     function (path) {
