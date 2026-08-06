@@ -107,6 +107,25 @@ describe("SEO page contract", () => {
     expect(toolSource).not.toContain('els.cardPreview.removeAttribute("src")');
   });
 
+  it("names the drop target from its visible label", function () {
+    expect(toolHtml).toContain(
+      'aria-labelledby="dropTitle dropHint"'
+    );
+    expect(toolHtml).toContain(
+      '<div class="drop-title" id="dropTitle">[ drop image here ]</div>'
+    );
+    expect(toolHtml).toContain(
+      '<div class="fs-xs text-faint" id="dropHint">or click to browse'
+    );
+    expect(toolHtml).not.toContain(
+      'aria-label="choose an image to convert to ASCII"'
+    );
+  });
+
+  it("uses the stronger text tone for file metadata", function () {
+    expect(toolHtml).toContain('class="fs-xs text-dim" id="srcMeta"');
+  });
+
   it("describes the converter on the page where it runs", () => {
     const types = jsonLd(toolHtml).flatMap(schemaTypes);
     expect(types).toContain("WebApplication");

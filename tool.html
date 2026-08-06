@@ -166,9 +166,10 @@
 
         <div class="side-block">
           <div class="field-label">source</div>
-          <div class="dropzone" id="drop" role="button" tabindex="0" aria-label="choose an image to convert to ASCII">
-            <div class="drop-title">[ drop image here ]</div>
-            <div class="fs-xs text-faint">or click to browse — png · jpg · webp · gif → ASCII</div>
+          <div class="dropzone" id="drop" role="button" tabindex="0"
+               aria-labelledby="dropTitle dropHint">
+            <div class="drop-title" id="dropTitle">[ drop image here ]</div>
+            <div class="fs-xs text-faint" id="dropHint">or click to browse — png · jpg · webp · gif → ASCII</div>
           </div>
           <input type="file" id="file" accept="image/*" class="hidden">
         </div>
@@ -180,7 +181,7 @@
           </figcaption>
           <div class="term-body" style="padding:12px">
             <img id="srcThumb" src="/static/sample-portrait.webp" alt="loaded source preview" style="max-height:110px;margin-inline:auto">
-            <div class="fs-xs text-faint" id="srcMeta" style="text-align:center;margin-top:8px">—</div>
+            <div class="fs-xs text-dim" id="srcMeta" style="text-align:center;margin-top:8px">—</div>
           </div>
         </figure>
 
