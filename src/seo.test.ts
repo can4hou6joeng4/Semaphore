@@ -67,6 +67,26 @@ describe("SEO page contract", () => {
     expect(types).toContain("BreadcrumbList");
   });
 
+  it("declares the preferred site name on the home page", function () {
+    const schema = jsonLd(indexHtml)[0] as { "@graph"?: Record<string, unknown>[] };
+    const graph = schema["@graph"] || [];
+    const website = graph.find(function (node) { return node["@type"] === "WebSite"; });
+    const application = graph.find(function (node) {
+      return node["@type"] === "WebApplication";
+    });
+
+    expect(website).toEqual({
+      "@type": "WebSite",
+      "@id": "https://semaphore.bobochang.cn/#website",
+      url: "https://semaphore.bobochang.cn/",
+      name: "Semaphore"
+    });
+    expect(application).toMatchObject({
+      "@id": "https://semaphore.bobochang.cn/#webapp",
+      isPartOf: { "@id": "https://semaphore.bobochang.cn/#website" }
+    });
+  });
+
   it("keeps the Search Console ownership proof on the home page", function () {
     expect(indexHtml).toMatch(
       /<meta name="google-site-verification" content="[A-Za-z0-9_-]+">/
