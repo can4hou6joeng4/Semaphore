@@ -86,6 +86,7 @@ let params: ToolParams = Object.assign({}, DEFAULTS);
 let pendingFrame = false;
 let resizeTimer: number | undefined;
 let planet: HTMLCanvasElement | null = null;
+let sourceSeq = 0;                       // latest source intent wins across async loads
 
 let cardTheme = "crt";                 // share-card palette, independent of site theme
 let cardUrl: string | null = null;     // objectURL of the current preview
@@ -164,18 +165,25 @@ function strokeRing(ctx: CanvasRenderingContext2D, cx: number, cy: number, front
 function loadFile(file: File | null | undefined): void {
   if (!file) return;
   if (!/^image\//.test(file.type || "")) { Site.toast("not an image ✕"); return; }
+  const seq = ++sourceSeq;
   Site.setState("decoding…", { busy: true });
   AsciiEngine.fileToImage(file).then(
-    (img) => setSource(img, file.name || "pasted.png"),
-    () => { Site.setState("ready"); Site.toast("could not decode image ✕"); }
+    (img) => setSource(img, file.name || "pasted.png", seq),
+    () => {
+      if (seq !== sourceSeq) return;
+      Site.setState("ready");
+      Site.toast("could not decode image ✕");
+    }
   );
 }
 
 function loadPortrait(atBoot: boolean): void {
+  const seq = ++sourceSeq;
   Site.setState("loading sample…", { busy: true });
   AsciiEngine.loadImage("/static/sample-portrait.webp").then(
-    (img) => setSource(img, "portrait.webp"),
+    (img) => setSource(img, "portrait.webp", seq),
     () => {
+      if (seq !== sourceSeq) return;
       Site.setState(atBoot ? "no source" : "ready");
       if (!atBoot) Site.toast("sample failed to load ✕");
     }
@@ -199,8 +207,9 @@ function thumbDataURL(source: AsciiSource, w: number, h: number): string {
   return cv.toDataURL("image/webp", 0.85);   // falls back to png where unsupported
 }
 
-function setSource(source: AsciiSource, name: string): void {
+function setSource(source: AsciiSource, name: string, seq: number): void {
   fontsReady.then(() => {                          // mono metrics first
+    if (seq !== sourceSeq) return;
     state.source = source;
     state.name = name;
     const d = dims(source);
@@ -405,7 +414,9 @@ function wireSource(): void {
   });
 
   els.samplePortrait.addEventListener("click", () => loadPortrait(false));
-  els.samplePlanet.addEventListener("click", () => setSource(planet!, "planet.png"));
+  els.samplePlanet.addEventListener("click", () => {
+    setSource(planet!, "planet.png", ++sourceSeq);
+  });
 }
 
 function wireParams(): void {

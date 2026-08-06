@@ -108,6 +108,17 @@ describe("SEO page contract", () => {
     expect(toolSource).not.toContain('els.cardPreview.removeAttribute("src")');
   });
 
+  it("keeps the newest source selection when asynchronous loads finish out of order", function () {
+    expect(toolSource).toContain("let sourceSeq = 0;");
+    expect(toolSource.match(/const seq = \+\+sourceSeq;/g)).toHaveLength(2);
+    expect(toolSource.match(/if \(seq !== sourceSeq\) return;/g)).toHaveLength(3);
+    expect(toolSource).toContain(
+      '(img) => setSource(img, file.name || "pasted.png", seq)'
+    );
+    expect(toolSource).toContain('(img) => setSource(img, "portrait.webp", seq)');
+    expect(toolSource).toContain('setSource(planet!, "planet.png", ++sourceSeq)');
+  });
+
   it("names the drop target from its visible label", function () {
     expect(toolHtml).toContain(
       'aria-labelledby="dropTitle dropHint"'
