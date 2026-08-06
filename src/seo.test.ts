@@ -297,6 +297,13 @@ describe("SEO page contract", () => {
     expect(notFoundHtml.match(/<h1\b/g)).toHaveLength(1);
   });
 
+  it("centers the error document within the shared chrome", function () {
+    expect(notFoundHtml).toContain(
+      "min-height: calc(100vh - var(--header-h) - var(--statusbar-h));"
+    );
+    expect(notFoundHtml).not.toContain("var(--head-h)");
+  });
+
   it.each(pages)("links to the privacy statement from $path", function (page) {
     expect(page.html).toContain('<a href="/privacy">privacy</a>');
   });
