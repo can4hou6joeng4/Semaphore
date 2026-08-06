@@ -493,7 +493,7 @@ details.qa .qa-a code { color: var(--green-soft); background: var(--bg-deep); pa
 }
 [data-theme="paper"] .crt-scanlines,
 [data-theme="paper"] .crt-vignette { display: none; }
-[data-theme="paper"] .ascii-pre { text-shadow: none; }
+[data-theme="paper"] .ascii-pre { color: var(--green-soft); text-shadow: none; }
 [data-theme="paper"] .cursor-blink { box-shadow: none; }
 [data-theme="paper"] ::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
 
