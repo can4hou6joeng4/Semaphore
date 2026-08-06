@@ -7,6 +7,7 @@ import privacyHtml from "../privacy.html?raw";
 import notFoundHtml from "../404.html?raw";
 import brailleHtml from "../charsets/braille.html?raw";
 import sitemapXml from "../public/sitemap.xml?raw";
+import llmsTxt from "../public/llms.txt?raw";
 import robotsTxt from "../public/robots.txt?raw";
 import redirectsTxt from "../public/_redirects?raw";
 import headersTxt from "../public/_headers?raw";
@@ -78,6 +79,18 @@ describe("SEO page contract", () => {
     expect(title.length).toBeLessThanOrEqual(60);
   });
 
+  it("uses standard use cases spelling in descriptive labels", function () {
+    const title = headContent(usecasesHtml, /<title>([^<]+)<\/title>/);
+    expect(title).toContain("ASCII Art Use Cases");
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(usecasesHtml.match(/"name": "ASCII Art Use Cases"/g)).toHaveLength(2);
+    expect(usecasesHtml).toContain('"dateModified": "2026-08-06"');
+    expect(indexHtml).toContain(">browse ASCII art use cases</a>");
+    expect(llmsTxt).toContain(
+      "[Use Cases](https://semaphore.bobochang.cn/usecases)"
+    );
+  });
+
   it.each(["tool.html", "usecases.html", "faq.html", "privacy.html", "charsets/braille.html"])(
     "adds breadcrumbs to %s",
     function (path) {
@@ -103,8 +116,12 @@ describe("SEO page contract", () => {
       "<loc>https://semaphore.bobochang.cn/</loc>",
       "<lastmod>2026-08-06</lastmod>"
     ].join("\n    "));
-    expect(sitemapXml.match(/<lastmod>2026-08-06<\/lastmod>/g)).toHaveLength(1);
-    expect(sitemapXml.match(/<lastmod>2026-07-29<\/lastmod>/g)).toHaveLength(5);
+    expect(sitemapXml).toContain([
+      "<loc>https://semaphore.bobochang.cn/usecases</loc>",
+      "<lastmod>2026-08-06</lastmod>"
+    ].join("\n    "));
+    expect(sitemapXml.match(/<lastmod>2026-08-06<\/lastmod>/g)).toHaveLength(2);
+    expect(sitemapXml.match(/<lastmod>2026-07-29<\/lastmod>/g)).toHaveLength(4);
   });
 
   it("keeps crawl discovery open and advertises the sitemap", function () {
