@@ -153,6 +153,8 @@ Statusbar API (page JS): `Site.setState("converting…", {busy:true})`, `Site.se
 
 Utilities: `Util.copyText(str)`, `Util.download(name, textOrBlob, mime)`,
 `Util.fitPre(pre, cols, {container, max, min})`, `Util.advanceRatio()`.
+Copy commands show success only when `Util.copyText()` resolves; handle rejection with a
+specific failure toast rather than reporting a copy that did not happen.
 
 ## Engine quick reference
 

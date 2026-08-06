@@ -7,6 +7,7 @@ import privacyHtml from "../privacy.html?raw";
 import notFoundHtml from "../404.html?raw";
 import brailleHtml from "../charsets/braille.html?raw";
 import landingSource from "./landing.ts?raw";
+import sharedSource from "./shared.ts?raw";
 import toolSource from "./tool.ts?raw";
 import sitemapXml from "../public/sitemap.xml?raw";
 import llmsTxt from "../public/llms.txt?raw";
@@ -192,6 +193,18 @@ describe("SEO page contract", () => {
     );
     expect(toolSource).toMatch(
       /function renderResult[\s\S]*?setExports\(true\);/
+    );
+  });
+
+  it("reports clipboard success only after a copy path succeeds", function () {
+    expect(sharedSource).toContain(
+      'if (!document.execCommand("copy")) throw new Error("clipboard copy failed");'
+    );
+    expect(sharedSource).toContain("return Promise.reject(err);");
+    expect(toolSource).toContain('() => Site.toast("copied to clipboard ✓")');
+    expect(toolSource).toContain('() => Site.toast("clipboard copy failed ✕")');
+    expect(toolSource).not.toContain(
+      'Util.copyText(state.result.text).then(() => Site.toast("copied to clipboard ✓"));'
     );
   });
 
