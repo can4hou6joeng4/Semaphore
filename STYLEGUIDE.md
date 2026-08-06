@@ -76,7 +76,8 @@ One module script at the END of `<body>` — Vite bundles the rest:
 ```html
 <body data-page="tool" data-path="~/tool">   <!-- home|tool|usecases|faq|privacy|braille|not-found -->
   <main class="frame">
-    <section class="sec" data-screen-label="…">…</section>
+    <section class="sec" data-screen-label="…"><h2>…</h2>…</section>
+    <div class="sec" data-screen-label="…">…layout-only block…</div>
     …
     <footer class="site-foot">
       <span>© 2026 Semaphore — plain text is forever</span>
@@ -90,6 +91,11 @@ One module script at the END of `<body>` — Vite bundles the rest:
 `shared.ts` prepends the sticky header (brand → `/`, nav usecases/faq,
 amber `► open tool` CTA) and appends the vim statusbar + CRT overlays.
 DO NOT create `.site-head`, `.statusbar`, `.crt-*` yourself.
+
+Use `section` only for a thematic block with a visible heading. A heading-free
+`section` needs a specific `aria-label` only when it is a useful named landmark,
+such as the converter workspace. Pure layout wrappers, grids and thin CTA blocks
+use `div`; do not add hidden headings just to satisfy a validator.
 
 Subpages (usecases, faq, privacy, charset guides) open with a page-head section:
 
@@ -186,7 +192,9 @@ terminal.css, so components that use tokens theme themselves for free.
 1. Only tokens from `terminal.css` — no new hex colors, no new fonts, radius ≤ 3px.
 2. Page-local `<style>` is for layout of that page only (grids, stage sizing, hero).
 3. Every interactive control keyboard-reachable; `aria-pressed`/`aria-current` kept in sync.
-4. `data-screen-label` on every top-level section.
+4. `data-screen-label` on every top-level content block (`section` or `div`). Every
+   `section` contains its own visible heading or has a specific `aria-label` when it
+   is intentionally exposed as a named landmark.
 5. Canonical HTML: close every tag, double-quote attributes, no self-closing divs.
 6. Internal links use extensionless roots — `/`, `/tool`, `/usecases`, `/faq`,
    `/charsets/braille` (+ `#anchors`

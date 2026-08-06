@@ -83,6 +83,22 @@ describe("SEO page contract", () => {
     });
   });
 
+  it.each(pages)("gives every section in $path a heading or landmark name", function (page) {
+    const sections = Array.from(
+      page.html.matchAll(/<section\b([^>]*)>([\s\S]*?)<\/section>/g),
+      function (match) { return { attributes: match[1], content: match[2] }; }
+    );
+
+    sections.forEach(function (section) {
+      const contentWithoutNestedSections = section.content
+        .replace(/<(?:article|aside|nav)\b[^>]*>[\s\S]*?<\/(?:article|aside|nav)>/g, "");
+      const hasHeading = /<h[1-6]\b/.test(contentWithoutNestedSections);
+      const hasLandmarkName = /\saria-label="[^"]+"/.test(section.attributes);
+
+      expect(hasHeading || hasLandmarkName).toBe(true);
+    });
+  });
+
   it("keeps the share-card preview valid between renders", function () {
     expect(toolHtml).toMatch(
       /<img id="cardPreview"\s+src="data:image\/gif;base64,[^"]+"/
