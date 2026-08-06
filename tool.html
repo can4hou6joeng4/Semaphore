@@ -67,7 +67,7 @@
   .out-term { flex: 1; display: flex; flex-direction: column; min-height: 440px; }
   .out-body { flex: 1; overflow: auto; position: relative; display: flex; }
   .out-body .ascii-pre { margin: auto; }
-  .ascii-pre.is-empty { font-size: var(--fs-s); color: var(--ink-faint); text-shadow: none; }
+  .ascii-pre.is-empty { font-size: var(--fs-s); color: var(--ink-dim); text-shadow: none; }
 
   @media (max-width: 960px) {
     .tool-grid { grid-template-columns: minmax(0, 1fr); }
@@ -261,10 +261,10 @@
             <button class="toggle" id="fit" type="button" aria-pressed="true">fit width</button>
           </div>
           <div class="row">
-            <button class="btn btn--ghost btn--sm is-disabled" id="copy" type="button">copy text</button>
-            <button class="btn btn--ghost btn--sm is-disabled" id="savetxt" type="button">download .txt</button>
-            <button class="btn btn--ghost btn--sm is-disabled" id="sharecard" type="button">share card</button>
-            <button class="btn btn--green btn--sm is-disabled" id="savepng" type="button">download .png</button>
+            <button class="btn btn--ghost btn--sm" id="copy" type="button" disabled>copy text</button>
+            <button class="btn btn--ghost btn--sm" id="savetxt" type="button" disabled>download .txt</button>
+            <button class="btn btn--ghost btn--sm" id="sharecard" type="button" disabled>share card</button>
+            <button class="btn btn--green btn--sm" id="savepng" type="button" disabled>download .png</button>
           </div>
         </div>
 

@@ -126,6 +126,21 @@ describe("SEO page contract", () => {
     expect(toolHtml).toContain('class="fs-xs text-dim" id="srcMeta"');
   });
 
+  it("keeps the empty output placeholder readable", function () {
+    expect(toolHtml).toContain(
+      ".ascii-pre.is-empty { font-size: var(--fs-s); color: var(--ink-dim);"
+    );
+  });
+
+  it("exposes unavailable export commands as natively disabled", function () {
+    ["copy", "savetxt", "sharecard", "savepng"].forEach(function (id) {
+      expect(toolHtml).toContain('id="' + id + '" type="button" disabled');
+    });
+    expect(toolHtml).not.toContain("is-disabled");
+    expect(toolSource).toContain("button.disabled = !on");
+    expect(toolSource).not.toContain('classList.toggle("is-disabled"');
+  });
+
   it("describes the converter on the page where it runs", () => {
     const types = jsonLd(toolHtml).flatMap(schemaTypes);
     expect(types).toContain("WebApplication");
