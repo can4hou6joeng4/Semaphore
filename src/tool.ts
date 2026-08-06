@@ -92,6 +92,8 @@ let cardTheme = "crt";                 // share-card palette, independent of sit
 let cardUrl: string | null = null;     // objectURL of the current preview
 let cardTimer: number | undefined;     // caption debounce
 let cardSeq = 0;                       // drops stale async preview renders
+let cardPreviewBusy = false;
+const CARD_PREVIEW_STATE = "rendering card preview…";
 const CARD_PREVIEW_PLACEHOLDER =
   "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
@@ -523,10 +525,19 @@ const cardOpts = (): ShareCard.ShareCardOptions =>
   ({ theme: cardTheme, caption: els.cardCaption.value,
      filename: state.name || "image" });
 
+function finishCardPreview(): void {
+  cardPreviewBusy = false;
+  els.cardPreview.setAttribute("aria-busy", "false");
+  const status = document.querySelector("[data-sb-state]");
+  if (status && status.textContent === CARD_PREVIEW_STATE) Site.setState("ready");
+}
+
 function renderCard(): void {
   if (!state.result) return;
   const seq = ++cardSeq;
-  Site.setState("rendering card…", { busy: true });
+  cardPreviewBusy = true;
+  els.cardPreview.setAttribute("aria-busy", "true");
+  Site.setState(CARD_PREVIEW_STATE, { busy: true });
   ShareCard.pngBlob(state.result, cardOpts()).then(
     (blob) => {
       if (seq !== cardSeq) return;                 // a newer render superseded us
@@ -534,11 +545,11 @@ function renderCard(): void {
       if (cardUrl) URL.revokeObjectURL(cardUrl);
       cardUrl = url;
       els.cardPreview.src = url;
-      Site.setState("ready");
+      finishCardPreview();
     },
     () => {
       if (seq !== cardSeq) return;
-      Site.setState("ready");
+      finishCardPreview();
       Site.toast("card render failed ✕");
     }
   );
@@ -585,6 +596,7 @@ function closeCard(): void {
   document.removeEventListener("keydown", onCardKeydown);
   clearTimeout(cardTimer);
   cardSeq++;                            // ignore a render that resolves after close
+  if (cardPreviewBusy) finishCardPreview();
   if (cardUrl) { URL.revokeObjectURL(cardUrl); cardUrl = null; }
   els.cardPreview.src = CARD_PREVIEW_PLACEHOLDER;
   els.sharecard.focus();
