@@ -244,32 +244,46 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Semaphore",
-  "alternateName": ["Image to ASCII", "Image to ASCII converter", "ASCII art generator"],
-  "url": "https://semaphore.bobochang.cn/",
-  "description": "Free image to ASCII converter that runs entirely in your browser. Drop a photo, choose a charset including braille, export plain text or PNG. Nothing is uploaded.",
-  "applicationCategory": "MultimediaApplication",
-  "applicationSubCategory": "Image converter",
-  "operatingSystem": "Any (runs in a web browser)",
-  "browserRequirements": "Requires JavaScript and HTML5 canvas",
-  "isAccessibleForFree": true,
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "featureList": [
-    "Converts PNG, JPG, WebP and GIF to ASCII art",
-    "Runs 100% client-side — images are never uploaded",
-    "Six charsets including a dithered 2x4 braille mode",
-    "Live controls for columns, brightness, contrast, invert and color",
-    "Export as plain text, .txt, .png or a share card"
-  ],
-  "screenshot": "https://semaphore.bobochang.cn/static/social-card.jpg",
-  "license": "https://opensource.org/licenses/MIT",
-  "codeRepository": "https://github.com/can4hou6joeng4/Semaphore",
-  "privacyPolicy": "https://semaphore.bobochang.cn/privacy"
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://semaphore.bobochang.cn/#website",
+      "url": "https://semaphore.bobochang.cn/",
+      "name": "Semaphore"
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://semaphore.bobochang.cn/#webapp",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "name": "Semaphore",
+      "alternateName": ["Image to ASCII", "Image to ASCII converter", "ASCII art generator"],
+      "url": "https://semaphore.bobochang.cn/",
+      "description": "Free image to ASCII converter that runs entirely in your browser. Drop a photo, choose a charset including braille, export plain text or PNG. Nothing is uploaded.",
+      "applicationCategory": "MultimediaApplication",
+      "applicationSubCategory": "Image converter",
+      "operatingSystem": "Any (runs in a web browser)",
+      "browserRequirements": "Requires JavaScript and HTML5 canvas",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Converts PNG, JPG, WebP and GIF to ASCII art",
+        "Runs 100% client-side — images are never uploaded",
+        "Six charsets including a dithered 2x4 braille mode",
+        "Live controls for columns, brightness, contrast, invert and color",
+        "Export as plain text, .txt, .png or a share card"
+      ],
+      "screenshot": "https://semaphore.bobochang.cn/static/social-card.jpg",
+      "license": "https://opensource.org/licenses/MIT",
+      "codeRepository": "https://github.com/can4hou6joeng4/Semaphore",
+      "privacyPolicy": "https://semaphore.bobochang.cn/privacy"
+    }
+  ]
 }
 </script>
 </head>
