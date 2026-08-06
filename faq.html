@@ -26,10 +26,10 @@
       max-width: 820px;
       border-top: 1px solid var(--line);
     }
-    section[data-screen-label="faq-cta"] {
+    [data-screen-label="faq-cta"] {
       text-align: center;
     }
-    section[data-screen-label="faq-cta"] .lede {
+    [data-screen-label="faq-cta"] .lede {
       margin-inline: auto;
     }
   </style>
@@ -143,7 +143,7 @@
       <p class="lede" style="margin-top:18px">Short answers about the converter, privacy and export. Can't find yours? <a href="/tool">Open the image to ASCII tool</a> and poke it — it can't break anything.</p>
     </section>
 
-    <section class="sec" data-screen-label="faq-list">
+    <div class="sec" data-screen-label="faq-list">
       <div class="qa-list">
 
         <details class="qa" open>
@@ -215,12 +215,12 @@
         </details>
 
       </div>
-    </section>
+    </div>
 
-    <section class="sec sec--tight" data-screen-label="faq-cta">
+    <div class="sec sec--tight" data-screen-label="faq-cta">
       <p class="lede">Still curious? The tool answers most questions in about ten seconds.</p>
       <a class="btn btn--ghost" href="/tool" style="margin-top:22px">open the tool</a>
-    </section>
+    </div>
 
     <footer class="site-foot">
       <span>© 2026 Semaphore — plain text is forever</span>
