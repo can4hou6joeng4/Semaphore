@@ -150,6 +150,9 @@ Segmented        `<div class="seg" role="radiogroup" aria-label="color">…<butt
 
 Statusbar API (page JS): `Site.setState("converting…", {busy:true})`, `Site.setState("ready")`,
 `Site.setRight(["96×54", "charset: blocks", "12ms"])`, `Site.toast("copied ✓")`.
+The visual statusbar is not one atomic live region: only the state segment and each toast
+use `role="status"`. Right-side dimensions and timing remain visible without triggering
+another full status announcement on every conversion.
 
 Utilities: `Util.copyText(str)`, `Util.download(name, textOrBlob, mime)`,
 `Util.fitPre(pre, cols, {container, max, min})`, `Util.advanceRatio()`.

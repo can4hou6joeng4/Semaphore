@@ -146,11 +146,11 @@ function buildHeader(page: string): HTMLElement {
 
 function buildStatusbar(page: string, path: string): HTMLElement {
   const bar = el("div", "statusbar");
-  bar.setAttribute("role", "status");
   bar.innerHTML =
     '<div class="sb-seg sb-seg--brand">semaphore</div>' +
     '<div class="sb-seg sb-hide-m">' + esc(path) + "</div>" +
-    '<div class="sb-seg"><span class="sb-dot" data-sb-dot></span>' +
+    '<div class="sb-seg" role="status" aria-live="polite" aria-atomic="true">' +
+    '<span class="sb-dot" data-sb-dot aria-hidden="true"></span>' +
     '<span data-sb-state>ready</span></div>' +
     '<div class="sb-right" data-sb-right></div>';
   const right = bar.querySelector("[data-sb-right]")!;
@@ -224,8 +224,12 @@ export const Site = {
     if (!right) return;
     const old = right.querySelector(".sb-toast");
     if (old) old.remove();
-    const seg = el("div", "sb-seg sb-toast", esc(msg));
+    const seg = el("div", "sb-seg sb-toast");
+    seg.setAttribute("role", "status");
+    seg.setAttribute("aria-live", "polite");
+    seg.setAttribute("aria-atomic", "true");
     right.prepend(seg);
+    seg.textContent = msg;
     clearTimeout(toastTimer);
     toastTimer = window.setTimeout(function () { seg.remove(); }, 2200);
   }
