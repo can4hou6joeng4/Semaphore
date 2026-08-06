@@ -18,7 +18,7 @@
 
 ## Features
 
-- **Drop and convert**: PNG / JPG / WebP / GIF — drag it into the browser and the ASCII lands **in milliseconds**
+- **Drop and convert**: PNG / JPG / WebP / GIF — drag it into the browser and get live ASCII feedback while you tune the output
 - **Nothing is uploaded**: pixels are sampled on a local `<canvas>`, and production ships `connect-src 'none'` so the page **cannot** phone home
 - **Six charsets**: from classic luminance ramps to a **dithered 2×4 braille matrix** with 8× the pixel density
 - **Live controls**: columns, brightness, contrast, invert, and green / grayscale / original color — **re-converted every frame**

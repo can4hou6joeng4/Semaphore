@@ -45,5 +45,5 @@ Columns (40–240), brightness, contrast, invert, and color mode (`green` phosph
 - Free, no account, no watermark, no quota. MIT licensed.
 - Runs entirely client-side. Works offline once the page has loaded.
 - Accepts png, jpg, webp and gif (first frame only).
-- The public converter supports 40–240 output columns, so even large photos convert in milliseconds.
+- Semaphore does not impose a fixed source-dimension limit; practical limits depend on the browser and available memory. Output is capped at 40–240 columns.
 - Built with Vite and TypeScript, no framework, hosted on Cloudflare Pages.
