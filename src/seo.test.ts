@@ -135,13 +135,14 @@ describe("SEO page contract", () => {
 
   it("keeps the newest source selection when asynchronous loads finish out of order", function () {
     expect(toolSource).toContain("let sourceSeq = 0;");
-    expect(toolSource.match(/const seq = \+\+sourceSeq;/g)).toHaveLength(2);
+    expect(toolSource).toContain("return ++sourceSeq;");
+    expect(toolSource.match(/const seq = beginSourceIntent\(\);/g)).toHaveLength(2);
     expect(toolSource.match(/if \(seq !== sourceSeq\) return;/g)).toHaveLength(3);
     expect(toolSource).toContain(
       '(img) => setSource(img, file.name || "pasted.png", seq)'
     );
     expect(toolSource).toContain('(img) => setSource(img, "portrait.webp", seq)');
-    expect(toolSource).toContain('setSource(planet!, "planet.png", ++sourceSeq)');
+    expect(toolSource).toContain('setSource(planet!, "planet.png", beginSourceIntent())');
   });
 
   it("names the drop target from its visible label", function () {
@@ -170,12 +171,28 @@ describe("SEO page contract", () => {
   });
 
   it("exposes unavailable export commands as natively disabled", function () {
-    ["copy", "savetxt", "sharecard", "savepng"].forEach(function (id) {
+    ["copy", "savetxt", "sharecard", "savepng", "cardSvg", "cardPng"].forEach(function (id) {
       expect(toolHtml).toContain('id="' + id + '" type="button" disabled');
     });
     expect(toolHtml).not.toContain("is-disabled");
     expect(toolSource).toContain("button.disabled = !on");
     expect(toolSource).not.toContain('classList.toggle("is-disabled"');
+  });
+
+  it("only enables export commands for the current rendered result", function () {
+    expect(toolSource).toMatch(
+      /function beginSourceIntent[\s\S]*?closeCard\(\);\s+setExports\(false\);[\s\S]*?return \+\+sourceSeq;/
+    );
+    expect(toolSource).toContain(
+      "[els.copy, els.savetxt, els.sharecard, els.savepng, els.cardSvg, els.cardPng]"
+    );
+    expect(toolSource.match(/setExports\(!!state\.result\);/g)).toHaveLength(2);
+    expect(toolSource).toMatch(
+      /function requestConvert[\s\S]*?if \(!state\.source\) return;\s+setExports\(false\);\s+if \(pendingFrame\) return;/
+    );
+    expect(toolSource).toMatch(
+      /function renderResult[\s\S]*?setExports\(true\);/
+    );
   });
 
   it("describes the converter on the page where it runs", () => {
