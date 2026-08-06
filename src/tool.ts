@@ -28,8 +28,8 @@ interface Els {
   seg: HTMLButtonElement[];
   cmdline: HTMLElement;
   zoom: HTMLInputElement; fit: HTMLElement;
-  copy: HTMLElement; savetxt: HTMLElement; savepng: HTMLElement;
-  sharecard: HTMLElement;
+  copy: HTMLButtonElement; savetxt: HTMLButtonElement; savepng: HTMLButtonElement;
+  sharecard: HTMLButtonElement;
   cardModal: HTMLElement; cardClose: HTMLElement;
   cardPreview: HTMLImageElement; cardCaption: HTMLInputElement;
   cardSvg: HTMLElement; cardPng: HTMLElement;
@@ -53,8 +53,10 @@ function cacheEls(): void {
     seg: Array.from(document.querySelectorAll<HTMLButtonElement>('.seg[aria-label="color"] button')),
     cmdline: $("cmdline"),
     zoom: $("zoom") as HTMLInputElement, fit: $("fit"),
-    copy: $("copy"), savetxt: $("savetxt"), savepng: $("savepng"),
-    sharecard: $("sharecard"),
+    copy: $("copy") as HTMLButtonElement,
+    savetxt: $("savetxt") as HTMLButtonElement,
+    savepng: $("savepng") as HTMLButtonElement,
+    sharecard: $("sharecard") as HTMLButtonElement,
     cardModal: $("cardModal"), cardClose: $("cardClose"),
     cardPreview: $("cardPreview") as HTMLImageElement, cardCaption: $("cardCaption") as HTMLInputElement,
     cardSvg: $("cardSvg"), cardPng: $("cardPng"),
@@ -297,8 +299,9 @@ function updateCmdline(): void {
 }
 
 function setExports(on: boolean): void {
-  [els.copy, els.savetxt, els.sharecard, els.savepng].forEach((b) =>
-    b.classList.toggle("is-disabled", !on));
+  [els.copy, els.savetxt, els.sharecard, els.savepng].forEach((button) => {
+    button.disabled = !on;
+  });
 }
 
 function syncUI(): void {
