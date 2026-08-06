@@ -37,7 +37,7 @@ Columns (40–240), brightness, contrast, invert, and color mode (`green` phosph
 ## Key Pages
 - [Home](https://semaphore.bobochang.cn/): what it does, live before/after and charset demos
 - [Tool](https://semaphore.bobochang.cn/tool): the converter itself
-- [Usecases](https://semaphore.bobochang.cn/usecases): where ASCII art still beats pixels
+- [Use Cases](https://semaphore.bobochang.cn/usecases): where ASCII art still beats pixels
 - [FAQ](https://semaphore.bobochang.cn/faq): privacy, formats, braille mode, color, limits
 - [Privacy](https://semaphore.bobochang.cn/privacy): local processing, browser storage, CSP and edge request metadata
 
