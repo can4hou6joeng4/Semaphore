@@ -8,6 +8,8 @@ import notFoundHtml from "../404.html?raw";
 import brailleHtml from "../charsets/braille.html?raw";
 import sitemapXml from "../public/sitemap.xml?raw";
 import llmsTxt from "../public/llms.txt?raw";
+import readme from "../README.md?raw";
+import readmeCn from "../README_CN.md?raw";
 import robotsTxt from "../public/robots.txt?raw";
 import redirectsTxt from "../public/_redirects?raw";
 import headersTxt from "../public/_headers?raw";
@@ -111,6 +113,32 @@ describe("SEO page contract", () => {
     );
   });
 
+  it("keeps size and performance copy evidence-bounded", function () {
+    const sizeLimitCopy = "Semaphore does not impose a fixed source-dimension limit; " +
+      "practical limits depend on your browser and available memory. Output is capped at " +
+      "40–240 columns. Dense braille at high column counts may take longer on older devices.";
+    const faqSchema = jsonLd(faqHtml).find(function (schema) {
+      return schemaTypes(schema).includes("FAQPage");
+    }) as { mainEntity?: Array<{ name?: string; acceptedAnswer?: { text?: string } }> };
+    const sizeQuestion = (faqSchema.mainEntity || []).find(function (question) {
+      return question.name === "Any size limits?";
+    });
+
+    expect(sizeQuestion?.acceptedAnswer?.text).toBe(sizeLimitCopy);
+    expect(faqHtml).toContain("<p>" + sizeLimitCopy + "</p>");
+    expect(readme).toContain(
+      "drag it into the browser and get live ASCII feedback while you tune the output"
+    );
+    expect(readmeCn).toContain("即可在本地实时预览并调节字符画");
+    expect(llmsTxt).toContain(
+      "practical limits depend on the browser and available memory. " +
+      "Output is capped at 40–240 columns."
+    );
+    expect([faqHtml, readme, readmeCn, llmsTxt].join("\n")).not.toMatch(
+      /even (?:huge|large) photos convert in milliseconds|ASCII lands \*\*in milliseconds\*\*|字符画\*\*毫秒级\*\*落地/
+    );
+  });
+
   it.each(["tool.html", "usecases.html", "faq.html", "privacy.html", "charsets/braille.html"])(
     "adds breadcrumbs to %s",
     function (path) {
@@ -140,8 +168,12 @@ describe("SEO page contract", () => {
       "<loc>https://semaphore.bobochang.cn/usecases</loc>",
       "<lastmod>2026-08-06</lastmod>"
     ].join("\n    "));
-    expect(sitemapXml.match(/<lastmod>2026-08-06<\/lastmod>/g)).toHaveLength(2);
-    expect(sitemapXml.match(/<lastmod>2026-07-29<\/lastmod>/g)).toHaveLength(4);
+    expect(sitemapXml).toContain([
+      "<loc>https://semaphore.bobochang.cn/faq</loc>",
+      "<lastmod>2026-08-06</lastmod>"
+    ].join("\n    "));
+    expect(sitemapXml.match(/<lastmod>2026-08-06<\/lastmod>/g)).toHaveLength(3);
+    expect(sitemapXml.match(/<lastmod>2026-07-29<\/lastmod>/g)).toHaveLength(3);
   });
 
   it("keeps crawl discovery open and advertises the sitemap", function () {
