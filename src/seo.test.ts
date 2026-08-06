@@ -208,6 +208,20 @@ describe("SEO page contract", () => {
     );
   });
 
+  it("scopes status announcements to state and toast messages", function () {
+    expect(sharedSource).not.toContain('bar.setAttribute("role", "status")');
+    expect(sharedSource).toContain(
+      '<div class="sb-seg" role="status" aria-live="polite" aria-atomic="true">'
+    );
+    expect(sharedSource).toContain(
+      '<span class="sb-dot" data-sb-dot aria-hidden="true"></span>'
+    );
+    expect(sharedSource).toContain('seg.setAttribute("role", "status")');
+    expect(sharedSource).toContain('seg.setAttribute("aria-live", "polite")');
+    expect(sharedSource).toContain('seg.setAttribute("aria-atomic", "true")');
+    expect(sharedSource).toContain("right.prepend(seg);\n    seg.textContent = msg;");
+  });
+
   it("describes the converter on the page where it runs", () => {
     const types = jsonLd(toolHtml).flatMap(schemaTypes);
     expect(types).toContain("WebApplication");
