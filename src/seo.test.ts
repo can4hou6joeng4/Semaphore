@@ -112,10 +112,25 @@ describe("SEO page contract", () => {
     expect(toolSource).toContain('const CARD_PREVIEW_STATE = "rendering card preview…";');
     expect(toolSource).toContain('els.cardPreview.setAttribute("aria-busy", "true")');
     expect(toolSource).toContain('els.cardPreview.setAttribute("aria-busy", "false")');
-    expect(toolSource).toContain(
-      "if (status && status.textContent === CARD_PREVIEW_STATE) Site.setState(\"ready\");"
-    );
+    expect(toolSource).toContain("finishOwnedState(CARD_PREVIEW_STATE);");
     expect(toolSource).toContain("if (cardPreviewBusy) finishCardPreview();");
+  });
+
+  it("keeps asynchronous PNG exports bound to their click-time snapshot", function () {
+    expect(toolSource).toContain("let pngExportSeq = 0;");
+    expect(toolSource).toContain("let cardDownloadSeq = 0;");
+    expect(toolSource).toContain('const filename = base() + "-ascii.png";');
+    expect(toolSource).toContain('const filename = base() + "-card.png";');
+    expect(toolSource).toContain("AsciiEngine.renderPNG(result, {");
+    expect(toolSource).toContain("ShareCard.pngBlob(result, opts).then(");
+    expect(toolSource).toContain(
+      "if (seq === pngExportSeq) finishOwnedState(PNG_EXPORT_STATE);"
+    );
+    expect(toolSource).toContain(
+      "if (seq === cardDownloadSeq) finishOwnedState(CARD_DOWNLOAD_STATE);"
+    );
+    expect(toolSource).not.toContain('Util.download(base() + "-ascii.png"');
+    expect(toolSource).not.toContain('Util.download(base() + "-card.png"');
   });
 
   it("keeps the newest source selection when asynchronous loads finish out of order", function () {

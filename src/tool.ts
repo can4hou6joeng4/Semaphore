@@ -93,7 +93,11 @@ let cardUrl: string | null = null;     // objectURL of the current preview
 let cardTimer: number | undefined;     // caption debounce
 let cardSeq = 0;                       // drops stale async preview renders
 let cardPreviewBusy = false;
+let pngExportSeq = 0;
+let cardDownloadSeq = 0;
+const PNG_EXPORT_STATE = "rendering png…";
 const CARD_PREVIEW_STATE = "rendering card preview…";
+const CARD_DOWNLOAD_STATE = "rendering card download…";
 const CARD_PREVIEW_PLACEHOLDER =
   "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
@@ -494,21 +498,24 @@ function wireActions(): void {
   });
 
   els.savepng.addEventListener("click", () => {
-    if (!state.result) return;
-    Site.setState("rendering png…", { busy: true });
+    const result = state.result;
+    if (!result) return;
+    const filename = base() + "-ascii.png";
+    const seq = ++pngExportSeq;
+    Site.setState(PNG_EXPORT_STATE, { busy: true });
     const cs = getComputedStyle(document.documentElement);   // theme-aware at click time
-    AsciiEngine.renderPNG(state.result, {
+    AsciiEngine.renderPNG(result, {
       fontSize: 12, scale: 2,
       bg: cs.getPropertyValue("--bg-deep").trim() || "#0d120d",
       fg: cs.getPropertyValue("--green").trim() || "#4dff7c"
     }).then(
       (blob) => {
-        Util.download(base() + "-ascii.png", blob, "image/png");
-        Site.toast(base() + "-ascii.png saved ✓");
-        Site.setState("ready");
+        Util.download(filename, blob, "image/png");
+        Site.toast(filename + " saved ✓");
+        if (seq === pngExportSeq) finishOwnedState(PNG_EXPORT_STATE);
       },
       () => {
-        Site.setState("ready");
+        if (seq === pngExportSeq) finishOwnedState(PNG_EXPORT_STATE);
         Site.toast("png render failed ✕");
       }
     );
@@ -525,11 +532,16 @@ const cardOpts = (): ShareCard.ShareCardOptions =>
   ({ theme: cardTheme, caption: els.cardCaption.value,
      filename: state.name || "image" });
 
+function finishOwnedState(expected: string): void {
+  // Late async work must not clear a newer task's status.
+  const status = document.querySelector("[data-sb-state]");
+  if (status && status.textContent === expected) Site.setState("ready");
+}
+
 function finishCardPreview(): void {
   cardPreviewBusy = false;
   els.cardPreview.setAttribute("aria-busy", "false");
-  const status = document.querySelector("[data-sb-state]");
-  if (status && status.textContent === CARD_PREVIEW_STATE) Site.setState("ready");
+  finishOwnedState(CARD_PREVIEW_STATE);
 }
 
 function renderCard(): void {
@@ -628,16 +640,20 @@ function wireShareCard(): void {
   });
 
   els.cardPng.addEventListener("click", () => {
-    if (!state.result) return;
-    Site.setState("rendering card…", { busy: true });
-    ShareCard.pngBlob(state.result, cardOpts()).then(
+    const result = state.result;
+    if (!result) return;
+    const opts = cardOpts();
+    const filename = base() + "-card.png";
+    const seq = ++cardDownloadSeq;
+    Site.setState(CARD_DOWNLOAD_STATE, { busy: true });
+    ShareCard.pngBlob(result, opts).then(
       (blob) => {
-        Util.download(base() + "-card.png", blob, "image/png");
-        Site.toast(base() + "-card.png saved ✓");
-        Site.setState("ready");
+        Util.download(filename, blob, "image/png");
+        Site.toast(filename + " saved ✓");
+        if (seq === cardDownloadSeq) finishOwnedState(CARD_DOWNLOAD_STATE);
       },
       () => {
-        Site.setState("ready");
+        if (seq === cardDownloadSeq) finishOwnedState(CARD_DOWNLOAD_STATE);
         Site.toast("card render failed ✕");
       }
     );
