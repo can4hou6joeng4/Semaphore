@@ -87,6 +87,7 @@ let pendingFrame = false;
 let resizeTimer: number | undefined;
 let planet: HTMLCanvasElement | null = null;
 let sourceSeq = 0;                       // latest source intent wins across async loads
+let sourceIntentPending = false;         // queued old conversions cannot unlock a new load
 
 let cardTheme = "crt";                 // share-card palette, independent of site theme
 let cardUrl: string | null = null;     // objectURL of the current preview
@@ -171,6 +172,7 @@ function strokeRing(ctx: CanvasRenderingContext2D, cx: number, cy: number, front
 function beginSourceIntent(): number {
   const cardWasOpen = !els.cardModal.classList.contains("hidden");
   closeCard();
+  sourceIntentPending = true;
   setExports(false);
   if (cardWasOpen) els.drop.focus();
   return ++sourceSeq;
@@ -185,6 +187,7 @@ function loadFile(file: File | null | undefined): void {
     (img) => setSource(img, file.name || "pasted.png", seq),
     () => {
       if (seq !== sourceSeq) return;
+      sourceIntentPending = false;
       Site.setState("ready");
       setExports(!!state.result);
       Site.toast("could not decode image ✕");
@@ -199,6 +202,7 @@ function loadPortrait(atBoot: boolean): void {
     (img) => setSource(img, "portrait.webp", seq),
     () => {
       if (seq !== sourceSeq) return;
+      sourceIntentPending = false;
       Site.setState(atBoot ? "no source" : "ready");
       setExports(!!state.result);
       if (!atBoot) Site.toast("sample failed to load ✕");
@@ -234,6 +238,7 @@ function setSource(source: AsciiSource, name: string, seq: number): void {
     els.srcMeta.textContent = name + " — " + d.w + "×" + d.h;
     els.srcInfo.classList.remove("hidden");
     updateCmdline();
+    sourceIntentPending = false;
     requestConvert();
   });
 }
@@ -261,7 +266,7 @@ function requestConvert(): void {
 }
 
 function runConvert(): void {
-  if (!state.source) return;
+  if (!state.source || sourceIntentPending) return;
   try {
     const res = AsciiEngine.convert(state.source, {
       cols: params.cols,
