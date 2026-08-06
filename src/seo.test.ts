@@ -378,6 +378,15 @@ describe("SEO page contract", () => {
     expect(landingSource).toMatch(/case "End":\s+setPos\(100\);/);
   });
 
+  it("focuses the home comparison slider from both thumb and track input", function () {
+    expect(landingSource).toContain(
+      'handle.focus({ preventScroll: true });\n  setPos(posFromPointer(e));'
+    );
+    expect(landingSource).not.toContain(
+      "if (handle.contains(e.target as Node)) handle.focus"
+    );
+  });
+
   it("permanently redirects the common braille shorthand", function () {
     expect(redirectsTxt).toMatch(/^\/braille\s+\/charsets\/braille\s+301$/m);
   });

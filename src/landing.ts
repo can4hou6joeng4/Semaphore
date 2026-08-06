@@ -50,7 +50,7 @@ stage.addEventListener("pointerdown", function (e) {
   userTouched = true;
   try { stage.setPointerCapture(e.pointerId); } catch (_) { /* noop */ }
   e.preventDefault();
-  if (handle.contains(e.target as Node)) handle.focus({ preventScroll: true });
+  handle.focus({ preventScroll: true });
   setPos(posFromPointer(e));
 });
 
