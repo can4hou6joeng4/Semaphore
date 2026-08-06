@@ -32,7 +32,7 @@ interface Els {
   sharecard: HTMLButtonElement;
   cardModal: HTMLElement; cardClose: HTMLElement;
   cardPreview: HTMLImageElement; cardCaption: HTMLInputElement;
-  cardSvg: HTMLElement; cardPng: HTMLElement;
+  cardSvg: HTMLButtonElement; cardPng: HTMLButtonElement;
   cardSeg: HTMLButtonElement[];
   outTitle: HTMLElement; outBody: HTMLElement; out: HTMLElement;
 }
@@ -59,7 +59,7 @@ function cacheEls(): void {
     sharecard: $("sharecard") as HTMLButtonElement,
     cardModal: $("cardModal"), cardClose: $("cardClose"),
     cardPreview: $("cardPreview") as HTMLImageElement, cardCaption: $("cardCaption") as HTMLInputElement,
-    cardSvg: $("cardSvg"), cardPng: $("cardPng"),
+    cardSvg: $("cardSvg") as HTMLButtonElement, cardPng: $("cardPng") as HTMLButtonElement,
     cardSeg: Array.from(document.querySelectorAll<HTMLButtonElement>('.seg[aria-label="card theme"] button')),
     outTitle: $("outTitle"), outBody: $("outBody"), out: $("out")
   };
@@ -168,29 +168,39 @@ function strokeRing(ctx: CanvasRenderingContext2D, cx: number, cy: number, front
 }
 
 /* ---------------------- source loading ------------------------ */
+function beginSourceIntent(): number {
+  const cardWasOpen = !els.cardModal.classList.contains("hidden");
+  closeCard();
+  setExports(false);
+  if (cardWasOpen) els.drop.focus();
+  return ++sourceSeq;
+}
+
 function loadFile(file: File | null | undefined): void {
   if (!file) return;
   if (!/^image\//.test(file.type || "")) { Site.toast("not an image ✕"); return; }
-  const seq = ++sourceSeq;
+  const seq = beginSourceIntent();
   Site.setState("decoding…", { busy: true });
   AsciiEngine.fileToImage(file).then(
     (img) => setSource(img, file.name || "pasted.png", seq),
     () => {
       if (seq !== sourceSeq) return;
       Site.setState("ready");
+      setExports(!!state.result);
       Site.toast("could not decode image ✕");
     }
   );
 }
 
 function loadPortrait(atBoot: boolean): void {
-  const seq = ++sourceSeq;
+  const seq = beginSourceIntent();
   Site.setState("loading sample…", { busy: true });
   AsciiEngine.loadImage("/static/sample-portrait.webp").then(
     (img) => setSource(img, "portrait.webp", seq),
     () => {
       if (seq !== sourceSeq) return;
       Site.setState(atBoot ? "no source" : "ready");
+      setExports(!!state.result);
       if (!atBoot) Site.toast("sample failed to load ✕");
     }
   );
@@ -234,7 +244,9 @@ function setSource(source: AsciiSource, name: string, seq: number): void {
    fast path, with a timeout fallback for throttled/background
    tabs where rAF can stall indefinitely.                        */
 function requestConvert(): void {
-  if (!state.source || pendingFrame) return;
+  if (!state.source) return;
+  setExports(false);
+  if (pendingFrame) return;
   pendingFrame = true;
   Site.setState("converting…", { busy: true });
   let fired = false;
@@ -314,7 +326,7 @@ function updateCmdline(): void {
 }
 
 function setExports(on: boolean): void {
-  [els.copy, els.savetxt, els.sharecard, els.savepng].forEach((button) => {
+  [els.copy, els.savetxt, els.sharecard, els.savepng, els.cardSvg, els.cardPng].forEach((button) => {
     button.disabled = !on;
   });
 }
@@ -421,7 +433,7 @@ function wireSource(): void {
 
   els.samplePortrait.addEventListener("click", () => loadPortrait(false));
   els.samplePlanet.addEventListener("click", () => {
-    setSource(planet!, "planet.png", ++sourceSeq);
+    setSource(planet!, "planet.png", beginSourceIntent());
   });
 }
 

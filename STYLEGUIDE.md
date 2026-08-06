@@ -116,8 +116,11 @@ Buttons          `<a class="btn btn--green btn--lg" href="/tool">Open the tool</
                  `<a class="btn btn--ghost" href="/usecases">browse usecases</a>`
                  amber is reserved for the header CTA — do not use `.btn--amber` in page bodies.
 Disabled command `<button class="btn btn--ghost" type="button" disabled>copy text</button>`
-                 commands that cannot run until required state exists use the native
-                 `disabled` property. Runtime code toggles that property, never a visual-only class.
+                 commands that cannot run against the current rendered result use the native
+                 `disabled` property. Keep exports disabled while a source is decoding or a
+                 conversion is pending, then enable them only after that result renders. If a
+                 replacement source fails before changing the result, restore the still-valid
+                 commands. Runtime code toggles the property, never a visual-only class.
 Card             `<article class="card"><h3 class="card-title"><span class="p">$</span> runs locally</h3><p>…</p></article>`
                  choose the heading tag from the document outline: `h2` for a top-level
                  card under the page `h1`, `h3` for a card inside an `h2` section.
