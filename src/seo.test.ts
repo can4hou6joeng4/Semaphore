@@ -6,6 +6,7 @@ import faqHtml from "../faq.html?raw";
 import privacyHtml from "../privacy.html?raw";
 import notFoundHtml from "../404.html?raw";
 import brailleHtml from "../charsets/braille.html?raw";
+import landingSource from "./landing.ts?raw";
 import toolSource from "./tool.ts?raw";
 import sitemapXml from "../public/sitemap.xml?raw";
 import llmsTxt from "../public/llms.txt?raw";
@@ -284,6 +285,17 @@ describe("SEO page contract", () => {
     expect(indexHtml).toContain(
       '<img src="/static/sample-portrait-thumb.webp" alt="" width="68" height="56">'
     );
+  });
+
+  it("implements the standard keyboard contract for the home comparison slider", function () {
+    expect(landingSource).toMatch(
+      /case "ArrowLeft":\s+case "ArrowDown":\s+setPos\(pos - 2\);/
+    );
+    expect(landingSource).toMatch(
+      /case "ArrowRight":\s+case "ArrowUp":\s+setPos\(pos \+ 2\);/
+    );
+    expect(landingSource).toMatch(/case "Home":\s+setPos\(0\);/);
+    expect(landingSource).toMatch(/case "End":\s+setPos\(100\);/);
   });
 
   it("permanently redirects the common braille shorthand", function () {
