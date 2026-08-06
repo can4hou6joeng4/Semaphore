@@ -500,7 +500,10 @@ function wireActions(): void {
 
   els.copy.addEventListener("click", () => {
     if (!state.result) return;
-    Util.copyText(state.result.text).then(() => Site.toast("copied to clipboard ✓"));
+    Util.copyText(state.result.text).then(
+      () => Site.toast("copied to clipboard ✓"),
+      () => Site.toast("clipboard copy failed ✕")
+    );
   });
 
   els.savetxt.addEventListener("click", () => {

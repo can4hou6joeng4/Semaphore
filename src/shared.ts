@@ -246,15 +246,23 @@ export const Util = {
     if (navigator.clipboard && window.isSecureContext !== false) {
       return navigator.clipboard.writeText(text).catch(fallback);
     }
-    return Promise.resolve(fallback());
+    try {
+      fallback();
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject(err);
+    }
     function fallback(): void {
       const ta = document.createElement("textarea");
       ta.value = text;
       ta.style.cssText = "position:fixed;left:-9999px;top:0";
       document.body.appendChild(ta);
       ta.select();
-      try { document.execCommand("copy"); } catch (_) { /* noop */ }
-      ta.remove();
+      try {
+        if (!document.execCommand("copy")) throw new Error("clipboard copy failed");
+      } finally {
+        ta.remove();
+      }
     }
   },
 
