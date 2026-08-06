@@ -63,16 +63,25 @@ stage.addEventListener("pointermove", function (e) {
 });
 
 handle.addEventListener("keydown", function (e) {
-  if (e.key === "ArrowLeft") {
-    setPos(pos - 2);
-    e.preventDefault();
-  } else if (e.key === "ArrowRight") {
-    setPos(pos + 2);
-    e.preventDefault();
-  } else if (e.key === "Home") {
-    setPos(50);
-    e.preventDefault();
+  switch (e.key) {
+    case "ArrowLeft":
+    case "ArrowDown":
+      setPos(pos - 2);
+      break;
+    case "ArrowRight":
+    case "ArrowUp":
+      setPos(pos + 2);
+      break;
+    case "Home":
+      setPos(0);
+      break;
+    case "End":
+      setPos(100);
+      break;
+    default:
+      return;
   }
+  e.preventDefault();
 });
 
 /* ----------------------- conversions ------------------------ */

@@ -130,6 +130,10 @@ Custom button    `<div role="button" tabindex="0" aria-labelledby="label hint">�
                  every visible text node inside the control belongs in its accessible
                  name. Do not replace visible wording with an unrelated `aria-label`,
                  which breaks label-in-name voice navigation.
+Slider           `<button role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">…</button>`
+                 follows the ARIA keyboard contract: Left/Down decrease, Right/Up
+                 increase, Home selects the minimum and End selects the maximum.
+                 Keep `aria-valuenow` synchronized with every pointer and key change.
 Select           `<div class="selectwrap"><select class="input" id="y">…</select></div>`
 Toggle           `<button class="toggle" aria-pressed="false" id="z">invert</button>`
                  a toggle that cannot apply under the current params takes
