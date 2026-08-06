@@ -6,6 +6,7 @@ import faqHtml from "../faq.html?raw";
 import privacyHtml from "../privacy.html?raw";
 import notFoundHtml from "../404.html?raw";
 import brailleHtml from "../charsets/braille.html?raw";
+import toolSource from "./tool.ts?raw";
 import sitemapXml from "../public/sitemap.xml?raw";
 import llmsTxt from "../public/llms.txt?raw";
 import readme from "../README.md?raw";
@@ -61,6 +62,33 @@ describe("SEO page contract", () => {
     expect(description.length).toBeLessThanOrEqual(160);
     expect(html.match(/<h1\b/g)).toHaveLength(1);
     expect(function () { jsonLd(html); }).not.toThrow();
+  });
+
+  it.each(pages)("keeps $path heading levels sequential", function (page) {
+    const levels = Array.from(page.html.matchAll(/<h([1-6])\b/g), function (match) {
+      return Number(match[1]);
+    });
+    expect(levels[0]).toBe(1);
+    levels.slice(1).forEach(function (level, index) {
+      expect(level - levels[index]).toBeLessThanOrEqual(1);
+    });
+  });
+
+  it.each(pages)("gives every image in $path a source", function (page) {
+    const images = Array.from(page.html.matchAll(/<img\b[^>]*>/g), function (match) {
+      return match[0];
+    });
+    images.forEach(function (image) {
+      expect(image).toMatch(/\s(?:src|srcset)="[^"]+"/);
+    });
+  });
+
+  it("keeps the share-card preview valid between renders", function () {
+    expect(toolHtml).toMatch(
+      /<img id="cardPreview"\s+src="data:image\/gif;base64,[^"]+"/
+    );
+    expect(toolSource).toContain("els.cardPreview.src = CARD_PREVIEW_PLACEHOLDER");
+    expect(toolSource).not.toContain('els.cardPreview.removeAttribute("src")');
   });
 
   it("describes the converter on the page where it runs", () => {

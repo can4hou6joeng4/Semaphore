@@ -89,6 +89,8 @@ let cardTheme = "crt";                 // share-card palette, independent of sit
 let cardUrl: string | null = null;     // objectURL of the current preview
 let cardTimer: number | undefined;     // caption debounce
 let cardSeq = 0;                       // drops stale async preview renders
+const CARD_PREVIEW_PLACEHOLDER =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
 const fontsReady: Promise<unknown> = (document.fonts && document.fonts.ready)
   ? document.fonts.ready : Promise.resolve();
@@ -568,8 +570,9 @@ function closeCard(): void {
   els.cardModal.classList.add("hidden");
   document.removeEventListener("keydown", onCardKeydown);
   clearTimeout(cardTimer);
+  cardSeq++;                            // ignore a render that resolves after close
   if (cardUrl) { URL.revokeObjectURL(cardUrl); cardUrl = null; }
-  els.cardPreview.removeAttribute("src");
+  els.cardPreview.src = CARD_PREVIEW_PLACEHOLDER;
   els.sharecard.focus();
 }
 

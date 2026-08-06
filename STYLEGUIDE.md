@@ -110,6 +110,8 @@ Buttons          `<a class="btn btn--green btn--lg" href="/tool">Open the tool</
                  `<a class="btn btn--ghost" href="/usecases">browse usecases</a>`
                  amber is reserved for the header CTA — do not use `.btn--amber` in page bodies.
 Card             `<article class="card"><h3 class="card-title"><span class="p">$</span> runs locally</h3><p>…</p></article>`
+                 choose the heading tag from the document outline: `h2` for a top-level
+                 card under the page `h1`, `h3` for a card inside an `h2` section.
 Grid             `<div class="grid-3">…cards…</div>`
 Terminal window  `<figure class="term"><figcaption class="term-head"><span class="term-title"><span class="p">$</span> cat banner.txt</span><span class="term-dots">– □ ✕</span></figcaption><div class="term-body"><pre class="ascii-pre">…</pre></div></figure>`
 FAQ item         `<details class="qa"><summary>…question…</summary><div class="qa-a"><p>…</p></div></details>`
