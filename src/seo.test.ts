@@ -98,6 +98,15 @@ describe("SEO page contract", () => {
     });
   });
 
+  it("dates sitemap entries from their latest substantive page change", function () {
+    expect(sitemapXml).toContain([
+      "<loc>https://semaphore.bobochang.cn/</loc>",
+      "<lastmod>2026-08-06</lastmod>"
+    ].join("\n    "));
+    expect(sitemapXml.match(/<lastmod>2026-08-06<\/lastmod>/g)).toHaveLength(1);
+    expect(sitemapXml.match(/<lastmod>2026-07-29<\/lastmod>/g)).toHaveLength(5);
+  });
+
   it("keeps crawl discovery open and advertises the sitemap", function () {
     expect(robotsTxt).toContain("User-agent: *");
     expect(robotsTxt).toContain("Allow: /");
