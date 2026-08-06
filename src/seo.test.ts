@@ -273,6 +273,13 @@ describe("SEO page contract", () => {
     );
   });
 
+  it("keeps returning visitors on HTTPS without covering unverified subdomains", function () {
+    expect(headersTxt.match(/^  Strict-Transport-Security: max-age=31536000$/gm)).toHaveLength(1);
+    expect(headersTxt).not.toMatch(
+      /^  Strict-Transport-Security:.*\b(?:includeSubDomains|preload)\b/im
+    );
+  });
+
   it("uses a dedicated small asset for the home demo thumbnail", function () {
     expect(indexHtml).toContain(
       '<img src="/static/sample-portrait-thumb.webp" alt="" width="68" height="56">'
