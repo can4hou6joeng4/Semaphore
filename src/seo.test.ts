@@ -108,6 +108,16 @@ describe("SEO page contract", () => {
     expect(toolSource).not.toContain('els.cardPreview.removeAttribute("src")');
   });
 
+  it("releases the share-card preview busy state when the modal closes", function () {
+    expect(toolSource).toContain('const CARD_PREVIEW_STATE = "rendering card preview…";');
+    expect(toolSource).toContain('els.cardPreview.setAttribute("aria-busy", "true")');
+    expect(toolSource).toContain('els.cardPreview.setAttribute("aria-busy", "false")');
+    expect(toolSource).toContain(
+      "if (status && status.textContent === CARD_PREVIEW_STATE) Site.setState(\"ready\");"
+    );
+    expect(toolSource).toContain("if (cardPreviewBusy) finishCardPreview();");
+  });
+
   it("keeps the newest source selection when asynchronous loads finish out of order", function () {
     expect(toolSource).toContain("let sourceSeq = 0;");
     expect(toolSource.match(/const seq = \+\+sourceSeq;/g)).toHaveLength(2);
