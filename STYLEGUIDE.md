@@ -123,6 +123,10 @@ Terminal window  `<figure class="term"><figcaption class="term-head"><span class
 FAQ item         `<details class="qa"><summary>…question…</summary><div class="qa-a"><p>…</p></div></details>`
 Tag row          `<div class="row"><span class="tag">readme</span><span class="tag--green tag">plain text</span></div>`
 Field            `<div class="field"><label class="field-label" for="x">columns <span class="val" id="xv">120</span></label><input type="range" id="x"></div>`
+Custom button    `<div role="button" tabindex="0" aria-labelledby="label hint">…</div>`
+                 every visible text node inside the control belongs in its accessible
+                 name. Do not replace visible wording with an unrelated `aria-label`,
+                 which breaks label-in-name voice navigation.
 Select           `<div class="selectwrap"><select class="input" id="y">…</select></div>`
 Toggle           `<button class="toggle" aria-pressed="false" id="z">invert</button>`
                  a toggle that cannot apply under the current params takes
@@ -184,6 +188,9 @@ terminal.css, so components that use tokens theme themselves for free.
 - Anything overlaying the PHOTO (which stays dark in both themes) must keep a light
   foreground in paper via a scoped `[data-theme="paper"]` rule built from tokens
   (e.g. `color: var(--panel)`).
+- Normal text and filled-button labels must retain at least 4.5:1 contrast in both
+  themes. Validate the paper palette through `?theme=paper`; do not assume a dark-theme
+  token remains readable after its light-theme override.
 - In paper the CRT overlays are hidden and `--glow` collapses to a no-op shadow; do
   not add new hard-coded `text-shadow`/glow outside tokens.
 
