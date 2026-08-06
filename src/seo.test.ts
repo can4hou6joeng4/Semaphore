@@ -182,7 +182,7 @@ describe("SEO page contract", () => {
 
   it("only enables export commands for the current rendered result", function () {
     expect(toolSource).toMatch(
-      /function beginSourceIntent[\s\S]*?closeCard\(\);\s+setExports\(false\);[\s\S]*?return \+\+sourceSeq;/
+      /function beginSourceIntent[\s\S]*?closeCard\(\);\s+sourceIntentPending = true;\s+setExports\(false\);[\s\S]*?return \+\+sourceSeq;/
     );
     expect(toolSource).toContain(
       "[els.copy, els.savetxt, els.sharecard, els.savepng, els.cardSvg, els.cardPng]"
@@ -194,6 +194,19 @@ describe("SEO page contract", () => {
     expect(toolSource).toMatch(
       /function renderResult[\s\S]*?setExports\(true\);/
     );
+  });
+
+  it("keeps an older pending conversion from unlocking a newer source intent", function () {
+    expect(toolSource).toContain("let sourceIntentPending = false;");
+    expect(toolSource).toMatch(
+      /function setSource[\s\S]*?sourceIntentPending = false;\s+requestConvert\(\);/
+    );
+    expect(toolSource).toMatch(
+      /function runConvert\(\): void \{\s+if \(!state\.source \|\| sourceIntentPending\) return;/
+    );
+    expect(toolSource.match(
+      /if \(seq !== sourceSeq\) return;\s+sourceIntentPending = false;/g
+    )).toHaveLength(2);
   });
 
   it("reports clipboard success only after a copy path succeeds", function () {
