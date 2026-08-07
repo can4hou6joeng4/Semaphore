@@ -113,6 +113,8 @@ interface Layout {
   caption: string;
   fs: number;
   adv: number;
+  artW: number;
+  fitBraille: boolean;
   w: number;
   h: number;
   artX: number;
@@ -143,6 +145,8 @@ function layout(result: ConvertResult, opts?: ShareCardOptions): Layout {
     caption: fittedCaption,
     fs: fs,
     adv: adv,
+    artW: artW,
+    fitBraille: result.charset === "braille",
     w: Math.ceil(contentW + PAD * 2),
     h: Math.ceil(PAD + HEAD_H + GAP_HEAD + artH + GAP_FOOT + FOOT_H + PAD),
     artX: PAD + Math.max(0, (contentW - artW) / 2),
@@ -152,6 +156,12 @@ function layout(result: ConvertResult, opts?: ShareCardOptions): Layout {
     meta: "--charset " + result.charset + " --cols " + result.cols,
     fileLabel: fileLabel
   };
+}
+
+/* JetBrains Mono has no braille glyphs. Keep the system fallback inside the
+   same fixed cells in both renderers instead of letting it overrun the card. */
+function svgTextFit(width: number): string {
+  return ' textLength="' + num(width) + '" lengthAdjust="spacingAndGlyphs"';
 }
 
 interface Run {
@@ -225,13 +235,16 @@ export function svg(result: ConvertResult, opts?: ShareCardOptions): string {
   for (r = 0; r < result.rows; r++) {
     const base = num(L.artY + r * L.fs + L.fs * ASCENT);
     if (!result.colors) {
-      s += '<text x="' + num(L.artX) + '" y="' + base + '" xml:space="preserve">' +
+      s += '<text x="' + num(L.artX) + '" y="' + base + '" xml:space="preserve"' +
+           (L.fitBraille ? svgTextFit(L.artW) : "") + '>' +
            esc(result.lines[r]) + "</text>";
     } else {
       const runs = rowRuns(result, r);
-      s += '<text y="' + base + '" xml:space="preserve">';
+      s += '<text y="' + base + '" xml:space="preserve"' +
+           (L.fitBraille ? ' x="' + num(L.artX) + '"' + svgTextFit(L.artW) : "") + '>';
       for (i = 0; i < runs.length; i++) {
-        s += '<tspan x="' + num(L.artX + runs[i].start * L.adv) + '" fill="' +
+        s += '<tspan' + (L.fitBraille ? "" : ' x="' +
+             num(L.artX + runs[i].start * L.adv) + '"') + ' fill="' +
              runs[i].rgb + '">' + esc(runs[i].text) + "</tspan>";
       }
       s += "</text>";
@@ -249,6 +262,37 @@ export function svg(result: ConvertResult, opts?: ShareCardOptions): string {
 
   s += "</g></svg>";
   return s;
+}
+
+function fillSizedText(ctx: CanvasRenderingContext2D, text: string,
+                       x: number, y: number, width: number): void {
+  const measured = ctx.measureText(text).width;
+  if (!measured || Math.abs(measured - width) < 0.01) {
+    ctx.fillText(text, x, y);
+    return;
+  }
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(width / measured, 1);
+  ctx.fillText(text, 0, 0);
+  ctx.restore();
+}
+
+function fillSizedRuns(ctx: CanvasRenderingContext2D, runs: Run[],
+                       x: number, y: number, width: number): void {
+  const widths = runs.map((run) => ctx.measureText(run.text).width);
+  const measured = widths.reduce((sum, runWidth) => sum + runWidth, 0);
+  if (!measured) return;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(width / measured, 1);
+  let offset = 0;
+  runs.forEach((run, i) => {
+    ctx.fillStyle = run.rgb;
+    ctx.fillText(run.text, offset, 0);
+    offset += widths[i];
+  });
+  ctx.restore();
 }
 
 /* ---------------------------- PNG ----------------------------- */
@@ -302,12 +346,18 @@ export function pngBlob(result: ConvertResult, opts?: ShareCardOptions): Promise
       const base = L.artY + r * L.fs + L.fs * ASCENT;
       if (!result.colors) {
         ctx.fillStyle = p.green;
-        ctx.fillText(result.lines[r], L.artX, base);
+        if (L.fitBraille) fillSizedText(ctx, result.lines[r], L.artX, base, L.artW);
+        else ctx.fillText(result.lines[r], L.artX, base);
       } else {
         const runs = rowRuns(result, r);
-        for (let i = 0; i < runs.length; i++) {
-          ctx.fillStyle = runs[i].rgb;
-          ctx.fillText(runs[i].text, L.artX + runs[i].start * L.adv, base);
+        if (L.fitBraille) {
+          fillSizedRuns(ctx, runs, L.artX, base, L.artW);
+        } else {
+          for (let i = 0; i < runs.length; i++) {
+            ctx.fillStyle = runs[i].rgb;
+            const x = L.artX + runs[i].start * L.adv;
+            ctx.fillText(runs[i].text, x, base);
+          }
         }
       }
     }
