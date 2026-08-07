@@ -63,24 +63,27 @@ stage.addEventListener("pointermove", function (e) {
 });
 
 handle.addEventListener("keydown", function (e) {
+  let next: number;
   switch (e.key) {
     case "ArrowLeft":
     case "ArrowDown":
-      setPos(pos - 2);
+      next = pos - 2;
       break;
     case "ArrowRight":
     case "ArrowUp":
-      setPos(pos + 2);
+      next = pos + 2;
       break;
     case "Home":
-      setPos(0);
+      next = 0;
       break;
     case "End":
-      setPos(100);
+      next = 100;
       break;
     default:
       return;
   }
+  userTouched = true;
+  setPos(next);
   e.preventDefault();
 });
 

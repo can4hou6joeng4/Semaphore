@@ -139,6 +139,9 @@ Slider           `<button role="slider" aria-valuemin="0" aria-valuemax="100" ar
                  Keep `aria-valuenow` synchronized with every pointer and key change.
                  A pointer press on either the thumb or track moves focus to the
                  slider so arrow-key adjustment continues from the selected value.
+                 During the automatic intro sweep, any valid slider key also transfers
+                 control to the user before changing the value; the sweep must not
+                 overwrite a keyboard adjustment.
 Select           `<div class="selectwrap"><select class="input" id="y">…</select></div>`
 Toggle           `<button class="toggle" aria-pressed="false" id="z">invert</button>`
                  a toggle that cannot apply under the current params takes
