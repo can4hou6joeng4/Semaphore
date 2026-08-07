@@ -163,6 +163,9 @@ their controls and command line but must not queue the old source or replace the
 `loading…` / `decoding…` state with `converting…`.
 The tool reserves its default portrait metadata and thumbnail dimensions in the initial
 HTML so the asynchronous boot conversion cannot reveal a new block and shift the controls.
+The source preview keeps its intrinsic aspect ratio with auto width and height while fitting
+the rail's 110px height cap; a generated data-URI thumbnail must never be stretched by the
+rail's generic image width constraint.
 On desktop the workbench has a viewport-bounded height: the labelled, focusable source rail
 and output viewport own any vertical overflow. The output viewport reserves a stable
 scrollbar gutter so fit sizing does not create a one-frame horizontal scrollbar when ASCII

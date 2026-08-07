@@ -211,6 +211,9 @@ describe("SEO page contract", () => {
       /id="srcThumb" src="\/static\/sample-portrait\.webp"\s+width="1100" height="1069"/
     );
     expect(toolHtml).toContain("portrait.webp — 1100×1069");
+    expect(toolHtml).toMatch(
+      /\.source-thumb\s*\{\s*width: auto; height: auto; max-width: 100%; max-height: 110px;\s*margin-inline: auto;\s*\}/
+    );
     expect(toolHtml).toContain("height: calc(100vh - var(--header-h) - var(--statusbar-h));");
     expect(toolHtml).toContain(".tool-side > * { flex-shrink: 0; }");
     expect(toolHtml).toContain("min-width: 0; min-height: 0; overflow: hidden;");
