@@ -391,13 +391,14 @@ describe("SEO page contract", () => {
 
   it("implements the standard keyboard contract for the home comparison slider", function () {
     expect(landingSource).toMatch(
-      /case "ArrowLeft":\s+case "ArrowDown":\s+setPos\(pos - 2\);/
+      /case "ArrowLeft":\s+case "ArrowDown":\s+next = pos - 2;/
     );
     expect(landingSource).toMatch(
-      /case "ArrowRight":\s+case "ArrowUp":\s+setPos\(pos \+ 2\);/
+      /case "ArrowRight":\s+case "ArrowUp":\s+next = pos \+ 2;/
     );
-    expect(landingSource).toMatch(/case "Home":\s+setPos\(0\);/);
-    expect(landingSource).toMatch(/case "End":\s+setPos\(100\);/);
+    expect(landingSource).toMatch(/case "Home":\s+next = 0;/);
+    expect(landingSource).toMatch(/case "End":\s+next = 100;/);
+    expect(landingSource).toContain("userTouched = true;\n  setPos(next);");
   });
 
   it("focuses the home comparison slider from both thumb and track input", function () {
