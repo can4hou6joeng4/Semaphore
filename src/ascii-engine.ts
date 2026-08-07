@@ -32,6 +32,7 @@ export interface Charset {
   label: string;
   ramp?: string;
   braille?: boolean;
+  advanceSample?: string;
 }
 
 export interface SrcRect {
@@ -87,12 +88,20 @@ export const CHARSETS: Record<string, Charset> = {
   blocks:   { label: "blocks",    ramp: " ░▒▓█" },
   minimal:  { label: "minimal",   ramp: " .:*#" },
   binary:   { label: "binary",    ramp: " 01" },
-  braille:  { label: "braille",   braille: true }
+  braille:  { label: "braille",   braille: true, advanceSample: "⣿" }
 };
 
 const DEFAULT_ASPECT = 1 / 0.6; // mono cell h/w at line-height 1
 
 export const VERSION = "1.0.1"; // keep in sync with package.json
+
+/* The live preview and regular PNG preserve the rendered glyph's natural
+   width. JetBrains Mono has no Braille glyphs, so that charset must measure
+   the browser's fallback instead of assuming the primary font's M advance. */
+export function advanceSample(charset: string): string {
+  const cs = CHARSETS[charset];
+  return cs && cs.advanceSample ? cs.advanceSample : "M";
+}
 
 /* ------------------------- helpers -------------------------- */
 function srcSize(source: AsciiSource): { w: number; h: number } {
@@ -291,7 +300,7 @@ export function renderPNG(result: ConvertResult, opts?: RenderPNGOptions): Promi
   const cv = document.createElement("canvas");
   let ctx = cv.getContext("2d")!;
   ctx.font = fontStr;
-  const adv = ctx.measureText("M").width;
+  const adv = ctx.measureText(advanceSample(result.charset)).width;
 
   cv.width = Math.ceil((result.cols * adv + pad * 2) * scale);
   cv.height = Math.ceil((result.rows * fs + pad * 2) * scale);

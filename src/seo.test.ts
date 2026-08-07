@@ -9,6 +9,7 @@ import brailleHtml from "../charsets/braille.html?raw";
 import landingSource from "./landing.ts?raw";
 import sharedSource from "./shared.ts?raw";
 import toolSource from "./tool.ts?raw";
+import engineSource from "./ascii-engine.ts?raw";
 import sitemapXml from "../public/sitemap.xml?raw";
 import llmsTxt from "../public/llms.txt?raw";
 import readme from "../README.md?raw";
@@ -132,6 +133,16 @@ describe("SEO page contract", () => {
     );
     expect(toolSource).not.toContain('Util.download(base() + "-ascii.png"');
     expect(toolSource).not.toContain('Util.download(base() + "-card.png"');
+  });
+
+  it("fits live output and regular PNGs from the current charset advance", function () {
+    expect(toolSource).toContain(
+      "sample: AsciiEngine.advanceSample(state.result.charset)"
+    );
+    expect(sharedSource).toContain("Util.advanceRatio(opts.sample)");
+    expect(engineSource).toContain(
+      "ctx.measureText(advanceSample(result.charset)).width"
+    );
   });
 
   it("keeps the newest source selection when asynchronous loads finish out of order", function () {
