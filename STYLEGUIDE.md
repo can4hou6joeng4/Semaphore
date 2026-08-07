@@ -169,6 +169,10 @@ specific failure toast rather than reporting a copy that did not happen.
 Share-card footer labels keep the card geometry fixed: the file/dimensions label stays on
 the left, the caption stays right-aligned, and the shared SVG/PNG layout preserves a 24px
 gap by deterministically ellipsizing overflow. Never let the two footer labels overlap.
+JetBrains Mono has no Braille glyphs, so share-card Braille rows must fit the system
+fallback back into the renderer's fixed 0.6em cells: SVG uses `textLength` /
+`lengthAdjust`, and PNG applies the equivalent horizontal canvas scaling. Other charsets
+keep their native text path.
 
 ## Engine quick reference
 

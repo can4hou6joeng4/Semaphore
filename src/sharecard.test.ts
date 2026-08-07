@@ -1,10 +1,11 @@
-import { describe, it, expect } from "vitest";
-import { svg } from "./sharecard";
+import { afterEach, describe, it, expect, vi } from "vitest";
+import { pngBlob, svg } from "./sharecard";
 import type { ConvertResult } from "./ascii-engine";
 
 /* svg() is documented as DOM-free, so the whole layout + escaping
    path is testable in plain node — no canvas, no jsdom.            */
-function makeResult(lines: string[], colors?: number[] | null): ConvertResult {
+function makeResult(lines: string[], colors?: number[] | null,
+                    charset = "blocks"): ConvertResult {
   const cols = lines[0].length;
   const rows = lines.length;
   return {
@@ -13,9 +14,9 @@ function makeResult(lines: string[], colors?: number[] | null): ConvertResult {
     colors: colors ? new Uint8ClampedArray(colors) : null,
     cols,
     rows,
-    charset: "blocks",
+    charset,
     ms: 0,
-    opts: { cols, charset: "blocks", invert: false, brightness: 0,
+    opts: { cols, charset, invert: false, brightness: 0,
             contrast: 0, color: colors ? "original" : "green", cellAspect: 1 / 0.6 }
   };
 }
@@ -100,6 +101,23 @@ describe("ShareCard.svg", () => {
     expect(out).toContain('fill="rgb(0,248,0)"');
   });
 
+  it("fits braille rows to the card cell geometry without changing other charsets", () => {
+    const braille = svg(makeResult(["⣿".repeat(120)], null, "braille"));
+    const detailed = svg(makeResult(["M".repeat(120)]));
+
+    expect(braille).toContain('textLength="792" lengthAdjust="spacingAndGlyphs"');
+    expect(detailed).not.toContain("textLength=");
+  });
+
+  it("fits a colored braille row once while preserving its runs", () => {
+    const out = svg(makeResult(["⣿⣿⣿"],
+      [255, 0, 0, 250, 0, 0, 0, 255, 0], "braille"));
+
+    expect(out).toContain('textLength="19.8" lengthAdjust="spacingAndGlyphs"');
+    expect(out.match(/textLength=/g)).toHaveLength(1);
+    expect(out.match(/<tspan /g)).toHaveLength(2);
+  });
+
   it("falls back to the crt palette for an unknown theme", () => {
     expect(svg(makeResult(["ab"]), { theme: "nope" })).toContain("#0C120D");
     expect(svg(makeResult(["ab"]), { theme: "paper" })).toContain("#F2EDE0");
@@ -110,5 +128,34 @@ describe("ShareCard.svg", () => {
     expect(out.startsWith("<svg ")).toBe(true);
     expect(out.endsWith("</svg>")).toBe(true);
     expect(out.match(/<svg /g)).toHaveLength(1);
+  });
+});
+
+describe("ShareCard.pngBlob", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("horizontally fits braille fallback glyphs to their assigned cells", async () => {
+    const ctx = {
+      fillRect: vi.fn(), strokeRect: vi.fn(), fillText: vi.fn(),
+      measureText: vi.fn(() => ({ width: 15 })),
+      save: vi.fn(), restore: vi.fn(), translate: vi.fn(), scale: vi.fn(),
+      fillStyle: "", strokeStyle: "", lineWidth: 0,
+      textAlign: "left", textBaseline: "alphabetic", font: ""
+    };
+    const canvas = {
+      width: 0, height: 0,
+      getContext: vi.fn(() => ctx),
+      toBlob: vi.fn((done: BlobCallback) => done(new Blob(["png"], { type: "image/png" })))
+    };
+    vi.stubGlobal("document", {
+      fonts: { ready: Promise.resolve() },
+      createElement: vi.fn(() => canvas)
+    });
+
+    await pngBlob(makeResult(["⣿⣿"], null, "braille"));
+
+    expect(ctx.translate).toHaveBeenCalledWith(255.4, 88.8);
+    expect(ctx.scale).toHaveBeenCalledWith(13.2 / 15, 1);
+    expect(ctx.fillText).toHaveBeenCalledWith("⣿⣿", 0, 0);
   });
 });
