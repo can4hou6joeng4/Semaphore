@@ -4,6 +4,7 @@ import { Site, Util } from "./shared";
 
 const output = document.getElementById("brailleDemo") as HTMLPreElement;
 const stage = document.getElementById("brailleStage") as HTMLElement;
+const BRAILLE_SAMPLE = AsciiEngine.advanceSample("braille");
 let demoSize: { cols: number; rows: number } | null = null;
 
 function fitDemo(): void {
@@ -12,11 +13,11 @@ function fitDemo(): void {
   Util.fitPre(output, demoSize.cols, {
     container: stage,
     min: 3,
-    max: Math.max(3, Math.min(11, heightLimit))
+    max: Math.max(3, Math.min(11, heightLimit)),
+    sample: BRAILLE_SAMPLE
   });
-  /* Braille glyphs come from an OS fallback rather than JetBrains Mono, so
-     their real advance can differ from Util.advanceRatio(). Clamp once more
-     against the rendered width to keep all 86 columns inside the stage. */
+  /* Keep a rendered-width guard for fallback differences that appear after
+     measurement (for example an OS font swap during the same page load). */
   const availableWidth = stage.clientWidth - 32;
   if (output.scrollWidth > availableWidth) {
     const currentSize = parseFloat(getComputedStyle(output).fontSize);
@@ -37,7 +38,7 @@ async function renderDemo(): Promise<void> {
       brightness: 4,
       contrast: 12,
       dither: true,
-      cellAspect: 1 / Util.advanceRatio()
+      cellAspect: 1 / Util.advanceRatio(BRAILLE_SAMPLE)
     });
     demoSize = { cols: result.cols, rows: result.rows };
     output.textContent = result.text;

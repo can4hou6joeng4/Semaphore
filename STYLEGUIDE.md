@@ -168,26 +168,33 @@ Copy commands show success only when `Util.copyText()` resolves; handle rejectio
 specific failure toast rather than reporting a copy that did not happen.
 Live fit and regular PNG exports preserve the current charset's natural glyph width. Use
 `AsciiEngine.advanceSample(charset)` as the single representative cell: Braille measures
-the system fallback, while covered charsets use `M`. Fit by reducing font size and size
-the PNG canvas from that real advance; do not squeeze the live or regular PNG glyphs.
+the system fallback, while covered charsets use `M`. The same measured advance must set
+`convert().cellAspect`, live fit, and regular PNG canvas width; otherwise the output can
+fit without clipping while still being stretched. Do not squeeze live or regular PNG glyphs.
+The tool's `fit width` mode may reduce dense mobile output to 1px because the output is
+exposed as one labelled image; turning fit off restores the user-controlled zoom.
 Share-card footer labels keep the card geometry fixed: the file/dimensions label stays on
 the left, the caption stays right-aligned, and the shared SVG/PNG layout preserves a 24px
 gap by deterministically ellipsizing overflow. Never let the two footer labels overlap.
 JetBrains Mono has no Braille glyphs, so share-card Braille rows must fit the system
 fallback back into the renderer's fixed 0.6em cells: SVG uses `textLength` /
-`lengthAdjust`, and PNG applies the equivalent horizontal canvas scaling. Other charsets
-keep their native text path.
+`lengthAdjust`, and PNG applies the equivalent horizontal canvas scaling. When Braille
+row count comes from the wider fallback advance, scale the card art font and line step
+together so its source aspect and fixed plate geometry remain stable. Other charsets keep
+their native text path.
 
 ## Engine quick reference
 
 ```js
 const img = await AsciiEngine.loadImage("/static/sample-portrait.webp");
-const res = AsciiEngine.convert(img, { cols: 140, charset: "detailed",
+const charset = "detailed";
+const sample = AsciiEngine.advanceSample(charset);
+const res = AsciiEngine.convert(img, { cols: 140, charset,
   color: "green", invert: false, brightness: 0, contrast: 0,
-  cellAspect: 1 / Util.advanceRatio() });          // match on-screen cell shape
+  cellAspect: 1 / Util.advanceRatio(sample) });    // match rendered cell shape
 pre.innerHTML = AsciiEngine.toHTML(res);           // colored-safe; escaped
 Util.fitPre(pre, res.cols, { container: stage,
-  sample: AsciiEngine.advanceSample(res.charset) }); // real glyph advance fills width
+  sample });                                       // real glyph advance fills width
 const blob = await AsciiEngine.renderPNG(res, { fontSize: 12, scale: 2 });
 ```
 
