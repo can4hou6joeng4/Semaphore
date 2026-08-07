@@ -215,6 +215,7 @@ describe("SEO page contract", () => {
     expect(toolHtml).toContain(".tool-side > * { flex-shrink: 0; }");
     expect(toolHtml).toContain("min-width: 0; min-height: 0; overflow: hidden;");
     expect(toolHtml).toContain("flex: 1; min-height: 0; overflow: auto;");
+    expect(toolHtml).toContain("scrollbar-gutter: stable;");
     expect(toolHtml).toMatch(
       /@media \(max-width: 960px\)[\s\S]*?height: auto; min-height: 0;/
     );
