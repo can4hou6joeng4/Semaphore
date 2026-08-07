@@ -166,6 +166,9 @@ Utilities: `Util.copyText(str)`, `Util.download(name, textOrBlob, mime)`,
 `Util.fitPre(pre, cols, {container, max, min})`, `Util.advanceRatio()`.
 Copy commands show success only when `Util.copyText()` resolves; handle rejection with a
 specific failure toast rather than reporting a copy that did not happen.
+Share-card footer labels keep the card geometry fixed: the file/dimensions label stays on
+the left, the caption stays right-aligned, and the shared SVG/PNG layout preserves a 24px
+gap by deterministically ellipsizing overflow. Never let the two footer labels overlap.
 
 ## Engine quick reference
 
