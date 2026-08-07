@@ -205,9 +205,45 @@ describe("SEO page contract", () => {
     expect(toolHtml).toContain('class="fs-xs text-dim" id="srcMeta"');
   });
 
+  it("reserves the default source and desktop workbench geometry", function () {
+    expect(toolHtml).toContain('class="term" id="srcInfo"');
+    expect(toolHtml).toMatch(
+      /id="srcThumb" src="\/static\/sample-portrait\.webp"\s+width="1100" height="1069"/
+    );
+    expect(toolHtml).toContain("portrait.webp — 1100×1069");
+    expect(toolHtml).toContain("height: calc(100vh - var(--header-h) - var(--statusbar-h));");
+    expect(toolHtml).toContain(".tool-side > * { flex-shrink: 0; }");
+    expect(toolHtml).toContain("min-width: 0; min-height: 0; overflow: hidden;");
+    expect(toolHtml).toContain("flex: 1; min-height: 0; overflow: auto;");
+    expect(toolHtml).toMatch(
+      /@media \(max-width: 960px\)[\s\S]*?height: auto; min-height: 0;/
+    );
+  });
+
+  it("keeps desktop overflow regions keyboard reachable", function () {
+    expect(toolHtml).toContain(
+      '<aside class="tool-side" aria-label="source and parameters" tabindex="0">'
+    );
+    expect(toolHtml).toMatch(
+      /id="outBody" role="region"\s+aria-label="ASCII output viewport" tabindex="0"/
+    );
+    expect(toolHtml).toContain(
+      ".tool-side:focus-visible, .out-body:focus-visible { outline-offset: -2px; }"
+    );
+  });
+
+  it("keeps boot failure metadata stable without showing a stale portrait", function () {
+    expect(toolSource).toMatch(
+      /if \(atBoot\) \{\s+els\.srcThumb\.classList\.add\("is-unavailable"\);\s+els\.srcThumb\.alt = "";\s+els\.srcMeta\.textContent = "default sample unavailable";/
+    );
+    expect(toolSource).toMatch(
+      /function setSource[\s\S]*?classList\.remove\("is-unavailable"\);[\s\S]*?els\.srcThumb\.width = d\.w;\s+els\.srcThumb\.height = d\.h;/
+    );
+  });
+
   it("keeps the empty output placeholder readable", function () {
     expect(toolHtml).toContain(
-      ".ascii-pre.is-empty { font-size: var(--fs-s); color: var(--ink-dim);"
+      "font-size: var(--fs-s); color: var(--ink-dim); text-shadow: none;"
     );
   });
 
