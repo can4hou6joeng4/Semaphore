@@ -249,7 +249,7 @@ function setSource(source: AsciiSource, name: string, seq: number): void {
    fast path, with a timeout fallback for throttled/background
    tabs where rAF can stall indefinitely.                        */
 function requestConvert(): void {
-  if (!state.source) return;
+  if (!state.source || sourceIntentPending) return;
   setExports(false);
   if (pendingFrame) return;
   pendingFrame = true;

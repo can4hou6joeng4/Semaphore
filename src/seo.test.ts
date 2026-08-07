@@ -189,7 +189,7 @@ describe("SEO page contract", () => {
     );
     expect(toolSource.match(/setExports\(!!state\.result\);/g)).toHaveLength(2);
     expect(toolSource).toMatch(
-      /function requestConvert[\s\S]*?if \(!state\.source\) return;\s+setExports\(false\);\s+if \(pendingFrame\) return;/
+      /function requestConvert[\s\S]*?if \(!state\.source \|\| sourceIntentPending\) return;\s+setExports\(false\);\s+if \(pendingFrame\) return;/
     );
     expect(toolSource).toMatch(
       /function renderResult[\s\S]*?setExports\(true\);/
@@ -207,6 +207,15 @@ describe("SEO page contract", () => {
     expect(toolSource.match(
       /if \(seq !== sourceSeq\) return;\s+sourceIntentPending = false;/g
     )).toHaveLength(2);
+  });
+
+  it("keeps source loading state when parameters change mid-load", function () {
+    expect(toolSource).toMatch(
+      /function requestConvert\(\): void \{\s+if \(!state\.source \|\| sourceIntentPending\) return;\s+setExports\(false\);/
+    );
+    expect(toolSource).toMatch(
+      /function setSource[\s\S]*?sourceIntentPending = false;\s+requestConvert\(\);/
+    );
   });
 
   it("reports clipboard success only after a copy path succeeds", function () {

@@ -155,6 +155,9 @@ Statusbar API (page JS): `Site.setState("converting…", {busy:true})`, `Site.se
 The visual statusbar is not one atomic live region: only the state segment and each toast
 use `role="status"`. Right-side dimensions and timing remain visible without triggering
 another full status announcement on every conversion.
+While a replacement source is decoding or waiting on fonts, parameter changes may update
+their controls and command line but must not queue the old source or replace the owning
+`loading…` / `decoding…` state with `converting…`.
 
 Utilities: `Util.copyText(str)`, `Util.download(name, textOrBlob, mime)`,
 `Util.fitPre(pre, cols, {container, max, min})`, `Util.advanceRatio()`.
