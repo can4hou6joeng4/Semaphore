@@ -163,9 +163,13 @@ their controls and command line but must not queue the old source or replace the
 `loading…` / `decoding…` state with `converting…`.
 
 Utilities: `Util.copyText(str)`, `Util.download(name, textOrBlob, mime)`,
-`Util.fitPre(pre, cols, {container, max, min})`, `Util.advanceRatio()`.
+`Util.fitPre(pre, cols, {container, max, min, sample})`, `Util.advanceRatio(sample)`.
 Copy commands show success only when `Util.copyText()` resolves; handle rejection with a
 specific failure toast rather than reporting a copy that did not happen.
+Live fit and regular PNG exports preserve the current charset's natural glyph width. Use
+`AsciiEngine.advanceSample(charset)` as the single representative cell: Braille measures
+the system fallback, while covered charsets use `M`. Fit by reducing font size and size
+the PNG canvas from that real advance; do not squeeze the live or regular PNG glyphs.
 Share-card footer labels keep the card geometry fixed: the file/dimensions label stays on
 the left, the caption stays right-aligned, and the shared SVG/PNG layout preserves a 24px
 gap by deterministically ellipsizing overflow. Never let the two footer labels overlap.
@@ -182,7 +186,8 @@ const res = AsciiEngine.convert(img, { cols: 140, charset: "detailed",
   color: "green", invert: false, brightness: 0, contrast: 0,
   cellAspect: 1 / Util.advanceRatio() });          // match on-screen cell shape
 pre.innerHTML = AsciiEngine.toHTML(res);           // colored-safe; escaped
-Util.fitPre(pre, res.cols, { container: stage });  // font-size so cols fill width
+Util.fitPre(pre, res.cols, { container: stage,
+  sample: AsciiEngine.advanceSample(res.charset) }); // real glyph advance fills width
 const blob = await AsciiEngine.renderPNG(res, { fontSize: 12, scale: 2 });
 ```
 

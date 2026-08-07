@@ -311,7 +311,11 @@ function renderResult(res: ConvertResult): void {
 function applySizing(): void {
   if (!state.result) return;
   if (state.fit) {
-    Util.fitPre(els.out, state.result.cols, { container: els.outBody, padding: 16 });
+    Util.fitPre(els.out, state.result.cols, {
+      container: els.outBody,
+      padding: 16,
+      sample: AsciiEngine.advanceSample(state.result.charset)
+    });
   } else {
     els.out.style.fontSize = state.zoom + "px";
     els.out.style.lineHeight = "1";

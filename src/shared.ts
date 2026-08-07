@@ -236,13 +236,14 @@ export const Site = {
 };
 
 /* -------------------------- Util ----------------------------- */
-let _advance: number | null = null;
+const _advances: Record<string, number> = Object.create(null) as Record<string, number>;
 
 export interface FitPreOptions {
   container?: HTMLElement | null;
   padding?: number;
   min?: number;
   max?: number;
+  sample?: string;
 }
 
 export const Util = {
@@ -282,19 +283,20 @@ export const Util = {
     setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
   },
 
-  /* measured advance width of the mono font, in em (≈0.6) */
-  advanceRatio: function (): number {
-    if (_advance) return _advance;
+  /* measured advance width of a representative glyph, in em */
+  advanceRatio: function (sample?: string): number {
+    const glyph = sample || "M";
+    if (_advances[glyph]) return _advances[glyph];
     const s = document.createElement("span");
     s.style.cssText =
       "position:absolute;left:-9999px;top:0;font-family:var(--mono);" +
       "font-size:100px;line-height:1;white-space:pre;font-variant-ligatures:none";
-    s.textContent = new Array(51).join("M");
+    s.textContent = glyph.repeat(50);
     document.body.appendChild(s);
     const w = s.getBoundingClientRect().width;
     s.remove();
-    _advance = w > 0 ? w / 50 / 100 : 0.6;
-    return _advance;
+    _advances[glyph] = w > 0 ? w / 50 / 100 : 0.6;
+    return _advances[glyph];
   },
 
   /* size a <pre> so that `cols` characters exactly fill its
@@ -305,7 +307,7 @@ export const Util = {
     if (!box) return 10;
     const w = box.clientWidth
       - (opts.padding != null ? opts.padding * 2 : 0);
-    let fs = w / (cols * Util.advanceRatio());
+    let fs = w / (cols * Util.advanceRatio(opts.sample));
     fs = Math.max(opts.min || 2.5, Math.min(opts.max || 20, fs));
     pre.style.fontSize = fs + "px";
     pre.style.lineHeight = "1";

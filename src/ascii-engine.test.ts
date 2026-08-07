@@ -1,10 +1,11 @@
-import { describe, it, expect } from "vitest";
-import { CHARSETS, coverRect, toHTML } from "./ascii-engine";
+import { afterEach, describe, it, expect, vi } from "vitest";
+import { advanceSample, CHARSETS, coverRect, renderPNG, toHTML } from "./ascii-engine";
 import type { ConvertResult } from "./ascii-engine";
 
 /* Build a ConvertResult without touching a canvas — toHTML is pure
    string work, so it can be exercised in plain node.                */
-function makeResult(lines: string[], colors?: number[] | null): ConvertResult {
+function makeResult(lines: string[], colors?: number[] | null,
+                    charset = "standard"): ConvertResult {
   const cols = lines[0].length;
   const rows = lines.length;
   return {
@@ -13,9 +14,9 @@ function makeResult(lines: string[], colors?: number[] | null): ConvertResult {
     colors: colors ? new Uint8ClampedArray(colors) : null,
     cols,
     rows,
-    charset: "standard",
+    charset,
     ms: 0,
-    opts: { cols, charset: "standard", invert: false, brightness: 0,
+    opts: { cols, charset, invert: false, brightness: 0,
             contrast: 0, color: colors ? "original" : "green", cellAspect: 1 / 0.6 }
   };
 }
@@ -36,6 +37,12 @@ describe("CHARSETS", () => {
     const noRamp = Object.entries(CHARSETS).filter(([, cs]) => !cs.ramp);
     expect(noRamp.map(([k]) => k)).toEqual(["braille"]);
     expect(CHARSETS.braille.braille).toBe(true);
+  });
+
+  it("selects the rendered glyph that represents one output cell", () => {
+    expect(advanceSample("braille")).toBe("⣿");
+    expect(advanceSample("detailed")).toBe("M");
+    expect(advanceSample("unknown")).toBe("M");
   });
 });
 
@@ -91,5 +98,31 @@ describe("toHTML", () => {
     const html = toHTML(makeResult(["a", "b"], [1, 1, 1, 1, 1, 1]));
     expect(html.split("\n")).toHaveLength(2);
     expect(html.endsWith("\n")).toBe(false);
+  });
+});
+
+describe("renderPNG", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("sizes braille exports from the fallback glyph advance", async () => {
+    const ctx = {
+      fillRect: vi.fn(), fillText: vi.fn(), scale: vi.fn(),
+      measureText: vi.fn((text: string) => ({ width: text === "⣿" ? 8 : 6 })),
+      fillStyle: "", font: "", textBaseline: "top"
+    };
+    const canvas = {
+      width: 0, height: 0,
+      getContext: vi.fn(() => ctx),
+      toBlob: vi.fn((done: BlobCallback) => done(new Blob(["png"], { type: "image/png" })))
+    };
+    vi.stubGlobal("document", { createElement: vi.fn(() => canvas) });
+
+    await renderPNG(makeResult(["⣿⣿"], null, "braille"), {
+      fontSize: 10, scale: 2, padding: 4
+    });
+
+    expect(ctx.measureText).toHaveBeenCalledWith("⣿");
+    expect(canvas.width).toBe(48);
+    expect(ctx.fillText).toHaveBeenCalledWith("⣿⣿", 4, 4);
   });
 });
