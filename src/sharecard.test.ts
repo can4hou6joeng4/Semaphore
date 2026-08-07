@@ -5,7 +5,7 @@ import type { ConvertResult } from "./ascii-engine";
 /* svg() is documented as DOM-free, so the whole layout + escaping
    path is testable in plain node — no canvas, no jsdom.            */
 function makeResult(lines: string[], colors?: number[] | null,
-                    charset = "blocks"): ConvertResult {
+                    charset = "blocks", cellAspect = 1 / 0.6): ConvertResult {
   const cols = lines[0].length;
   const rows = lines.length;
   return {
@@ -17,7 +17,7 @@ function makeResult(lines: string[], colors?: number[] | null,
     charset,
     ms: 0,
     opts: { cols, charset, invert: false, brightness: 0,
-            contrast: 0, color: colors ? "original" : "green", cellAspect: 1 / 0.6 }
+            contrast: 0, color: colors ? "original" : "green", cellAspect }
   };
 }
 
@@ -107,6 +107,16 @@ describe("ShareCard.svg", () => {
 
     expect(braille).toContain('textLength="792" lengthAdjust="spacingAndGlyphs"');
     expect(detailed).not.toContain("textLength=");
+  });
+
+  it("keeps the card geometry stable when natural braille advance adds rows", () => {
+    const rows = Array.from({ length: 80 }, () => "⣿".repeat(120));
+    const out = svg(makeResult(rows, null, "braille", 1 / 0.684));
+
+    expect(out).toContain('width="856"');
+    expect(out).toContain('height="916"');
+    expect(out).toContain('<g font-size="9.65"');
+    expect(out).toContain('textLength="792" lengthAdjust="spacingAndGlyphs"');
   });
 
   it("fits a colored braille row once while preserving its runs", () => {

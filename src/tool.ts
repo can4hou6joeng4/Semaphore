@@ -276,7 +276,8 @@ function runConvert(): void {
       contrast: params.contrast,
       color: params.color,
       dither: params.dither,
-      cellAspect: 1 / Util.advanceRatio()
+      cellAspect: 1 / Util.advanceRatio(
+        AsciiEngine.advanceSample(params.charset))
     });
     state.result = res;
     renderResult(res);
@@ -314,6 +315,7 @@ function applySizing(): void {
     Util.fitPre(els.out, state.result.cols, {
       container: els.outBody,
       padding: 16,
+      min: 1,
       sample: AsciiEngine.advanceSample(state.result.charset)
     });
   } else {

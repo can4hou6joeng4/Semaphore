@@ -156,6 +156,8 @@ function renderShowcase(): void {
   showPres.forEach(function (pre) {
     const body = pre.parentElement; // .term-body — 16px padding each side
     if (!body) return;
+    const charset = pre.getAttribute("data-charset") || "standard";
+    const sample = AsciiEngine.advanceSample(charset);
     const innerW = body.clientWidth - 32;
     const innerH = body.clientHeight - 32;
     if (innerW < 40 || innerH < 40) return;
@@ -164,13 +166,18 @@ function renderShowcase(): void {
       portrait!.naturalWidth, portrait!.naturalHeight, innerW, innerH, 0.74, 0.30);
     const res = AsciiEngine.convert(portrait!, {
       cols: 62,
-      charset: pre.getAttribute("data-charset"),
+      charset: charset,
       color: "green",
-      cellAspect: 1 / Util.advanceRatio(),
+      cellAspect: 1 / Util.advanceRatio(sample),
       srcRect: rect
     });
     pre.textContent = res.text;
-    Util.fitPre(pre, res.cols, { container: body, padding: 16 });
+    Util.fitPre(pre, res.cols, {
+      container: body,
+      padding: 16,
+      max: innerH / res.rows,
+      sample: sample
+    });
   });
 }
 

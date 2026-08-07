@@ -60,6 +60,7 @@ function main(): void {
   /* ----------------------------- state ------------------------- */
   let portrait: HTMLImageElement | null = null;  // once loaded
   let results: Record<string, ConvertResult> | null = null; // cached conversions
+  let currentResult: ConvertResult | null = null; // result currently fitted in the stage
   let lastLines: string[] | null = null; // rows currently on screen, for rolling re-reveal
   const timers: number[] = [];           // every pending setTimeout handle
   let playing = false;
@@ -96,21 +97,28 @@ function main(): void {
   /* lazy: first play converts once per charset, then only replays */
   function ensureResults(): void {
     if (results) return;
-    const aspect = 1 / Util.advanceRatio();
     results = {};
     CHARSETS.forEach(function (key) {
+      const sample = AsciiEngine.advanceSample(key);
       results![key] = AsciiEngine.convert(portrait!, {
-        cols: COLS, charset: key, color: "green", cellAspect: aspect
+        cols: COLS, charset: key, color: "green",
+        cellAspect: 1 / Util.advanceRatio(sample)
       });
     });
+    currentResult = results.detailed;
     fit();
   }
 
   function fit(): void {
     if (!results) return;
-    const rows = results.detailed.rows;
-    const maxFs = Math.max(3, Math.floor(out!.clientHeight / rows));
-    Util.fitPre(pre!, COLS, { container: out, padding: 0, max: maxFs });
+    const res = currentResult || results.detailed;
+    const maxFs = Math.max(3, Math.floor(out!.clientHeight / res.rows));
+    Util.fitPre(pre!, COLS, {
+      container: out,
+      padding: 0,
+      max: maxFs,
+      sample: AsciiEngine.advanceSample(res.charset)
+    });
   }
 
   function statusFor(res: ConvertResult): string {
@@ -225,6 +233,8 @@ function main(): void {
   function step(i: number): void {
     const key = CHARSETS[i];
     const res = results![key];
+    currentResult = res;
+    fit();
     cmd!.textContent = CMD_BASE + key;
     reveal(res, DUR.reveal[i], function () {
       status!.textContent = statusFor(res);
@@ -244,6 +254,7 @@ function main(): void {
     stage!.classList.remove("is-live", "is-fade");
     cursor!.style.display = "none";
     const res = results!.detailed;
+    currentResult = res;
     cmd!.textContent = CMD_BASE + "detailed";
     fit();
     pre!.textContent = res.text;

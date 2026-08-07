@@ -7,6 +7,8 @@ import privacyHtml from "../privacy.html?raw";
 import notFoundHtml from "../404.html?raw";
 import brailleHtml from "../charsets/braille.html?raw";
 import landingSource from "./landing.ts?raw";
+import demoSource from "./demo.ts?raw";
+import brailleSource from "./main-braille.ts?raw";
 import sharedSource from "./shared.ts?raw";
 import toolSource from "./tool.ts?raw";
 import engineSource from "./ascii-engine.ts?raw";
@@ -135,9 +137,36 @@ describe("SEO page contract", () => {
     expect(toolSource).not.toContain('Util.download(base() + "-card.png"');
   });
 
-  it("fits live output and regular PNGs from the current charset advance", function () {
+  it("uses the current charset advance for conversion, fit and regular PNGs", function () {
+    expect(toolSource).toMatch(
+      /cellAspect:\s*1 \/ Util\.advanceRatio\(\s*AsciiEngine\.advanceSample\(params\.charset\)\)/
+    );
     expect(toolSource).toContain(
       "sample: AsciiEngine.advanceSample(state.result.charset)"
+    );
+    expect(toolSource).toContain(
+      "min: 1"
+    );
+    expect(landingSource).toContain(
+      "cellAspect: 1 / Util.advanceRatio(sample)"
+    );
+    expect(landingSource).toContain(
+      "sample: sample"
+    );
+    expect(landingSource).toContain(
+      "max: innerH / res.rows"
+    );
+    expect(demoSource).toContain(
+      "cellAspect: 1 / Util.advanceRatio(sample)"
+    );
+    expect(demoSource).toContain(
+      "sample: AsciiEngine.advanceSample(res.charset)"
+    );
+    expect(brailleSource).toContain(
+      "cellAspect: 1 / Util.advanceRatio(BRAILLE_SAMPLE)"
+    );
+    expect(brailleSource).toContain(
+      "sample: BRAILLE_SAMPLE"
     );
     expect(sharedSource).toContain("Util.advanceRatio(opts.sample)");
     expect(engineSource).toContain(

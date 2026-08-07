@@ -111,7 +111,7 @@ function fitFileLabel(filename: string, suffix: string, maxWidth: number): strin
 interface Layout {
   pal: Palette;
   caption: string;
-  fs: number;
+  artFs: number;
   adv: number;
   artW: number;
   fitBraille: boolean;
@@ -129,9 +129,16 @@ interface Layout {
 function layout(result: ConvertResult, opts?: ShareCardOptions): Layout {
   const o = opts || {};
   const fs = Number(o.fontSize) > 0 ? Number(o.fontSize) : 11;
+  const fitBraille = result.charset === "braille";
+  const resultAdvance = result.opts.cellAspect > 0
+    ? 1 / result.opts.cellAspect : ADVANCE;
+  /* Braille results use the browser fallback's natural advance, while the
+     branded card keeps fixed 0.6em cells. Scale the art font in both axes so
+     the extra rows preserve the source aspect and the plate stays stable. */
+  const artFs = fitBraille ? fs * ADVANCE / resultAdvance : fs;
   const adv = ADVANCE * fs;
   const artW = result.cols * adv;
-  const artH = result.rows * fs;
+  const artH = result.rows * artFs;
   const contentW = Math.max(artW, MIN_CONTENT);
   const filename = o.filename ? String(o.filename) : "image";
   const caption = o.caption == null ? "made with semaphore.bobochang.cn" : String(o.caption);
@@ -143,10 +150,10 @@ function layout(result: ConvertResult, opts?: ShareCardOptions): Layout {
   return {
     pal: (o.theme && PALETTES[o.theme]) || PALETTES.crt,
     caption: fittedCaption,
-    fs: fs,
+    artFs: artFs,
     adv: adv,
     artW: artW,
-    fitBraille: result.charset === "braille",
+    fitBraille: fitBraille,
     w: Math.ceil(contentW + PAD * 2),
     h: Math.ceil(PAD + HEAD_H + GAP_HEAD + artH + GAP_FOOT + FOOT_H + PAD),
     artX: PAD + Math.max(0, (contentW - artW) / 2),
@@ -230,10 +237,10 @@ export function svg(result: ConvertResult, opts?: ShareCardOptions): string {
        p.faint + '">' + esc(L.meta) + "</text>";
 
   /* art block — one <text> per row, alphabetic baseline         */
-  s += '<g font-size="' + L.fs + '" fill="' + p.green +
+  s += '<g font-size="' + num(L.artFs) + '" fill="' + p.green +
        '" text-rendering="optimizeSpeed" style="font-variant-ligatures:none">';
   for (r = 0; r < result.rows; r++) {
-    const base = num(L.artY + r * L.fs + L.fs * ASCENT);
+    const base = num(L.artY + r * L.artFs + L.artFs * ASCENT);
     if (!result.colors) {
       s += '<text x="' + num(L.artX) + '" y="' + base + '" xml:space="preserve"' +
            (L.fitBraille ? svgTextFit(L.artW) : "") + '>' +
@@ -341,9 +348,9 @@ export function pngBlob(result: ConvertResult, opts?: ShareCardOptions): Promise
     /* art block — alphabetic baseline, same math as the SVG */
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
-    ctx.font = L.fs + "px " + FAMILY;
+    ctx.font = L.artFs + "px " + FAMILY;
     for (let r = 0; r < result.rows; r++) {
-      const base = L.artY + r * L.fs + L.fs * ASCENT;
+      const base = L.artY + r * L.artFs + L.artFs * ASCENT;
       if (!result.colors) {
         ctx.fillStyle = p.green;
         if (L.fitBraille) fillSizedText(ctx, result.lines[r], L.artX, base, L.artW);
