@@ -46,6 +46,35 @@ describe("ShareCard.svg", () => {
     expect(svg(makeResult(["ab"], null), { caption: "hello" })).toContain(">hello<");
   });
 
+  it("keeps narrow-card footer labels separated at the caption limit", () => {
+    const caption = "private local image to ascii conversion by Semaphore 2026 ex";
+    const out = svg(makeResult(Array.from({ length: 23 }, () => "#".repeat(40))), {
+      caption,
+      filename: "portrait.webp"
+    });
+
+    expect(out).toContain('width="524"');
+    expect(out).toContain(">portrait.webp — 40×23</text>");
+    expect(out).not.toContain(">" + caption + "</text>");
+    expect(out).toContain(">private local image to ascii conversion by…</text>");
+
+    // Footer text uses the renderer's fixed 6.6px mono advance. The fitted
+    // caption must start at least 24px after the left label ends.
+    const fileEnd = 32 + 23 * 6.6; // em dash and multiplication sign use two units
+    const captionStart = 492 - 43 * 6.6;
+    expect(captionStart - fileEnd).toBeGreaterThanOrEqual(24);
+  });
+
+  it("keeps a legal long caption intact when the art already makes room", () => {
+    const caption = "private local image to ascii conversion by Semaphore 2026 ex";
+    const out = svg(makeResult(["#".repeat(100)]), {
+      caption,
+      filename: "portrait.webp"
+    });
+
+    expect(out).toContain(">" + caption + "</text>");
+  });
+
   it("escapes XML metacharacters in caption, filename and art", () => {
     const out = svg(makeResult(["<&>"]), {
       caption: "a & b <c>",

@@ -56,6 +56,10 @@ const FOOT_H = 14;       // footer row height (11px text)
 const MIN_CONTENT = 460; // minimum content width
 const ADVANCE = 0.6;     // mono char advance, em
 const ASCENT = 0.8;      // alphabetic baseline offset, em
+const FOOT_FONT_SIZE = 11;
+const FOOT_GAP = 24;
+const FOOT_ADVANCE = ADVANCE * FOOT_FONT_SIZE;
+const ELLIPSIS = "…";
 
 /* -------------------------- helpers -------------------------- */
 function esc(s: unknown): string {
@@ -65,6 +69,44 @@ function esc(s: unknown): string {
 }
 
 function num(v: number): number { return Math.round(v * 100) / 100; }
+
+/* SVG and canvas share fixed mono coordinates, so footer fitting must also
+   be renderer-independent. Non-ASCII glyphs get a conservative two-cell
+   budget; that prevents fallback CJK/emoji from colliding with the other
+   footer label even when the primary font is unavailable. */
+function textUnits(text: string): number {
+  return Array.from(text).reduce(function (sum, char) {
+    const cp = char.codePointAt(0) || 0;
+    return sum + (cp <= 0x7f || char === ELLIPSIS ? 1 : 2);
+  }, 0);
+}
+
+function textWidth(text: string): number {
+  return textUnits(text) * FOOT_ADVANCE;
+}
+
+function fitMonoText(text: string, maxWidth: number): string {
+  const maxUnits = Math.floor(Math.max(0, maxWidth) / FOOT_ADVANCE);
+  if (textUnits(text) <= maxUnits) return text;
+  if (maxUnits < 1) return "";
+
+  let out = "";
+  let used = 1; // reserve the final ellipsis
+  for (const char of Array.from(text)) {
+    const units = textUnits(char);
+    if (used + units > maxUnits) break;
+    out += char;
+    used += units;
+  }
+  return out + ELLIPSIS;
+}
+
+function fitFileLabel(filename: string, suffix: string, maxWidth: number): string {
+  const full = filename + suffix;
+  if (textWidth(full) <= maxWidth) return full;
+  const fittedName = fitMonoText(filename, maxWidth - textWidth(suffix));
+  return fittedName ? fittedName + suffix : fitMonoText(full, maxWidth);
+}
 
 interface Layout {
   pal: Palette;
@@ -90,9 +132,15 @@ function layout(result: ConvertResult, opts?: ShareCardOptions): Layout {
   const artH = result.rows * fs;
   const contentW = Math.max(artW, MIN_CONTENT);
   const filename = o.filename ? String(o.filename) : "image";
+  const caption = o.caption == null ? "made with semaphore.bobochang.cn" : String(o.caption);
+  const fileSuffix = " — " + result.cols + "×" + result.rows;
+  const fileLabel = fitFileLabel(filename, fileSuffix,
+    contentW - (caption ? FOOT_GAP : 0));
+  const fittedCaption = fitMonoText(caption,
+    contentW - textWidth(fileLabel) - (caption ? FOOT_GAP : 0));
   return {
     pal: (o.theme && PALETTES[o.theme]) || PALETTES.crt,
-    caption: o.caption == null ? "made with semaphore.bobochang.cn" : String(o.caption),
+    caption: fittedCaption,
     fs: fs,
     adv: adv,
     w: Math.ceil(contentW + PAD * 2),
@@ -100,9 +148,9 @@ function layout(result: ConvertResult, opts?: ShareCardOptions): Layout {
     artX: PAD + Math.max(0, (contentW - artW) / 2),
     artY: PAD + HEAD_H + GAP_HEAD,
     headCY: PAD + HEAD_H / 2,
-    footBase: PAD + HEAD_H + GAP_HEAD + artH + GAP_FOOT + Math.round(11 * ASCENT),
+    footBase: PAD + HEAD_H + GAP_HEAD + artH + GAP_FOOT + Math.round(FOOT_FONT_SIZE * ASCENT),
     meta: "--charset " + result.charset + " --cols " + result.cols,
-    fileLabel: filename + " — " + result.cols + "×" + result.rows
+    fileLabel: fileLabel
   };
 }
 
@@ -192,10 +240,11 @@ export function svg(result: ConvertResult, opts?: ShareCardOptions): string {
   s += "</g>";
 
   /* footer */
-  s += '<text x="' + PAD + '" y="' + num(L.footBase) + '" font-size="11" fill="' +
+  s += '<text x="' + PAD + '" y="' + num(L.footBase) + '" font-size="' +
+       FOOT_FONT_SIZE + '" fill="' +
        p.faint + '">' + esc(L.fileLabel) + "</text>";
   s += '<text x="' + (L.w - PAD) + '" y="' + num(L.footBase) +
-       '" text-anchor="end" font-size="11" fill="' + p.green + '">' +
+       '" text-anchor="end" font-size="' + FOOT_FONT_SIZE + '" fill="' + p.green + '">' +
        esc(L.caption) + "</text>";
 
   s += "</g></svg>";
@@ -241,7 +290,7 @@ export function pngBlob(result: ConvertResult, opts?: ShareCardOptions): Promise
     ctx.fillText("semaphore", PAD + 38, L.headCY);
 
     ctx.textAlign = "right";
-    ctx.font = "11px " + FAMILY;
+    ctx.font = FOOT_FONT_SIZE + "px " + FAMILY;
     ctx.fillStyle = p.faint;
     ctx.fillText(L.meta, L.w - PAD, L.headCY);
 
@@ -264,7 +313,7 @@ export function pngBlob(result: ConvertResult, opts?: ShareCardOptions): Promise
     }
 
     /* footer */
-    ctx.font = "11px " + FAMILY;
+    ctx.font = FOOT_FONT_SIZE + "px " + FAMILY;
     ctx.fillStyle = p.faint;
     ctx.fillText(L.fileLabel, PAD, L.footBase);
     ctx.textAlign = "right";
