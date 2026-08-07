@@ -164,7 +164,9 @@ their controls and command line but must not queue the old source or replace the
 The tool reserves its default portrait metadata and thumbnail dimensions in the initial
 HTML so the asynchronous boot conversion cannot reveal a new block and shift the controls.
 On desktop the workbench has a viewport-bounded height: the labelled, focusable source rail
-and output viewport own any vertical overflow. At `960px` and below the grid returns to
+and output viewport own any vertical overflow. The output viewport reserves a stable
+scrollbar gutter so fit sizing does not create a one-frame horizontal scrollbar when ASCII
+content first becomes vertically scrollable. At `960px` and below the grid returns to
 natural page flow. A failed boot sample keeps the file-info geometry reserved, replaces the
 metadata with an unavailable state, and must not leave stale portrait information exposed.
 
