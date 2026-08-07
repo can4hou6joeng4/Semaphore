@@ -203,6 +203,11 @@ function loadPortrait(atBoot: boolean): void {
     () => {
       if (seq !== sourceSeq) return;
       sourceIntentPending = false;
+      if (atBoot) {
+        els.srcThumb.classList.add("is-unavailable");
+        els.srcThumb.alt = "";
+        els.srcMeta.textContent = "default sample unavailable";
+      }
       Site.setState(atBoot ? "no source" : "ready");
       setExports(!!state.result);
       if (!atBoot) Site.toast("sample failed to load ✕");
@@ -234,6 +239,10 @@ function setSource(source: AsciiSource, name: string, seq: number): void {
     state.name = name;
     const d = dims(source);
     state.imgW = d.w; state.imgH = d.h;
+    els.srcThumb.classList.remove("is-unavailable");
+    els.srcThumb.alt = "loaded source preview";
+    els.srcThumb.width = d.w;
+    els.srcThumb.height = d.h;
     els.srcThumb.src = thumbDataURL(source, d.w, d.h);
     els.srcMeta.textContent = name + " — " + d.w + "×" + d.h;
     els.srcInfo.classList.remove("hidden");

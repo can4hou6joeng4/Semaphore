@@ -25,7 +25,8 @@
   .tool-grid {
     display: grid;
     grid-template-columns: 312px minmax(0, 1fr);
-    min-height: calc(100vh - var(--header-h) - var(--statusbar-h));
+    height: calc(100vh - var(--header-h) - var(--statusbar-h));
+    min-height: 640px;
   }
   .tool-grid figure.term { margin: 0; }
 
@@ -34,8 +35,11 @@
     display: flex; flex-direction: column; gap: 24px;
     padding: 24px;
     border-right: 1px solid var(--line);
+    min-height: 0;
     overflow-y: auto;
   }
+  .tool-side > * { flex-shrink: 0; }
+  .tool-side:focus-visible, .out-body:focus-visible { outline-offset: -2px; }
   .side-block { display: grid; gap: 10px; }
   .drop-title {
     font-size: var(--fs-m); color: var(--green-soft);
@@ -52,25 +56,36 @@
   }
   .sample:hover, .sample:focus-visible { border-color: var(--green); box-shadow: var(--glow); }
   .sample img, .sample canvas { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .source-thumb.is-unavailable { visibility: hidden; }
 
   /* right rail: readout + actions + output stage */
   .tool-main {
     display: flex; flex-direction: column; gap: 14px;
     padding: 24px;
-    min-width: 0;
+    min-width: 0; min-height: 0; overflow: hidden;
   }
   .cmdline { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .actions { justify-content: space-between; }
   .actions input[type="range"] { width: 150px; }
   input[type="range"]:disabled { opacity: .35; cursor: default; }
 
-  .out-term { flex: 1; display: flex; flex-direction: column; min-height: 440px; }
-  .out-body { flex: 1; overflow: auto; position: relative; display: flex; }
-  .out-body .ascii-pre { margin: auto; }
-  .ascii-pre.is-empty { font-size: var(--fs-s); color: var(--ink-dim); text-shadow: none; }
+  .out-term { flex: 1; display: flex; flex-direction: column; min-height: 440px; overflow: hidden; }
+  .out-body { flex: 1; min-height: 0; overflow: auto; position: relative; display: flex; }
+  .out-body .ascii-pre {
+    box-sizing: border-box; flex: none;
+    width: max-content; min-width: 100%; min-height: 100%; margin: 0;
+    text-align: center;
+  }
+  .ascii-pre.is-empty {
+    display: grid; place-items: center;
+    font-size: var(--fs-s); color: var(--ink-dim); text-shadow: none;
+  }
 
   @media (max-width: 960px) {
-    .tool-grid { grid-template-columns: minmax(0, 1fr); }
+    .tool-grid {
+      grid-template-columns: minmax(0, 1fr);
+      height: auto; min-height: 0;
+    }
     .tool-side { border-right: 0; border-bottom: 1px solid var(--line); overflow-y: visible; }
     .out-term { min-height: 380px; }
   }
@@ -162,7 +177,7 @@
   <section class="sec sec--flush" data-screen-label="tool-workbench" aria-label="ASCII converter workspace">
     <div class="tool-grid">
 
-      <aside class="tool-side" aria-label="source and parameters">
+      <aside class="tool-side" aria-label="source and parameters" tabindex="0">
 
         <div class="side-block">
           <div class="field-label">source</div>
@@ -174,14 +189,16 @@
           <input type="file" id="file" accept="image/*" class="hidden">
         </div>
 
-        <figure class="term hidden" id="srcInfo">
+        <figure class="term" id="srcInfo">
           <figcaption class="term-head">
             <span class="term-title"><span class="p">$</span> file info</span>
             <span class="term-dots">– □ ✕</span>
           </figcaption>
           <div class="term-body" style="padding:12px">
-            <img id="srcThumb" src="/static/sample-portrait.webp" alt="loaded source preview" style="max-height:110px;margin-inline:auto">
-            <div class="fs-xs text-dim" id="srcMeta" style="text-align:center;margin-top:8px">—</div>
+            <img class="source-thumb" id="srcThumb" src="/static/sample-portrait.webp"
+                 width="1100" height="1069" alt="loaded source preview"
+                 style="max-height:110px;margin-inline:auto">
+            <div class="fs-xs text-dim" id="srcMeta" style="text-align:center;margin-top:8px">portrait.webp — 1100×1069</div>
           </div>
         </figure>
 
@@ -190,7 +207,7 @@
           <div class="samples">
             <div class="sample-item">
               <button class="sample" id="samplePortrait" type="button" aria-label="load sample: portrait">
-                <img src="/static/sample-portrait.webp" alt="">
+                <img src="/static/sample-portrait.webp" width="1100" height="1069" alt="">
               </button>
               <span class="fs-xs text-faint">portrait</span>
             </div>
@@ -273,7 +290,8 @@
             <span class="term-title" id="outTitle"><span class="p">$</span> ~/output — waiting for source</span>
             <span class="term-dots">– □ ✕</span>
           </figcaption>
-          <div class="term-body out-body" id="outBody">
+          <div class="term-body out-body" id="outBody" role="region"
+               aria-label="ASCII output viewport" tabindex="0">
 <pre class="ascii-pre is-empty" id="out" role="img" aria-label="ascii output — no source loaded yet">┌──────────────────────────────┐
 │                              │
 │    drop an image to begin    │
