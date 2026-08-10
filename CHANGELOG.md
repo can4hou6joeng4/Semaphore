@@ -15,7 +15,8 @@ All notable changes to Semaphore are documented in this file.
 - Add explicit Twitter title/description/image tags on every canonical page.
 - Publish `sameAs` / language hints on home WebSite and WebApplication schema.
 - Refresh sitemap `lastmod` dates and include new routes; tighten HTML cache headers for `/zh` and the guide.
-- Compress the default social card; document growth launch and awesome-list drafts under `docs/`.
+- Compress the default social card; add page-specific OG previews for tool, braille, zh, and README guide.
+- Document growth launch and awesome-list drafts under `docs/`.
 
 ### Fixes
 

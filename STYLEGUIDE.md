@@ -35,10 +35,11 @@ Required `<head>` (exact, in this order):
 <meta property="og:description" content="…same as description…">
 <meta property="og:url" content="https://semaphore.bobochang.cn/…">
 <meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<!-- Key routes may use social-card-tool|braille|zh|readme.jpg instead. -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="…same as <title>…">
 <meta name="twitter:description" content="…same as description…">
-<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card….jpg">
 <meta property="og:site_name" content="Semaphore">
 <meta property="og:locale" content="en">
 <meta property="og:image:width" content="1200">
