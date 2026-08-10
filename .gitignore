@@ -4,6 +4,7 @@ dist/
 coverage/
 .DS_Store
 *.log
+.playwright-cli/
 
 # agent overrides (machine-specific)
 AGENTS.local.md

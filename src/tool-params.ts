@@ -8,6 +8,18 @@ export interface ToolParams {
   color: string;
 }
 
+export const PREFS_KEY = "semaphore-tool-prefs";
+
+export const FACTORY_DEFAULTS: ToolParams = {
+  charset: "detailed",
+  cols: 120,
+  brightness: 0,
+  contrast: 0,
+  invert: false,
+  dither: true,
+  color: "green"
+};
+
 const CHARSETS = new Set(["standard", "detailed", "blocks", "minimal", "binary", "braille"]);
 const COLORS = new Set(["green", "gray", "original"]);
 
@@ -27,6 +39,50 @@ function booleanParam(query: URLSearchParams, key: string, fallback: boolean): b
   if (raw === "1" || raw === "true") return true;
   if (raw === "0" || raw === "false") return false;
   return fallback;
+}
+
+/** Last-used charset and color only — never image bytes. */
+export function loadStoredToolPrefs(): Partial<Pick<ToolParams, "charset" | "color">> {
+  try {
+    const raw = localStorage.getItem(PREFS_KEY);
+    if (!raw) return {};
+    const data = JSON.parse(raw) as { charset?: unknown; color?: unknown };
+    const out: Partial<Pick<ToolParams, "charset" | "color">> = {};
+    if (typeof data.charset === "string" && CHARSETS.has(data.charset)) {
+      out.charset = data.charset;
+    }
+    if (typeof data.color === "string" && COLORS.has(data.color)) {
+      out.color = data.color;
+    }
+    return out;
+  } catch (_) {
+    return {};
+  }
+}
+
+export function saveStoredToolPrefs(prefs: Pick<ToolParams, "charset" | "color">): void {
+  try {
+    localStorage.setItem(PREFS_KEY, JSON.stringify({
+      charset: prefs.charset,
+      color: prefs.color
+    }));
+  } catch (_) { /* private mode / quota */ }
+}
+
+export function clearStoredToolPrefs(): void {
+  try {
+    localStorage.removeItem(PREFS_KEY);
+  } catch (_) { /* noop */ }
+}
+
+/** Factory defaults overlaid with last-used charset/color from localStorage. */
+export function defaultsWithStoredPrefs(factory: ToolParams = FACTORY_DEFAULTS): ToolParams {
+  const stored = loadStoredToolPrefs();
+  return {
+    ...factory,
+    charset: stored.charset || factory.charset,
+    color: stored.color || factory.color
+  };
 }
 
 export function parseToolParams(search: string, defaults: ToolParams): ToolParams {

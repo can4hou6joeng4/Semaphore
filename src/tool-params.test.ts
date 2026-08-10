@@ -1,15 +1,15 @@
-import { describe, expect, it } from "vitest";
-import { parseToolParams } from "./tool-params";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import {
+  clearStoredToolPrefs,
+  defaultsWithStoredPrefs,
+  FACTORY_DEFAULTS,
+  loadStoredToolPrefs,
+  parseToolParams,
+  PREFS_KEY,
+  saveStoredToolPrefs
+} from "./tool-params";
 
-const defaults = {
-  charset: "detailed",
-  cols: 120,
-  brightness: 0,
-  contrast: 0,
-  invert: false,
-  dither: true,
-  color: "green"
-};
+const defaults = { ...FACTORY_DEFAULTS };
 
 describe("parseToolParams", () => {
   it("applies a valid braille preset", () => {
@@ -50,5 +50,54 @@ describe("parseToolParams", () => {
 
   it("aligns columns with the range control step", () => {
     expect(parseToolParams("?cols=181", defaults).cols).toBe(182);
+  });
+});
+
+describe("tool prefs storage", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  function mockStorage(seed?: string): { store: Map<string, string> } {
+    const store = new Map<string, string>();
+    if (seed) store.set(PREFS_KEY, seed);
+    vi.stubGlobal("localStorage", {
+      getItem: (key: string) => store.has(key) ? store.get(key)! : null,
+      setItem: (key: string, value: string) => { store.set(key, value); },
+      removeItem: (key: string) => { store.delete(key); }
+    });
+    return { store };
+  }
+
+  it("loads only valid charset and color prefs", () => {
+    mockStorage(JSON.stringify({ charset: "braille", color: "gray", cols: 200 }));
+    expect(loadStoredToolPrefs()).toEqual({ charset: "braille", color: "gray" });
+  });
+
+  it("ignores corrupt or invalid stored prefs", () => {
+    mockStorage("{not-json");
+    expect(loadStoredToolPrefs()).toEqual({});
+    mockStorage(JSON.stringify({ charset: "nope", color: "purple" }));
+    expect(loadStoredToolPrefs()).toEqual({});
+  });
+
+  it("overlays stored prefs onto factory defaults", () => {
+    mockStorage(JSON.stringify({ charset: "blocks", color: "original" }));
+    expect(defaultsWithStoredPrefs()).toEqual({
+      ...FACTORY_DEFAULTS,
+      charset: "blocks",
+      color: "original"
+    });
+  });
+
+  it("persists and clears charset/color only", () => {
+    const { store } = mockStorage();
+    saveStoredToolPrefs({ charset: "minimal", color: "gray" });
+    expect(JSON.parse(store.get(PREFS_KEY)!)).toEqual({
+      charset: "minimal",
+      color: "gray"
+    });
+    clearStoredToolPrefs();
+    expect(store.has(PREFS_KEY)).toBe(false);
   });
 });

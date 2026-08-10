@@ -2,26 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://semaphore.bobochang.cn/</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-10</lastmod>
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/tool</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-10</lastmod>
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/usecases</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-10</lastmod>
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/faq</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-10</lastmod>
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/privacy</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-10</lastmod>
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/charsets/braille</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-10</lastmod>
+  </url>
+  <url>
+    <loc>https://semaphore.bobochang.cn/guides/readme-banner</loc>
+    <lastmod>2026-08-10</lastmod>
+  </url>
+  <url>
+    <loc>https://semaphore.bobochang.cn/zh</loc>
+    <lastmod>2026-08-10</lastmod>
   </url>
 </urlset>

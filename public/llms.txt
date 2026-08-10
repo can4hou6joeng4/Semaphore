@@ -38,6 +38,9 @@ Columns (40–240), brightness, contrast, invert, and color mode (`green` phosph
 - [Home](https://semaphore.bobochang.cn/): what it does, live before/after and charset demos
 - [Tool](https://semaphore.bobochang.cn/tool): the converter itself
 - [Use Cases](https://semaphore.bobochang.cn/usecases): where ASCII art still beats pixels
+- [README banner guide](https://semaphore.bobochang.cn/guides/readme-banner): turn a logo into a plain-text README marquee
+- [Chinese intro](https://semaphore.bobochang.cn/zh): 图片转 ASCII 中文简介
+- [Braille charset](https://semaphore.bobochang.cn/charsets/braille): high-detail 2×4 braille mode
 - [FAQ](https://semaphore.bobochang.cn/faq): privacy, formats, braille mode, color, limits
 - [Privacy](https://semaphore.bobochang.cn/privacy): local processing, browser storage, CSP and edge request metadata
 
@@ -46,4 +49,6 @@ Columns (40–240), brightness, contrast, invert, and color mode (`green` phosph
 - Runs entirely client-side. Works offline once the page has loaded.
 - Accepts png, jpg, webp and gif (first frame only).
 - Semaphore does not impose a fixed source-dimension limit; practical limits depend on the browser and available memory. Output is capped at 40–240 columns.
+- Saved on-device preferences: theme (CRT/paper) and last-used charset/color — never image bytes.
 - Built with Vite and TypeScript, no framework, hosted on Cloudflare Pages.
+- Source: https://github.com/can4hou6joeng4/Semaphore

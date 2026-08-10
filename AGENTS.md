@@ -95,6 +95,12 @@ Things a fresh read of the code will not reveal:
 8. **`Util.advanceRatio()` is measured once and cached** after `document.fonts.ready`.
    The landing page and demo re-render on `fonts.loadingdone` because a late webfont
    changes mono metrics and de-registers the before/after hero.
+9. **Tool prefs in `localStorage` are charset + color only** (`semaphore-tool-prefs`).
+   URL query params still win on boot. Reset clears storage and returns to factory
+   defaults. Never store image bytes or filenames there — privacy copy depends on it.
+10. **Cloudflare may inject managed `robots.txt` rules** for AI bots. Repo
+    `public/robots.txt` is the intended open crawl policy; if LLM discovery matters,
+    align CF AI Crawl Control with `/llms.txt` (see `docs/growth-launch.md`).
 
 ## Verification
 

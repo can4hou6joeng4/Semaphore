@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import indexHtml from "../index.html?raw";
 import toolHtml from "../tool.html?raw";
@@ -6,6 +7,8 @@ import faqHtml from "../faq.html?raw";
 import privacyHtml from "../privacy.html?raw";
 import notFoundHtml from "../404.html?raw";
 import brailleHtml from "../charsets/braille.html?raw";
+import readmeBannerHtml from "../guides/readme-banner.html?raw";
+import zhHtml from "../zh.html?raw";
 import landingSource from "./landing.ts?raw";
 import demoSource from "./demo.ts?raw";
 import brailleSource from "./main-braille.ts?raw";
@@ -20,13 +23,18 @@ import robotsTxt from "../public/robots.txt?raw";
 import redirectsTxt from "../public/_redirects?raw";
 import headersTxt from "../public/_headers?raw";
 
+/* Vite 8 returns an empty string for `*.css?raw` under vitest; read the file. */
+const terminalCss = readFileSync(new URL("./terminal.css", import.meta.url), "utf8");
+
 const pages = [
   { path: "index.html", canonical: "https://semaphore.bobochang.cn/", html: indexHtml },
   { path: "tool.html", canonical: "https://semaphore.bobochang.cn/tool", html: toolHtml },
   { path: "usecases.html", canonical: "https://semaphore.bobochang.cn/usecases", html: usecasesHtml },
   { path: "faq.html", canonical: "https://semaphore.bobochang.cn/faq", html: faqHtml },
   { path: "privacy.html", canonical: "https://semaphore.bobochang.cn/privacy", html: privacyHtml },
-  { path: "charsets/braille.html", canonical: "https://semaphore.bobochang.cn/charsets/braille", html: brailleHtml }
+  { path: "charsets/braille.html", canonical: "https://semaphore.bobochang.cn/charsets/braille", html: brailleHtml },
+  { path: "guides/readme-banner.html", canonical: "https://semaphore.bobochang.cn/guides/readme-banner", html: readmeBannerHtml },
+  { path: "zh.html", canonical: "https://semaphore.bobochang.cn/zh", html: zhHtml }
 ];
 
 const byPath = new Map(pages.map(function (page) { return [page.path, page.html]; }));
@@ -62,6 +70,9 @@ describe("SEO page contract", () => {
     expect(html).toContain('<meta property="og:title" content="' + title + '">');
     expect(html).toContain('<meta property="og:description" content="' + description + '">');
     expect(html).toContain('<meta name="twitter:card" content="summary_large_image">');
+    expect(html).toContain('<meta name="twitter:title" content="' + title + '">');
+    expect(html).toContain('<meta name="twitter:description" content="' + description + '">');
+    expect(html).toContain('<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">');
     expect(title).not.toBe("");
     expect(description.length).toBeGreaterThan(50);
     expect(description.length).toBeLessThanOrEqual(160);
@@ -324,6 +335,25 @@ describe("SEO page contract", () => {
     expect(sharedSource).toContain("right.prepend(seg);\n    seg.textContent = msg;");
   });
 
+  it("keeps shared chrome readable on narrow viewports", function () {
+    expect(sharedSource).toContain('"sb-metric--dimensions"');
+    expect(sharedSource).toContain('"sb-metric--charset"');
+    expect(sharedSource).toContain('"sb-metric--timing"');
+    expect(sharedSource).toContain('const classes = "sb-seg sb-metric"');
+    expect(terminalCss).toMatch(
+      /\.sb-right\s*\{[^}]*min-width: 0; overflow: hidden;/
+    );
+    expect(terminalCss).toMatch(
+      /@media \(max-width: 440px\)[\s\S]*?\.sb-right \.sb-metric--timing,[\s\S]*?\.sb-right \.sb-toast ~ \.sb-metric \{ display: none; \}/
+    );
+    expect(terminalCss).toMatch(
+      /@media \(max-width: 370px\)[\s\S]*?\.sb-right \.sb-metric--charset \{ display: none; \}/
+    );
+    expect(terminalCss).toMatch(
+      /@media \(max-width: 360px\)[\s\S]*?\.site-head \.rail \{ gap: 8px; padding-inline: 10px; \}[\s\S]*?\.statusbar:has\(\.sb-toast\) > \.sb-seg\[role="status"\] \{ display: none; \}/
+    );
+  });
+
   it("describes the converter on the page where it runs", () => {
     const types = jsonLd(toolHtml).flatMap(schemaTypes);
     expect(types).toContain("WebApplication");
@@ -342,11 +372,14 @@ describe("SEO page contract", () => {
       "@type": "WebSite",
       "@id": "https://semaphore.bobochang.cn/#website",
       url: "https://semaphore.bobochang.cn/",
-      name: "Semaphore"
+      name: "Semaphore",
+      inLanguage: ["en", "zh-CN"],
+      sameAs: ["https://github.com/can4hou6joeng4/Semaphore"]
     });
     expect(application).toMatchObject({
       "@id": "https://semaphore.bobochang.cn/#webapp",
-      isPartOf: { "@id": "https://semaphore.bobochang.cn/#website" }
+      isPartOf: { "@id": "https://semaphore.bobochang.cn/#website" },
+      sameAs: ["https://github.com/can4hou6joeng4/Semaphore"]
     });
   });
 
@@ -367,7 +400,7 @@ describe("SEO page contract", () => {
     expect(title).toContain("ASCII Art Use Cases");
     expect(title.length).toBeLessThanOrEqual(60);
     expect(usecasesHtml.match(/"name": "ASCII Art Use Cases"/g)).toHaveLength(2);
-    expect(usecasesHtml).toContain('"dateModified": "2026-08-06"');
+    expect(usecasesHtml).toContain('"dateModified": "2026-08-10"');
     expect(indexHtml).toContain(">browse ASCII art use cases</a>");
     expect(llmsTxt).toContain(
       "[Use Cases](https://semaphore.bobochang.cn/usecases)"
@@ -400,14 +433,28 @@ describe("SEO page contract", () => {
     );
   });
 
-  it.each(["tool.html", "usecases.html", "faq.html", "privacy.html", "charsets/braille.html"])(
+  it.each([
+    "tool.html",
+    "usecases.html",
+    "faq.html",
+    "privacy.html",
+    "charsets/braille.html",
+    "guides/readme-banner.html",
+    "zh.html"
+  ])(
     "adds breadcrumbs to %s",
     function (path) {
       expect(jsonLd(byPath.get(path) || "").flatMap(schemaTypes)).toContain("BreadcrumbList");
     }
   );
 
-  it.each(["usecases.html", "privacy.html", "charsets/braille.html"])(
+  it.each([
+    "usecases.html",
+    "privacy.html",
+    "charsets/braille.html",
+    "guides/readme-banner.html",
+    "zh.html"
+  ])(
     "describes content page %s as a WebPage",
     function (path) {
       expect(jsonLd(byPath.get(path) || "").flatMap(schemaTypes)).toContain("WebPage");
@@ -421,20 +468,13 @@ describe("SEO page contract", () => {
   });
 
   it("dates sitemap entries from their latest substantive page change", function () {
-    expect(sitemapXml).toContain([
-      "<loc>https://semaphore.bobochang.cn/</loc>",
-      "<lastmod>2026-08-06</lastmod>"
-    ].join("\n    "));
-    expect(sitemapXml).toContain([
-      "<loc>https://semaphore.bobochang.cn/usecases</loc>",
-      "<lastmod>2026-08-06</lastmod>"
-    ].join("\n    "));
-    expect(sitemapXml).toContain([
-      "<loc>https://semaphore.bobochang.cn/faq</loc>",
-      "<lastmod>2026-08-06</lastmod>"
-    ].join("\n    "));
-    expect(sitemapXml.match(/<lastmod>2026-08-06<\/lastmod>/g)).toHaveLength(3);
-    expect(sitemapXml.match(/<lastmod>2026-07-29<\/lastmod>/g)).toHaveLength(3);
+    pages.forEach(function (page) {
+      expect(sitemapXml).toContain([
+        "<loc>" + page.canonical + "</loc>",
+        "<lastmod>2026-08-10</lastmod>"
+      ].join("\n    "));
+    });
+    expect(sitemapXml.match(/<lastmod>2026-08-10<\/lastmod>/g)).toHaveLength(pages.length);
   });
 
   it("keeps crawl discovery open and advertises the sitemap", function () {
@@ -442,10 +482,20 @@ describe("SEO page contract", () => {
     expect(robotsTxt).toContain("Allow: /");
     expect(robotsTxt).not.toMatch(/^Disallow:\s*\/$/m);
     expect(robotsTxt).toContain("Sitemap: https://semaphore.bobochang.cn/sitemap.xml");
+    expect(robotsTxt).toContain("llms.txt");
   });
 
   it("prevents edge features from transforming canonical HTML", function () {
-    ["/", "/tool", "/usecases", "/faq", "/privacy", "/charsets/braille"].forEach(
+    [
+      "/",
+      "/tool",
+      "/usecases",
+      "/faq",
+      "/privacy",
+      "/charsets/braille",
+      "/guides/readme-banner",
+      "/zh"
+    ].forEach(
       function (path) {
         const escaped = path.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         expect(headersTxt).toMatch(new RegExp(
@@ -454,6 +504,26 @@ describe("SEO page contract", () => {
         ));
       }
     );
+  });
+
+  it("ships a HowTo for the README banner guide", function () {
+    expect(jsonLd(readmeBannerHtml).flatMap(schemaTypes)).toContain("HowTo");
+    expect(readmeBannerHtml).toContain('href="/tool?charset=blocks&amp;cols=80&amp;color=green"');
+  });
+
+  it("exposes a Chinese landing page with language alternates", function () {
+    expect(zhHtml).toContain('lang="zh-CN"');
+    expect(zhHtml).toContain('hreflang="zh-CN"');
+    expect(indexHtml).toContain('hreflang="zh-CN" href="https://semaphore.bobochang.cn/zh"');
+    expect(llmsTxt).toContain("https://semaphore.bobochang.cn/zh");
+  });
+
+  it("remembers last-used charset and color without storing image bytes", function () {
+    expect(toolSource).toContain("defaultsWithStoredPrefs(FACTORY_DEFAULTS)");
+    expect(toolSource).toContain("persistToolPrefs()");
+    expect(toolSource).toContain("clearStoredToolPrefs()");
+    expect(toolSource).toContain("saveStoredToolPrefs({ charset: params.charset, color: params.color })");
+    expect(privacyHtml).toContain("last-used tool charset and color mode");
   });
 
   it("keeps returning visitors on HTTPS without covering unverified subdomains", function () {

@@ -198,6 +198,11 @@ if (document.readyState === "loading") {
 
 /* -------------------------- Site API ------------------------- */
 let toastTimer: number | undefined;
+const rightMetricClasses = [
+  "sb-metric--dimensions",
+  "sb-metric--charset",
+  "sb-metric--timing"
+];
 
 export const Site = {
   theme: {
@@ -215,8 +220,10 @@ export const Site = {
     const right = document.querySelector("[data-sb-right]");
     if (!right) return;
     right.innerHTML = "";
-    (items || []).forEach(function (t) {
-      right.appendChild(el("div", "sb-seg", esc(t)));
+    (items || []).forEach(function (t, index) {
+      const kind = rightMetricClasses[index];
+      const classes = "sb-seg sb-metric" + (kind ? " " + kind : "");
+      right.appendChild(el("div", classes, esc(t)));
     });
   },
   toast: function (msg: string): void {

@@ -11,7 +11,7 @@
      fileToImage(file)             -> Promise<HTMLImageElement>
 
    convert() opts:
-     cols        20..300            (default 120)
+     cols        40..240            (default 120)
      charset     key of CHARSETS    (default "standard")
      invert      boolean            (default false)
      brightness  -100..100          (default 0)
@@ -93,7 +93,7 @@ export const CHARSETS: Record<string, Charset> = {
 
 const DEFAULT_ASPECT = 1 / 0.6; // mono cell h/w at line-height 1
 
-export const VERSION = "1.0.1"; // keep in sync with package.json
+export const VERSION = "1.1.0"; // keep in sync with package.json
 
 /* The live preview and regular PNG preserve the rendered glyph's natural
    width. JetBrains Mono has no Braille glyphs, so that charset must measure
@@ -181,7 +181,7 @@ function ditherFS(lum: Float32Array, w: number, h: number): void {
 export function convert(source: AsciiSource, opts?: ConvertOptions): ConvertResult {
   const t0 = performance.now();
   const o = opts || {};
-  const cols = clamp(Math.round(o.cols || 120), 20, 300);
+  const cols = clamp(Math.round(o.cols || 120), 40, 240);
   const key = o.charset && CHARSETS[o.charset] ? o.charset : "standard";
   const cs = CHARSETS[key];
   const aspect = o.cellAspect || DEFAULT_ASPECT;

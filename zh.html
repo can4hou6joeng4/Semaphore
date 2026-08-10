@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>图片转 ASCII 字符画 — 本地转换，不上传 | Semaphore</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="图片转 ASCII 字符画 — 本地转换，不上传 | Semaphore">
+<meta property="og:description" content="免费的图片转 ASCII 工具，完全在浏览器本地运行。拖入照片，选择字符集（含盲文点阵），导出文本或 PNG。不会上传任何图片。">
+<meta property="og:url" content="https://semaphore.bobochang.cn/zh">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="图片转 ASCII 字符画 — 本地转换，不上传 | Semaphore">
+<meta name="twitter:description" content="免费的图片转 ASCII 工具，完全在浏览器本地运行。拖入照片，选择字符集（含盲文点阵），导出文本或 PNG。不会上传任何图片。">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — 图片转 ASCII，不上传">
+<link rel="canonical" href="https://semaphore.bobochang.cn/zh">
+<link rel="alternate" hreflang="zh-CN" href="https://semaphore.bobochang.cn/zh">
+<link rel="alternate" hreflang="en" href="https://semaphore.bobochang.cn/">
+<link rel="alternate" hreflang="x-default" href="https://semaphore.bobochang.cn/">
+<meta name="theme-color" content="#050a06">
+<meta name="description" content="免费的图片转 ASCII 工具，完全在浏览器本地运行。拖入照片，选择字符集（含盲文点阵），导出文本或 PNG。不会上传任何图片。">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
+<style>
+  .zh-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+  .zh-grid { margin-top: 34px; }
+  section[data-screen-label="zh-cta"] { text-align: center; }
+  section[data-screen-label="zh-cta"] .lede { margin-inline: auto; margin-top: 16px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "name": "图片转 ASCII 字符画",
+      "url": "https://semaphore.bobochang.cn/zh",
+      "inLanguage": "zh-CN",
+      "description": "免费的图片转 ASCII 工具，完全在浏览器本地运行，不上传图片。",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Semaphore",
+        "url": "https://semaphore.bobochang.cn/"
+      },
+      "dateModified": "2026-08-10"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Semaphore",
+          "item": "https://semaphore.bobochang.cn/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "中文简介",
+          "item": "https://semaphore.bobochang.cn/zh"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body data-page="zh" data-path="~/zh">
+<main class="frame">
+
+  <section class="sec" data-screen-label="zh-head">
+    <div class="kicker"><b>~/zh</b> · 本地转换 · 不上传</div>
+    <h1 class="h2">图片转 ASCII 字符画</h1>
+    <p class="lede" style="margin-top:18px">Semaphore 把图片变成可复制的纯文本字符画。全程在你的浏览器里完成：没有上传接口、没有账号、没有页面内统计脚本。生产环境 CSP 为 <code>connect-src 'none'</code>，页面本身也无法对外发起网络请求。</p>
+    <div class="zh-actions">
+      <a class="btn btn--green btn--lg" href="/tool">打开转换工具</a>
+      <a class="btn btn--ghost" href="/">English home</a>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="zh-how">
+    <div class="kicker">[ 怎么用 ]</div>
+    <h2 class="h2">三步出图</h2>
+    <div class="grid-3 zh-grid">
+      <article class="card">
+        <h3 class="card-title"><span class="p">01</span> 拖入图片</h3>
+        <p>支持 png / jpg / webp / gif（动图取首帧）。解码与采样都在本地 <code>canvas</code> 完成。</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">02</span> 调参数</h3>
+        <p>六套字符集（含盲文点阵）、列数、亮度、对比度、反相与配色，实时预览。</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">03</span> 导出带走</h3>
+        <p>复制纯文本、下载 <code>.txt</code> / <code>.png</code>，或生成带参数的分享卡。</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="zh-privacy">
+    <div class="kicker">[ 隐私 ]</div>
+    <h2 class="h2">为什么可以说「不上传」</h2>
+    <p class="lede" style="margin-top:18px">常见在线转换站会把文件发到服务器。Semaphore 没有后端 API。图片字节只在你的标签页里被读取；你只会在主动复制或下载时把结果带出浏览器。主题与最近使用的字符集/配色偏好保存在本机 <code>localStorage</code>，从不包含图片内容。</p>
+    <div class="row" style="margin-top:24px">
+      <a class="btn btn--ghost" href="/privacy">英文隐私说明</a>
+      <a class="btn btn--ghost" href="/charsets/braille">盲文字符集指南</a>
+      <a class="btn btn--ghost" href="/guides/readme-banner">README 横幅教程</a>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="zh-cta">
+    <div class="kicker">[ 开始 ]</div>
+    <h2 class="h2">立刻转换</h2>
+    <p class="lede">打开工具，拖一张图进去。网络面板在页面加载完成后应保持安静。</p>
+    <div class="row" style="justify-content:center; margin-top:28px">
+      <a class="btn btn--green btn--lg" href="/tool">打开 /tool</a>
+      <a class="btn btn--ghost" href="https://github.com/can4hou6joeng4/Semaphore">GitHub</a>
+    </div>
+  </section>
+
+  <footer class="site-foot">
+    <span>© 2026 Semaphore — plain text is forever</span>
+    <nav>
+      <a href="/usecases">usecases</a>
+      <a href="/faq">faq</a>
+      <a href="/privacy">privacy</a>
+      <a href="/tool">open tool</a>
+    </nav>
+  </footer>
+</main>
+<script type="module" src="/src/main-zh.ts"></script>
+</body>
+</html>

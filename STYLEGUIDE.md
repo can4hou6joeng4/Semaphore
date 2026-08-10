@@ -12,7 +12,8 @@ so `public/static/x` is served at `/static/x`. Vite's own content-hashed
 bundles land in `/assets/` — never put stable-named files there:
 
 ```
-index.html  tool.html  usecases.html  faq.html  privacy.html  404.html  charsets/braille.html
+index.html  tool.html  usecases.html  faq.html  privacy.html  404.html  zh.html
+  charsets/braille.html  guides/readme-banner.html
   src/terminal.css   src/shared.ts   src/ascii-engine.ts
   public/static/sample-portrait.webp         (1100×1069 b/w portrait)
   public/static/sample-portrait-thumb.webp   (136×112 home demo thumbnail)
@@ -35,6 +36,9 @@ Required `<head>` (exact, in this order):
 <meta property="og:url" content="https://semaphore.bobochang.cn/…">
 <meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="…same as <title>…">
+<meta name="twitter:description" content="…same as description…">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
 <meta property="og:site_name" content="Semaphore">
 <meta property="og:locale" content="en">
 <meta property="og:image:width" content="1200">
@@ -74,7 +78,7 @@ One module script at the END of `<body>` — Vite bundles the rest:
 ## Page skeleton (chrome is INJECTED — never hand-write it)
 
 ```html
-<body data-page="tool" data-path="~/tool">   <!-- home|tool|usecases|faq|privacy|braille|not-found -->
+<body data-page="tool" data-path="~/tool">   <!-- home|tool|usecases|faq|privacy|braille|readme-banner|zh|not-found -->
   <main class="frame">
     <section class="sec" data-screen-label="…"><h2>…</h2>…</section>
     <div class="sec" data-screen-label="…">…layout-only block…</div>
@@ -158,6 +162,12 @@ Statusbar API (page JS): `Site.setState("converting…", {busy:true})`, `Site.se
 The visual statusbar is not one atomic live region: only the state segment and each toast
 use `role="status"`. Right-side dimensions and timing remain visible without triggering
 another full status announcement on every conversion.
+Right-side metrics are ordered dimensions, charset, then timing. Narrow chrome drops timing
+first and charset only when needed; a toast temporarily replaces metrics, and at 360px or
+below it also replaces the ready-state segment. Keep the full toast text in its live region
+while ensuring the shared header and statusbar never hard-clip or create horizontal scroll.
+Tool pages may remember last-used charset and color in `localStorage` (`semaphore-tool-prefs`);
+URL query params always win on boot, and Reset clears those prefs. Never store image bytes.
 While a replacement source is decoding or waiting on fonts, parameter changes may update
 their controls and command line but must not queue the old source or replace the owning
 `loading…` / `decoding…` state with `converting…`.
