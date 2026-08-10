@@ -72,7 +72,12 @@ describe("SEO page contract", () => {
     expect(html).toContain('<meta name="twitter:card" content="summary_large_image">');
     expect(html).toContain('<meta name="twitter:title" content="' + title + '">');
     expect(html).toContain('<meta name="twitter:description" content="' + description + '">');
-    expect(html).toContain('<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">');
+    expect(html).toMatch(
+      /<meta name="twitter:image" content="https:\/\/semaphore\.bobochang\.cn\/static\/social-card[^"]*\.jpg">/
+    );
+    expect(html).toMatch(
+      /<meta property="og:image" content="https:\/\/semaphore\.bobochang\.cn\/static\/social-card[^"]*\.jpg">/
+    );
     expect(title).not.toBe("");
     expect(description.length).toBeGreaterThan(50);
     expect(description.length).toBeLessThanOrEqual(160);
@@ -509,6 +514,14 @@ describe("SEO page contract", () => {
   it("ships a HowTo for the README banner guide", function () {
     expect(jsonLd(readmeBannerHtml).flatMap(schemaTypes)).toContain("HowTo");
     expect(readmeBannerHtml).toContain('href="/tool?charset=blocks&amp;cols=80&amp;color=green"');
+  });
+
+  it("uses page-specific social preview images for key routes", function () {
+    expect(toolHtml).toContain("/static/social-card-tool.jpg");
+    expect(brailleHtml).toContain("/static/social-card-braille.jpg");
+    expect(zhHtml).toContain("/static/social-card-zh.jpg");
+    expect(readmeBannerHtml).toContain("/static/social-card-readme.jpg");
+    expect(indexHtml).toContain("/static/social-card.jpg");
   });
 
   it("exposes a Chinese landing page with language alternates", function () {
