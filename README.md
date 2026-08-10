@@ -29,6 +29,11 @@
 
 Open **[semaphore.bobochang.cn/tool](https://semaphore.bobochang.cn/tool)** and drop an image in. That is the whole flow — no sign-up, no queue, no watermark. For photographic detail, try the [image to braille ASCII art guide](https://semaphore.bobochang.cn/charsets/braille) and open its one-click Braille preset.
 
+Guides and locales:
+
+- [README ASCII banner walkthrough](https://semaphore.bobochang.cn/guides/readme-banner)
+- [中文简介](https://semaphore.bobochang.cn/zh) · [README 简体中文](README_CN.md)
+
 Prefer to run it yourself:
 
 ```bash

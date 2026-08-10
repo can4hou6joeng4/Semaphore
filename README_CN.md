@@ -27,7 +27,7 @@
 
 ## 快速开始
 
-打开 **[semaphore.bobochang.cn/tool](https://semaphore.bobochang.cn/tool)** 拖一张图进去,就这样。不用注册,不排队,没有水印。需要保留照片细节时,可以先看[图片转盲文 ASCII 指南](https://semaphore.bobochang.cn/charsets/braille),再使用预设直接转换。
+打开 **[semaphore.bobochang.cn/tool](https://semaphore.bobochang.cn/tool)** 拖一张图进去,就这样。不用注册,不排队,没有水印。中文简介见 **[semaphore.bobochang.cn/zh](https://semaphore.bobochang.cn/zh)**。需要保留照片细节时,可以先看[图片转盲文 ASCII 指南](https://semaphore.bobochang.cn/charsets/braille),再使用预设直接转换。README 横幅可参考[纯文本横幅教程](https://semaphore.bobochang.cn/guides/readme-banner)。
 
 想自己跑:
 

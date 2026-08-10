@@ -2,6 +2,27 @@
 
 All notable changes to Semaphore are documented in this file.
 
+## Unreleased
+
+### Features
+
+- Remember last-used tool charset and color in `localStorage` (URL params still win).
+- Add README banner guide (`/guides/readme-banner`) with HowTo structured data.
+- Add Chinese intro page (`/zh`) with hreflang alternates from the home page.
+
+### SEO and discovery
+
+- Add explicit Twitter title/description/image tags on every canonical page.
+- Publish `sameAs` / language hints on home WebSite and WebApplication schema.
+- Refresh sitemap `lastmod` dates and include new routes; tighten HTML cache headers for `/zh` and the guide.
+- Compress the default social card; document growth launch and awesome-list drafts under `docs/`.
+
+### Fixes
+
+- Align engine column clamp with the product range (40–240).
+- Sync `AsciiEngine.VERSION` with package `1.1.0`.
+- Keep the statusbar readable on narrow viewports (metric priority + toast handling).
+
 ## 1.1.0 - 2026-08-04
 
 ### Features

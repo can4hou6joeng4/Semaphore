@@ -9,7 +9,13 @@ import * as AsciiEngine from "./ascii-engine";
 import type { AsciiSource, ConvertResult } from "./ascii-engine";
 import * as ShareCard from "./sharecard";
 import { Site, Util } from "./shared";
-import { parseToolParams } from "./tool-params";
+import {
+  clearStoredToolPrefs,
+  defaultsWithStoredPrefs,
+  FACTORY_DEFAULTS,
+  parseToolParams,
+  saveStoredToolPrefs
+} from "./tool-params";
 import type { ToolParams } from "./tool-params";
 
 /* --------------------------- dom ----------------------------- */
@@ -66,9 +72,6 @@ function cacheEls(): void {
 }
 
 /* -------------------------- state ----------------------------- */
-const DEFAULTS: ToolParams = { charset: "detailed", cols: 120, brightness: 0,
-                               contrast: 0, invert: false, dither: true, color: "green" };
-
 interface State {
   source: AsciiSource | null;
   name: string;
@@ -81,7 +84,11 @@ interface State {
 
 const state: State = { source: null, name: "", imgW: 0, imgH: 0,
                        result: null, fit: true, zoom: 8 };
-let params: ToolParams = Object.assign({}, DEFAULTS);
+let params: ToolParams = Object.assign({}, FACTORY_DEFAULTS);
+
+function persistToolPrefs(): void {
+  saveStoredToolPrefs({ charset: params.charset, color: params.color });
+}
 
 let pendingFrame = false;
 let resizeTimer: number | undefined;
@@ -472,6 +479,7 @@ function wireParams(): void {
 
   els.charset.addEventListener("change", () => {
     params.charset = els.charset.value;
+    persistToolPrefs();
     syncDither();
     updateCmdline();
     requestConvert();
@@ -491,13 +499,15 @@ function wireParams(): void {
 
   wireRadioGroup(els.seg, (btn) => {
     params.color = btn.dataset.color!;
+    persistToolPrefs();
     syncRadioGroup(els.seg, (b) => b === btn);
     updateCmdline();
     requestConvert();
   });
 
   els.reset.addEventListener("click", () => {
-    params = Object.assign({}, DEFAULTS);
+    clearStoredToolPrefs();
+    params = Object.assign({}, FACTORY_DEFAULTS);
     if (location.search) history.replaceState(null, "", location.pathname);
     syncUI();
     requestConvert();
@@ -698,7 +708,8 @@ function wireShareCard(): void {
 /* --------------------------- boot ----------------------------- */
 function boot(): void {
   cacheEls();
-  params = parseToolParams(location.search, DEFAULTS);
+  /* URL query wins over last-used prefs; prefs only fill missing keys. */
+  params = parseToolParams(location.search, defaultsWithStoredPrefs(FACTORY_DEFAULTS));
   planet = makePlanet();
   els.planetThumb.getContext("2d")!
     .drawImage(planet, 0, 0, els.planetThumb.width, els.planetThumb.height);

@@ -11,6 +11,9 @@
 <meta property="og:url" content="https://semaphore.bobochang.cn/faq">
 <meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Image to ASCII FAQ — Privacy, Formats, Braille | Semaphore">
+<meta name="twitter:description" content="FAQ for the free image to ASCII converter: no upload, no in-page analytics, formats, braille mode, color, licensing and size limits.">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
 <meta property="og:site_name" content="Semaphore">
 <meta property="og:locale" content="en">
 <meta property="og:image:width" content="1200">
@@ -60,6 +63,14 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Yes — free, no account, no watermark, no daily quota. The whole tool ships as static files."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the site remember my settings?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Only small preferences stay on your device: color theme (CRT or paper), and the last charset and color mode you picked on the tool. They live in localStorage and never include image bytes. Reset params clears the tool prefs; URL query parameters still override them when present."
         }
       },
       {
@@ -166,6 +177,13 @@
           <summary>Is it free?</summary>
           <div class="qa-a">
             <p>Yes — free, no account, no watermark, no daily quota. The whole tool ships as static files.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Does the site remember my settings?</summary>
+          <div class="qa-a">
+            <p>Only small preferences stay on your device: color theme (CRT or paper), and the last charset and color mode you picked on the tool. They live in <code>localStorage</code> and never include image bytes. Reset params clears the tool prefs; URL query parameters still override them when present.</p>
           </div>
         </details>
 

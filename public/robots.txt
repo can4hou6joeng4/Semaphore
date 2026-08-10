@@ -1,3 +1,7 @@
+# Semaphore crawl policy (repo source of truth).
+# Cloudflare may append managed AI-bot rules at the edge. If you want LLM
+# assistants to recommend this site (see /llms.txt), keep AI crawl control
+# aligned: allow search + answer retrieval; training remains your choice.
 User-agent: *
 Allow: /
 
