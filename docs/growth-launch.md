@@ -2,6 +2,8 @@
 
 Operational steps that cannot ship as code alone. Mirror of GitHub issue #8 with final copy.
 
+**Full agent takeover prompt (GSC, CF, posts, awesome PRs, regression):** see [handoff-prompts.md](./handoff-prompts.md).
+
 ## Google Search Console
 
 1. Property: `https://semaphore.bobochang.cn` (already verified via HTML meta on home).

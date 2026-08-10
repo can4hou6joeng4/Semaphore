@@ -102,6 +102,14 @@ Things a fresh read of the code will not reveal:
     `public/robots.txt` is the intended open crawl policy; if LLM discovery matters,
     align CF AI Crawl Control with `/llms.txt` (see `docs/growth-launch.md`).
 
+## Growth / launch handoff
+
+Post-deploy distribution (Search Console, Cloudflare AI crawl, Show HN, V2EX,
+awesome-list PRs) is **not** encoded in the app. Use the full agent prompt in
+[`docs/handoff-prompts.md`](docs/handoff-prompts.md); checklist copy lives in
+[`docs/growth-launch.md`](docs/growth-launch.md). Never satisfy growth by adding
+in-page analytics or weakening `connect-src 'none'`.
+
 ## Verification
 
 ```bash
