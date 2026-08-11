@@ -104,6 +104,16 @@ describe("SEO page contract", () => {
     });
   });
 
+  it.each(pages)("keeps accessible names off generic pre elements in $path", function (page) {
+    const namedPreElements = Array.from(
+      page.html.matchAll(/<pre\b[^>]*aria-label="[^"]+"[^>]*>/g),
+      function (match) { return match[0]; }
+    );
+    namedPreElements.forEach(function (pre) {
+      expect(pre).toContain('role="img"');
+    });
+  });
+
   it.each(pages)("gives every section in $path a heading or landmark name", function (page) {
     const sections = Array.from(
       page.html.matchAll(/<section\b([^>]*)>([\s\S]*?)<\/section>/g),
