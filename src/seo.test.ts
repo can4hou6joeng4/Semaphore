@@ -397,6 +397,23 @@ describe("SEO page contract", () => {
     expect(types).toContain("BreadcrumbList");
   });
 
+  it("keeps the visible privacy revision date aligned with structured data", function () {
+    const schema = jsonLd(privacyHtml)[0] as { "@graph"?: Record<string, unknown>[] };
+    const page = (schema["@graph"] || []).find(function (node) {
+      return node["@type"] === "WebPage";
+    });
+    const modified = String(page?.dateModified || "");
+    const visibleDate = new Intl.DateTimeFormat("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      timeZone: "UTC"
+    }).format(new Date(modified + "T00:00:00Z"));
+
+    expect(modified).not.toBe("");
+    expect(privacyHtml).toContain("Last updated: " + visibleDate + ".");
+  });
+
   it("declares the preferred site name on the home page", function () {
     const schema = jsonLd(indexHtml)[0] as { "@graph"?: Record<string, unknown>[] };
     const graph = schema["@graph"] || [];
