@@ -113,6 +113,28 @@ describe("SEO page contract", () => {
     expect(function () { jsonLd(html); }).not.toThrow();
   });
 
+  it("uses Open Graph locale values in language_TERRITORY format", function () {
+    pages.filter(function (page) { return page.path !== "zh.html"; })
+      .forEach(function (page) {
+        expect(page.html).toContain(
+          '<meta property="og:locale" content="en_US">'
+        );
+      });
+    expect(zhHtml).toContain('<meta property="og:locale" content="zh_CN">');
+    expect(zhHtml).toContain(
+      '<meta property="og:locale:alternate" content="en_US">'
+    );
+    pages.forEach(function (page) {
+      const locales = Array.from(
+        page.html.matchAll(/<meta property="og:locale(?:[:][^"]+)?" content="([^"]+)">/g),
+        function (match) { return match[1]; }
+      );
+      locales.forEach(function (locale) {
+        expect(locale).toMatch(/^[a-z]{2}_[A-Z]{2}$/);
+      });
+    });
+  });
+
   it.each(pages)("keeps $path heading levels sequential", function (page) {
     const levels = Array.from(page.html.matchAll(/<h([1-6])\b/g), function (match) {
       return Number(match[1]);
