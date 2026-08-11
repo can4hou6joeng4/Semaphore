@@ -27,6 +27,9 @@ import headersTxt from "../public/_headers?raw";
 
 /* Vite 8 returns an empty string for `*.css?raw` under vitest; read the file. */
 const terminalCss = readFileSync(new URL("./terminal.css", import.meta.url), "utf8");
+const fallbackFavicon = readFileSync(
+  new URL("../public/favicon.ico", import.meta.url), "latin1"
+);
 
 const pages = [
   { path: "index.html", canonical: "https://semaphore.bobochang.cn/", html: indexHtml },
@@ -63,6 +66,15 @@ function headContent(html: string, pattern: RegExp): string {
 }
 
 describe("SEO page contract", () => {
+  it("ships the conventional root favicon fallback crawlers request", function () {
+    const header = Array.from(fallbackFavicon.slice(0, 6), function (char) {
+      return char.charCodeAt(0);
+    });
+    expect(header).toEqual([
+      0x00, 0x00, 0x01, 0x00, 0x03, 0x00
+    ]);
+  });
+
   it.each([
     ["zh", zhSource],
     ["README banner", readmeBannerSource]
