@@ -58,6 +58,10 @@ Keep `public/favicon.ico` as the conventional root fallback for crawlers and
 legacy clients that request `/favicon.ico` without consulting the SVG link.
 It must remain visually aligned with `public/favicon.svg`.
 
+Structured data must describe facts supported by the visible site. Do not use
+`alternateName` as a list of keyword phrases, and do not add `aggregateRating`
+without a real, visible rating source.
+
 `404.html` is the deliberate exception: it has `robots=noindex, follow` and no
 canonical or `og:url`, because the same document is served for every unknown URL.
 It must remain a top-level Vite input so Cloudflare Pages returns a real 404 instead

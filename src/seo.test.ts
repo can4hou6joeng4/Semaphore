@@ -469,6 +469,10 @@ describe("SEO page contract", () => {
       isPartOf: { "@id": "https://semaphore.bobochang.cn/#website" },
       sameAs: ["https://github.com/can4hou6joeng4/Semaphore"]
     });
+    expect(application).not.toHaveProperty("alternateName");
+    pages.forEach(function (page) {
+      expect(page.html).not.toContain('"aggregateRating"');
+    });
   });
 
   it("keeps the Search Console ownership proof on the home page", function () {
