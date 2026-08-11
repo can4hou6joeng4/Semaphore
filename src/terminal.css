@@ -466,7 +466,11 @@ details.qa .qa-a code { color: var(--green-soft); background: var(--bg-deep); pa
 }
 @media (max-width: 360px) {
   .site-head .rail { gap: 8px; padding-inline: 10px; }
+  .brand { gap: 0; }
+  .brand-name { display: none; }
   .site-nav { gap: 8px; }
+  .kicker { white-space: normal; overflow-wrap: anywhere; }
+  .btn { max-width: 100%; white-space: normal; text-align: center; }
   .statusbar:has(.sb-toast) > .sb-seg[role="status"] { display: none; }
 }
 

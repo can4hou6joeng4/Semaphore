@@ -355,7 +355,13 @@ describe("SEO page contract", () => {
       /@media \(max-width: 370px\)[\s\S]*?\.sb-right \.sb-metric--charset \{ display: none; \}/
     );
     expect(terminalCss).toMatch(
-      /@media \(max-width: 360px\)[\s\S]*?\.site-head \.rail \{ gap: 8px; padding-inline: 10px; \}[\s\S]*?\.statusbar:has\(\.sb-toast\) > \.sb-seg\[role="status"\] \{ display: none; \}/
+      /@media \(max-width: 360px\)[\s\S]*?\.site-head \.rail \{ gap: 8px; padding-inline: 10px; \}[\s\S]*?\.brand-name \{ display: none; \}[\s\S]*?\.statusbar:has\(\.sb-toast\) > \.sb-seg\[role="status"\] \{ display: none; \}/
+    );
+    expect(terminalCss).toMatch(
+      /@media \(max-width: 360px\)[\s\S]*?\.kicker \{ white-space: normal; overflow-wrap: anywhere; \}/
+    );
+    expect(terminalCss).toMatch(
+      /@media \(max-width: 360px\)[\s\S]*?\.btn \{ max-width: 100%; white-space: normal; text-align: center; \}/
     );
   });
 

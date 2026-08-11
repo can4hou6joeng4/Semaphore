@@ -167,6 +167,8 @@ Right-side metrics are ordered dimensions, charset, then timing. Narrow chrome d
 first and charset only when needed; a toast temporarily replaces metrics, and at 360px or
 below it also replaces the ready-state segment. Keep the full toast text in its live region
 while ensuring the shared header and statusbar never hard-clip or create horizontal scroll.
+At the same breakpoint the visual brand wordmark yields to the accessible brand mark, long
+kickers may wrap, and buttons may wrap their label rather than widening the document.
 Tool pages may remember last-used charset and color in `localStorage` (`semaphore-tool-prefs`);
 URL query params always win on boot, and Reset clears those prefs. Never store image bytes.
 While a replacement source is decoding or waiting on fonts, parameter changes may update
