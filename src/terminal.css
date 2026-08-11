@@ -452,6 +452,9 @@ details.qa .qa-a code { color: var(--green-soft); background: var(--bg-deep); pa
   .sb-hide-m { display: none; }
   .sec { padding-top: 64px; padding-bottom: 64px; }
 }
+@media (max-width: 480px) {
+  .kicker { white-space: normal; overflow-wrap: anywhere; }
+}
 @media (max-width: 440px) {
   .sb-right .sb-seg { padding-inline: 9px; }
   .sb-right .sb-metric--timing,
@@ -469,7 +472,6 @@ details.qa .qa-a code { color: var(--green-soft); background: var(--bg-deep); pa
   .brand { gap: 0; }
   .brand-name { display: none; }
   .site-nav { gap: 8px; }
-  .kicker { white-space: normal; overflow-wrap: anywhere; }
   .btn { max-width: 100%; white-space: normal; text-align: center; }
   .statusbar:has(.sb-toast) > .sb-seg[role="status"] { display: none; }
 }

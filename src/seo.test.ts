@@ -12,6 +12,8 @@ import zhHtml from "../zh.html?raw";
 import landingSource from "./landing.ts?raw";
 import demoSource from "./demo.ts?raw";
 import brailleSource from "./main-braille.ts?raw";
+import zhSource from "./main-zh.ts?raw";
+import readmeBannerSource from "./main-readme-banner.ts?raw";
 import sharedSource from "./shared.ts?raw";
 import toolSource from "./tool.ts?raw";
 import engineSource from "./ascii-engine.ts?raw";
@@ -61,6 +63,20 @@ function headContent(html: string, pattern: RegExp): string {
 }
 
 describe("SEO page contract", () => {
+  it.each([
+    ["zh", zhSource],
+    ["README banner", readmeBannerSource]
+  ])("loads the shared design system from the %s entry", function (_name, source) {
+    expect(source).toContain('import "./terminal.css";');
+    expect(source).toContain('import "./shared";');
+  });
+
+  it("allows the README guide steps to shrink around scrollable code", function () {
+    expect(readmeBannerHtml).toMatch(
+      /\.guide-steps\s*\{[^}]*grid-template-columns: minmax\(0, 1fr\);/
+    );
+  });
+
   it.each(pages)("keeps $path canonical metadata aligned", function (page) {
     const html = page.html;
     const title = headContent(html, /<title>([^<]+)<\/title>/);
@@ -368,7 +384,7 @@ describe("SEO page contract", () => {
       /@media \(max-width: 360px\)[\s\S]*?\.site-head \.rail \{ gap: 8px; padding-inline: 10px; \}[\s\S]*?\.brand-name \{ display: none; \}[\s\S]*?\.statusbar:has\(\.sb-toast\) > \.sb-seg\[role="status"\] \{ display: none; \}/
     );
     expect(terminalCss).toMatch(
-      /@media \(max-width: 360px\)[\s\S]*?\.kicker \{ white-space: normal; overflow-wrap: anywhere; \}/
+      /@media \(max-width: 480px\)[\s\S]*?\.kicker \{ white-space: normal; overflow-wrap: anywhere; \}/
     );
     expect(terminalCss).toMatch(
       /@media \(max-width: 360px\)[\s\S]*?\.btn \{ max-width: 100%; white-space: normal; text-align: center; \}/
