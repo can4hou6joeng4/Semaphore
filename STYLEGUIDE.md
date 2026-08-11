@@ -41,7 +41,7 @@ Required `<head>` (exact, in this order):
 <meta name="twitter:description" content="…same as description…">
 <meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card….jpg">
 <meta property="og:site_name" content="Semaphore">
-<meta property="og:locale" content="en">
+<meta property="og:locale" content="en_US">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="600">
 <meta property="og:image:alt" content="…">
