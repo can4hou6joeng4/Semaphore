@@ -14,12 +14,14 @@
 <meta name="twitter:title" content="Image to ASCII Converter — Live Preview, No Upload | Semaphore">
 <meta name="twitter:description" content="Convert any image to ASCII art in your browser. Six charsets including braille, live controls, export text or PNG. Nothing is uploaded.">
 <meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card-tool.jpg">
+<meta name="twitter:image:alt" content="Semaphore — image to ASCII converter workbench">
 <meta property="og:site_name" content="Semaphore">
 <meta property="og:locale" content="en_US">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="600">
 <meta property="og:image:alt" content="Semaphore — image to ASCII converter workbench">
 <link rel="canonical" href="https://semaphore.bobochang.cn/tool">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#050a06">
 <meta name="description" content="Convert any image to ASCII art in your browser. Six charsets including braille, live controls, export text or PNG. Nothing is uploaded.">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
@@ -121,6 +123,11 @@
     border: 1px solid var(--line); border-radius: 2px;
     background: var(--bg-deep);
     max-height: 46vh; overflow: auto;
+    /* The preview opens as a 1x1 placeholder and is replaced by a rendered card
+       whose height depends on the art's row count, so the ratio cannot be pinned
+       on the image without distorting it. Reserve a floor on the container
+       instead, so the modal does not resize under the buttons on first render. */
+    min-height: 240px;
   }
   .cardmodal-preview img { margin-inline: auto; }
   .cardmodal-controls { margin-top: 14px; }
@@ -133,26 +140,18 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebApplication",
-      "name": "Semaphore Image to ASCII Converter",
+      "@type": "WebPage",
+      "@id": "https://semaphore.bobochang.cn/tool#webpage",
+      "name": "Image to ASCII Converter",
       "url": "https://semaphore.bobochang.cn/tool",
       "description": "Convert images to ASCII art locally in your browser with six charsets, live controls, and text or PNG export.",
-      "applicationCategory": "MultimediaApplication",
-      "applicationSubCategory": "Image converter",
-      "operatingSystem": "Any (runs in a web browser)",
-      "browserRequirements": "Requires JavaScript and HTML5 canvas",
-      "isAccessibleForFree": true,
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
       },
-      "featureList": [
-        "Converts PNG, JPG, WebP and GIF to ASCII art",
-        "Runs client-side without uploading images",
-        "Six charsets including dithered braille",
-        "Exports plain text, TXT, PNG and share cards"
-      ]
+      "mainEntity": {
+        "@id": "https://semaphore.bobochang.cn/#webapp"
+      },
+      "dateModified": "2026-08-13"
     },
     {
       "@type": "BreadcrumbList",
@@ -177,6 +176,12 @@
 </head>
 <body data-page="tool" data-path="~/tool">
 <main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the converter cannot run. That is the
+    same property that keeps your image private: the conversion happens in this tab, not
+    on a server, so there is no upload path and no server-rendered result to show instead.
+    <a href="/">home</a> · <a href="/faq">how it works</a> · <a href="/privacy">privacy</a></p>
+  </noscript>
 
   <section class="sec sec--tight" data-screen-label="tool-head">
     <div class="kicker"><b>~/tool</b> · image to ascii</div>
@@ -341,7 +346,7 @@
 
   <footer class="site-foot">
     <span>© 2026 Semaphore — plain text is forever</span>
-    <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
+    <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 
 </main>

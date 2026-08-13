@@ -6,11 +6,11 @@ or personal overrides in `AGENTS.local.md` / `CLAUDE.local.md`; both are gitigno
 
 ## Project
 
-Semaphore is a static, client-side image-to-ASCII converter: four hand-written HTML
-pages, a TypeScript conversion engine, and a Vite build that ships to Cloudflare Pages.
-There is no backend, no database, no accounts, and **no client-side telemetry**. The
-privacy claim is the product, so anything that could send *user content* (especially
-image bytes) off the device is a correctness bug, not a preference.
+Semaphore is a static, client-side image-to-ASCII converter: thirteen hand-written
+canonical HTML pages plus `404.html`, a TypeScript conversion engine, and a Vite build that ships to
+Cloudflare Pages. There is no backend, no database, no accounts, and **no client-side
+telemetry**. The privacy claim is the product, so anything that could send *user content*
+(especially image bytes) off the device is a correctness bug, not a preference.
 
 Edge HTTP request counts in the Cloudflare dashboard are fine — they are server logs of
 static file hits, not a script running in the visitor's tab. Do **not** add a Cloudflare
@@ -50,6 +50,19 @@ Only the entries whose role is not obvious from the filename:
   real `<canvas>`; `coverRect()`, `toHTML()` and `CHARSETS` are pure.
 - `src/sharecard.ts` — one layout, two renderers (SVG string and canvas PNG). `layout()`
   is the shared math; if you change one renderer without the other they drift.
+- `src/main-<page>.ts` — the only script a page loads. Each one is a two-to-four line
+  manifest: `terminal.css`, `shared`, then the page's behavior module (`landing` + `demo`
+  for the home page, `tool` for the converter). Page logic belongs in the module, not here.
+- `src/terminal.css` — the single stylesheet for every page, imported by the entries
+  (not linked from HTML). Vite extracts it to a hashed `/assets/*.css`.
+- `src/tool-params.ts` — the boot-state contract for the converter: `FACTORY_DEFAULTS`,
+  URL-query parsing with clamping, and the `localStorage` prefs. Pure, so it is the part
+  of `tool.ts` that unit tests can reach.
+- `src/seo.test.ts` — not a unit test. It imports the HTML pages, `_headers`, `robots.txt`,
+  `sitemap.xml` and several `.ts` sources as raw text and asserts the STYLEGUIDE contract
+  against them. It is the enforcement arm of `STYLEGUIDE.md` and will fail on markup and
+  copy changes as readily as on logic ones — read the failing assertion before "fixing"
+  either side.
 - `public/_headers` — Cloudflare Pages response headers. Caching policy and the CSP.
 - `public/static/` — stable-named assets (samples, share card). `public/fonts/` — the
   self-hosted font subset. Neither may move under `/assets/` (see Traps).
@@ -64,6 +77,22 @@ Only the entries whose role is not obvious from the filename:
   site itself (the README is allowed one).
 - Keep the existing code voice: `function` declarations, explicit return types, comment
   blocks that explain *why* a non-obvious thing is done, not what the line does.
+
+## Adding or renaming a page
+
+A page is not one file. Each of these is asserted somewhere, so skipping one shows up as
+a test failure or a silently unshipped page rather than a visible mistake:
+
+1. `<page>.html` at the repo root (or one level down, like `charsets/braille.html`), with
+   the exact `<head>` from `STYLEGUIDE.md` and `<body data-page="…" data-path="…">`.
+2. A `rollupOptions.input` entry in `vite.config.ts` — **without it the page is simply
+   not built**, and nothing else fails.
+3. `src/main-<page>.ts`, loaded as the single module script at the end of `<body>`.
+4. A no-transform `Cache-Control` rule in `public/_headers`, keeping the prefix disjoint
+   from `/assets/*`, `/fonts/*` and `/static/*` (see Traps 1 and 2).
+5. `public/sitemap.xml` and `public/llms.txt`.
+6. The `pages` array in `src/seo.test.ts` — that array drives the whole head/canonical/
+   sitemap/headers contract, so registering there is what actually enforces steps 1–5.
 
 ## Traps
 
@@ -101,6 +130,23 @@ Things a fresh read of the code will not reveal:
 10. **Cloudflare may inject managed `robots.txt` rules** for AI bots. Repo
     `public/robots.txt` is the intended open crawl policy; if LLM discovery matters,
     align CF AI Crawl Control with `/llms.txt` (see `docs/growth-launch.md`).
+11. **Most of the suite asserts on source *text*, not behavior.** `seo.test.ts` pulls
+    HTML, `_headers`, `sitemap.xml`, the READMEs and several `.ts` files in via `?raw`
+    and matches patterns against them. Renaming a variable or rewording a sentence can
+    turn a test red without any behavior changing — and that is the intent, since it is
+    how the STYLEGUIDE and the privacy copy stay true. Update the assertion deliberately.
+12. **`sitemap.xml` `lastmod` is pinned by a literal date in `seo.test.ts`.** The test
+    requires every entry to carry the same date *and* the count to equal `pages.length`,
+    so touching the sitemap means editing that literal too.
+13. **`*.css?raw` returns an empty string under vitest** (Vite 8), so `seo.test.ts` reads
+    `terminal.css` with `readFileSync` instead. A `?raw` CSS import will silently assert
+    against nothing rather than fail.
+14. **Test files are type-checked by `npm run build`.** `tsconfig.json` has no `exclude`
+    and includes all of `src`, so a `*.test.ts` type error fails the build. Node APIs used
+    from tests need a declaration in `src/node-shim.d.ts` — production sources stay
+    DOM-only. (The comment in that file claiming tests are excluded is out of date.)
+15. **`AsciiEngine.VERSION` is hand-synced with `package.json`.** It is stamped onto share
+    cards, and nothing checks the two agree.
 
 ## Growth / launch handoff
 
@@ -113,9 +159,20 @@ in-page analytics or weakening `connect-src 'none'`.
 ## Verification
 
 ```bash
-npm test           # vitest — pure logic only
-npm run build      # tsc --noEmit + vite build
+npm install                                          # Node 22 is what CI uses
+npm run dev                                          # vite dev server
+npm test                                             # vitest run
+npx vitest run src/tool-params.test.ts               # a single file
+npx vitest run -t "publishes every canonical page"   # a single test by name
+npm run typecheck                                    # tsc --noEmit on its own
+npm run build                                        # tsc --noEmit + vite build to dist/
+npm run preview                                      # serve the built dist/
 ```
+
+Pull requests run `npm test` then `npm run build` (`.github/workflows/ci.yml`). A push to
+`main` touching anything outside `**/*.md`, `docs/**`, `LICENSE` and `.github/**` runs the
+same two commands and then deploys `dist/` to Cloudflare Pages. There is no staging
+environment, so green CI is the only gate before production.
 
 `convert()` and `renderPNG()` need a canvas, so they are not unit-tested. Verify anything
 canvas- or CSP-dependent in a real browser. To reproduce the deployed environment locally,

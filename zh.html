@@ -14,6 +14,7 @@
 <meta name="twitter:title" content="图片转 ASCII 字符画 — 本地转换，不上传 | Semaphore">
 <meta name="twitter:description" content="免费的图片转 ASCII 工具，完全在浏览器本地运行。拖入照片，选择字符集（含盲文点阵），导出文本或 PNG。不会上传任何图片。">
 <meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card-zh.jpg">
+<meta name="twitter:image:alt" content="Semaphore — 图片转 ASCII，不上传">
 <meta property="og:site_name" content="Semaphore">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:locale:alternate" content="en_US">
@@ -24,6 +25,7 @@
 <link rel="alternate" hreflang="zh-CN" href="https://semaphore.bobochang.cn/zh">
 <link rel="alternate" hreflang="en" href="https://semaphore.bobochang.cn/">
 <link rel="alternate" hreflang="x-default" href="https://semaphore.bobochang.cn/">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#050a06">
 <meta name="description" content="免费的图片转 ASCII 工具，完全在浏览器本地运行。拖入照片，选择字符集（含盲文点阵），导出文本或 PNG。不会上传任何图片。">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
@@ -44,9 +46,7 @@
       "inLanguage": "zh-CN",
       "description": "免费的图片转 ASCII 工具，完全在浏览器本地运行，不上传图片。",
       "isPartOf": {
-        "@type": "WebSite",
-        "name": "Semaphore",
-        "url": "https://semaphore.bobochang.cn/"
+        "@id": "https://semaphore.bobochang.cn/#website"
       },
       "dateModified": "2026-08-10"
     },
@@ -73,6 +73,11 @@
 </head>
 <body data-page="zh" data-path="~/zh">
 <main class="frame">
+  <noscript>
+    <p class="noscript-note">浏览器已禁用 JavaScript,页面顶栏与实时 ASCII 预览无法渲染。
+    Semaphore 的转换在你自己的标签页内完成,而不是在服务器上,因此没有可退回的服务端结果——
+    下方正文仍可阅读。<a href="/">home</a> · <a href="/tool">打开转换器</a></p>
+  </noscript>
 
   <section class="sec" data-screen-label="zh-head">
     <div class="kicker"><b>~/zh</b> · 本地转换 · 不上传</div>
@@ -127,7 +132,9 @@
   <footer class="site-foot">
     <span>© 2026 Semaphore — plain text is forever</span>
     <nav>
+      <a href="/">home</a>
       <a href="/usecases">usecases</a>
+      <a href="/charsets/braille">charsets</a>
       <a href="/faq">faq</a>
       <a href="/privacy">privacy</a>
       <a href="/tool">open tool</a>

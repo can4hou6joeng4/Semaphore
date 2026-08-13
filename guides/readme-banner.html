@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>README ASCII Banner from an Image — Semaphore</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:title" content="README ASCII Banner from an Image — Semaphore">
 <meta property="og:description" content="Turn a logo or photo into a plain-text README banner. Convert locally with Semaphore, copy ASCII art, paste into GitHub Markdown — no image host required.">
 <meta property="og:url" content="https://semaphore.bobochang.cn/guides/readme-banner">
@@ -14,12 +14,14 @@
 <meta name="twitter:title" content="README ASCII Banner from an Image — Semaphore">
 <meta name="twitter:description" content="Turn a logo or photo into a plain-text README banner. Convert locally with Semaphore, copy ASCII art, paste into GitHub Markdown — no image host required.">
 <meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card-readme.jpg">
+<meta name="twitter:image:alt" content="Semaphore — README ASCII banner from an image">
 <meta property="og:site_name" content="Semaphore">
 <meta property="og:locale" content="en_US">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="600">
 <meta property="og:image:alt" content="Semaphore — README ASCII banner from an image">
 <link rel="canonical" href="https://semaphore.bobochang.cn/guides/readme-banner">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#050a06">
 <meta name="description" content="Turn a logo or photo into a plain-text README banner. Convert locally with Semaphore, copy ASCII art, paste into GitHub Markdown — no image host required.">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
@@ -56,9 +58,7 @@
       "url": "https://semaphore.bobochang.cn/guides/readme-banner",
       "description": "How to convert a logo or photo into a plain-text README banner with Semaphore.",
       "isPartOf": {
-        "@type": "WebSite",
-        "name": "Semaphore",
-        "url": "https://semaphore.bobochang.cn/"
+        "@id": "https://semaphore.bobochang.cn/#website"
       },
       "dateModified": "2026-08-10"
     },
@@ -122,6 +122,12 @@
 </head>
 <body data-page="readme-banner" data-path="~/guides/readme-banner">
 <main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the site header and the live ASCII
+    previews will not render. Semaphore converts images inside your own tab rather than
+    on a server, so there is nothing to fall back to — the written content below still
+    reads. <a href="/">home</a> · <a href="/tool">image to ASCII converter</a></p>
+  </noscript>
 
   <section class="sec" data-screen-label="guide-head">
     <div class="kicker"><b>~/guides/readme-banner</b> · plain text that ships</div>
@@ -199,7 +205,9 @@
   <footer class="site-foot">
     <span>© 2026 Semaphore — plain text is forever</span>
     <nav>
+      <a href="/">home</a>
       <a href="/usecases">usecases</a>
+      <a href="/charsets/braille">charsets</a>
       <a href="/faq">faq</a>
       <a href="/privacy">privacy</a>
       <a href="/tool">open tool</a>
