@@ -55,11 +55,11 @@ Six charsets, six textures — every ramp runs dark to bright, and the engine ma
 
 | Charset | Ramp | Best for |
 |---|---|---|
-| `standard` | ` .:-=+*#%@` | The classic — safe in any monospace context |
-| `detailed` | 68-level grayscale (` .'^",:;Il!i~+…#MW&8%B@$`) | Portraits and photos |
-| `blocks` | ` ░▒▓█` | Pixel art, low-res posters |
-| `minimal` | ` .:*#` | Minimal logos, tiny avatars |
-| `binary` | ` 01` | Cyberpunk, code-rain looks |
+| [`standard`](https://semaphore.bobochang.cn/charsets/standard) | ` .:-=+*#%@` | The classic — safe in any monospace context |
+| [`detailed`](https://semaphore.bobochang.cn/charsets/detailed) | 68-level grayscale (` .'^",:;Il!i~+…#MW&8%B@$`) | Portraits and photos |
+| [`blocks`](https://semaphore.bobochang.cn/charsets/blocks) | ` ░▒▓█` | Pixel art, low-res posters |
+| [`minimal`](https://semaphore.bobochang.cn/charsets/minimal) | ` .:*#` | Minimal logos, tiny avatars |
+| [`binary`](https://semaphore.bobochang.cn/charsets/binary) | ` 01` | Cyberpunk, code-rain looks |
 | [`braille`](https://semaphore.bobochang.cn/charsets/braille) | 2×4 braille dots + dithering | 8× pixel density at the same width — the detail king |
 
 ## Privacy
@@ -79,7 +79,7 @@ The operator still sees **aggregate edge request counts** on Cloudflare Pages (w
 
 Vite 8 · TypeScript 7 (strict) · vanilla DOM, zero frameworks · Cloudflare Pages.
 
-Pages live at the repo root — `index.html` (landing), `tool.html` (the converter), `usecases.html`, `faq.html` — with per-page behavior in the `src/main-*.ts` entries. The conversion engine is `src/ascii-engine.ts`, share cards are `src/sharecard.ts`, and the binding design contract is [STYLEGUIDE.md](STYLEGUIDE.md). Repository maintenance rules and the traps a fresh read will not reveal live in [AGENTS.md](AGENTS.md).
+Thirteen canonical pages: seven at the repo root (`index.html`, `tool.html`, `usecases.html`, `faq.html`, `privacy.html`, `zh.html`, plus `404.html`), six under `charsets/` and `guides/`. Per-page behavior lives in the `src/main-*.ts` entries — the five ramp pages share one, reading their charset from `body[data-charset]`. The conversion engine is `src/ascii-engine.ts`, share cards are `src/sharecard.ts`, and the binding design contract is [STYLEGUIDE.md](STYLEGUIDE.md). Repository maintenance rules and the traps a fresh read will not reveal live in [AGENTS.md](AGENTS.md).
 
 ## Why "Semaphore"
 

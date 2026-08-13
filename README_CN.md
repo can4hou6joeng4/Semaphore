@@ -50,11 +50,11 @@ npm run preview    # 预览构建产物
 
 | 字符集 | 梯度 | 适合 |
 |---|---|---|
-| `standard` | ` .:-=+*#%@` | 经典款,在任何等宽环境都稳 |
-| `detailed` | 68 级灰阶(` .'^",:;Il!i~+…#MW&8%B@$`) | 人像与照片 |
-| `blocks` | ` ░▒▓█` | 像素画、低分辨率海报 |
-| `minimal` | ` .:*#` | 极简 logo、小尺寸头像 |
-| `binary` | ` 01` | 赛博朋克、代码雨质感 |
+| [`standard`](https://semaphore.bobochang.cn/charsets/standard) | ` .:-=+*#%@` | 经典款,在任何等宽环境都稳 |
+| [`detailed`](https://semaphore.bobochang.cn/charsets/detailed) | 68 级灰阶(` .'^",:;Il!i~+…#MW&8%B@$`) | 人像与照片 |
+| [`blocks`](https://semaphore.bobochang.cn/charsets/blocks) | ` ░▒▓█` | 像素画、低分辨率海报 |
+| [`minimal`](https://semaphore.bobochang.cn/charsets/minimal) | ` .:*#` | 极简 logo、小尺寸头像 |
+| [`binary`](https://semaphore.bobochang.cn/charsets/binary) | ` 01` | 赛博朋克、代码雨质感 |
 | [`braille`](https://semaphore.bobochang.cn/charsets/braille) | 盲文 2×4 点阵 + 抖动 | 同宽度下 8 倍像素密度,细节之王 |
 
 ## 隐私
@@ -74,7 +74,7 @@ npm run preview    # 预览构建产物
 
 Vite 8 · TypeScript 7(strict)· 原生 DOM,零框架 · Cloudflare Pages。
 
-页面都在仓库根目录——`index.html`(落地页)、`tool.html`(转换器)、`usecases.html`、`faq.html`,各页行为在 `src/main-*.ts` 入口里。转换引擎是 `src/ascii-engine.ts`,分享卡是 `src/sharecard.ts`,设计契约见 [STYLEGUIDE.md](STYLEGUIDE.md)。仓库维护规则,以及那些光看代码看不出来的坑,记在 [AGENTS.md](AGENTS.md)。
+十三个 canonical 页面:七个在仓库根目录(`index.html`、`tool.html`、`usecases.html`、`faq.html`、`privacy.html`、`zh.html`,加上 `404.html`),六个在 `charsets/` 与 `guides/` 下。各页行为在 `src/main-*.ts` 入口里——五个字符集页共用一个入口,从 `body[data-charset]` 读取字符集。转换引擎是 `src/ascii-engine.ts`,分享卡是 `src/sharecard.ts`,设计契约见 [STYLEGUIDE.md](STYLEGUIDE.md)。仓库维护规则,以及那些光看代码看不出来的坑,记在 [AGENTS.md](AGENTS.md)。
 
 ## 为什么叫 "Semaphore"
 
