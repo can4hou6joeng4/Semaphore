@@ -38,7 +38,7 @@ All notable changes to Semaphore are documented in this file.
 - Drop the unsupported claim that every example on `/usecases` came out of the engine; those panels are hand-drawn.
 - Add a `noscript` explanation to every page.
 - Align engine column clamp with the product range (40–240).
-- Assert `AsciiEngine.VERSION` equals the `package.json` version in the test suite — the two were hand-synced with nothing checking them, and the constant is stamped onto every share card.
+- Assert `AsciiEngine.VERSION` equals the `package.json` version in the test suite. The two were hand-synced with nothing checking them. Note the constant is currently an unused export — nothing imports it, so it is tree-shaken out of every built chunk and is not stamped onto share cards.
 - Keep the statusbar readable on narrow viewports (metric priority + toast handling).
 
 **Full changelog:** [v1.1.0...v1.2.0](https://github.com/can4hou6joeng4/Semaphore/compare/v1.1.0...v1.2.0)
