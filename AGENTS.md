@@ -145,8 +145,13 @@ Things a fresh read of the code will not reveal:
     and includes all of `src`, so a `*.test.ts` type error fails the build. Node APIs used
     from tests need a declaration in `src/node-shim.d.ts` — production sources stay
     DOM-only. (The comment in that file claiming tests are excluded is out of date.)
-15. **`AsciiEngine.VERSION` is hand-synced with `package.json`.** It is stamped onto share
-    cards, and nothing checks the two agree.
+15. **`AsciiEngine.VERSION` is exported but imported by nothing.** Verified: `grep -rn
+    VERSION src/*.ts` outside the tests matches only its own declaration, so Rollup
+    tree-shakes it and no built chunk contains the string — bumping it does not even
+    change the engine chunk's content hash. It is NOT stamped onto share cards
+    (`src/sharecard.ts` never references a version). `seo.test.ts` now pins it to the
+    `package.json` version, so it stays honest; decide whether to wire it into the
+    share card as originally intended or drop it.
 
 ## Growth / launch handoff
 
