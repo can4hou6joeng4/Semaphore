@@ -665,6 +665,13 @@ describe("SEO page contract", () => {
     expect(robotsTxt).not.toMatch(/^Disallow:\s*\/$/m);
     expect(robotsTxt).toContain("Sitemap: https://semaphore.bobochang.cn/sitemap.xml");
     expect(robotsTxt).toContain("llms.txt");
+    /* The repo file carries no directive-level Disallow at all. Cloudflare's
+       managed block is prepended at the edge and is the only thing that ever
+       blocks a bot here, so a Disallow appearing in-repo means someone tightened
+       the wrong layer — the AI-retrieval decision lives in the dashboard. */
+    expect(robotsTxt.split("\n").filter(function (line) {
+      return /^\s*Disallow:/.test(line);
+    })).toHaveLength(0);
   });
 
   it("prevents edge features from transforming canonical HTML", function () {
