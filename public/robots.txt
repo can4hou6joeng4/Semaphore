@@ -1,7 +1,31 @@
 # Semaphore crawl policy (repo source of truth).
-# Cloudflare may append managed AI-bot rules at the edge. If you want LLM
-# assistants to recommend this site (see /llms.txt), keep AI crawl control
-# aligned: allow search + answer retrieval; training remains your choice.
+#
+# Decision (2026-08-13): AI *retrieval* is allowed, AI *training* is not.
+# Assistants that fetch a page to answer a question are how a tool like this
+# gets found now, and /llms.txt exists specifically to serve them. Training
+# permission is a separate question and stays declined.
+#
+# This file cannot express that on its own. Cloudflare prepends a managed block
+# at the edge with two independent layers:
+#
+#   1. Content-Signal: search=yes,ai-train=no,use=reference
+#      Already exactly the policy above. Leave it alone.
+#   2. Per-bot blanket blocks (ClaudeBot, GPTBot, CCBot, Google-Extended,
+#      Bytespider, Amazonbot, Applebot-Extended, meta-externalagent,
+#      CloudflareBrowserRenderingCrawler). These contradict layer 1 and are the
+#      thing to turn off, in the Cloudflare dashboard under AI Crawl Control.
+#      They are NOT in this file and cannot be overridden from it: a bot matches
+#      its own user-agent group, so the `User-agent: *` block below never
+#      applies to them.
+#
+# Do not try to fight the edge from here by adding `User-agent: ClaudeBot` plus
+# an allow rule as a counter-group. Two groups for one user-agent have
+# inconsistent precedence across crawlers, so it would work by accident where it
+# worked at all. Fix it at the source.
+#
+# Googlebot is unaffected either way: Google-Extended is the AI-training token,
+# not the search crawler, so search indexing was never at risk.
+
 User-agent: *
 Allow: /
 
