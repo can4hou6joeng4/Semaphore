@@ -11,6 +11,15 @@
     "test:watch": "vitest"
   },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/can4hou6joeng4/Semaphore.git"
+  },
+  "homepage": "https://semaphore.bobochang.cn",
+  "bugs": {
+    "url": "https://github.com/can4hou6joeng4/Semaphore/issues"
+  },
+  "author": "bobochang (https://bobochang.cn)",
   "type": "module",
   "devDependencies": {
     "typescript": "^7.0.2",
