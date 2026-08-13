@@ -238,14 +238,25 @@ window.addEventListener("resize", function () {
 document.fonts.addEventListener("loadingdone", function () { renderAll(); });
 
 (async function init() {
+  /* The hero is the largest above-the-fold paint, so its bytes must not queue
+     behind the webfont: the two are independent and only the *fit* below needs
+     final mono metrics. Starting the fetch here — paired with the static
+     <link rel="preload" as="image"> in index.html, which lets the preload
+     scanner begin it during HTML parse — takes two serial round trips off LCP. */
+  const sources = Promise.all([
+    AsciiEngine.loadImage("/static/sample-hero.webp"),
+    AsciiEngine.loadImage("/static/sample-portrait.webp")
+  ]);
+  /* Claim the rejection in this turn. Without it a failed sample fetch lands in
+     shared.ts's unhandledrejection collector and poisons data-js-errors, which
+     headless QA reads as a real defect; the await below still surfaces it. */
+  sources.catch(function () { /* handled by the try block */ });
+
   // mono metrics must be final (and chrome injected) before first fit
   await Promise.all([document.fonts.ready, domReady()]);
   Site.setState("converting…", { busy: true });
   try {
-    const loaded = await Promise.all([
-      AsciiEngine.loadImage("/static/sample-hero.webp"),
-      AsciiEngine.loadImage("/static/sample-portrait.webp")
-    ]);
+    const loaded = await sources;
     hero = loaded[0];
     /* make sure both bitmaps are fully decoded before first draw */
     await Promise.all(loaded.map(function (im) {

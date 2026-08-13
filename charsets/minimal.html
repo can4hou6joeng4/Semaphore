@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image to ASCII Minimal Ramp — Simple 5 Steps | Semaphore</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Image to ASCII Minimal Ramp — Simple 5 Steps | Semaphore">
+<meta property="og:description" content="Convert an image with the five-step minimal ASCII ramp of space . : * #. Sparse, high-contrast, sketch-like output for icons, avatars and small column counts.">
+<meta property="og:url" content="https://semaphore.bobochang.cn/charsets/minimal">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Image to ASCII Minimal Ramp — Simple 5 Steps | Semaphore">
+<meta name="twitter:description" content="Convert an image with the five-step minimal ASCII ramp of space . : * #. Sparse, high-contrast, sketch-like output for icons, avatars and small column counts.">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:image:alt" content="Semaphore — image to ASCII with the minimal ramp">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en_US">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — image to ASCII with the minimal ramp">
+<link rel="canonical" href="https://semaphore.bobochang.cn/charsets/minimal">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#050a06">
+<meta name="description" content="Convert an image with the five-step minimal ASCII ramp of space . : * #. Sparse, high-contrast, sketch-like output for icons, avatars and small column counts.">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
+<style>
+  /* charset landing page — layout only, colors from tokens */
+  .cs-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+  }
+  .cs-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+  .cs-term { margin: 0; min-width: 0; }
+  .cs-stage {
+    height: 430px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .cs-stage .ascii-pre { margin: 0; line-height: 1; }
+  .cs-ramp {
+    display: block;
+    margin-top: 20px;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    background: var(--bg-deep);
+    font-size: var(--fs-l);
+    letter-spacing: .22em;
+    overflow-x: auto;
+  }
+  .cs-siblings { margin-top: 34px; }
+  @media (max-width: 900px) {
+    .cs-hero { grid-template-columns: minmax(0, 1fr); }
+    .cs-stage { height: 360px; }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://semaphore.bobochang.cn/charsets/minimal#webpage",
+      "name": "Image to ASCII Minimal Ramp",
+      "url": "https://semaphore.bobochang.cn/charsets/minimal",
+      "description": "How Semaphore maps image luminance onto a five-character sparse ASCII ramp, and why that ramp survives small column counts better than a long one.",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "mainEntity": {
+        "@id": "https://semaphore.bobochang.cn/#webapp"
+      },
+      "dateModified": "2026-08-13"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Semaphore",
+          "item": "https://semaphore.bobochang.cn/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Minimal ASCII Ramp",
+          "item": "https://semaphore.bobochang.cn/charsets/minimal"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body data-page="charset-minimal" data-path="~/charsets/minimal" data-charset="minimal">
+<main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the site header and the live ASCII
+    previews will not render. Semaphore converts images inside your own tab rather than
+    on a server, so there is nothing to fall back to — the written content below still
+    reads. <a href="/">home</a> · <a href="/tool">image to ASCII converter</a></p>
+  </noscript>
+
+  <section class="sec" data-screen-label="minimal-hero">
+    <div class="cs-hero">
+      <div>
+        <div class="kicker"><b>~/charsets/minimal</b> · five steps</div>
+        <h1 class="h2">Simple image to ASCII with five characters</h1>
+        <p class="lede" style="margin-top:18px">A space and four pieces of punctuation. The minimal ramp keeps the same number of steps as the block charset but spends none of them on solid fills — every glyph is plain 7-bit ASCII surrounded by empty paper. The output reads as a sketch rather than as a photograph.</p>
+        <code class="cs-ramp">&nbsp;.:*#</code>
+        <div class="cs-actions">
+          <a class="btn btn--green btn--lg" href="/tool?charset=minimal">Convert an image</a>
+          <a class="btn btn--ghost" href="/charsets/detailed">compare with detailed</a>
+        </div>
+      </div>
+      <figure class="term cs-term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p">$</span> semaphore --charset minimal</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body cs-stage" id="charsetStage">
+          <pre class="ascii-pre" id="charsetDemo" role="img" aria-label="minimal ramp ascii portrait loading">rendering minimal portrait…</pre>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="minimal-how">
+    <div class="kicker">[ how_the_ramp_works ]</div>
+    <h2 class="h2">One space, four marks, no grey</h2>
+    <p class="lede" style="margin-top:18px">Semaphore reduces each cell of the image to a single brightness figure and then answers one question: which of five characters is closest? With only five answers available, most of the tonal information in the source is deliberately dropped.</p>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">01</span> measure the cell</h3>
+        <p>Your column count sets the grid. Each cell is collapsed into one perceptual luminance value, so a saturated red and a pale blue of the same apparent brightness land on the same rung.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">02</span> quantise to five</h3>
+        <p>That value picks a slot: darkest stays a space, then <code>.</code>, then <code>:</code>, then <code>*</code>, and the brightest cells become <code>#</code>. Anything between two slots is rounded, not blended.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">03</span> leave the paper alone</h3>
+        <p>Because a period and a colon cover only a fraction of their cell, the ramp writes far less ink than a block or braille render. The whitespace is doing as much work as the marks.</p>
+      </article>
+    </div>
+    <p class="lede" style="margin-top:34px">That rounding is the reason minimal holds up when there is not much room. A sixty-eight step ramp needs many characters before its shades read as shading; give it forty columns and consecutive glyphs differ by an amount the eye cannot separate, so the picture turns into speckle. Five widely spaced steps still produce visible edges at the same size, because the jump from <code>.</code> to <code>*</code> is large enough to survive being tiny.</p>
+  </section>
+
+  <section class="sec" data-screen-label="minimal-choose">
+    <div class="kicker">[ when_to_use_it ]</div>
+    <h2 class="h2">Pick minimal when the output has to stay small</h2>
+    <div class="grid-2" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> choose minimal</h3>
+        <p>Avatars, favicons rewritten as text, monogram-style logos, a one-line signature, a badge in a comment header — anything that has to stay legible inside a few hundred characters. Try 40–80 columns, push contrast up until the subject separates cleanly from the background, and switch invert on when the subject is light on a dark field. Simple silhouettes and hard-edged marks respond best.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> choose something else</h3>
+        <p>Faces, fabric and anything with soft gradients need mid-tones this ramp does not have: <a href="/charsets/detailed">the detailed ramp</a> carries sixty-eight shades, and <a href="/charsets/braille">braille</a> packs eight dots into every cell for the sharpest result Semaphore can reach. If you want the same five steps but a filled, pixel-like surface instead of sparse punctuation, use <a href="/charsets/blocks">blocks</a>.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="minimal-siblings">
+    <div class="kicker">[ other_charsets ]</div>
+    <h2 class="h2">The other five charsets</h2>
+    <div class="grid-3 cs-siblings">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/standard">standard</a></h3>
+        <p>Ten shades of punctuation. The look most people mean by ASCII art.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/detailed">detailed</a></h3>
+        <p>Sixty-eight shades of punctuation and letters. The photographic ramp.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/blocks">blocks</a></h3>
+        <p>Five solid fills. The same step count, none of the whitespace.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/binary">binary</a></h3>
+        <p>Ones and zeroes only. The code-rain look.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/braille">braille</a></h3>
+        <p>Eight dots per character. The highest detail Semaphore can reach.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/usecases">where it goes</a></h3>
+        <p>READMEs, splash screens, comment headers and other plain-text homes.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec sec--tight" data-screen-label="minimal-cta">
+    <h2 class="h2">Five characters, nothing wasted.</h2>
+    <p class="lede" style="margin-top:16px">Open the converter with the minimal ramp preselected, drop an image, and pull the column count down until the shape is all that is left. The conversion runs in your own tab and the bytes never leave it.</p>
+    <a class="btn btn--green btn--lg" href="/tool?charset=minimal" style="margin-top:26px">Open the minimal ASCII converter</a>
+  </section>
+
+  <footer class="site-foot">
+    <span>© 2026 Semaphore — plain text is forever</span>
+    <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
+  </footer>
+
+</main>
+<script type="module" src="/src/main-charset.ts"></script>
+</body>
+</html>

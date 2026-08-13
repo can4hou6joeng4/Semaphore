@@ -1,24 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- lastmod is the date of each page's own last substantive change, not a build
+     stamp. A sitemap where every URL shares one date is the canonical signal that
+     lastmod is unreliable, and Google discards it — which throws away the main
+     lever a small static site has for prompt recrawls. src/seo.test.ts pins each
+     page's date to the dateModified in its own JSON-LD instead of to a literal,
+     so the two can never drift apart. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://semaphore.bobochang.cn/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/tool</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/usecases</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/faq</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/privacy</loc>
     <lastmod>2026-08-10</lastmod>
+  </url>
+  <url>
+    <loc>https://semaphore.bobochang.cn/charsets/standard</loc>
+    <lastmod>2026-08-13</lastmod>
+  </url>
+  <url>
+    <loc>https://semaphore.bobochang.cn/charsets/detailed</loc>
+    <lastmod>2026-08-13</lastmod>
+  </url>
+  <url>
+    <loc>https://semaphore.bobochang.cn/charsets/blocks</loc>
+    <lastmod>2026-08-13</lastmod>
+  </url>
+  <url>
+    <loc>https://semaphore.bobochang.cn/charsets/minimal</loc>
+    <lastmod>2026-08-13</lastmod>
+  </url>
+  <url>
+    <loc>https://semaphore.bobochang.cn/charsets/binary</loc>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/charsets/braille</loc>

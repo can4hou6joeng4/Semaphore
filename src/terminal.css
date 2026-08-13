@@ -82,8 +82,16 @@ body {
   line-height: 1.75;
   font-variant-ligatures: none;
   -webkit-font-smoothing: antialiased;
+  /* shared.ts prepends the sticky .site-head after parse. A sticky element takes
+     flow space, so without a reserved slot the whole page drops 61px the moment
+     the module runs. Reserve it in CSS (so it exists in the first paint) and hand
+     it back in the same synchronous block that injects the header — init() sets
+     data-chrome="ready" immediately after the prepend, so no frame sees both. */
+  padding-top: calc(var(--header-h) + 1px);
   padding-bottom: var(--statusbar-h);
 }
+
+html[data-chrome="ready"] body { padding-top: 0; }
 
 ::selection { background: var(--green); color: var(--black-ink); }
 
@@ -432,6 +440,20 @@ details.qa .qa-a code { color: var(--green-soft); background: var(--bg-deep); pa
 .site-foot nav { display: flex; gap: 22px; flex-wrap: wrap; }
 .site-foot a { color: var(--ink-faint); text-decoration: none; }
 .site-foot a:hover { color: var(--green); }
+
+/* Without JS there is no injected header and no conversion — the engine runs in
+   the visitor's tab, so there is no server rendering to fall back to. Say that
+   plainly instead of leaving an empty stage above the fold. */
+.noscript-note {
+  margin: 0 var(--pad-x) 24px;
+  padding: 14px 18px;
+  border: 1px solid var(--line-strong);
+  border-left: 3px solid var(--green);
+  background: var(--panel);
+  font-size: var(--fs-s);
+  color: var(--ink);
+}
+.noscript-note a { color: var(--green-soft); }
 
 /* ========================= utilities ========================= */
 .row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
