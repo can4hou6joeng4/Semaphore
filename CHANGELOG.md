@@ -6,20 +6,35 @@ All notable changes to Semaphore are documented in this file.
 
 ### Features
 
+- Add landing pages for the five remaining charsets (`/charsets/standard`, `/detailed`, `/blocks`, `/minimal`, `/binary`), sharing one entry that reads the charset from `body[data-charset]`.
 - Remember last-used tool charset and color in `localStorage` (URL params still win).
 - Add README banner guide (`/guides/readme-banner`) with HowTo structured data.
 - Add Chinese intro page (`/zh`) with hreflang alternates from the home page.
 
 ### SEO and discovery
 
+- Consolidate the entity graph: `/tool` now references the site-wide `#webapp` instead of declaring a second `WebApplication`, and content pages reference `#website` by `@id` rather than repeating an anonymous copy.
+- Declare the operator as a `Person` node, referenced as `publisher` and `author`.
+- Derive sitemap `lastmod` per page and assert it equals that page's own `dateModified` — the previous test pinned every entry to one literal date, which made accurate dates a test failure.
+- Align three `FAQPage` answers verbatim with the visible copy.
+- Add `twitter:image:alt` and `max-image-preview:large` site-wide; `/guides/*` now uses `og:type=article`.
+- Cross-link all six charset pages, and give every page a static link back to `/`.
 - Add explicit Twitter title/description/image tags on every canonical page.
 - Publish `sameAs` / language hints on home WebSite and WebApplication schema.
 - Refresh sitemap `lastmod` dates and include new routes; tighten HTML cache headers for `/zh` and the guide.
 - Compress the default social card; add page-specific OG previews for tool, braille, zh, and README guide.
 - Document growth launch and awesome-list drafts under `docs/`.
 
+### Performance
+
+- Preload the hero image and start its fetch before awaiting `document.fonts.ready`, removing two serial round trips from LCP. The early promise claims its own rejection so a failed fetch is not reported to the `data-js-errors` collector.
+- Reserve the injected sticky header's height in CSS and release it when `data-chrome="ready"` lands, removing a 61px layout shift.
+
 ### Fixes
 
+- Correct the documented `detailed` ramp length from 70 to 68 in both READMEs and `llms.txt`, and derive the number from the engine in a test.
+- Drop the unsupported claim that every example on `/usecases` came out of the engine; those panels are hand-drawn.
+- Add a `noscript` explanation to every page.
 - Align engine column clamp with the product range (40–240).
 - Sync `AsciiEngine.VERSION` with package `1.1.0`.
 - Keep the statusbar readable on narrow viewports (metric priority + toast handling).

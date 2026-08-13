@@ -14,12 +14,14 @@
 <meta name="twitter:title" content="Image to ASCII FAQ — Privacy, Formats, Braille | Semaphore">
 <meta name="twitter:description" content="FAQ for the free image to ASCII converter: no upload, no in-page analytics, formats, braille mode, color, licensing and size limits.">
 <meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:image:alt" content="Semaphore — frequently asked questions">
 <meta property="og:site_name" content="Semaphore">
 <meta property="og:locale" content="en_US">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="600">
 <meta property="og:image:alt" content="Semaphore — frequently asked questions">
 <link rel="canonical" href="https://semaphore.bobochang.cn/faq">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#050a06">
   <meta name="description" content="FAQ for the free image to ASCII converter: no upload, no in-page analytics, formats, braille mode, color, licensing and size limits.">
   <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
@@ -40,13 +42,20 @@
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": "https://semaphore.bobochang.cn/faq#webpage",
+    "name": "Image to ASCII FAQ",
+    "url": "https://semaphore.bobochang.cn/faq",
+    "isPartOf": {
+      "@id": "https://semaphore.bobochang.cn/#website"
+    },
+    "dateModified": "2026-08-13",
     "mainEntity": [
       {
         "@type": "Question",
         "name": "Do my images get uploaded anywhere?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Never. The conversion runs entirely in your browser using the canvas API; once the page has loaded it even works offline. If you're the trust-but-verify type, open devtools and watch the network tab stay silent."
+          "text": "Never. The conversion runs entirely in your browser using the canvas API; once the page has loaded it even works offline. If you're the trust-but-verify type, read the privacy statement, then open devtools and watch the network tab stay silent."
         }
       },
       {
@@ -54,7 +63,7 @@
         "name": "Do you run analytics in my browser?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. The page ships no analytics script, no cookies, and a Content-Security-Policy with connect-src 'none', so it cannot open a fetch, XHR or WebSocket to anywhere — including Cloudflare Web Analytics beacons. The operator only sees aggregate HTTP request counts at the Cloudflare edge (which paths were hit, roughly how many times). Your image bytes never leave the device and are never part of those counts."
+          "text": "No. The page ships no analytics script, no cookies, and a Content-Security-Policy with connect-src 'none', so it cannot open a fetch, XHR or WebSocket to anywhere — including a Cloudflare Web Analytics beacon. What the operator can see is aggregate HTTP traffic at the Cloudflare edge: which paths were requested and roughly how often. Those are server logs of the page load itself, not a second phone-home from your tab. Your image bytes never leave the device and are never part of those counts."
         }
       },
       {
@@ -94,7 +103,7 @@
         "name": "What does braille mode actually do?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Each character becomes a 2x4 grid of dots from the Unicode braille block, dithered with Floyd-Steinberg — roughly eight times the spatial resolution of a classic ramp. It needs a font with braille glyphs, which every modern OS has."
+          "text": "Each character becomes a 2×4 grid of dots from the Unicode braille block, dithered with Floyd–Steinberg — roughly eight times the spatial resolution of a classic ramp. The braille ASCII guide shows the full pipeline and a live example. It needs a font with braille glyphs, which every modern OS has."
         }
       },
       {
@@ -147,6 +156,12 @@
 </head>
 <body data-page="faq" data-path="~/faq">
   <main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the site header and the live ASCII
+    previews will not render. Semaphore converts images inside your own tab rather than
+    on a server, so there is nothing to fall back to — the written content below still
+    reads. <a href="/">home</a> · <a href="/tool">image to ASCII converter</a></p>
+  </noscript>
 
     <section class="sec" data-screen-label="faq-head">
       <div class="kicker"><b>~/faq</b> · man semaphore</div>
@@ -242,7 +257,7 @@
 
     <footer class="site-foot">
       <span>© 2026 Semaphore — plain text is forever</span>
-      <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
+      <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
     </footer>
 
   </main>

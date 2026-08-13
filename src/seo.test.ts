@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { CHARSETS } from "./ascii-engine";
 import indexHtml from "../index.html?raw";
 import toolHtml from "../tool.html?raw";
 import usecasesHtml from "../usecases.html?raw";
@@ -7,6 +8,11 @@ import faqHtml from "../faq.html?raw";
 import privacyHtml from "../privacy.html?raw";
 import notFoundHtml from "../404.html?raw";
 import brailleHtml from "../charsets/braille.html?raw";
+import standardHtml from "../charsets/standard.html?raw";
+import detailedHtml from "../charsets/detailed.html?raw";
+import blocksHtml from "../charsets/blocks.html?raw";
+import minimalHtml from "../charsets/minimal.html?raw";
+import binaryHtml from "../charsets/binary.html?raw";
 import readmeBannerHtml from "../guides/readme-banner.html?raw";
 import zhHtml from "../zh.html?raw";
 import landingSource from "./landing.ts?raw";
@@ -38,6 +44,11 @@ const pages = [
   { path: "faq.html", canonical: "https://semaphore.bobochang.cn/faq", html: faqHtml },
   { path: "privacy.html", canonical: "https://semaphore.bobochang.cn/privacy", html: privacyHtml },
   { path: "charsets/braille.html", canonical: "https://semaphore.bobochang.cn/charsets/braille", html: brailleHtml },
+  { path: "charsets/standard.html", canonical: "https://semaphore.bobochang.cn/charsets/standard", html: standardHtml },
+  { path: "charsets/detailed.html", canonical: "https://semaphore.bobochang.cn/charsets/detailed", html: detailedHtml },
+  { path: "charsets/blocks.html", canonical: "https://semaphore.bobochang.cn/charsets/blocks", html: blocksHtml },
+  { path: "charsets/minimal.html", canonical: "https://semaphore.bobochang.cn/charsets/minimal", html: minimalHtml },
+  { path: "charsets/binary.html", canonical: "https://semaphore.bobochang.cn/charsets/binary", html: binaryHtml },
   { path: "guides/readme-banner.html", canonical: "https://semaphore.bobochang.cn/guides/readme-banner", html: readmeBannerHtml },
   { path: "zh.html", canonical: "https://semaphore.bobochang.cn/zh", html: zhHtml }
 ];
@@ -427,8 +438,19 @@ describe("SEO page contract", () => {
 
   it("describes the converter on the page where it runs", () => {
     const types = jsonLd(toolHtml).flatMap(schemaTypes);
-    expect(types).toContain("WebApplication");
+    expect(types).toContain("WebPage");
     expect(types).toContain("BreadcrumbList");
+    /* The application is ONE entity. /tool points at the site-wide #webapp node
+       instead of declaring a second WebApplication, which would split the app
+       across two URLs in a consumer's entity graph. */
+    expect(types).not.toContain("WebApplication");
+    const schema = jsonLd(toolHtml)[0] as { "@graph"?: Record<string, unknown>[] };
+    const page = (schema["@graph"] || []).find(function (node) {
+      return node["@type"] === "WebPage";
+    });
+    expect(page?.mainEntity).toEqual({
+      "@id": "https://semaphore.bobochang.cn/#webapp"
+    });
   });
 
   it("keeps the visible privacy revision date aligned with structured data", function () {
@@ -455,6 +477,7 @@ describe("SEO page contract", () => {
     const application = graph.find(function (node) {
       return node["@type"] === "WebApplication";
     });
+    const person = graph.find(function (node) { return node["@type"] === "Person"; });
 
     expect(website).toEqual({
       "@type": "WebSite",
@@ -462,11 +485,25 @@ describe("SEO page contract", () => {
       url: "https://semaphore.bobochang.cn/",
       name: "Semaphore",
       inLanguage: ["en", "zh-CN"],
+      publisher: { "@id": "https://semaphore.bobochang.cn/#person" },
       sameAs: ["https://github.com/can4hou6joeng4/Semaphore"]
     });
+    /* A single-author tool competes on trust, so the operator is a real node the
+       rest of the graph points at — not an anonymous site with no responsible
+       party. The identity must match the one published in llms.txt. */
+    expect(person).toEqual({
+      "@type": "Person",
+      "@id": "https://semaphore.bobochang.cn/#person",
+      name: "bobochang",
+      url: "https://bobochang.cn",
+      sameAs: ["https://github.com/can4hou6joeng4"]
+    });
+    expect(llmsTxt).toContain("Name: bobochang");
+    expect(llmsTxt).toContain("Site: https://bobochang.cn");
     expect(application).toMatchObject({
       "@id": "https://semaphore.bobochang.cn/#webapp",
       isPartOf: { "@id": "https://semaphore.bobochang.cn/#website" },
+      author: { "@id": "https://semaphore.bobochang.cn/#person" },
       sameAs: ["https://github.com/can4hou6joeng4/Semaphore"]
     });
     expect(application).not.toHaveProperty("alternateName");
@@ -492,7 +529,6 @@ describe("SEO page contract", () => {
     expect(title).toContain("ASCII Art Use Cases");
     expect(title.length).toBeLessThanOrEqual(60);
     expect(usecasesHtml.match(/"name": "ASCII Art Use Cases"/g)).toHaveLength(2);
-    expect(usecasesHtml).toContain('"dateModified": "2026-08-10"');
     expect(indexHtml).toContain(">browse ASCII art use cases</a>");
     expect(llmsTxt).toContain(
       "[Use Cases](https://semaphore.bobochang.cn/usecases)"
@@ -531,6 +567,11 @@ describe("SEO page contract", () => {
     "faq.html",
     "privacy.html",
     "charsets/braille.html",
+    "charsets/standard.html",
+    "charsets/detailed.html",
+    "charsets/blocks.html",
+    "charsets/minimal.html",
+    "charsets/binary.html",
     "guides/readme-banner.html",
     "zh.html"
   ])(
@@ -544,6 +585,11 @@ describe("SEO page contract", () => {
     "usecases.html",
     "privacy.html",
     "charsets/braille.html",
+    "charsets/standard.html",
+    "charsets/detailed.html",
+    "charsets/blocks.html",
+    "charsets/minimal.html",
+    "charsets/binary.html",
     "guides/readme-banner.html",
     "zh.html"
   ])(
@@ -560,13 +606,46 @@ describe("SEO page contract", () => {
   });
 
   it("dates sitemap entries from their latest substantive page change", function () {
+    /* The old form of this test pinned every entry to one literal date and
+       asserted the count matched the page count — which MANDATED a uniform
+       lastmod and made accurate per-page dates a test failure. A sitemap where
+       all URLs share a date is the standard signal that lastmod is unreliable.
+       Assert the real invariant instead: each entry carries a well-formed date
+       that equals the dateModified the page itself publishes in its JSON-LD, so
+       the two sources of freshness can never disagree. */
+    const entries = new Map(Array.from(
+      sitemapXml.matchAll(/<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/g),
+      function (match) { return [match[1], match[2]] as [string, string]; }
+    ));
+
+    expect(entries.size).toBe(pages.length);
     pages.forEach(function (page) {
-      expect(sitemapXml).toContain([
-        "<loc>" + page.canonical + "</loc>",
-        "<lastmod>2026-08-10</lastmod>"
-      ].join("\n    "));
+      const lastmod = entries.get(page.canonical);
+      expect(lastmod, page.path + " is missing a sitemap lastmod").toMatch(
+        /^\d{4}-\d{2}-\d{2}$/
+      );
+
+      const declared = Array.from(
+        page.html.matchAll(/"dateModified": "([^"]+)"/g),
+        function (match) { return match[1]; }
+      );
+      expect(declared, page.path + " publishes no dateModified").not.toHaveLength(0);
+      declared.forEach(function (date) {
+        expect(date, page.path + " disagrees with its sitemap lastmod").toBe(lastmod);
+      });
     });
-    expect(sitemapXml.match(/<lastmod>2026-08-10<\/lastmod>/g)).toHaveLength(pages.length);
+  });
+
+  it("keeps the documented ramp lengths equal to the shipped ramps", function () {
+    /* Three places state how many steps the detailed ramp has, and all three were
+       wrong (70) against an engine that ships 68. Derive the number instead of
+       trusting prose. */
+    const ramp = CHARSETS.detailed.ramp || "";
+    expect(ramp.length).toBe(68);
+    [readme, readmeCn, llmsTxt].forEach(function (doc) {
+      expect(doc).toContain(String(ramp.length));
+      expect(doc).not.toMatch(/70[ -](?:level|级)/);
+    });
   });
 
   it("keeps crawl discovery open and advertises the sitemap", function () {
@@ -584,6 +663,11 @@ describe("SEO page contract", () => {
       "/usecases",
       "/faq",
       "/privacy",
+      "/charsets/standard",
+      "/charsets/detailed",
+      "/charsets/blocks",
+      "/charsets/minimal",
+      "/charsets/binary",
       "/charsets/braille",
       "/guides/readme-banner",
       "/zh"
