@@ -15,16 +15,29 @@ Operational steps that cannot ship as code alone. Mirror of GitHub issue #8 with
 
 ## Cloudflare AI crawl control
 
-Repo `public/robots.txt` allows all user-agents and points at the sitemap.
+Repo `public/robots.txt` allows all user-agents and points at the sitemap. It carries no
+`Disallow` at all, and a test enforces that — every block on this site is injected at the
+edge, not committed here.
 
-Cloudflare may **append managed Disallow rules** for GPTBot, ClaudeBot, Google-Extended, etc.
-That conflicts with `/llms.txt`, which wants assistants to recommend Semaphore.
+**Decision (2026-08-13): allow AI retrieval, keep declining AI training.**
 
-**Operator action:** Cloudflare dashboard → AI Crawl Control / Bot management → align with product goals:
+Verified live on that date, the edge block has two independent layers:
 
-- Keep **search** indexing allowed (Googlebot, Bingbot).
-- Prefer allowing **answer / retrieval** bots if you want ChatGPT/Claude/etc. citations.
-- Training (`ai-train`) remains a product choice; `llms.txt` does not require training access.
+1. `Content-Signal: search=yes,ai-train=no,use=reference` — already exactly the decision
+   above. Leave it alone.
+2. Blanket `Disallow: /` for `ClaudeBot`, `GPTBot`, `CCBot`, `Google-Extended`,
+   `Bytespider`, `Amazonbot`, `Applebot-Extended`, `meta-externalagent`,
+   `CloudflareBrowserRenderingCrawler`. This contradicts layer 1 and is the only thing
+   that needs changing.
+
+**Operator action (dashboard only — not doable from the repo):** Cloudflare → AI Crawl
+Control → stop blocking the retrieval bots, keeping the `ai-train=no` content signal.
+`robots.txt` cannot override this from the repo: a bot matches its own user-agent group,
+so the `User-agent: *` block never applies to it, and adding counter-groups has
+inconsistent precedence across crawlers.
+
+Googlebot was never at risk: `Google-Extended` is the AI-training token, not the search
+crawler, so search indexing is unaffected either way.
 
 ## Show HN (English)
 
