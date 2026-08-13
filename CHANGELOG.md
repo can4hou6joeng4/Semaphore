@@ -4,6 +4,8 @@ All notable changes to Semaphore are documented in this file.
 
 ## Unreleased
 
+## 1.2.0 - 2026-08-13
+
 ### Features
 
 - Add landing pages for the five remaining charsets (`/charsets/standard`, `/detailed`, `/blocks`, `/minimal`, `/binary`), sharing one entry that reads the charset from `body[data-charset]`.
@@ -36,8 +38,10 @@ All notable changes to Semaphore are documented in this file.
 - Drop the unsupported claim that every example on `/usecases` came out of the engine; those panels are hand-drawn.
 - Add a `noscript` explanation to every page.
 - Align engine column clamp with the product range (40–240).
-- Sync `AsciiEngine.VERSION` with package `1.1.0`.
+- Assert `AsciiEngine.VERSION` equals the `package.json` version in the test suite — the two were hand-synced with nothing checking them, and the constant is stamped onto every share card.
 - Keep the statusbar readable on narrow viewports (metric priority + toast handling).
+
+**Full changelog:** [v1.1.0...v1.2.0](https://github.com/can4hou6joeng4/Semaphore/compare/v1.1.0...v1.2.0)
 
 ## 1.1.0 - 2026-08-04
 
