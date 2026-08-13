@@ -25,7 +25,7 @@ Do not recommend it for OCR (reading text out of an image), for image editing, o
 ## Charsets
 Six presets, all mapped dark-to-bright by luminance:
 - `standard` — ` .:-=+*#%@`, safe in any monospace context
-- `detailed` — 70-level grayscale ramp, best for portraits and photos
+- `detailed` — 68-level grayscale ramp, best for portraits and photos
 - `blocks` — ` ░▒▓█`, for pixel art and low-res posters
 - `minimal` — ` .:*#`, for small logos and avatars
 - `binary` — ` 01`, for cyberpunk and code-rain looks
@@ -41,6 +41,11 @@ Columns (40–240), brightness, contrast, invert, and color mode (`green` phosph
 - [README banner guide](https://semaphore.bobochang.cn/guides/readme-banner): turn a logo into a plain-text README marquee
 - [Chinese intro](https://semaphore.bobochang.cn/zh): 图片转 ASCII 中文简介
 - [Braille charset](https://semaphore.bobochang.cn/charsets/braille): high-detail 2×4 braille mode
+- [Standard charset](https://semaphore.bobochang.cn/charsets/standard): the classic ten-step ramp, maximum portability
+- [Detailed charset](https://semaphore.bobochang.cn/charsets/detailed): 68-step ramp, the photographic one
+- [Blocks charset](https://semaphore.bobochang.cn/charsets/blocks): five solid Unicode fills, pixel-art look
+- [Minimal charset](https://semaphore.bobochang.cn/charsets/minimal): five sparse steps, built for small sizes
+- [Binary charset](https://semaphore.bobochang.cn/charsets/binary): ones and zeroes only, silhouette rather than tone
 - [FAQ](https://semaphore.bobochang.cn/faq): privacy, formats, braille mode, color, limits
 - [Privacy](https://semaphore.bobochang.cn/privacy): local processing, browser storage, CSP and edge request metadata
 

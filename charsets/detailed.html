@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photo to Detailed ASCII Art — 68-Step Ramp | Semaphore</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Photo to Detailed ASCII Art — 68-Step Ramp | Semaphore">
+<meta property="og:description" content="Convert a photo to detailed ASCII art with a 68-step character ramp. How glyph density carries continuous tone, and when to choose it over braille.">
+<meta property="og:url" content="https://semaphore.bobochang.cn/charsets/detailed">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Photo to Detailed ASCII Art — 68-Step Ramp | Semaphore">
+<meta name="twitter:description" content="Convert a photo to detailed ASCII art with a 68-step character ramp. How glyph density carries continuous tone, and when to choose it over braille.">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:image:alt" content="Semaphore — photo to detailed ASCII art">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en_US">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — photo to detailed ASCII art">
+<link rel="canonical" href="https://semaphore.bobochang.cn/charsets/detailed">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#050a06">
+<meta name="description" content="Convert a photo to detailed ASCII art with a 68-step character ramp. How glyph density carries continuous tone, and when to choose it over braille.">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
+<style>
+  /* charset landing page — layout only, colors from tokens */
+  .cs-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+  }
+  .cs-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+  .cs-term { margin: 0; min-width: 0; }
+  .cs-stage {
+    height: 430px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .cs-stage .ascii-pre { margin: 0; line-height: 1; }
+  .cs-ramp {
+    display: block;
+    margin-top: 20px;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    background: var(--bg-deep);
+    font-size: var(--fs-m);
+    letter-spacing: .08em;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .cs-siblings { margin-top: 34px; }
+  @media (max-width: 900px) {
+    .cs-hero { grid-template-columns: minmax(0, 1fr); }
+    .cs-stage { height: 360px; }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://semaphore.bobochang.cn/charsets/detailed#webpage",
+      "name": "Photo to Detailed ASCII Art",
+      "url": "https://semaphore.bobochang.cn/charsets/detailed",
+      "description": "How Semaphore maps continuous photographic tone onto a 68-step character ramp, and when that beats the braille charset.",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "mainEntity": {
+        "@id": "https://semaphore.bobochang.cn/#webapp"
+      },
+      "dateModified": "2026-08-13"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Semaphore",
+          "item": "https://semaphore.bobochang.cn/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Detailed ASCII Ramp",
+          "item": "https://semaphore.bobochang.cn/charsets/detailed"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body data-page="charset-detailed" data-path="~/charsets/detailed" data-charset="detailed">
+<main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the site header and the live ASCII
+    previews will not render. Semaphore converts images inside your own tab rather than
+    on a server, so there is nothing to fall back to — the written content below still
+    reads. <a href="/">home</a> · <a href="/tool">image to ASCII converter</a></p>
+  </noscript>
+
+  <section class="sec" data-screen-label="detailed-hero">
+    <div class="cs-hero">
+      <div>
+        <div class="kicker"><b>~/charsets/detailed</b> · 68 steps</div>
+        <h1 class="h2">Photo to detailed ASCII art</h1>
+        <p class="lede" style="margin-top:18px">Sixty-eight characters sorted by how much ink each one lays down, from a bare space to a dollar sign. Where the standard ramp gives you ten shades, this one gives you enough steps that a face keeps its cheekbones. It is the default charset in the converter for exactly that reason.</p>
+        <code class="cs-ramp"> .'`^",:;Il!i~+_-?][}{1)(|\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&amp;8%B@$</code>
+        <div class="cs-actions">
+          <a class="btn btn--green btn--lg" href="/tool?charset=detailed">Convert a photo</a>
+          <a class="btn btn--ghost" href="/charsets/braille">compare with braille</a>
+        </div>
+      </div>
+      <figure class="term cs-term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p">$</span> semaphore --charset detailed</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body cs-stage" id="charsetStage">
+          <pre class="ascii-pre" id="charsetDemo" role="img" aria-label="detailed ramp ascii portrait loading">rendering detailed portrait…</pre>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="detailed-how">
+    <div class="kicker">[ how_the_ramp_works ]</div>
+    <h2 class="h2">Tone out of glyph density</h2>
+    <p class="lede" style="margin-top:18px">A monospace glyph covers a fixed rectangle, and the fraction of that rectangle it actually inks is what your eye reads as brightness. A period inks almost nothing. A dollar sign inks nearly everything. Order every available character by that fraction and you have a grayscale palette made of punctuation.</p>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">01</span> weight the luminance</h3>
+        <p>Each cell of the image collapses to a single perceptual brightness value. Green contributes most and blue least, matching how human vision actually distributes sensitivity.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">02</span> index 68 steps</h3>
+        <p>That value picks one of sixty-eight positions instead of one of ten. Adjacent shades differ by roughly a percent and a half of brightness, which is fine enough that gradients stop banding.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">03</span> keep it text</h3>
+        <p>Every glyph in the ramp is ordinary text. The output pastes into a comment block, a chat window or a <code>.txt</code> file with no font requirement beyond a monospace face.</p>
+      </article>
+    </div>
+    <p class="lede" style="margin-top:34px">The trade is legibility of the individual character against fidelity of the whole. Up close the output looks like scrambled source code; at arm's length it resolves into a photograph. That is the effect this ramp exists to produce, and it is why it wants more columns than the coarser sets — try 140–200.</p>
+  </section>
+
+  <section class="sec" data-screen-label="detailed-choose">
+    <div class="kicker">[ when_to_use_it ]</div>
+    <h2 class="h2">Pick the detailed ramp for continuous tone</h2>
+    <div class="grid-2" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> choose detailed</h3>
+        <p>Portraits, faces, landscapes, product shots, film stills — anything where the subject is described by smooth gradients rather than hard edges. It is also the safer pick when you do not control the destination font, since every glyph is a common text character rather than a Unicode block.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> choose something else</h3>
+        <p><a href="/charsets/braille">Braille</a> resolves finer detail — eight dots per cell instead of one glyph — but JetBrains Mono ships no braille glyphs, so it always renders in a system fallback. For flat graphic areas <a href="/charsets/blocks">blocks</a> is cleaner, and for a small logo <a href="/charsets/standard">the standard ramp</a> stays readable as characters.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="detailed-siblings">
+    <div class="kicker">[ other_charsets ]</div>
+    <h2 class="h2">The other five charsets</h2>
+    <div class="grid-3 cs-siblings">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/standard">standard</a></h3>
+        <p>Ten steps of plain ASCII. The classic look, maximum portability.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/blocks">blocks</a></h3>
+        <p>Five solid fills. Reads as pixels rather than characters.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/minimal">minimal</a></h3>
+        <p>Five steps, wide apart. Built for tiny avatars and icons.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/binary">binary</a></h3>
+        <p>Ones and zeroes only. The code-rain look.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/braille">braille</a></h3>
+        <p>Eight dots per character. The highest detail Semaphore can reach.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/usecases">where it goes</a></h3>
+        <p>READMEs, splash screens, comment headers and other plain-text homes.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec sec--tight" data-screen-label="detailed-cta">
+    <h2 class="h2">Sixty-eight shades of punctuation.</h2>
+    <p class="lede" style="margin-top:16px">Open the converter with the detailed ramp preselected, drop a photo, and push the column count until the face resolves. Your image bytes never leave the tab.</p>
+    <a class="btn btn--green btn--lg" href="/tool?charset=detailed" style="margin-top:26px">Open the detailed ASCII converter</a>
+  </section>
+
+  <footer class="site-foot">
+    <span>© 2026 Semaphore — plain text is forever</span>
+    <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
+  </footer>
+
+</main>
+<script type="module" src="/src/main-charset.ts"></script>
+</body>
+</html>

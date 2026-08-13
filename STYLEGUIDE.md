@@ -13,11 +13,20 @@ bundles land in `/assets/` — never put stable-named files there:
 
 ```
 index.html  tool.html  usecases.html  faq.html  privacy.html  404.html  zh.html
-  charsets/braille.html  guides/readme-banner.html
+  charsets/braille.html  charsets/standard.html  charsets/detailed.html
+  charsets/blocks.html   charsets/minimal.html   charsets/binary.html
+  guides/readme-banner.html
   src/terminal.css   src/shared.ts   src/ascii-engine.ts
   public/static/sample-portrait.webp         (1100×1069 b/w portrait)
   public/static/sample-portrait-thumb.webp   (136×112 home demo thumbnail)
 ```
+
+The five ramp pages under `charsets/` share one entry, `src/main-charset.ts` →
+`src/charset-page.ts`, which reads the charset from `body[data-charset]` and
+renders the demo into `#charsetStage` / `#charsetDemo`. Adding a ramp page means
+copying `charsets/standard.html` and changing values, not writing new JS.
+`charsets/braille.html` keeps its own entry because braille has to measure the
+system fallback advance; the ramps do not.
 
 `public/_redirects` contains only evidence-backed legacy or shorthand routes.
 Keep `/braille` as a permanent redirect to the canonical
@@ -40,12 +49,14 @@ Required `<head>` (exact, in this order):
 <meta name="twitter:title" content="…same as <title>…">
 <meta name="twitter:description" content="…same as description…">
 <meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card….jpg">
+<meta name="twitter:image:alt" content="…same as og:image:alt…">
 <meta property="og:site_name" content="Semaphore">
 <meta property="og:locale" content="en_US">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="600">
 <meta property="og:image:alt" content="…">
 <link rel="canonical" href="https://semaphore.bobochang.cn/…">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#050a06">
 <meta name="description" content="…">
 <meta name="google-site-verification" content="…"> <!-- home page only -->
@@ -53,6 +64,12 @@ Required `<head>` (exact, in this order):
       href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
 <style>/* page-specific layout only — tokens from :root, no new colors/fonts */</style>
 ```
+
+`og:type` is `website` everywhere except `/guides/*`, which are how-to articles and
+use `article`. Pages under `/charsets/*` are landing pages, so they stay `website`.
+
+Every indexable page carries `robots` with `max-image-preview:large` — a static meta
+tag, no request. `404.html` overrides it with `noindex, follow` (see below).
 
 Keep `public/favicon.ico` as the conventional root fallback for crawlers and
 legacy clients that request `/favicon.ico` without consulting the SVG link.
@@ -74,8 +91,8 @@ in production but pass locally. Canonical HTML responses also ship
 `Cache-Control: no-transform`, which prevents edge features from injecting a
 script before CSP has to block it. Do not add one or remove that directive.
 
-`terminal.css` is NOT linked by hand: it is imported by `src/shared.ts`, and
-Vite extracts it into a hashed `/assets/*.css` link at build time.
+`terminal.css` is NOT linked by hand: every `src/main-<page>.ts` entry imports it as
+its first line, and Vite extracts it into a hashed `/assets/*.css` link at build time.
 
 One module script at the END of `<body>` — Vite bundles the rest:
 
@@ -87,7 +104,7 @@ One module script at the END of `<body>` — Vite bundles the rest:
 ## Page skeleton (chrome is INJECTED — never hand-write it)
 
 ```html
-<body data-page="tool" data-path="~/tool">   <!-- home|tool|usecases|faq|privacy|braille|readme-banner|zh|not-found -->
+<body data-page="tool" data-path="~/tool">   <!-- home|tool|usecases|faq|privacy|charset-<name>|braille|readme-banner|zh|not-found -->
   <main class="frame">
     <section class="sec" data-screen-label="…"><h2>…</h2>…</section>
     <div class="sec" data-screen-label="…">…layout-only block…</div>

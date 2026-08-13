@@ -14,12 +14,14 @@
 <meta name="twitter:title" content="ASCII Art Use Cases — README, CLI, Plain Text | Semaphore">
 <meta name="twitter:description" content="Where image to ASCII still beats pixels — README banners, SSH splash screens, code comments, mail and terminal ricing. Convert locally with Semaphore.">
 <meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:image:alt" content="Semaphore — where ASCII art still wins">
 <meta property="og:site_name" content="Semaphore">
 <meta property="og:locale" content="en_US">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="600">
 <meta property="og:image:alt" content="Semaphore — where ASCII art still wins">
 <link rel="canonical" href="https://semaphore.bobochang.cn/usecases">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#050a06">
   <meta name="description" content="Where image to ASCII still beats pixels — README banners, SSH splash screens, code comments, mail and terminal ricing. Convert locally with Semaphore.">
   <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
@@ -65,11 +67,9 @@
         "url": "https://semaphore.bobochang.cn/usecases",
         "description": "Where image to ASCII still beats pixels — README banners, SSH splash screens, code comments, mail and terminal ricing.",
         "isPartOf": {
-          "@type": "WebSite",
-          "name": "Semaphore",
-          "url": "https://semaphore.bobochang.cn/"
+          "@id": "https://semaphore.bobochang.cn/#website"
         },
-        "dateModified": "2026-08-10"
+        "dateModified": "2026-08-13"
       },
       {
         "@type": "BreadcrumbList",
@@ -94,6 +94,12 @@
 </head>
 <body data-page="usecases" data-path="~/usecases">
   <main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the site header and the live ASCII
+    previews will not render. Semaphore converts images inside your own tab rather than
+    on a server, so there is nothing to fall back to — the written content below still
+    reads. <a href="/">home</a> · <a href="/tool">image to ASCII converter</a></p>
+  </noscript>
 
     <section class="sec" data-screen-label="usecases-head">
       <div class="kicker"><b>~/usecases</b> · where plain text wins</div>
@@ -260,13 +266,13 @@ $ _                     </pre>
 
     <section class="sec sec--tight" data-screen-label="usecases-cta">
       <h2 class="h2">Got pixels? Make characters.</h2>
-      <p class="lede">Every example on this page came out of the same little engine — feed it your own photo.</p>
+      <p class="lede">The panels above are hand-drawn to show the shape of each format — feed the converter your own photo to make the real thing.</p>
       <a class="btn btn--green btn--lg" href="/tool" style="margin-top:26px">Open the tool</a>
     </section>
 
     <footer class="site-foot">
       <span>© 2026 Semaphore — plain text is forever</span>
-      <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
+      <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
     </footer>
 
   </main>

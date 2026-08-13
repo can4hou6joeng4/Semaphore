@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image to Block ASCII Art — Pixel Mosaic | Semaphore</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Image to Block ASCII Art — Pixel Mosaic | Semaphore">
+<meta property="og:description" content="Convert an image with the five-step block ramp: space, light shade, medium, dark, full block. Why filled cells read as pixels, and how to render it locally.">
+<meta property="og:url" content="https://semaphore.bobochang.cn/charsets/blocks">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Image to Block ASCII Art — Pixel Mosaic | Semaphore">
+<meta name="twitter:description" content="Convert an image with the five-step block ramp: space, light shade, medium, dark, full block. Why filled cells read as pixels, and how to render it locally.">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:image:alt" content="Semaphore — image to ASCII with block characters">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en_US">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — image to ASCII with block characters">
+<link rel="canonical" href="https://semaphore.bobochang.cn/charsets/blocks">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#050a06">
+<meta name="description" content="Convert an image with the five-step block ramp: space, light shade, medium, dark, full block. Why filled cells read as pixels, and how to render it locally.">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
+<style>
+  /* charset landing page — layout only, colors from tokens */
+  .cs-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+  }
+  .cs-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+  .cs-term { margin: 0; min-width: 0; }
+  .cs-stage {
+    height: 430px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .cs-stage .ascii-pre { margin: 0; line-height: 1; }
+  .cs-ramp {
+    display: block;
+    margin-top: 20px;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    background: var(--bg-deep);
+    font-size: var(--fs-l);
+    letter-spacing: .22em;
+    overflow-x: auto;
+  }
+  .cs-siblings { margin-top: 34px; }
+  @media (max-width: 900px) {
+    .cs-hero { grid-template-columns: minmax(0, 1fr); }
+    .cs-stage { height: 360px; }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://semaphore.bobochang.cn/charsets/blocks#webpage",
+      "name": "Image to Block ASCII Art",
+      "url": "https://semaphore.bobochang.cn/charsets/blocks",
+      "description": "How Semaphore maps image luminance onto five Unicode block characters, and why filled cells read as pixel art rather than as text.",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "mainEntity": {
+        "@id": "https://semaphore.bobochang.cn/#webapp"
+      },
+      "dateModified": "2026-08-13"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Semaphore",
+          "item": "https://semaphore.bobochang.cn/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Block ASCII Art",
+          "item": "https://semaphore.bobochang.cn/charsets/blocks"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body data-page="charset-blocks" data-path="~/charsets/blocks" data-charset="blocks">
+<main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the site header and the live ASCII
+    previews will not render. Semaphore converts images inside your own tab rather than
+    on a server, so there is nothing to fall back to — the written content below still
+    reads. <a href="/">home</a> · <a href="/tool">image to ASCII converter</a></p>
+  </noscript>
+
+  <section class="sec" data-screen-label="blocks-hero">
+    <div class="cs-hero">
+      <div>
+        <div class="kicker"><b>~/charsets/blocks</b> · five solid fills</div>
+        <h1 class="h2">Image to block ASCII art with filled cells</h1>
+        <p class="lede" style="margin-top:18px">A space and four Unicode block elements: light shade, medium shade, dark shade, full block. Nothing here suggests tone with a punctuation stroke — each character paints the cell it sits in, so the output reads as a mosaic of pixels rather than as a page of letters.</p>
+        <code class="cs-ramp">&nbsp;░▒▓█</code>
+        <div class="cs-actions">
+          <a class="btn btn--green btn--lg" href="/tool?charset=blocks">Convert an image</a>
+          <a class="btn btn--ghost" href="/charsets/minimal">compare with minimal</a>
+        </div>
+      </div>
+      <figure class="term cs-term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p">$</span> semaphore --charset blocks</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body cs-stage" id="charsetStage">
+          <pre class="ascii-pre" id="charsetDemo" role="img" aria-label="block ascii portrait loading">rendering blocks portrait…</pre>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="blocks-how">
+    <div class="kicker">[ how_the_ramp_works ]</div>
+    <h2 class="h2">Five levels of fill, one per cell</h2>
+    <p class="lede" style="margin-top:18px">The mechanism is the same as any other ramp: brightness in, one character out. What changes is the vocabulary. These glyphs were designed for terminals that had no graphics mode, so their whole job is to cover a fraction of the cell — nothing, a quarter, half, three quarters, all of it.</p>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">01</span> measure the cell</h3>
+        <p>Your column count sets the grid. Each cell of the source collapses to a single perceptual luminance value, so a dark region and a bright region are separated before any character is chosen.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">02</span> quantize to five</h3>
+        <p>That value is bucketed across five positions. Shadow becomes a space, the mid-tones step through <code>░</code>, <code>▒</code> and <code>▓</code>, and anything bright enough lands on <code>█</code>.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">03</span> fill, do not sketch</h3>
+        <p>Because the glyph occupies the full cell, neighbouring cells of the same level merge into one flat area. Edges land where the tone changes, not where a stroke happens to sit.</p>
+      </article>
+    </div>
+    <p class="lede" style="margin-top:34px">Five steps is coarse, and that is the point: banding is a feature here. Photographs posterize into visible terraces, which is why blocks flatter shapes and silhouettes far more than faces. Raise contrast to push those terraces apart, or drop the column count until the mosaic is honest about being a mosaic.</p>
+  </section>
+
+  <section class="sec" data-screen-label="blocks-choose">
+    <div class="kicker">[ when_to_use_it ]</div>
+    <h2 class="h2">Pick blocks when you want flat tone, not texture</h2>
+    <div class="grid-2" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> choose blocks</h3>
+        <p>Pixel art, logos, posters, splash screens, retro game covers, anything already built from squares. The self-hosted font subset in Semaphore covers <code>░▒▓█</code>, so these render in the site's own mono face — but a destination with a narrow font may substitute another one, and the four shades keep their order regardless. Solid <code>█</code> is the most widely supported of the four.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> choose something else</h3>
+        <p>For a photograph you want read as a photograph, <a href="/charsets/detailed">the detailed ramp</a> has sixty-eight shades and <a href="/charsets/braille">braille</a> packs eight dots into every cell. If the text has to survive a strictly 7-bit channel, <a href="/charsets/minimal">minimal</a> gets you five steps out of plain punctuation instead.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="blocks-siblings">
+    <div class="kicker">[ other_charsets ]</div>
+    <h2 class="h2">The other five charsets</h2>
+    <div class="grid-3 cs-siblings">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/standard">standard</a></h3>
+        <p>Ten shades of plain ASCII. The look people expect by default.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/detailed">detailed</a></h3>
+        <p>Sixty-eight shades of punctuation and letters. The photographic ramp.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/minimal">minimal</a></h3>
+        <p>Five steps, wide apart, all 7-bit. Built for tiny avatars and icons.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/binary">binary</a></h3>
+        <p>Ones and zeroes only. The code-rain look.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/braille">braille</a></h3>
+        <p>Eight dots per character. The highest detail Semaphore can reach.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/usecases">where it goes</a></h3>
+        <p>READMEs, splash screens, comment headers and other plain-text homes.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec sec--tight" data-screen-label="blocks-cta">
+    <h2 class="h2">Four fills and a space.</h2>
+    <p class="lede" style="margin-top:16px">Open the converter with blocks preselected, drop an image, and move columns and contrast until the terraces sit where you want them. The conversion runs in your own tab; your image bytes never leave the device.</p>
+    <a class="btn btn--green btn--lg" href="/tool?charset=blocks" style="margin-top:26px">Open the block ASCII converter</a>
+  </section>
+
+  <footer class="site-foot">
+    <span>© 2026 Semaphore — plain text is forever</span>
+    <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
+  </footer>
+
+</main>
+<script type="module" src="/src/main-charset.ts"></script>
+</body>
+</html>

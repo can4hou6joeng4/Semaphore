@@ -45,6 +45,21 @@
 /privacy
   Cache-Control: public, max-age=0, must-revalidate, no-transform
 
+/charsets/standard
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/charsets/detailed
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/charsets/blocks
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/charsets/minimal
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/charsets/binary
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
 /charsets/braille
   Cache-Control: public, max-age=0, must-revalidate, no-transform
 

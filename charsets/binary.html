@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image to Binary ASCII Art — Ones and Zeroes | Semaphore</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Image to Binary ASCII Art — Ones and Zeroes | Semaphore">
+<meta property="og:description" content="Turn an image into binary ASCII art built from ones and zeroes. Why three steps give silhouette instead of tone, and how to pick a source that works.">
+<meta property="og:url" content="https://semaphore.bobochang.cn/charsets/binary">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Image to Binary ASCII Art — Ones and Zeroes | Semaphore">
+<meta name="twitter:description" content="Turn an image into binary ASCII art built from ones and zeroes. Why three steps give silhouette instead of tone, and how to pick a source that works.">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:image:alt" content="Semaphore — image to binary ASCII art">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en_US">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — image to binary ASCII art">
+<link rel="canonical" href="https://semaphore.bobochang.cn/charsets/binary">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#050a06">
+<meta name="description" content="Turn an image into binary ASCII art built from ones and zeroes. Why three steps give silhouette instead of tone, and how to pick a source that works.">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
+<style>
+  /* charset landing page — layout only, colors from tokens */
+  .cs-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+  }
+  .cs-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+  .cs-term { margin: 0; min-width: 0; }
+  .cs-stage {
+    height: 430px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .cs-stage .ascii-pre { margin: 0; line-height: 1; }
+  .cs-ramp {
+    display: block;
+    margin-top: 20px;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    background: var(--bg-deep);
+    font-size: var(--fs-l);
+    letter-spacing: .22em;
+    overflow-x: auto;
+  }
+  .cs-siblings { margin-top: 34px; }
+  @media (max-width: 900px) {
+    .cs-hero { grid-template-columns: minmax(0, 1fr); }
+    .cs-stage { height: 360px; }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://semaphore.bobochang.cn/charsets/binary#webpage",
+      "name": "Image to Binary ASCII Art",
+      "url": "https://semaphore.bobochang.cn/charsets/binary",
+      "description": "How Semaphore reduces an image to ones and zeroes, and why a three-step ramp renders shape rather than tone.",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "mainEntity": {
+        "@id": "https://semaphore.bobochang.cn/#webapp"
+      },
+      "dateModified": "2026-08-13"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Semaphore",
+          "item": "https://semaphore.bobochang.cn/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Binary ASCII Art",
+          "item": "https://semaphore.bobochang.cn/charsets/binary"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body data-page="charset-binary" data-path="~/charsets/binary" data-charset="binary">
+<main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the site header and the live ASCII
+    previews will not render. Semaphore converts images inside your own tab rather than
+    on a server, so there is nothing to fall back to — the written content below still
+    reads. <a href="/">home</a> · <a href="/tool">image to ASCII converter</a></p>
+  </noscript>
+
+  <section class="sec" data-screen-label="binary-hero">
+    <div class="cs-hero">
+      <div>
+        <div class="kicker"><b>~/charsets/binary</b> · three steps</div>
+        <h1 class="h2">Image to binary ASCII art</h1>
+        <p class="lede" style="margin-top:18px">A space, a zero, a one. The narrowest ramp Semaphore ships, and the only one that stops pretending to describe light. With three steps there is no gradient left to work with, so what survives is the shape of the subject spelled out in digits.</p>
+        <code class="cs-ramp">&nbsp;01</code>
+        <div class="cs-actions">
+          <a class="btn btn--green btn--lg" href="/tool?charset=binary">Convert an image</a>
+          <a class="btn btn--ghost" href="/charsets/blocks">compare with blocks</a>
+        </div>
+      </div>
+      <figure class="term cs-term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p">$</span> semaphore --charset binary</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body cs-stage" id="charsetStage">
+          <pre class="ascii-pre" id="charsetDemo" role="img" aria-label="binary ascii portrait loading">rendering binary portrait…</pre>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="binary-how">
+    <div class="kicker">[ how_the_ramp_works ]</div>
+    <h2 class="h2">Three steps means shape, not shade</h2>
+    <p class="lede" style="margin-top:18px">The engine works the same way it does for every other charset — average each cell to one brightness value, then index a ramp. The difference is that this ramp has three entries, so two thirds of the tonal range collapses into a single digit.</p>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">01</span> average the cell</h3>
+        <p>Identical to the other ramps: one perceptual luminance value per grid cell, weighted the way the eye weights red, green and blue.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">02</span> collapse to three</h3>
+        <p>Shadows fall on the space, mid-tones on <code>0</code>, highlights on <code>1</code>. There is no fourth option, so every subtlety in between is rounded away.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">03</span> read the outline</h3>
+        <p>What is left is a boundary between lit and unlit regions. The eye reconstructs the subject from that edge, the way it reads a stencil or a shadow puppet.</p>
+      </article>
+    </div>
+    <p class="lede" style="margin-top:34px">Two consequences follow, and both are worth knowing before you blame the picture. Contrast is the control that matters most here, because it decides where the two thresholds land. And <code>invert</code> matters more than on any other charset: flipping it swaps which digit carries the subject and which carries the background, which changes the entire image rather than merely darkening it.</p>
+  </section>
+
+  <section class="sec" data-screen-label="binary-choose">
+    <div class="kicker">[ when_to_use_it ]</div>
+    <h2 class="h2">Pick binary when you want the machine look</h2>
+    <div class="grid-2" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> choose binary</h3>
+        <p>Code-rain posters, terminal splash screens, glitch art, badge and sticker art — anything meant to read as machine output rather than as drawing. Feed it a high-contrast source with clear separation between subject and background: a silhouette, a logo, a face against a plain wall. Both digits are plain 7-bit ASCII, so the result survives any font and any encoding.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> choose something else</h3>
+        <p>If the subject is carried by gradients rather than edges, three steps will throw it away — <a href="/charsets/detailed">the detailed ramp</a> has sixty-eight and <a href="/charsets/braille">braille</a> resolves finer still. If you want solid graphic areas instead of digits, <a href="/charsets/standard">the standard ramp</a> keeps a familiar ASCII texture with ten shades.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="binary-siblings">
+    <div class="kicker">[ other_charsets ]</div>
+    <h2 class="h2">The other five charsets</h2>
+    <div class="grid-3 cs-siblings">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/standard">standard</a></h3>
+        <p>Ten steps of plain ASCII. The classic look, maximum portability.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/detailed">detailed</a></h3>
+        <p>Sixty-eight shades of punctuation and letters. The photographic ramp.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/blocks">blocks</a></h3>
+        <p>Five solid fills. Reads as pixels rather than characters.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/minimal">minimal</a></h3>
+        <p>Five steps, wide apart. Built for tiny avatars and icons.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/braille">braille</a></h3>
+        <p>Eight dots per character. The highest detail Semaphore can reach.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/usecases">where it goes</a></h3>
+        <p>READMEs, splash screens, comment headers and other plain-text homes.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec sec--tight" data-screen-label="binary-cta">
+    <h2 class="h2">Two digits and a threshold.</h2>
+    <p class="lede" style="margin-top:16px">Open the converter with the binary ramp preselected, then work the contrast and invert controls until the silhouette snaps into place. Your image bytes never leave the tab.</p>
+    <a class="btn btn--green btn--lg" href="/tool?charset=binary" style="margin-top:26px">Open the binary ASCII converter</a>
+  </section>
+
+  <footer class="site-foot">
+    <span>© 2026 Semaphore — plain text is forever</span>
+    <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
+  </footer>
+
+</main>
+<script type="module" src="/src/main-charset.ts"></script>
+</body>
+</html>

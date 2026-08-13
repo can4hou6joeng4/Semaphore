@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image to ASCII Standard Ramp — Classic Look | Semaphore</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Image to ASCII Standard Ramp — Classic Look | Semaphore">
+<meta property="og:description" content="Convert an image with the classic ten-step ASCII ramp. How luminance maps to .:-=+*#%@, when to pick it over braille or blocks, and how to convert locally.">
+<meta property="og:url" content="https://semaphore.bobochang.cn/charsets/standard">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Image to ASCII Standard Ramp — Classic Look | Semaphore">
+<meta name="twitter:description" content="Convert an image with the classic ten-step ASCII ramp. How luminance maps to .:-=+*#%@, when to pick it over braille or blocks, and how to convert locally.">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:image:alt" content="Semaphore — image to ASCII with the standard ramp">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en_US">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — image to ASCII with the standard ramp">
+<link rel="canonical" href="https://semaphore.bobochang.cn/charsets/standard">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#050a06">
+<meta name="description" content="Convert an image with the classic ten-step ASCII ramp. How luminance maps to .:-=+*#%@, when to pick it over braille or blocks, and how to convert locally.">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
+<style>
+  /* charset landing page — layout only, colors from tokens */
+  .cs-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+  }
+  .cs-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+  .cs-term { margin: 0; min-width: 0; }
+  .cs-stage {
+    height: 430px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .cs-stage .ascii-pre { margin: 0; line-height: 1; }
+  .cs-ramp {
+    display: block;
+    margin-top: 20px;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    background: var(--bg-deep);
+    font-size: var(--fs-l);
+    letter-spacing: .22em;
+    overflow-x: auto;
+  }
+  .cs-siblings { margin-top: 34px; }
+  @media (max-width: 900px) {
+    .cs-hero { grid-template-columns: minmax(0, 1fr); }
+    .cs-stage { height: 360px; }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://semaphore.bobochang.cn/charsets/standard#webpage",
+      "name": "Image to ASCII Standard Ramp",
+      "url": "https://semaphore.bobochang.cn/charsets/standard",
+      "description": "How Semaphore maps image luminance onto the classic ten-step ASCII ramp, and when that ramp beats braille or block characters.",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "mainEntity": {
+        "@id": "https://semaphore.bobochang.cn/#webapp"
+      },
+      "dateModified": "2026-08-13"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Semaphore",
+          "item": "https://semaphore.bobochang.cn/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Standard ASCII Ramp",
+          "item": "https://semaphore.bobochang.cn/charsets/standard"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body data-page="charset-standard" data-path="~/charsets/standard" data-charset="standard">
+<main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the site header and the live ASCII
+    previews will not render. Semaphore converts images inside your own tab rather than
+    on a server, so there is nothing to fall back to — the written content below still
+    reads. <a href="/">home</a> · <a href="/tool">image to ASCII converter</a></p>
+  </noscript>
+
+  <section class="sec" data-screen-label="standard-hero">
+    <div class="cs-hero">
+      <div>
+        <div class="kicker"><b>~/charsets/standard</b> · ten shades</div>
+        <h1 class="h2">Image to ASCII with the standard ramp</h1>
+        <p class="lede" style="margin-top:18px">The character set most people picture when they hear ASCII art: ten glyphs running from empty space to a solid at-sign. It is the safest output Semaphore produces — every character is plain 7-bit ASCII, so it survives any font, any terminal and any code review comment.</p>
+        <code class="cs-ramp">&nbsp;.:-=+*#%@</code>
+        <div class="cs-actions">
+          <a class="btn btn--green btn--lg" href="/tool?charset=standard">Convert an image</a>
+          <a class="btn btn--ghost" href="/charsets/braille">compare with braille</a>
+        </div>
+      </div>
+      <figure class="term cs-term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p">$</span> semaphore --charset standard</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body cs-stage" id="charsetStage">
+          <pre class="ascii-pre" id="charsetDemo" role="img" aria-label="standard ramp ascii portrait loading">rendering standard portrait…</pre>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="standard-how">
+    <div class="kicker">[ how_the_ramp_works ]</div>
+    <h2 class="h2">Ten steps from paper to ink</h2>
+    <p class="lede" style="margin-top:18px">A ramp is an ordered list of characters sorted by how much ink each one puts on screen. Semaphore measures the brightness of every cell in the image, then picks the glyph at the matching position in that list.</p>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">01</span> average the cell</h3>
+        <p>The image is divided into a grid as wide as your column count. Every cell is reduced to one luminance value, weighted for how the eye actually perceives red, green and blue.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">02</span> index the ramp</h3>
+        <p>That value is scaled across the ten ramp positions. A dark cell lands on a space, a mid-tone on <code>=</code> or <code>+</code>, a highlight on <code>%</code> or <code>@</code>.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">03</span> emit one character</h3>
+        <p>The result is a rectangle of text with no colour information required. Copy it into a README, a comment block or a plain <code>.txt</code> file and it renders identically everywhere.</p>
+      </article>
+    </div>
+    <p class="lede" style="margin-top:34px">Ten steps is coarse on purpose. Fewer shades read as a deliberate graphic rather than a photograph, which is why this ramp still looks like ASCII art instead of a grainy image.</p>
+  </section>
+
+  <section class="sec" data-screen-label="standard-choose">
+    <div class="kicker">[ when_to_use_it ]</div>
+    <h2 class="h2">Pick the standard ramp when portability matters</h2>
+    <div class="grid-2" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> choose standard</h3>
+        <p>Logos, silhouettes, high-contrast crops, and anywhere the text has to survive an unknown font — git hosts, mailing lists, source comments, chat clients that reflow text. Start at 100–140 columns and raise contrast if the mid-tones turn to mush.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> choose something else</h3>
+        <p>For a photographic portrait, <a href="/charsets/detailed">the detailed ramp</a> has 68 shades and <a href="/charsets/braille">braille</a> has eight times the spatial resolution. For posters and pixel art, <a href="/charsets/blocks">blocks</a> fill the cell completely instead of suggesting tone with punctuation.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="standard-siblings">
+    <div class="kicker">[ other_charsets ]</div>
+    <h2 class="h2">The other five charsets</h2>
+    <div class="grid-3 cs-siblings">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/detailed">detailed</a></h3>
+        <p>Sixty-eight shades of punctuation and letters. The photographic ramp.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/blocks">blocks</a></h3>
+        <p>Five solid fills. Reads as pixels rather than characters.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/minimal">minimal</a></h3>
+        <p>Five steps, wide apart. Built for tiny avatars and icons.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/binary">binary</a></h3>
+        <p>Ones and zeroes only. The code-rain look.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/braille">braille</a></h3>
+        <p>Eight dots per character. The highest detail Semaphore can reach.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/usecases">where it goes</a></h3>
+        <p>READMEs, splash screens, comment headers and other plain-text homes.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec sec--tight" data-screen-label="standard-cta">
+    <h2 class="h2">Ten characters is all it takes.</h2>
+    <p class="lede" style="margin-top:16px">Open the converter with the standard ramp preselected, drop a photo, and tune columns and contrast live. Your image bytes never leave the tab.</p>
+    <a class="btn btn--green btn--lg" href="/tool?charset=standard" style="margin-top:26px">Open the standard ASCII converter</a>
+  </section>
+
+  <footer class="site-foot">
+    <span>© 2026 Semaphore — plain text is forever</span>
+    <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
+  </footer>
+
+</main>
+<script type="module" src="/src/main-charset.ts"></script>
+</body>
+</html>

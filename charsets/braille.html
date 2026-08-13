@@ -14,12 +14,14 @@
 <meta name="twitter:title" content="Image to ASCII Braille Art — High-Detail Converter | Semaphore">
 <meta name="twitter:description" content="Turn an image into high-detail braille ASCII art in your browser. Learn how 2×4 dot cells and dithering preserve detail, then convert locally with no upload.">
 <meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card-braille.jpg">
+<meta name="twitter:image:alt" content="Semaphore — image to braille ASCII art">
 <meta property="og:site_name" content="Semaphore">
 <meta property="og:locale" content="en_US">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="600">
 <meta property="og:image:alt" content="Semaphore — image to braille ASCII art">
 <link rel="canonical" href="https://semaphore.bobochang.cn/charsets/braille">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#050a06">
 <meta name="description" content="Turn an image into high-detail braille ASCII art in your browser. Learn how 2×4 dot cells and dithering preserve detail, then convert locally with no upload.">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
@@ -63,10 +65,9 @@
       "url": "https://semaphore.bobochang.cn/charsets/braille",
       "description": "How Semaphore converts images into high-detail Unicode braille ASCII art locally in the browser.",
       "isPartOf": {
-        "@type": "WebSite",
-        "name": "Semaphore",
-        "url": "https://semaphore.bobochang.cn/"
-      }
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "dateModified": "2026-08-10"
     },
     {
       "@type": "BreadcrumbList",
@@ -91,6 +92,12 @@
 </head>
 <body data-page="braille" data-path="~/charsets/braille">
 <main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the site header and the live ASCII
+    previews will not render. Semaphore converts images inside your own tab rather than
+    on a server, so there is nothing to fall back to — the written content below still
+    reads. <a href="/">home</a> · <a href="/tool">image to ASCII converter</a></p>
+  </noscript>
 
   <section class="sec" data-screen-label="braille-hero">
     <div class="braille-hero">
@@ -145,10 +152,41 @@
       </article>
       <article class="card">
         <h3 class="card-title"><span class="p">$</span> choose a ramp for compatibility</h3>
-        <p>Classic <code> .:-=+*#%@</code> art has the familiar ASCII look and survives environments whose fonts lack braille glyphs. Blocks suit low-resolution posters; binary suits graphic patterns.</p>
+        <p>Classic <code> .:-=+*#%@</code> art has the familiar ASCII look and survives environments whose fonts lack braille glyphs. <a href="/charsets/blocks">Blocks</a> suit low-resolution posters; <a href="/charsets/binary">binary</a> suits graphic patterns; <a href="/charsets/detailed">detailed</a> keeps photographic tone inside ordinary text.</p>
       </article>
     </div>
     <p class="lede" style="margin-top:34px">JetBrains Mono does not contain braille glyphs, so browsers use the operating system's monospace fallback for those cells. That is expected and keeps the text portable across modern platforms.</p>
+  </section>
+
+  <section class="sec" data-screen-label="braille-siblings">
+    <div class="kicker">[ other_charsets ]</div>
+    <h2 class="h2">The other five charsets</h2>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/standard">standard</a></h3>
+        <p>Ten steps of plain ASCII. The classic look, maximum portability.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/detailed">detailed</a></h3>
+        <p>Sixty-eight shades of punctuation and letters. The photographic ramp.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/blocks">blocks</a></h3>
+        <p>Five solid fills. Reads as pixels rather than characters.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/minimal">minimal</a></h3>
+        <p>Five steps, wide apart. Built for tiny avatars and icons.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/binary">binary</a></h3>
+        <p>Ones and zeroes only. The code-rain look.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> <a href="/usecases">where it goes</a></h3>
+        <p>READMEs, splash screens, comment headers and other plain-text homes.</p>
+      </article>
+    </div>
   </section>
 
   <section class="sec sec--tight" data-screen-label="braille-cta">
@@ -159,7 +197,7 @@
 
   <footer class="site-foot">
     <span>© 2026 Semaphore — plain text is forever</span>
-    <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
+    <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 
 </main>

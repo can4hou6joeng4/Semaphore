@@ -56,7 +56,7 @@ Six charsets, six textures — every ramp runs dark to bright, and the engine ma
 | Charset | Ramp | Best for |
 |---|---|---|
 | `standard` | ` .:-=+*#%@` | The classic — safe in any monospace context |
-| `detailed` | 70-level grayscale (` .'^",:;Il!i~+…#MW&8%B@$`) | Portraits and photos |
+| `detailed` | 68-level grayscale (` .'^",:;Il!i~+…#MW&8%B@$`) | Portraits and photos |
 | `blocks` | ` ░▒▓█` | Pixel art, low-res posters |
 | `minimal` | ` .:*#` | Minimal logos, tiny avatars |
 | `binary` | ` 01` | Cyberpunk, code-rain looks |
