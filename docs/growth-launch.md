@@ -8,7 +8,9 @@ Operational steps that cannot ship as code alone. Mirror of GitHub issue #8 with
 
 1. Property: `https://semaphore.bobochang.cn` (already verified via HTML meta on home).
 2. Submit sitemap: `https://semaphore.bobochang.cn/sitemap.xml`
-3. Request indexing for `/`, `/tool`, `/charsets/braille`, `/guides/readme-banner`, `/zh`
+3. Request indexing for `/`, `/tool`, `/charsets/braille`, `/guides/readme-banner`, `/zh`,
+   and the five ramp pages added 2026-08-13: `/charsets/standard`, `/charsets/detailed`,
+   `/charsets/blocks`, `/charsets/minimal`, `/charsets/binary` (13 URLs in the sitemap total)
 4. Bing Webmaster (optional): import the same sitemap
 
 ## Cloudflare AI crawl control
