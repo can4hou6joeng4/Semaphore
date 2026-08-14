@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { CHARSETS } from "./ascii-engine";
 import indexHtml from "../index.html?raw";
@@ -646,6 +646,21 @@ describe("SEO page contract", () => {
       expect(doc).toContain(String(ramp.length));
       expect(doc).not.toMatch(/70[ -](?:level|级)/);
     });
+  });
+
+  it("keeps the IndexNow key file at the site root", function () {
+    /* IndexNow proves domain control with a file whose NAME and CONTENTS are the
+       same key, served from the root — Bing/Yandex/Seznam re-verify it on every
+       submission. It looks like stray build junk, so it is the kind of file that
+       gets "cleaned up". Nothing else fails when it disappears; submission just
+       silently stops working. Matched by shape, not by literal, so rotating the
+       key does not break this test. */
+    const keys = readdirSync(new URL("../public/", import.meta.url))
+      .filter(function (name) { return /^[0-9a-f]{8,128}\.txt$/.test(name); });
+    expect(keys, "no IndexNow key file in public/").toHaveLength(1);
+    const contents = readFileSync(
+      new URL("../public/" + keys[0], import.meta.url), "utf8").trim();
+    expect(contents).toBe(keys[0].replace(/\.txt$/, ""));
   });
 
   it("keeps crawl discovery open and advertises the sitemap", function () {
