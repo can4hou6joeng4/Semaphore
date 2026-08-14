@@ -665,6 +665,10 @@ describe("SEO page contract", () => {
     expect(robotsTxt).not.toMatch(/^Disallow:\s*\/$/m);
     expect(robotsTxt).toContain("Sitemap: https://semaphore.bobochang.cn/sitemap.xml");
     expect(robotsTxt).toContain("llms.txt");
+    /* The content signal is asserted here, not by Cloudflare's managed block —
+       that block was turned off because it also carried a blanket Disallow for
+       nine AI user-agents, and the two were not separately controllable. */
+    expect(robotsTxt).toContain("Content-Signal: search=yes,ai-input=yes,ai-train=no");
     /* The repo file carries no directive-level Disallow at all. Cloudflare's
        managed block is prepended at the edge and is the only thing that ever
        blocks a bot here, so a Disallow appearing in-repo means someone tightened
