@@ -4,8 +4,9 @@
 
 **Start here:** [handoff-2026-08-14-followups.md](./handoff-2026-08-14-followups.md)
 carries the measured completion record and takes precedence over this file where
-they overlap. Phases 2, 3, 5 and 6 are complete except for owner-only Google Search
-Console clicks. Phase 4 was explicitly deferred by the owner on 2026-08-14; do not
+they overlap. Phases 2, 3, 5 and 6 are complete except for five owner-only Google
+Search Console Request Indexing clicks. The sitemap is already successful with 13
+discovered pages. Phase 4 was explicitly deferred by the owner on 2026-08-14; do not
 publish Show HN or V2EX until that decision is explicitly reversed.
 
 **Related docs:**
@@ -204,7 +205,7 @@ Read docs/handoff-prompts.md (Global constraints + Phase 1). Run full production
 ### Phase 2 only — Google Search Console + Bing
 
 ```text
-Read docs/handoff-2026-08-14-followups.md Task 1 and docs/growth-launch.md. Do not use Google's Indexing API for ordinary pages and do not claim browser automation is API access. Re-run the production pre-flight if evidence may have changed, then give the owner the exact Search Console sitemap and URL Inspection clicks. Record only actions the owner confirms they performed. Do not add site analytics.
+Read docs/handoff-2026-08-14-followups.md Task 1 and docs/growth-launch.md. Do not use Google's Indexing API for ordinary pages and do not claim browser automation is API access. The sitemap is already successful with 13 discovered pages; do not resubmit it. Give the owner the five exact URL Inspection Request Indexing clicks. Record only actions the owner confirms they performed. Do not add site analytics.
 ```
 
 ### Phase 3 only — Cloudflare AI crawl

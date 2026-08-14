@@ -7,16 +7,17 @@ Operational steps that cannot ship as code alone. Mirror of GitHub issue #8 with
 ## Google Search Console
 
 1. Property: `https://semaphore.bobochang.cn` (already verified via HTML meta on home).
-2. Submit sitemap: `https://semaphore.bobochang.cn/sitemap.xml`
-3. Request indexing for `/`, `/tool`, `/charsets/braille`, `/guides/readme-banner`, `/zh`,
-   and the five ramp pages added 2026-08-13: `/charsets/standard`, `/charsets/detailed`,
-   `/charsets/blocks`, `/charsets/minimal`, `/charsets/binary` (13 URLs in the sitemap total)
+2. Sitemap `https://semaphore.bobochang.cn/sitemap.xml` is already successful: GSC
+   last read it on 2026-08-14 and reports all 13 discovered pages. Do not resubmit it.
+3. Request indexing for the five ramp pages added 2026-08-13:
+   `/charsets/standard`, `/charsets/detailed`, `/charsets/blocks`,
+   `/charsets/minimal`, `/charsets/binary`.
 4. Bing Webmaster (optional): import the same sitemap
 
 Production pre-flight passed for all 13 canonical URLs on 2026-08-14. Sitemap
-submission and the five new ramp-page indexing requests still require the owner to
-perform the Search Console UI actions above; Google exposes no ordinary-page indexing
-API for an agent to use.
+status was also confirmed read-only in GSC: all five new pages are discovered from the
+sitemap but not indexed yet. The owner must still click Request Indexing for those five
+URLs; Google exposes no ordinary-page indexing API for an agent to use.
 
 ## IndexNow
 

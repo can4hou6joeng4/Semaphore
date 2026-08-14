@@ -11,7 +11,9 @@ reserves for the owner.
   and sitemap/JSON-LD date agreement. Sitemap, robots and the real 404 also passed.
 - Task 1B was handed off as exact Search Console paths plus the five ramp URLs. Google
   publishes no numeric daily quota and says recrawling can take days to weeks. The
-  owner must still resubmit the sitemap and click Request Indexing for those five URLs.
+  sitemap is already successful, was last read on 2026-08-14, and reports 13 discovered
+  pages. Each new ramp page is "Discovered - currently not indexed"; the owner must
+  still click Request Indexing for those five URLs.
 - Task 1C was authorized and completed. The IndexNow API accepted the five ramp URLs
   with HTTP 202 after its root key file was deployed and verified.
 - Task 2 used Option B. The unused `AsciiEngine.VERSION` export, synchronization test,
