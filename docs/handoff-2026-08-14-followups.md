@@ -1,19 +1,20 @@
 # Agent handoff — 2026-08-14 follow-ups
 
-This file records two follow-ups from the v1.2.0 release. They were completed on
-2026-08-14 except for the Google Search Console actions that this document explicitly
-reserves for the owner.
+This file records two follow-ups from the v1.2.0 release. Both were completed on
+2026-08-14, including the five Google Search Console actions after the owner explicitly
+authorized the agent to control the logged-in Chrome session.
 
 ## Completion record
 
 - Task 1A passed against production after deploy `30fdfe3`: all 13 canonical URLs
   returned 200 with indexable robots directives, self-canonical URLs, `no-transform`,
   and sitemap/JSON-LD date agreement. Sitemap, robots and the real 404 also passed.
-- Task 1B was handed off as exact Search Console paths plus the five ramp URLs. Google
-  publishes no numeric daily quota and says recrawling can take days to weeks. The
-  sitemap is already successful, was last read on 2026-08-14, and reports 13 discovered
-  pages. Each new ramp page is "Discovered - currently not indexed"; the owner must
-  still click Request Indexing for those five URLs.
+- Task 1B was completed through the authorized Search Console browser session. The
+  sitemap is successful, was last read on 2026-08-14, and reports 13 discovered pages.
+  Each of the five new ramp URLs received Google's "Indexing requested" confirmation
+  and was added to the priority crawl queue. No quota, CAPTCHA or eligibility error
+  appeared. Google says recrawling can take days to weeks, and acceptance is not proof
+  that a page has already entered the index.
 - Task 1C was authorized and completed. The IndexNow API accepted the five ramp URLs
   with HTTP 202 after its root key file was deployed and verified.
 - Task 2 used Option B. The unused `AsciiEngine.VERSION` export, synchronization test,
@@ -105,11 +106,12 @@ Skipping this section wastes an hour and produces a false report.
    `~/.config/gcloud/application_default_credentials.json`, no
    `GOOGLE_*` environment variables. Unless the user supplies OAuth or a service
    account, this route is closed too.
-4. **A browser session is not API access.** The user being logged into Search
-   Console in their browser does nothing for you.
+4. **A browser session is not API access.** Browser control requires the user's explicit
+   authorization and an authenticated session; do not describe UI automation as an API
+   response.
 
-So the submission itself is a human action. Your job is to make it
-unambiguous and to prove the site is ready to be crawled — not to click.
+The owner supplied that authorization on 2026-08-14. The agent then completed the five
+UI submissions and recorded Google's actual confirmation for each one.
 
 ## 1A. Pre-flight verification (fully automatable — show measured output)
 
@@ -138,15 +140,20 @@ registration is load-bearing.
 If any check fails, fix it, re-run `npm test` and `npm run build`, and say what
 you changed.
 
-## 1B. Produce the human checklist
+## 1B. Search Console submission (completed)
 
-Hand the user a list they can follow without thinking:
+The sitemap was already successful with 13 discovered pages, so it was not resubmitted.
+URL Inspection -> Request Indexing was completed for:
 
-- the exact path to re-submit the sitemap in Search Console
-- the exact path to request indexing for each of the five new URLs
-  (URL Inspection → Request Indexing), listed one per line ready to paste
-- the daily quota limit on indexing requests, and the realistic window before
-  submission shows an effect
+- `https://semaphore.bobochang.cn/charsets/standard`
+- `https://semaphore.bobochang.cn/charsets/detailed`
+- `https://semaphore.bobochang.cn/charsets/blocks`
+- `https://semaphore.bobochang.cn/charsets/minimal`
+- `https://semaphore.bobochang.cn/charsets/binary`
+
+For every URL, Search Console displayed "Indexing requested" and "URL was added to a
+priority crawl queue." Google publishes no numeric daily quota and says recrawling can
+take days to weeks.
 
 ## 1C. Optional — IndexNow (ask the user before doing it)
 
@@ -161,8 +168,9 @@ a shell or a workflow. That is an outbound submission on the user's behalf, so
 ## Task 1 acceptance
 
 - every pre-flight check above, with the actual command output
-- the human checklist
-- an explicit statement of what remains un-done and who must do it
+- the five per-URL Search Console confirmations
+- an explicit distinction between a request accepted by Google and a page already
+  present in the index
 
 ---
 

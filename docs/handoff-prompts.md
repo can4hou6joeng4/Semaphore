@@ -4,10 +4,10 @@
 
 **Start here:** [handoff-2026-08-14-followups.md](./handoff-2026-08-14-followups.md)
 carries the measured completion record and takes precedence over this file where
-they overlap. Phases 2, 3, 5 and 6 are complete except for five owner-only Google
-Search Console Request Indexing clicks. The sitemap is already successful with 13
-discovered pages. Phase 4 was explicitly deferred by the owner on 2026-08-14; do not
-publish Show HN or V2EX until that decision is explicitly reversed.
+they overlap. Phases 2, 3, 5 and 6 are complete. The sitemap is successful with 13
+discovered pages, and all five new charset URLs received Google's Request Indexing
+confirmation on 2026-08-14. Phase 4 was explicitly deferred by the owner on 2026-08-14;
+do not publish Show HN or V2EX until that decision is explicitly reversed.
 
 **Related docs:**
 
@@ -89,26 +89,15 @@ Verify and record Pass/Fail:
 7. Tool smoke (browser): sample image loads; change charset/color; reload without query — prefs restore; open /tool?charset=braille — URL wins; exports disabled until result exists
 If you find a P0 bug, fix in a focused PR/commit, re-test, deploy via push to main (if CI deploy is configured), then continue.
 
-### Phase 2 — Google Search Console — **SUPERSEDED, use the followups doc**
-Replaced by Task 1 of [handoff-2026-08-14-followups.md](./handoff-2026-08-14-followups.md).
-Two reasons the version below is wrong now: its URL list predates v1.2.0 and omits
-the five charset pages (the sitemap has 13 URLs, not 8), and it assumes browser
-automation. There is no public Google API for requesting indexing of an ordinary
-page — the Indexing API covers only JobPosting and BroadcastEvent — so submission
-is a human action and the followups doc says so explicitly. Kept for context:
-Using the browser with the user’s Google account (ask them to complete login if needed):
-1. Open Search Console for https://semaphore.bobochang.cn (HTML meta verification already on home).
-2. Sitemaps → submit https://semaphore.bobochang.cn/sitemap.xml if not already submitted; confirm success status.
-3. URL Inspection → Request indexing for at least:
-   - https://semaphore.bobochang.cn/
-   - https://semaphore.bobochang.cn/tool
-   - https://semaphore.bobochang.cn/zh
-   - https://semaphore.bobochang.cn/guides/readme-banner
-   - https://semaphore.bobochang.cn/charsets/braille
-   - https://semaphore.bobochang.cn/usecases
-   - https://semaphore.bobochang.cn/faq
-4. Optional: Bing Webmaster — add site / import GSC / submit same sitemap.
-5. Comment on issue #8 with what was submitted and any quota/errors (verbatim).
+### Phase 2 — Google Search Console — **DONE 2026-08-14, skip**
+Task 1 of [handoff-2026-08-14-followups.md](./handoff-2026-08-14-followups.md)
+replaced the outdated URL list in this prompt. The sitemap was already successful with
+13 discovered pages and was not resubmitted. After explicit owner authorization, the
+agent used the logged-in Search Console UI to request indexing for the five new charset
+URLs. Every URL received Google's "Indexing requested" / priority crawl queue
+confirmation, with no quota, CAPTCHA or eligibility error. There is still no public
+Google API for requesting indexing of an ordinary page, and a request confirmation is
+not proof that indexing has completed.
 
 ### Phase 3 — Cloudflare AI crawl vs llms.txt — **DONE 2026-08-14, skip**
 Resolved exactly as the recommendation below proposed. `ai_bots_protection` is
@@ -205,7 +194,7 @@ Read docs/handoff-prompts.md (Global constraints + Phase 1). Run full production
 ### Phase 2 only — Google Search Console + Bing
 
 ```text
-Read docs/handoff-2026-08-14-followups.md Task 1 and docs/growth-launch.md. Do not use Google's Indexing API for ordinary pages and do not claim browser automation is API access. The sitemap is already successful with 13 discovered pages; do not resubmit it. Give the owner the five exact URL Inspection Request Indexing clicks. Record only actions the owner confirms they performed. Do not add site analytics.
+Phase 2 is complete. Read docs/handoff-2026-08-14-followups.md Task 1 and docs/growth-launch.md for the measured record. Do not repeat the five Request Indexing submissions or resubmit the successful sitemap. Do not add site analytics. Recheck indexing status only as a later read-only follow-up; an accepted request is not proof that indexing has completed.
 ```
 
 ### Phase 3 only — Cloudflare AI crawl
@@ -257,7 +246,7 @@ Launch handoff is **complete** when:
 | # | Criterion |
 |---|-----------|
 | 1 | Production regression has no open P0s |
-| 2 | GSC sitemap submitted; primary URLs requested for indexing (or blockers logged) |
+| 2 | GSC sitemap successful; five new charset URLs accepted into the priority crawl queue |
 | 3 | CF AI/robots policy decided and applied (or blocker logged) |
 | 4 | Owner's Phase 4 deferral is recorded and no post is published |
 | 5 | Existing awesome-list PRs are recorded without duplicate submissions |
