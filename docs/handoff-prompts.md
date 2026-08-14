@@ -3,9 +3,10 @@
 **Purpose:** Copy-paste prompts for Claude Code, Codex, Cursor, or any agent that may use the browser, GitHub CLI, and the user’s logged-in sessions to finish post-deploy growth work.
 
 **Start here:** [handoff-2026-08-14-followups.md](./handoff-2026-08-14-followups.md)
-carries the current outstanding work and takes precedence over this file where
-they overlap. This file is the broader launch backlog; Phases 2 and 3 below are
-superseded/done.
+carries the measured completion record and takes precedence over this file where
+they overlap. Phases 2, 3, 5 and 6 are complete except for owner-only Google Search
+Console clicks. Phase 4 was explicitly deferred by the owner on 2026-08-14; do not
+publish Show HN or V2EX until that decision is explicitly reversed.
 
 **Related docs:**
 
@@ -51,7 +52,7 @@ Paste the **Master prompt** into a new agent session with browser + `gh` access.
 Copy everything inside the fence below.
 
 ```text
-You are the launch operator for Semaphore (image-to-ASCII, local-only). You have full agency: codebase, browser (with the user’s logged-in sessions), GitHub CLI, and permission to post public content and open PRs when the steps below require it. Complete every phase unless a step is blocked by missing credentials — then document the blocker and continue.
+You are the launch operator for Semaphore (image-to-ASCII, local-only). Respect the completion status at the top of this file before acting. Do not repeat completed phases, publish Phase 4 posts, or open more awesome-list PRs unless the owner explicitly reverses the recorded decision.
 
 ## Repo & live site
 - Working directory: the Semaphore git repo (root has AGENTS.md, package.json, public/, src/).
@@ -70,7 +71,7 @@ You are the launch operator for Semaphore (image-to-ASCII, local-only). You have
 7. No force-push to main; no rewriting published history; no git config changes.
 8. Prefer honest, evidence-bounded claims (no “milliseconds for any photo” hype).
 
-## Execution order (do all)
+## Execution order (historical; skip phases marked done or deferred)
 
 ### Phase 0 — Orient
 - Confirm git status, branch (prefer main up to date with origin), node version, npm test/build green.
@@ -125,7 +126,10 @@ Original steps kept below for context only:
    - Do NOT enable Web Analytics injection or anything that needs connect-src holes
 4. Apply the chosen policy; re-fetch live robots.txt; document the decision in a short note on issue #8 and optionally append a “Decision log” section to docs/growth-launch.md.
 
-### Phase 4 — Community posts (publish, not just draft)
+### Phase 4 — Community posts — **DEFERRED BY OWNER, skip**
+Do not publish Show HN, V2EX or optional extras until the owner explicitly resumes
+this phase. The copy below is retained only as a future draft.
+
 Use final copy from docs/growth-launch.md; lightly update if new routes exist; keep facts accurate.
 
 #### 4a Show HN (Hacker News)
@@ -146,14 +150,19 @@ Use final copy from docs/growth-launch.md; lightly update if new routes exist; k
 - One thoughtful post each max: r/commandline or r/privacy or r/webdev OR a single Twitter/X post with share-card framing — no flood.
 - Always lead with the privacy/CSP differentiator and live demo link.
 
-### Phase 5 — Awesome lists (open real PRs)
+### Phase 5 — Awesome lists — **DONE, do not duplicate**
+Three suitable PRs are already open and mergeable: `devtooligan/awesome-ascii-art#3`,
+`pluja/awesome-privacy#967`, and `moul/awesome-ascii-art#7`. Monitor those; do not
+open more without new evidence that another list reaches a distinct, suitable audience.
+
+Original steps retained for context:
 1. Read docs/growth-awesome-lists.md.
 2. Select 2–3 active lists (e.g. privacy tools, browser tools, terminal/ASCII) that fit and still accept PRs.
 3. For each: fork if needed, branch, add one factual bullet, open PR with the template body.
 4. Do not spam 10 lists; quality over quantity.
 5. Collect PR URLs; comment on issue #8.
 
-### Phase 6 — Issue & docs sync
+### Phase 6 — Issue & docs sync — **DONE 2026-08-14**
 1. Update GitHub issue #8 checkboxes via comment (or edit body if you have permission) to reflect completed GSC, CF, Show HN, V2EX, awesome PRs.
 2. If docs/growth-launch.md checkboxes are outdated, update them to match reality.
 3. If you shipped code fixes, ensure CHANGELOG Unreleased notes them.
@@ -195,25 +204,25 @@ Read docs/handoff-prompts.md (Global constraints + Phase 1). Run full production
 ### Phase 2 only — Google Search Console + Bing
 
 ```text
-Read docs/handoff-prompts.md Phase 2 and docs/growth-launch.md. Using the browser and the user’s Google account, submit sitemap https://semaphore.bobochang.cn/sitemap.xml and request indexing for all URLs listed in the master prompt Phase 2. Optionally configure Bing Webmaster the same way. Comment results on GitHub issue #8. Do not add site analytics.
+Read docs/handoff-2026-08-14-followups.md Task 1 and docs/growth-launch.md. Do not use Google's Indexing API for ordinary pages and do not claim browser automation is API access. Re-run the production pre-flight if evidence may have changed, then give the owner the exact Search Console sitemap and URL Inspection clicks. Record only actions the owner confirms they performed. Do not add site analytics.
 ```
 
 ### Phase 3 only — Cloudflare AI crawl
 
 ```text
-Read docs/handoff-prompts.md Phase 3. Compare live robots.txt to public/robots.txt. In Cloudflare dashboard, align AI crawl control so search works and (default) answer/retrieval bots can see the site for llms.txt usefulness, without enabling Web Analytics or weakening CSP. Document the decision on issue #8 and in docs/growth-launch.md if useful.
+Phase 3 is complete. Verify only if current production evidence contradicts the recorded state: ai_bots_protection=disabled, is_robots_txt_managed=false, and repo-owned Content-Signal search=yes,ai-input=yes,ai-train=no. Do not change the dashboard or enable Web Analytics.
 ```
 
 ### Phase 4 only — publish Show HN + V2EX
 
 ```text
-Read docs/growth-launch.md and docs/handoff-prompts.md Phase 4. You are authorized to publish (not just draft). Post Show HN and V2EX with accurate product facts (no upload, connect-src none, live tool URL, GitHub). Return thread/post URLs and a 5-bullet FAQ for comments. No vote manipulation, no multi-account spam.
+Inactive. The owner deferred Show HN and V2EX on 2026-08-14. Do not publish unless the owner explicitly reverses that decision in a newer instruction.
 ```
 
 ### Phase 5 only — awesome-list PRs
 
 ```text
-Read docs/growth-awesome-lists.md and docs/handoff-prompts.md Phase 5. Open 2–3 high-quality awesome-list PRs for Semaphore with factual one-liners. Return PR URLs. Do not mass-spam lists.
+Phase 5 is complete. Read-only check the three existing open PRs and report maintainer activity; do not open more or nudge maintainers without new evidence.
 ```
 
 ### Optional code follow-up — another long-tail guide
@@ -249,11 +258,10 @@ Launch handoff is **complete** when:
 | 1 | Production regression has no open P0s |
 | 2 | GSC sitemap submitted; primary URLs requested for indexing (or blockers logged) |
 | 3 | CF AI/robots policy decided and applied (or blocker logged) |
-| 4 | Show HN thread URL exists |
-| 5 | V2EX post URL exists |
-| 6 | ≥1 awesome-list PR opened (ideally 2–3) |
-| 7 | Issue #8 updated with links and checkbox progress |
-| 8 | User receives the Phase 7 final report |
+| 4 | Owner's Phase 4 deferral is recorded and no post is published |
+| 5 | Existing awesome-list PRs are recorded without duplicate submissions |
+| 6 | Issue #8 updated with links and checkbox progress |
+| 7 | User receives the Phase 7 final report |
 
 ---
 

@@ -1,8 +1,25 @@
 # Agent handoff — 2026-08-14 follow-ups
 
-Two independent tasks left over after the v1.2.0 release. Forward this whole file
-to the agent taking over. Both tasks are required; each needs its own acceptance
-verdict at the end.
+This file records two follow-ups from the v1.2.0 release. They were completed on
+2026-08-14 except for the Google Search Console actions that this document explicitly
+reserves for the owner.
+
+## Completion record
+
+- Task 1A passed against production after deploy `30fdfe3`: all 13 canonical URLs
+  returned 200 with indexable robots directives, self-canonical URLs, `no-transform`,
+  and sitemap/JSON-LD date agreement. Sitemap, robots and the real 404 also passed.
+- Task 1B was handed off as exact Search Console paths plus the five ramp URLs. Google
+  publishes no numeric daily quota and says recrawling can take days to weeks. The
+  owner must still resubmit the sitemap and click Request Indexing for those five URLs.
+- Task 1C was authorized and completed. The IndexNow API accepted the five ramp URLs
+  with HTTP 202 after its root key file was deployed and verified.
+- Task 2 used Option B. The unused `AsciiEngine.VERSION` export, synchronization test,
+  and AGENTS trap were deleted. Local tests passed 183/183, Node 22 CI passed, the
+  production deploy succeeded, and real-browser conversion/share-card smoke passed.
+
+The detailed instructions below are retained as the acceptance record. Do not rerun
+completed work unless current production evidence contradicts this status.
 
 ## How to use this file
 
@@ -24,7 +41,8 @@ acceptable answer.
   asserts on raw source text, so rewording copy can turn a test red with no
   behaviour change. That is intentional; read the failing assertion before
   "fixing" either side.
-- Verify with `npm test` (184 tests) and `npm run build` (`tsc --noEmit` first).
+- Verify with `npm test` (183 tests after removing the version-only assertion) and
+  `npm run build` (`tsc --noEmit` first).
   Node 22 is what CI uses.
 
 ### Already done — do not redo
