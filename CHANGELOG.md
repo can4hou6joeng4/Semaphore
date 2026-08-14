@@ -4,6 +4,11 @@ All notable changes to Semaphore are documented in this file.
 
 ## Unreleased
 
+### Maintenance
+
+- Remove the unused `AsciiEngine.VERSION` export and its synchronization test; the
+  value had no runtime consumer and was tree-shaken out of every build.
+
 ## 1.2.0 - 2026-08-13
 
 ### Features

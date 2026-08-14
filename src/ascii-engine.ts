@@ -93,8 +93,6 @@ export const CHARSETS: Record<string, Charset> = {
 
 const DEFAULT_ASPECT = 1 / 0.6; // mono cell h/w at line-height 1
 
-export const VERSION = "1.2.0"; // keep in sync with package.json (asserted in seo.test.ts)
-
 /* The live preview and regular PNG preserve the rendered glyph's natural
    width. JetBrains Mono has no Braille glyphs, so that charset must measure
    the browser's fallback instead of assuming the primary font's M advance. */

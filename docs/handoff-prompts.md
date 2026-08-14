@@ -2,6 +2,11 @@
 
 **Purpose:** Copy-paste prompts for Claude Code, Codex, Cursor, or any agent that may use the browser, GitHub CLI, and the user’s logged-in sessions to finish post-deploy growth work.
 
+**Start here:** [handoff-2026-08-14-followups.md](./handoff-2026-08-14-followups.md)
+carries the current outstanding work and takes precedence over this file where
+they overlap. This file is the broader launch backlog; Phases 2 and 3 below are
+superseded/done.
+
 **Related docs:**
 
 - [growth-launch.md](./growth-launch.md) — GSC / CF / Show HN / V2EX copy
@@ -20,7 +25,9 @@
 **Already shipped on `main` (do not re-implement):**
 
 - SEO: twitter meta, `sameAs`, sitemap, hreflang, HowTo on README guide  
-- Pages: `/zh`, `/guides/readme-banner`, braille guide, prefs in `localStorage` (charset + color only)  
+- Pages: **13 canonical pages** as of v1.2.0 — including all six charset landing pages
+  (`/charsets/{standard,detailed,blocks,minimal,binary,braille}`), `/zh`,
+  `/guides/readme-banner`; prefs in `localStorage` (charset + color only)
 - OG images: `social-card.jpg` + `social-card-{tool,braille,zh,readme}.jpg`  
 - Growth docs under `docs/`  
 
@@ -80,7 +87,13 @@ Verify and record Pass/Fail:
 7. Tool smoke (browser): sample image loads; change charset/color; reload without query — prefs restore; open /tool?charset=braille — URL wins; exports disabled until result exists
 If you find a P0 bug, fix in a focused PR/commit, re-test, deploy via push to main (if CI deploy is configured), then continue.
 
-### Phase 2 — Google Search Console
+### Phase 2 — Google Search Console — **SUPERSEDED, use the followups doc**
+Replaced by Task 1 of [handoff-2026-08-14-followups.md](./handoff-2026-08-14-followups.md).
+Two reasons the version below is wrong now: its URL list predates v1.2.0 and omits
+the five charset pages (the sitemap has 13 URLs, not 8), and it assumes browser
+automation. There is no public Google API for requesting indexing of an ordinary
+page — the Indexing API covers only JobPosting and BroadcastEvent — so submission
+is a human action and the followups doc says so explicitly. Kept for context:
 Using the browser with the user’s Google account (ask them to complete login if needed):
 1. Open Search Console for https://semaphore.bobochang.cn (HTML meta verification already on home).
 2. Sitemaps → submit https://semaphore.bobochang.cn/sitemap.xml if not already submitted; confirm success status.
@@ -95,7 +108,15 @@ Using the browser with the user’s Google account (ask them to complete login i
 4. Optional: Bing Webmaster — add site / import GSC / submit same sitemap.
 5. Comment on issue #8 with what was submitted and any quota/errors (verbatim).
 
-### Phase 3 — Cloudflare AI crawl vs llms.txt
+### Phase 3 — Cloudflare AI crawl vs llms.txt — **DONE 2026-08-14, skip**
+Resolved exactly as the recommendation below proposed. `ai_bots_protection` is
+`disabled` and `is_robots_txt_managed` is `false`; the nine blanket
+`Disallow: /` rules for AI user-agents are gone from the live robots.txt. The
+`Content-Signal: search=yes,ai-input=yes,ai-train=no` line is now declared in
+`public/robots.txt` in-repo and pinned by a test, rather than injected at the
+edge — the two Cloudflare switches turned out to be independent, and turning
+off enforcement alone did not remove the Disallow lines. Do not redo this.
+Original steps kept below for context only:
 1. Fetch live https://semaphore.bobochang.cn/robots.txt and compare to public/robots.txt.
 2. In Cloudflare dashboard (user session): AI Crawl Control / bot / robots managed content.
 3. Recommended default for this product (unless user overrides):
