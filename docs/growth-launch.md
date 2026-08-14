@@ -13,6 +13,18 @@ Operational steps that cannot ship as code alone. Mirror of GitHub issue #8 with
    `/charsets/blocks`, `/charsets/minimal`, `/charsets/binary` (13 URLs in the sitemap total)
 4. Bing Webmaster (optional): import the same sitemap
 
+Production pre-flight passed for all 13 canonical URLs on 2026-08-14. Sitemap
+submission and the five new ramp-page indexing requests still require the owner to
+perform the Search Console UI actions above; Google exposes no ordinary-page indexing
+API for an agent to use.
+
+## IndexNow
+
+The five new ramp pages were submitted to `https://api.indexnow.org/indexnow` on
+2026-08-14. The API returned HTTP 202 after the key file was deployed and verified at
+the site root. This covers participating engines such as Bing, Yandex and Seznam;
+Google does not participate, so the Search Console actions above still remain.
+
 ## Cloudflare AI crawl control
 
 **Decision (2026-08-13): allow AI retrieval, keep declining AI training.**
@@ -35,6 +47,8 @@ Googlebot was never at risk: `Google-Extended` is the AI-training token, not the
 crawler, so search indexing is unaffected either way.
 
 ## Show HN (English)
+
+**Deferred by the owner on 2026-08-14. Do not publish until explicitly resumed.**
 
 **Title:**
 
@@ -63,6 +77,8 @@ Post on a weekday morning US time; stay for ~2h of comments.
 
 ## V2EX (中文)
 
+**Deferred by the owner on 2026-08-14. Do not publish until explicitly resumed.**
+
 **标题:**
 
 ```text
@@ -89,6 +105,14 @@ Semaphore — 浏览器里把图片转成 ASCII，不上传，CSP 直接 connect
 ```
 
 发在 share 或 create 节点；避免同小时多站群发。
+
+## Awesome lists
+
+Existing submissions were rechecked on 2026-08-14. Three PRs remain open and
+mergeable: `devtooligan/awesome-ascii-art#3`, `pluja/awesome-privacy#967`, and
+`moul/awesome-ascii-art#7`. `paulaime/awesome-privacy#52` is closed. Do not open
+more list PRs or nudge maintainers without new activity; the intended 2-3 quality
+submissions already exist.
 
 ## After posts
 
