@@ -15,26 +15,21 @@ Operational steps that cannot ship as code alone. Mirror of GitHub issue #8 with
 
 ## Cloudflare AI crawl control
 
-Repo `public/robots.txt` allows all user-agents and points at the sitemap. It carries no
-`Disallow` at all, and a test enforces that — every block on this site is injected at the
-edge, not committed here.
-
 **Decision (2026-08-13): allow AI retrieval, keep declining AI training.**
 
-Verified live on that date, the edge block has two independent layers:
+Completed and verified on 2026-08-14:
 
-1. `Content-Signal: search=yes,ai-train=no,use=reference` — already exactly the decision
-   above. Leave it alone.
-2. Blanket `Disallow: /` for `ClaudeBot`, `GPTBot`, `CCBot`, `Google-Extended`,
-   `Bytespider`, `Amazonbot`, `Applebot-Extended`, `meta-externalagent`,
-   `CloudflareBrowserRenderingCrawler`. This contradicts layer 1 and is the only thing
-   that needs changing.
+1. Cloudflare `ai_bots_protection` is `disabled`, so the edge no longer blocks AI
+   retrieval crawlers.
+2. Cloudflare `is_robots_txt_managed` is `false`, so it no longer prepends blanket
+   `Disallow: /` groups to the repository policy.
+3. `public/robots.txt` is now the source of truth and declares
+   `Content-Signal: search=yes,ai-input=yes,ai-train=no`. A test pins this line and the
+   absence of every `Disallow` directive.
+4. The deployed `robots.txt` matches the repository file and advertises the sitemap.
 
-**Operator action (dashboard only — not doable from the repo):** Cloudflare → AI Crawl
-Control → stop blocking the retrieval bots, keeping the `ai-train=no` content signal.
-`robots.txt` cannot override this from the repo: a bot matches its own user-agent group,
-so the `User-agent: *` block never applies to it, and adding counter-groups has
-inconsistent precedence across crawlers.
+No dashboard action remains. Do not re-enable managed robots text, AI crawler blocking,
+Cloudflare Web Analytics, or any feature that injects a client-side request.
 
 Googlebot was never at risk: `Google-Extended` is the AI-training token, not the search
 crawler, so search indexing is unaffected either way.

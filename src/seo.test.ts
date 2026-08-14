@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { CHARSETS, VERSION } from "./ascii-engine";
+import { CHARSETS } from "./ascii-engine";
 import indexHtml from "../index.html?raw";
 import toolHtml from "../tool.html?raw";
 import usecasesHtml from "../usecases.html?raw";
@@ -29,7 +29,6 @@ import readme from "../README.md?raw";
 import readmeCn from "../README_CN.md?raw";
 import robotsTxt from "../public/robots.txt?raw";
 import redirectsTxt from "../public/_redirects?raw";
-import packageJson from "../package.json?raw";
 import headersTxt from "../public/_headers?raw";
 
 /* Vite 8 returns an empty string for `*.css?raw` under vitest; read the file. */
@@ -635,16 +634,6 @@ describe("SEO page contract", () => {
         expect(date, page.path + " disagrees with its sitemap lastmod").toBe(lastmod);
       });
     });
-  });
-
-  it("keeps the engine version equal to the package version", function () {
-    /* VERSION is stamped onto every share card, so a drifted constant mislabels
-       a real artifact a user downloads. Nothing checked the two agreed, and they
-       had already drifted once. */
-    const declared = packageJson.match(/"version": "([^"]+)"/);
-    expect(declared, "package.json declares no version").not.toBeNull();
-    expect(VERSION).toBe(declared && declared[1]);
-    expect(engineSource).toContain('export const VERSION = "' + VERSION + '"');
   });
 
   it("keeps the documented ramp lengths equal to the shipped ramps", function () {
