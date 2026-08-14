@@ -127,17 +127,25 @@ Things a fresh read of the code will not reveal:
 9. **Tool prefs in `localStorage` are charset + color only** (`semaphore-tool-prefs`).
    URL query params still win on boot. Reset clears storage and returns to factory
    defaults. Never store image bytes or filenames there — privacy copy depends on it.
-10. **Cloudflare may inject managed `robots.txt` rules** for AI bots. Repo
-    `public/robots.txt` is the intended open crawl policy; if LLM discovery matters,
-    align CF AI Crawl Control with `/llms.txt` (see `docs/growth-launch.md`).
+10. **`robots.txt` is fully repo-owned now — keep Cloudflare out of it.** Managed
+    robots.txt was turned off (`is_robots_txt_managed: false`) along with
+    `ai_bots_protection`, because the two switches are INDEPENDENT: disabling
+    enforcement alone left nine blanket `Disallow: /` rules for AI user-agents in the
+    served file. The `Content-Signal` line is therefore declared in
+    `public/robots.txt` and pinned by a test. Re-enabling managed robots.txt would
+    prepend a second `User-agent: *` group and silently restore those Disallow rules.
 11. **Most of the suite asserts on source *text*, not behavior.** `seo.test.ts` pulls
     HTML, `_headers`, `sitemap.xml`, the READMEs and several `.ts` files in via `?raw`
     and matches patterns against them. Renaming a variable or rewording a sentence can
     turn a test red without any behavior changing — and that is the intent, since it is
     how the STYLEGUIDE and the privacy copy stay true. Update the assertion deliberately.
-12. **`sitemap.xml` `lastmod` is pinned by a literal date in `seo.test.ts`.** The test
-    requires every entry to carry the same date *and* the count to equal `pages.length`,
-    so touching the sitemap means editing that literal too.
+12. **`sitemap.xml` `lastmod` is derived per page and cross-checked against the page.**
+    `seo.test.ts` asserts every entry carries a well-formed date that *equals the
+    `dateModified` that page publishes in its own JSON-LD*, so the two sources of
+    freshness cannot disagree. Changing a page's date means changing both, in the same
+    commit. (An earlier form of this test pinned every entry to one literal date and
+    required the count to match `pages.length` — that mandated a uniform `lastmod`,
+    which is the canonical signal to a crawler that `lastmod` is unreliable.)
 13. **`*.css?raw` returns an empty string under vitest** (Vite 8), so `seo.test.ts` reads
     `terminal.css` with `readFileSync` instead. A `?raw` CSS import will silently assert
     against nothing rather than fail.
@@ -145,6 +153,16 @@ Things a fresh read of the code will not reveal:
     and includes all of `src`, so a `*.test.ts` type error fails the build. Node APIs used
     from tests need a declaration in `src/node-shim.d.ts` — production sources stay
     DOM-only. (The comment in that file claiming tests are excluded is out of date.)
+15. **The 64-hex `.txt` file in `public/` is the IndexNow key — do not delete it.**
+    `public/88829be3…c080825.txt` looks like stray build junk and is not. IndexNow
+    requires a key file whose *filename* and *contents* are the same key, served from
+    the site root, as proof you control the domain; Bing, Yandex and Seznam re-verify
+    it on every submission. It is the one deliberate exception to trap 1's "stable-named
+    files live in `/static/` or `/fonts/`" rule, because the protocol fixes its location.
+    It has no `_headers` rule of its own and falls to `/*`, which is correct. Deleting or
+    renaming it silently breaks URL submission to those engines — nothing fails loudly,
+    and no test covers it. Submission history is in `docs/growth-launch.md`.
+
 ## Growth / launch handoff
 
 Post-deploy distribution (Search Console, Cloudflare AI crawl, Show HN, V2EX,
