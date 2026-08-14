@@ -9,22 +9,27 @@ Operational steps that cannot ship as code alone. Mirror of GitHub issue #8 with
 1. Property: `https://semaphore.bobochang.cn` (already verified via HTML meta on home).
 2. Sitemap `https://semaphore.bobochang.cn/sitemap.xml` is already successful: GSC
    last read it on 2026-08-14 and reports all 13 discovered pages. Do not resubmit it.
-3. Request indexing for the five ramp pages added 2026-08-13:
+3. Request Indexing was completed on 2026-08-14 for the five ramp pages added
+   2026-08-13:
    `/charsets/standard`, `/charsets/detailed`, `/charsets/blocks`,
    `/charsets/minimal`, `/charsets/binary`.
 4. Bing Webmaster (optional): import the same sitemap
 
-Production pre-flight passed for all 13 canonical URLs on 2026-08-14. Sitemap
-status was also confirmed read-only in GSC: all five new pages are discovered from the
-sitemap but not indexed yet. The owner must still click Request Indexing for those five
-URLs; Google exposes no ordinary-page indexing API for an agent to use.
+Production pre-flight passed for all 13 canonical URLs on 2026-08-14. The sitemap was
+also confirmed successful in GSC with all 13 pages discovered. With the owner's explicit
+authorization to control the logged-in Chrome session, the agent submitted each of the
+five URLs above through URL Inspection. Every URL received Google's confirmation:
+"Indexing requested" and "URL was added to a priority crawl queue." No quota, CAPTCHA
+or eligibility error appeared. This requests recrawling; it does not guarantee or prove
+that Google has indexed the pages yet.
 
 ## IndexNow
 
 The five new ramp pages were submitted to `https://api.indexnow.org/indexnow` on
 2026-08-14. The API returned HTTP 202 after the key file was deployed and verified at
 the site root. This covers participating engines such as Bing, Yandex and Seznam;
-Google does not participate, so the Search Console actions above still remain.
+Google does not participate; the separate Search Console requests above were completed
+through the authorized browser session.
 
 ## Cloudflare AI crawl control
 
