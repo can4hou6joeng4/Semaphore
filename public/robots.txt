@@ -5,28 +5,33 @@
 # gets found now, and /llms.txt exists specifically to serve them. Training
 # permission is a separate question and stays declined.
 #
-# This file cannot express that on its own. Cloudflare prepends a managed block
-# at the edge with two independent layers:
+# The Content-Signal below is that declaration, and it is asserted HERE rather
+# than by Cloudflare. Two zone-level settings used to control this and they are
+# independent:
 #
-#   1. Content-Signal: search=yes,ai-train=no,use=reference
-#      Already exactly the policy above. Leave it alone.
-#   2. Per-bot blanket blocks (ClaudeBot, GPTBot, CCBot, Google-Extended,
-#      Bytespider, Amazonbot, Applebot-Extended, meta-externalagent,
-#      CloudflareBrowserRenderingCrawler). These contradict layer 1 and are the
-#      thing to turn off, in the Cloudflare dashboard under AI Crawl Control.
-#      They are NOT in this file and cannot be overridden from it: a bot matches
-#      its own user-agent group, so the `User-agent: *` block below never
-#      applies to them.
+#   ai_bots_protection    — edge enforcement (blocking AI crawler requests).
+#                           Set to "disabled" 2026-08-14.
+#   is_robots_txt_managed — whether Cloudflare prepends its own managed block,
+#                           which carried both the Content-Signal AND a blanket
+#                           `Disallow: /` for nine AI user-agents. Turning the
+#                           enforcement off did NOT remove those lines, because
+#                           the managed text is generated independently. So the
+#                           managed block was turned off too, and its one useful
+#                           part — the Content-Signal — was moved into this file.
 #
-# Do not try to fight the edge from here by adding `User-agent: ClaudeBot` plus
-# an allow rule as a counter-group. Two groups for one user-agent have
-# inconsistent precedence across crawlers, so it would work by accident where it
-# worked at all. Fix it at the source.
+# Content-Signal meanings (per the content signals proposal):
+#   search   building a search index and returning links/excerpts
+#   ai-input taking content into an AI model at answer time (RAG, grounding)
+#   ai-train training or fine-tuning models
+# Restrictions expressed here are express reservations of rights under Article 4
+# of EU Directive 2019/790.
 #
-# Googlebot is unaffected either way: Google-Extended is the AI-training token,
-# not the search crawler, so search indexing was never at risk.
+# Googlebot was never affected by any of this: Google-Extended is the
+# AI-training token, not the search crawler.
 
 User-agent: *
+Content-Signal: search=yes,ai-input=yes,ai-train=no
 Allow: /
 
 Sitemap: https://semaphore.bobochang.cn/sitemap.xml
+
