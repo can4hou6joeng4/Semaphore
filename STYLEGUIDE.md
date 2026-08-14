@@ -19,6 +19,8 @@ index.html  tool.html  usecases.html  faq.html  privacy.html  404.html  zh.html
   src/terminal.css   src/shared.ts   src/ascii-engine.ts
   public/static/sample-portrait.webp         (1100×1069 b/w portrait)
   public/static/sample-portrait-thumb.webp   (136×112 home demo thumbnail)
+  public/<64-hex>.txt                        (IndexNow key — root-fixed by the
+                                              protocol; see AGENTS.md trap 15)
 ```
 
 The five ramp pages under `charsets/` share one entry, `src/main-charset.ts` →
