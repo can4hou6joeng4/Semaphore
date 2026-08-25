@@ -175,6 +175,17 @@ describe("SEO page contract", () => {
     });
   });
 
+  it("keeps visual tool output out of the accessibility tree", function () {
+    expect(toolHtml).toContain(
+      'aria-label="ASCII output viewport — no source loaded yet" tabindex="0">'
+    );
+    expect(toolHtml).toContain(
+      '<pre class="ascii-pre is-empty" id="out" aria-hidden="true">'
+    );
+    expect(toolSource).toContain('els.outBody.setAttribute("aria-label",');
+    expect(toolSource).not.toContain('els.out.setAttribute("aria-label",');
+  });
+
   it.each(pages)("gives every section in $path a heading or landmark name", function (page) {
     const sections = Array.from(
       page.html.matchAll(/<section\b([^>]*)>([\s\S]*?)<\/section>/g),
@@ -288,6 +299,22 @@ describe("SEO page contract", () => {
     );
   });
 
+  it("puts the conversion workflow before secondary tool navigation", function () {
+    expect(toolHtml).toContain(
+      "Drop a photo and copy plain-text ASCII. Tune it live; nothing leaves this tab or gets uploaded."
+    );
+    expect(toolHtml.indexOf('data-screen-label="tool-workbench"')).toBeLessThan(
+      toolHtml.indexOf('data-screen-label="tool-guides"')
+    );
+    expect(toolHtml).toContain(
+      '<nav class="row" aria-label="ASCII converter guides">'
+    );
+    expect(toolHtml).toContain('<a href="/">overview</a>');
+    expect(toolHtml).toContain('<a href="/charsets/braille">braille ASCII guide</a>');
+    expect(toolHtml).toContain('<a href="/faq">FAQ</a>');
+    expect(toolHtml).not.toContain("New here? Skim the");
+  });
+
   it("uses the stronger text tone for file metadata", function () {
     expect(toolHtml).toContain('class="fs-xs text-dim" id="srcMeta"');
   });
@@ -316,7 +343,7 @@ describe("SEO page contract", () => {
       '<aside class="tool-side" aria-label="source and parameters" tabindex="0">'
     );
     expect(toolHtml).toMatch(
-      /id="outBody" role="region"\s+aria-label="ASCII output viewport" tabindex="0"/
+      /id="outBody" role="region"\s+aria-label="ASCII output viewport — no source loaded yet" tabindex="0"/
     );
     expect(toolHtml).toContain(
       ".tool-side:focus-visible, .out-body:focus-visible { outline-offset: -2px; }"
@@ -746,6 +773,38 @@ describe("SEO page contract", () => {
   it("uses a dedicated small asset for the home demo thumbnail", function () {
     expect(indexHtml).toContain(
       '<img src="/static/sample-portrait-thumb.webp" alt="" width="68" height="56">'
+    );
+  });
+
+  it("consolidates the homepage privacy position around verifiable facts", function () {
+    expect(indexHtml).toContain("reads pixels on a local <code>&lt;canvas&gt;</code>");
+    expect(indexHtml).toContain("README files, CLI output, code comments, and chat");
+    expect(indexHtml).toContain("there is no upload endpoint or processing queue");
+    expect(indexHtml).toContain("The page makes no third-party runtime requests");
+    expect(indexHtml).toContain("Content-Security-Policy: connect-src 'none'");
+    expect(indexHtml).toContain(
+      "Cloudflare edge counts are static-file request logs, not client telemetry"
+    );
+    expect(indexHtml).toContain("No analytics beacon runs in the tab");
+    expect(indexHtml).toContain('data-screen-label="why-local"');
+    expect(indexHtml).not.toContain('data-screen-label="vs-upload"');
+    expect(indexHtml).not.toContain("Not another upload-based ASCII generator");
+  });
+
+  it("loads and degrades the home hero and showcase independently", function () {
+    expect(landingSource).toContain(
+      'const heroSource = AsciiEngine.loadImage("/static/sample-hero.webp");'
+    );
+    expect(landingSource).toContain(
+      'const portraitSource = AsciiEngine.loadImage("/static/sample-portrait.webp");'
+    );
+    expect(landingSource).toContain("const heroTask = heroSource.then(");
+    expect(landingSource).toContain("const portraitTask = portraitSource.then(");
+    expect(landingSource).toContain("degradeHero();");
+    expect(landingSource).toContain("degradeShowcase();");
+    expect(landingSource).toContain("await Promise.all([heroTask, portraitTask]);");
+    expect(landingSource).not.toMatch(
+      /Promise\.all\(\[\s*AsciiEngine\.loadImage\("\/static\/sample-hero\.webp"\),\s*AsciiEngine\.loadImage\("\/static\/sample-portrait\.webp"\)/
     );
   });
 

@@ -273,7 +273,7 @@
       "mainEntity": {
         "@id": "https://semaphore.bobochang.cn/#webapp"
       },
-      "dateModified": "2026-08-13"
+      "dateModified": "2026-08-26"
     },
     {
       "@type": "Person",
@@ -399,22 +399,22 @@
   <section class="sec" data-screen-label="why-local">
     <div class="kicker">[ why_local ]</div>
     <h2 class="h2">Image to ASCII without uploading</h2>
-    <p class="lede" style="margin-top:18px">Most online ASCII art generators ask you to send the file to their servers. Semaphore never does. Pixels are read on a local <code>&lt;canvas&gt;</code>; conversion, preview and export stay inside the tab. That makes this image to ASCII converter safe for private photos, work screenshots, and anything you would not drop into a random form.</p>
+    <p class="lede" style="margin-top:18px">Semaphore reads pixels on a local <code>&lt;canvas&gt;</code> and emits plain text for README files, CLI output, code comments, and chat. Conversion, preview and export stay inside this tab; there is no upload endpoint or processing queue.</p>
     <div class="grid-3" style="margin-top:34px">
       <article class="card">
         <h3 class="card-title"><span class="p">$</span> no phone-home</h3>
-        <p>Production ships <code>Content-Security-Policy: connect-src 'none'</code>, so the page cannot open a fetch, XHR or WebSocket — even if a future bug tried. Open devtools and watch the network stay quiet after load.</p>
+        <p>The page makes no third-party runtime requests. Production ships <code>Content-Security-Policy: connect-src 'none'</code>, blocking fetch, XHR and WebSocket.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> works offline</h3>
-        <p>Once the static files and font are cached, the image to ASCII pipeline keeps working without a network. Close the tab and nothing about your photo is left on a remote disk.</p>
+        <h3 class="card-title"><span class="p">$</span> live, not queued</h3>
+        <p>Columns, brightness, contrast, invert and color re-run every change. The ASCII art updates immediately instead of waiting on a server job.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> no account wall</h3>
-        <p>Free, no sign-up, no watermark, no daily quota. The whole site is static files on Cloudflare Pages — open the <a href="/tool">ASCII converter</a> and start.</p>
+        <h3 class="card-title"><span class="p">$</span> edge counts only</h3>
+        <p>Cloudflare edge counts are static-file request logs, not client telemetry. No analytics beacon runs in the tab, and image bytes never enter those requests.</p>
       </article>
     </div>
-    <p class="fs-s text-faint" style="margin-top:26px">Privacy details and edge traffic notes live in the <a href="/faq">FAQ</a>. The engine source is on <a href="https://github.com/can4hou6joeng4/Semaphore">GitHub</a>.</p>
+    <p class="fs-s text-faint" style="margin-top:26px">Free, no account, no watermark. Once cached, the converter works offline. <a href="/tool">Open the ASCII converter</a>, read the <a href="/faq">FAQ</a>, or inspect the engine on <a href="https://github.com/can4hou6joeng4/Semaphore">GitHub</a>.</p>
   </section>
 
   <section class="sec" data-screen-label="live-demo" id="demoSection">
@@ -521,27 +521,6 @@
       </article>
     </div>
     <a class="btn btn--ghost" href="/usecases" style="margin-top:26px">browse ASCII art use cases</a>
-  </section>
-
-  <section class="sec" data-screen-label="vs-upload">
-    <div class="kicker">[ vs_upload_converters ]</div>
-    <h2 class="h2">Not another upload-based ASCII generator</h2>
-    <p class="lede" style="margin-top:18px">Upload converters are fine for throwaway memes. They are the wrong tool for private photos, work screenshots, or anything you would not paste into a stranger's form.</p>
-    <div class="grid-3" style="margin-top:34px">
-      <article class="card">
-        <h3 class="card-title"><span class="p">01</span> your bytes stay put</h3>
-        <p>Semaphore samples the image in-process. There is no upload API, no processing queue, and no "we delete after 24h" promise to trust.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">02</span> live, not a queue</h3>
-        <p>Columns, brightness, contrast, invert and color re-run every change. You see the ASCII art update immediately instead of waiting on a job id.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">03</span> verifiable policy</h3>
-        <p>The CSP is part of the product: <code>connect-src 'none'</code> is enforced in production headers, not only claimed in marketing copy. <a href="/faq">Read how we measure traffic</a> without in-page beacons.</p>
-      </article>
-    </div>
-    <a class="btn btn--green" href="/tool" style="margin-top:26px">Start converting — image to ASCII</a>
   </section>
 
   <section class="sec" data-screen-label="faq-teaser">

@@ -306,10 +306,11 @@ function runConvert(): void {
 function renderResult(res: ConvertResult): void {
   els.out.classList.remove("is-empty");
   els.out.classList.toggle("is-plain", params.color !== "green");
-  /* the <pre> is role=img: without a label a screen reader would
-     read out every one of the cols×rows characters, one by one   */
-  els.out.setAttribute("aria-label",
-    "ascii art output — " + res.cols + " columns by " + res.rows +
+  /* The visual <pre> stays out of the accessibility tree so Chrome cannot
+     expose every glyph. Its focusable scroll viewport carries the concise,
+     current description without becoming another live region. */
+  els.outBody.setAttribute("aria-label",
+    "ASCII output viewport — " + res.cols + " columns by " + res.rows +
     " rows, charset " + res.charset);
   if (params.color === "green") {
     els.out.textContent = res.text;
