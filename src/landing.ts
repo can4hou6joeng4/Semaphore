@@ -186,9 +186,12 @@ function renderAll(): void {
   renderShowcase();
 }
 
-/* --------------------- failure fallback --------------------- */
-function degrade(): void {
+/* --------------------- failure fallbacks -------------------- */
+function degradeHero(): void {
   stage.style.display = "none"; // never a broken hero
+}
+
+function degradeShowcase(): void {
   showPres.forEach(function (pre) {
     pre.classList.add("is-plain");
     pre.style.fontSize = "12px";
@@ -243,31 +246,37 @@ document.fonts.addEventListener("loadingdone", function () { renderAll(); });
      final mono metrics. Starting the fetch here — paired with the static
      <link rel="preload" as="image"> in index.html, which lets the preload
      scanner begin it during HTML parse — takes two serial round trips off LCP. */
-  const sources = Promise.all([
-    AsciiEngine.loadImage("/static/sample-hero.webp"),
-    AsciiEngine.loadImage("/static/sample-portrait.webp")
-  ]);
-  /* Claim the rejection in this turn. Without it a failed sample fetch lands in
-     shared.ts's unhandledrejection collector and poisons data-js-errors, which
-     headless QA reads as a real defect; the await below still surfaces it. */
-  sources.catch(function () { /* handled by the try block */ });
+  const heroSource = AsciiEngine.loadImage("/static/sample-hero.webp");
+  const portraitSource = AsciiEngine.loadImage("/static/sample-portrait.webp");
+  /* Claim each rejection in this turn. Without these handlers a failed sample
+     fetch lands in shared.ts's unhandledrejection collector before the DOM/font
+     gate opens; the independent tasks below still apply the right fallback. */
+  heroSource.catch(function () { /* handled by heroTask */ });
+  portraitSource.catch(function () { /* handled by portraitTask */ });
 
   // mono metrics must be final (and chrome injected) before first fit
   await Promise.all([document.fonts.ready, domReady()]);
   Site.setState("converting…", { busy: true });
-  try {
-    const loaded = await sources;
-    hero = loaded[0];
-    /* make sure both bitmaps are fully decoded before first draw */
-    await Promise.all(loaded.map(function (im) {
-      return im.decode ? im.decode().catch(function () { /* drawable anyway */ }) : Promise.resolve();
-    }));
-    portrait = loaded[1];
-    renderAll();
+  const heroTask = heroSource.then(async function (loaded) {
+    await (loaded.decode
+      ? loaded.decode().catch(function () { /* drawable anyway */ })
+      : Promise.resolve());
+    hero = loaded;
+    renderHero();
     setTimeout(introSweep, 750);
-  } catch (_) {
-    degrade();
-  }
+  }, function () {
+    degradeHero();
+  });
+  const portraitTask = portraitSource.then(async function (loaded) {
+    await (loaded.decode
+      ? loaded.decode().catch(function () { /* drawable anyway */ })
+      : Promise.resolve());
+    portrait = loaded;
+    renderShowcase();
+  }, function () {
+    degradeShowcase();
+  });
+  await Promise.all([heroTask, portraitTask]);
   Site.setState("ready");
 })();
 

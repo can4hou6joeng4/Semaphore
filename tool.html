@@ -186,7 +186,7 @@
   <section class="sec sec--tight" data-screen-label="tool-head">
     <div class="kicker"><b>~/tool</b> · image to ascii</div>
     <h1 class="h2">Image to ASCII converter</h1>
-    <p class="lede" style="margin-top:14px">Drop a photo, pick a charset, tune columns and color — ASCII art updates live. Everything runs in this tab; nothing is uploaded. New here? Skim the <a href="/">overview</a>, the <a href="/charsets/braille">braille ASCII guide</a>, or the <a href="/faq">FAQ</a>.</p>
+    <p class="lede" style="margin-top:14px">Drop a photo and copy plain-text ASCII. Tune it live; nothing leaves this tab or gets uploaded.</p>
   </section>
 
   <section class="sec sec--flush" data-screen-label="tool-workbench" aria-label="ASCII converter workspace">
@@ -305,8 +305,8 @@
             <span class="term-dots">– □ ✕</span>
           </figcaption>
           <div class="term-body out-body" id="outBody" role="region"
-               aria-label="ASCII output viewport" tabindex="0">
-<pre class="ascii-pre is-empty" id="out" role="img" aria-label="ascii output — no source loaded yet">┌──────────────────────────────┐
+               aria-label="ASCII output viewport — no source loaded yet" tabindex="0">
+<pre class="ascii-pre is-empty" id="out" aria-hidden="true">┌──────────────────────────────┐
 │                              │
 │    drop an image to begin    │
 │                              │
@@ -343,6 +343,15 @@
       </figure>
     </div>
   </section>
+
+  <div class="sec sec--tight" data-screen-label="tool-guides">
+    <nav class="row" aria-label="ASCII converter guides">
+      <span class="field-label">guides</span>
+      <a href="/">overview</a>
+      <a href="/charsets/braille">braille ASCII guide</a>
+      <a href="/faq">FAQ</a>
+    </nav>
+  </div>
 
   <footer class="site-foot">
     <span>© 2026 Semaphore — plain text is forever</span>

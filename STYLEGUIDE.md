@@ -222,8 +222,12 @@ Live fit and regular PNG exports preserve the current charset's natural glyph wi
 the system fallback, while covered charsets use `M`. The same measured advance must set
 `convert().cellAspect`, live fit, and regular PNG canvas width; otherwise the output can
 fit without clipping while still being stretched. Do not squeeze live or regular PNG glyphs.
-The tool's `fit width` mode may reduce dense mobile output to 1px because the output is
-exposed as one labelled image; turning fit off restores the user-controlled zoom.
+The tool's visual ASCII output `<pre>` is `aria-hidden="true"`; the focusable scroll
+viewport is a named `role="region"` and owns the concise dynamic dimensions/charset
+description. Do not put `role="img"` or an accessible name back on the visual `<pre>`:
+Chrome can still expose its character descendants. The viewport is not a live region;
+the statusbar owns conversion state announcements. `fit width` may reduce dense mobile
+output to 1px; turning fit off restores the user-controlled zoom.
 Share-card footer labels keep the card geometry fixed: the file/dimensions label stays on
 the left, the caption stays right-aligned, and the shared SVG/PNG layout preserves a 24px
 gap by deterministically ellipsizing overflow. Never let the two footer labels overlap.
