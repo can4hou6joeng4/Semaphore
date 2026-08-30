@@ -27,7 +27,7 @@
 
 ## 快速开始
 
-打开 **[semaphore.bobochang.cn/tool](https://semaphore.bobochang.cn/tool)** 拖一张图进去,就这样。不用注册,不排队,没有水印。中文简介见 **[semaphore.bobochang.cn/zh](https://semaphore.bobochang.cn/zh)**。需要保留照片细节时,可以先看[图片转盲文 ASCII 指南](https://semaphore.bobochang.cn/charsets/braille),再使用预设直接转换。README 横幅可参考[纯文本横幅教程](https://semaphore.bobochang.cn/guides/readme-banner)。
+打开 **[semaphore.bobochang.cn/tool](https://semaphore.bobochang.cn/tool)** 拖一张图进去,就这样。不用注册,不排队,没有水印。中文简介见 **[semaphore.bobochang.cn/zh](https://semaphore.bobochang.cn/zh)**。需要保留照片细节时,可以先看[图片转盲文 ASCII 指南](https://semaphore.bobochang.cn/charsets/braille),再使用预设直接转换。README 横幅可参考[纯文本横幅教程](https://semaphore.bobochang.cn/guides/readme-banner),终端登录横幅可参考[SSH MOTD ASCII 指南](https://semaphore.bobochang.cn/guides/ssh-motd)。
 
 想自己跑:
 
@@ -74,7 +74,7 @@ npm run preview    # 预览构建产物
 
 Vite 8 · TypeScript 7(strict)· 原生 DOM,零框架 · Cloudflare Pages。
 
-十三个 canonical 页面:七个在仓库根目录(`index.html`、`tool.html`、`usecases.html`、`faq.html`、`privacy.html`、`zh.html`,加上 `404.html`),六个在 `charsets/` 与 `guides/` 下。各页行为在 `src/main-*.ts` 入口里——五个字符集页共用一个入口,从 `body[data-charset]` 读取字符集。转换引擎是 `src/ascii-engine.ts`,分享卡是 `src/sharecard.ts`,设计契约见 [STYLEGUIDE.md](STYLEGUIDE.md)。仓库维护规则,以及那些光看代码看不出来的坑,记在 [AGENTS.md](AGENTS.md)。
+十四个 canonical 页面:六个在仓库根目录(`index.html`、`tool.html`、`usecases.html`、`faq.html`、`privacy.html`、`zh.html`),八个在 `charsets/` 与 `guides/` 下,另有根目录的 `404.html`。各页行为在 `src/main-*.ts` 入口里——五个字符集页共用一个入口,从 `body[data-charset]` 读取字符集。转换引擎是 `src/ascii-engine.ts`,分享卡是 `src/sharecard.ts`,设计契约见 [STYLEGUIDE.md](STYLEGUIDE.md)。仓库维护规则,以及那些光看代码看不出来的坑,记在 [AGENTS.md](AGENTS.md)。
 
 ## 为什么叫 "Semaphore"
 
