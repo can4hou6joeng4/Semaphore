@@ -19,6 +19,7 @@ export default defineConfig({
         "charsets/minimal": resolve(import.meta.dirname, "charsets/minimal.html"),
         "charsets/binary": resolve(import.meta.dirname, "charsets/binary.html"),
         "guides/readme-banner": resolve(import.meta.dirname, "guides/readme-banner.html"),
+        "guides/ssh-motd": resolve(import.meta.dirname, "guides/ssh-motd.html"),
       },
     },
   },

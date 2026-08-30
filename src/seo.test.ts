@@ -14,12 +14,14 @@ import blocksHtml from "../charsets/blocks.html?raw";
 import minimalHtml from "../charsets/minimal.html?raw";
 import binaryHtml from "../charsets/binary.html?raw";
 import readmeBannerHtml from "../guides/readme-banner.html?raw";
+import sshMotdHtml from "../guides/ssh-motd.html?raw";
 import zhHtml from "../zh.html?raw";
 import landingSource from "./landing.ts?raw";
 import demoSource from "./demo.ts?raw";
 import brailleSource from "./main-braille.ts?raw";
 import zhSource from "./main-zh.ts?raw";
 import readmeBannerSource from "./main-readme-banner.ts?raw";
+import sshMotdSource from "./main-ssh-motd.ts?raw";
 import sharedSource from "./shared.ts?raw";
 import toolSource from "./tool.ts?raw";
 import engineSource from "./ascii-engine.ts?raw";
@@ -50,6 +52,7 @@ const pages = [
   { path: "charsets/minimal.html", canonical: "https://semaphore.bobochang.cn/charsets/minimal", html: minimalHtml },
   { path: "charsets/binary.html", canonical: "https://semaphore.bobochang.cn/charsets/binary", html: binaryHtml },
   { path: "guides/readme-banner.html", canonical: "https://semaphore.bobochang.cn/guides/readme-banner", html: readmeBannerHtml },
+  { path: "guides/ssh-motd.html", canonical: "https://semaphore.bobochang.cn/guides/ssh-motd", html: sshMotdHtml },
   { path: "zh.html", canonical: "https://semaphore.bobochang.cn/zh", html: zhHtml }
 ];
 
@@ -88,7 +91,8 @@ describe("SEO page contract", () => {
 
   it.each([
     ["zh", zhSource],
-    ["README banner", readmeBannerSource]
+    ["README banner", readmeBannerSource],
+    ["SSH MOTD", sshMotdSource]
   ])("loads the shared design system from the %s entry", function (_name, source) {
     expect(source).toContain('import "./terminal.css";');
     expect(source).toContain('import "./shared";');
@@ -600,6 +604,7 @@ describe("SEO page contract", () => {
     "charsets/minimal.html",
     "charsets/binary.html",
     "guides/readme-banner.html",
+    "guides/ssh-motd.html",
     "zh.html"
   ])(
     "adds breadcrumbs to %s",
@@ -618,6 +623,7 @@ describe("SEO page contract", () => {
     "charsets/minimal.html",
     "charsets/binary.html",
     "guides/readme-banner.html",
+    "guides/ssh-motd.html",
     "zh.html"
   ])(
     "describes content page %s as a WebPage",
@@ -723,6 +729,7 @@ describe("SEO page contract", () => {
       "/charsets/binary",
       "/charsets/braille",
       "/guides/readme-banner",
+      "/guides/ssh-motd",
       "/zh"
     ].forEach(
       function (path) {
@@ -738,6 +745,25 @@ describe("SEO page contract", () => {
   it("ships a HowTo for the README banner guide", function () {
     expect(jsonLd(readmeBannerHtml).flatMap(schemaTypes)).toContain("HowTo");
     expect(readmeBannerHtml).toContain('href="/tool?charset=blocks&amp;cols=80&amp;color=green"');
+  });
+
+  it("ships a visible, task-specific HowTo for the SSH MOTD guide", function () {
+    expect(jsonLd(sshMotdHtml).flatMap(schemaTypes)).toContain("HowTo");
+    expect(sshMotdHtml).toContain("Five steps from image to MOTD");
+    expect(sshMotdHtml).toContain("open a terminal-safe preset");
+    expect(sshMotdHtml).toContain("copy and inspect the file");
+    expect(sshMotdHtml).toContain("install through the path your OS owns");
+    expect(sshMotdHtml).toContain(
+      'href="/tool?charset=standard&amp;cols=64&amp;contrast=20&amp;color=gray"'
+    );
+    expect(sshMotdHtml).toContain("wc -L motd.txt");
+  });
+
+  it("links the SSH MOTD workflow from relevant site surfaces", function () {
+    [indexHtml, toolHtml, usecasesHtml].forEach(function (html) {
+      expect(html).toContain('href="/guides/ssh-motd"');
+    });
+    expect(llmsTxt).toContain("https://semaphore.bobochang.cn/guides/ssh-motd");
   });
 
   it("uses page-specific social preview images for key routes", function () {

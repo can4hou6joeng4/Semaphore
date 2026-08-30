@@ -6,7 +6,7 @@ or personal overrides in `AGENTS.local.md` / `CLAUDE.local.md`; both are gitigno
 
 ## Project
 
-Semaphore is a static, client-side image-to-ASCII converter: thirteen hand-written
+Semaphore is a static, client-side image-to-ASCII converter: fourteen hand-written
 canonical HTML pages plus `404.html`, a TypeScript conversion engine, and a Vite build that ships to
 Cloudflare Pages. There is no backend, no database, no accounts, and **no client-side
 telemetry**. The privacy claim is the product, so anything that could send *user content*

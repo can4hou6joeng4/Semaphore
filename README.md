@@ -32,6 +32,7 @@ Open **[semaphore.bobochang.cn/tool](https://semaphore.bobochang.cn/tool)** and 
 Guides and locales:
 
 - [README ASCII banner walkthrough](https://semaphore.bobochang.cn/guides/readme-banner)
+- [SSH MOTD ASCII art guide](https://semaphore.bobochang.cn/guides/ssh-motd)
 - [中文简介](https://semaphore.bobochang.cn/zh) · [README 简体中文](README_CN.md)
 
 Prefer to run it yourself:
@@ -79,7 +80,7 @@ The operator still sees **aggregate edge request counts** on Cloudflare Pages (w
 
 Vite 8 · TypeScript 7 (strict) · vanilla DOM, zero frameworks · Cloudflare Pages.
 
-Thirteen canonical pages: seven at the repo root (`index.html`, `tool.html`, `usecases.html`, `faq.html`, `privacy.html`, `zh.html`, plus `404.html`), six under `charsets/` and `guides/`. Per-page behavior lives in the `src/main-*.ts` entries — the five ramp pages share one, reading their charset from `body[data-charset]`. The conversion engine is `src/ascii-engine.ts`, share cards are `src/sharecard.ts`, and the binding design contract is [STYLEGUIDE.md](STYLEGUIDE.md). Repository maintenance rules and the traps a fresh read will not reveal live in [AGENTS.md](AGENTS.md).
+Fourteen canonical pages: six at the repo root (`index.html`, `tool.html`, `usecases.html`, `faq.html`, `privacy.html`, `zh.html`) and eight under `charsets/` and `guides/`, plus the top-level `404.html`. Per-page behavior lives in the `src/main-*.ts` entries — the five ramp pages share one, reading their charset from `body[data-charset]`. The conversion engine is `src/ascii-engine.ts`, share cards are `src/sharecard.ts`, and the binding design contract is [STYLEGUIDE.md](STYLEGUIDE.md). Repository maintenance rules and the traps a fresh read will not reveal live in [AGENTS.md](AGENTS.md).
 
 ## Why "Semaphore"
 

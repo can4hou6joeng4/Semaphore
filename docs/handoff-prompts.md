@@ -27,11 +27,14 @@ do not publish Show HN or V2EX until that decision is explicitly reversed.
 **Already shipped on `main` (do not re-implement):**
 
 - SEO: twitter meta, `sameAs`, sitemap, hreflang, HowTo on README guide  
-- Pages: **13 canonical pages** as of v1.2.0 — including all six charset landing pages
-  (`/charsets/{standard,detailed,blocks,minimal,binary,braille}`), `/zh`,
+- Pages: **13 live canonical pages** as of v1.2.0 — including all six charset landing pages
+  (`/charsets/{standard,detailed,blocks,minimal,binary,braille}`), `/zh`, and
   `/guides/readme-banner`; prefs in `localStorage` (charset + color only)
 - OG images: `social-card.jpg` + `social-card-{tool,braille,zh,readme}.jpg`  
 - Growth docs under `docs/`  
+
+**Current local work (not yet shipped):** `/guides/ssh-motd` is the proposed
+fourteenth canonical page. Do not call it live before production evidence confirms it.
 
 ---
 
@@ -215,10 +218,10 @@ Inactive. The owner deferred Show HN and V2EX on 2026-08-14. Do not publish unle
 Phase 5 is complete. Read-only check the three existing open PRs and report maintainer activity; do not open more or nudge maintainers without new evidence.
 ```
 
-### Optional code follow-up — another long-tail guide
+### Optional code follow-up — another long-tail guide — **IMPLEMENTED LOCALLY 2026-08-30**
 
 ```text
-Read AGENTS.md + STYLEGUIDE.md. Add one more long-tail guide page (suggested: /guides/ssh-motd or /charsets/blocks) following /guides/readme-banner patterns: head contract (og + twitter tags), vite input, _headers no-transform, sitemap, llms.txt, seo.test.ts, preset deep link to /tool?…. No third-party requests. npm test && npm run build. Commit with a clear message; push only if user/session already uses main deploy workflow.
+The current source adds /guides/ssh-motd with visible task steps, truthful HowTo/WebPage/Breadcrumb data, Vite input, _headers, sitemap, llms.txt, internal links, and source-text tests. Do not add a duplicate or call the route live before production evidence confirms it. After an authorized deploy, verify the route, canonical, JSON-LD, no-transform, zero third-party requests, and the 14-entry sitemap. Search Console and IndexNow writes still require current authorization.
 ```
 
 ---

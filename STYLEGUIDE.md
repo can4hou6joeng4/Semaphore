@@ -15,7 +15,7 @@ bundles land in `/assets/` — never put stable-named files there:
 index.html  tool.html  usecases.html  faq.html  privacy.html  404.html  zh.html
   charsets/braille.html  charsets/standard.html  charsets/detailed.html
   charsets/blocks.html   charsets/minimal.html   charsets/binary.html
-  guides/readme-banner.html
+  guides/readme-banner.html  guides/ssh-motd.html
   src/terminal.css   src/shared.ts   src/ascii-engine.ts
   public/static/sample-portrait.webp         (1100×1069 b/w portrait)
   public/static/sample-portrait-thumb.webp   (136×112 home demo thumbnail)
@@ -106,7 +106,7 @@ One module script at the END of `<body>` — Vite bundles the rest:
 ## Page skeleton (chrome is INJECTED — never hand-write it)
 
 ```html
-<body data-page="tool" data-path="~/tool">   <!-- home|tool|usecases|faq|privacy|charset-<name>|braille|readme-banner|zh|not-found -->
+<body data-page="tool" data-path="~/tool">   <!-- home|tool|usecases|faq|privacy|charset-<name>|braille|readme-banner|ssh-motd|zh|not-found -->
   <main class="frame">
     <section class="sec" data-screen-label="…"><h2>…</h2>…</section>
     <div class="sec" data-screen-label="…">…layout-only block…</div>
