@@ -23,8 +23,8 @@
   "type": "module",
   "devDependencies": {
     "typescript": "^7.0.2",
-    "vite": "^8.2.1",
-    "vitest": "^4.1.10"
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
   },
   "private": true
 }
