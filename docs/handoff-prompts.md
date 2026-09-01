@@ -221,7 +221,7 @@ Phase 5 is complete. Read-only check the three existing open PRs and report main
 ### Optional code follow-up — another long-tail guide — **IMPLEMENTED LOCALLY 2026-08-30**
 
 ```text
-The current source adds /guides/ssh-motd with visible task steps, truthful HowTo/WebPage/Breadcrumb data, Vite input, _headers, sitemap, llms.txt, internal links, and source-text tests. Do not add a duplicate or call the route live before production evidence confirms it. After an authorized deploy, verify the route, canonical, JSON-LD, no-transform, zero third-party requests, and the 14-entry sitemap. Search Console and IndexNow writes still require current authorization.
+The current source adds /guides/ssh-motd with visible task steps, truthful HowTo/WebPage/Breadcrumb data, Vite input, _headers, sitemap, llms.txt, internal links, and source-text tests. Do not add a duplicate or call the route live before production evidence confirms it. After an authorized deploy, verify the route, canonical, JSON-LD, brotli-compressed HTML (no-transform was removed 2026-09-01 — see AGENTS.md trap 16), zero third-party requests, and the 14-entry sitemap. Search Console and IndexNow writes still require current authorization.
 ```
 
 ---

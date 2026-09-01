@@ -9,9 +9,21 @@
 #            the same reasoning applies.
 # /static/*  Stable filenames (samples, share card). Week-long TTL with
 #            background revalidation.
-# Canonical HTML routes are always revalidated and carry no-transform. Besides
-#            preserving source bytes, no-transform prevents Cloudflare features
-#            from injecting an analytics script that the CSP would then reject.
+# Canonical HTML routes are always revalidated, and deliberately do NOT carry
+#            no-transform. Cloudflare honours no-transform by disabling response
+#            compression (RFC 9111 §5.2.2.6), which cost 69% of HTML transfer —
+#            178KB down to 54KB across the 14 routes — on the LCP critical path.
+#            It was there to stop the edge injecting a script the CSP would then
+#            reject, but the CSP already does that job: Web Analytics loads from
+#            static.cloudflareinsights.com and Rocket Loader injects inline, so
+#            script-src 'self' blocks both regardless. The one feature CSP would
+#            NOT catch is Email Obfuscation, which injects from same-origin
+#            /cdn-cgi/ — it is on at the zone, but only fires on mailto: links
+#            and there are none in the served HTML. Adding a mailto: anywhere
+#            would let Cloudflare code run in the page; use a link to the repo's
+#            issue tracker instead, or turn the zone setting off first.
+#            Zone state when this was changed (2026-09-01): rocket_loader off,
+#            mirage off, email_obfuscation on.
 # /*         Baseline hardening + a content policy that ENFORCES the privacy
 #            claim instead of just asserting it: connect-src 'none' means the
 #            page cannot open a fetch/XHR/WebSocket to anywhere, so a dropped
@@ -31,46 +43,46 @@
   Cache-Control: public, max-age=604800, stale-while-revalidate=86400
 
 /
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /tool
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /usecases
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /faq
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /privacy
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /charsets/standard
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /charsets/detailed
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /charsets/blocks
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /charsets/minimal
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /charsets/binary
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /charsets/braille
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /guides/readme-banner
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /guides/ssh-motd
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /zh
-  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Cache-Control: public, max-age=0, must-revalidate
 
 /*
   Strict-Transport-Security: max-age=31536000
