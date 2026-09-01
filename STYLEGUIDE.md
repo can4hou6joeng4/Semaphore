@@ -89,9 +89,13 @@ of its default 200 response with the home page body.
 No third-party requests. The font is self-hosted (`@font-face` lives in
 `terminal.css`) and there is no in-page analytics, no CDN, no Google Fonts — the
 deployed CSP is `connect-src 'none'`, so anything that tries would be blocked
-in production but pass locally. Canonical HTML responses also ship
-`Cache-Control: no-transform`, which prevents edge features from injecting a
-script before CSP has to block it. Do not add one or remove that directive.
+in production but pass locally. Canonical HTML responses deliberately do **not**
+ship `Cache-Control: no-transform`: Cloudflare reads that directive as "do not
+compress" and it cost 69% of HTML transfer to guard against something
+`script-src 'self'` already blocks. Do not add it back. The one edge rewrite CSP
+would miss is Email Obfuscation, which only fires on `mailto:` links — so never
+put an email address in the markup (link the repo's issue tracker instead).
+`src/seo.test.ts` pins both halves of that trade.
 
 `terminal.css` is NOT linked by hand: every `src/main-<page>.ts` entry imports it as
 its first line, and Vite extracts it into a hashed `/assets/*.css` link at build time.

@@ -715,7 +715,16 @@ describe("SEO page contract", () => {
     })).toHaveLength(0);
   });
 
-  it("prevents edge features from transforming canonical HTML", function () {
+  it("keeps canonical HTML compressible at the edge", function () {
+    /* These routes used to carry no-transform to stop Cloudflare injecting a
+       script the CSP would reject. Cloudflare also reads no-transform as "do
+       not compress" (RFC 9111 §5.2.2.6), so the 14 canonical documents shipped
+       uncompressed while /404 — the one HTML route with no rule here — was
+       served brotli. That cost 69% of HTML transfer on the LCP path to guard
+       against something script-src 'self' already blocks: Web Analytics is
+       cross-origin, Rocket Loader is inline. Email Obfuscation is the only
+       edge rewrite CSP would miss, and it needs a mailto: to fire — hence the
+       companion assertion below. */
     [
       "/",
       "/tool",
@@ -735,11 +744,28 @@ describe("SEO page contract", () => {
       function (path) {
         const escaped = path.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         expect(headersTxt).toMatch(new RegExp(
-          "^" + escaped + "\\n  Cache-Control: [^\\n]*\\bno-transform\\b",
+          "^" + escaped + "\\n  Cache-Control: public, max-age=0, must-revalidate$",
           "m"
         ));
       }
     );
+    /* Comment lines explain why no-transform was removed, so match directives
+       only — otherwise the rationale would trip its own assertion. */
+    expect(headersTxt.split("\n").filter(function (line) {
+      return !/^\s*#/.test(line);
+    }).join("\n")).not.toContain("no-transform");
+  });
+
+  it("ships no mailto: link, so edge email obfuscation cannot inject a script", function () {
+    /* Cloudflare Email Obfuscation is ON at the zone and injects its decoder
+       from same-origin /cdn-cgi/, which script-src 'self' permits — so the CSP
+       would not stop it. It only rewrites documents containing a mailto:.
+       Keeping that count at zero is what makes dropping no-transform safe.
+       Link the repo's issue tracker for contact instead of an address. */
+    pages.forEach(function (page) {
+      expect(page.html, page.path + " ships a mailto: link").not.toContain("mailto:");
+    });
+    expect(notFoundHtml).not.toContain("mailto:");
   });
 
   it("ships a HowTo for the README banner guide", function () {
