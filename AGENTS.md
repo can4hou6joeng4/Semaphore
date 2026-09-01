@@ -88,8 +88,9 @@ a test failure or a silently unshipped page rather than a visible mistake:
 2. A `rollupOptions.input` entry in `vite.config.ts` — **without it the page is simply
    not built**, and nothing else fails.
 3. `src/main-<page>.ts`, loaded as the single module script at the end of `<body>`.
-4. A no-transform `Cache-Control` rule in `public/_headers`, keeping the prefix disjoint
-   from `/assets/*`, `/fonts/*` and `/static/*` (see Traps 1 and 2).
+4. A `Cache-Control: public, max-age=0, must-revalidate` rule in `public/_headers`,
+   keeping the prefix disjoint from `/assets/*`, `/fonts/*` and `/static/*` (see Traps
+   1 and 2). No `no-transform` — see Trap 16.
 5. `public/sitemap.xml` and `public/llms.txt`.
 6. The `pages` array in `src/seo.test.ts` — that array drives the whole head/canonical/
    sitemap/headers contract, so registering there is what actually enforces steps 1–5.
@@ -162,6 +163,19 @@ Things a fresh read of the code will not reveal:
     It has no `_headers` rule of its own and falls to `/*`, which is correct. Deleting or
     renaming it silently breaks URL submission to those engines — nothing fails loudly,
     and no test covers it. Submission history is in `docs/growth-launch.md`.
+16. **`no-transform` was removed from the canonical HTML rules on 2026-09-01, and must
+    not come back.** Cloudflare honours it by disabling response compression
+    (RFC 9111 §5.2.2.6), so all 14 canonical documents shipped uncompressed while
+    `/404` — the one HTML route with no `_headers` rule — was served brotli. It cost
+    69% of HTML transfer (178KB → 54KB) on the LCP critical path to guard against
+    edge script injection that `script-src 'self'` already blocks: Web Analytics is
+    cross-origin, Rocket Loader injects inline. The one edge rewrite CSP would *not*
+    catch is **Email Obfuscation**, which injects its decoder from same-origin
+    `/cdn-cgi/` — it is ON at the zone, and only fires on a `mailto:`. So the safety
+    of this trade rests on there being zero `mailto:` links in the markup; adding one
+    lets Cloudflare code run in the page. Link the repo's issue tracker for contact
+    instead. `src/seo.test.ts` pins both halves. Zone state when changed:
+    `rocket_loader off`, `mirage off`, `email_obfuscation on`.
 
 ## Growth / launch handoff
 
