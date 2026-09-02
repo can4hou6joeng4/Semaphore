@@ -246,6 +246,55 @@ row count comes from the wider fallback advance, scale the card art font and lin
 together so its source aspect and fixed plate geometry remain stable. Other charsets keep
 their native text path.
 
+### Reference table
+
+For comparison content an AI or a reader scans rather than reads — charsets, control
+ranges. Cards are for prose; a table is for values that line up. Always wrapped, always
+with a `<caption>`, and `scope` on every header:
+
+```html
+<div class="table-wrap" tabindex="0">
+  <table class="tbl">
+    <caption>what the table lists, lowercase, no full stop</caption>
+    <thead>
+      <tr><th scope="col">control</th><th scope="col">range</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">columns</th>
+        <td class="num">40–240</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+
+`.tbl` sets `min-width: 560px`, so the `tabindex="0"` on `.table-wrap` is load-bearing:
+below roughly 600px the table scrolls horizontally and that scroll must be reachable
+from the keyboard. Never drop it. `.num` keeps numeric and range cells from wrapping;
+`.ramp` prints raw charset glyphs with `white-space: pre`.
+
+**Only print a ramp the shipped font can render.** `.cs-ramp` exists on five charset
+pages and deliberately not on `charsets/braille.html`, because JetBrains Mono has no
+braille glyphs — a literal braille ramp would render in a system fallback mid-table.
+Describe it (`2×4 dot cells`) instead. Same rule for any new glyph: the font subset
+covers exactly what the site already uses, so adding a character means re-subsetting
+or picking a different one. ASCII hyphen, never U+2212 minus.
+
+### Numbered steps
+
+For procedures in the guides. The marker is the list counter, so the visible markup
+matches the `HowTo` schema the page publishes — do not hand-type `<span class="p">01</span>`:
+
+```html
+<ol class="steps">
+  <li>
+    <h3>open a terminal-safe preset</h3>
+    <p>…</p>
+  </li>
+</ol>
+```
+
 ## Engine quick reference
 
 ```js
