@@ -63,16 +63,24 @@
     "@graph": [
       {
         "@type": "WebPage",
+        "@id": "https://semaphore.bobochang.cn/usecases#webpage",
         "name": "ASCII Art Use Cases",
         "url": "https://semaphore.bobochang.cn/usecases",
         "description": "Where image to ASCII still beats pixels — README banners, SSH splash screens, code comments, mail and terminal ricing.",
         "isPartOf": {
           "@id": "https://semaphore.bobochang.cn/#website"
         },
+        "author": {
+          "@id": "https://semaphore.bobochang.cn/#person"
+        },
+        "breadcrumb": {
+          "@id": "https://semaphore.bobochang.cn/usecases#breadcrumb"
+        },
         "dateModified": "2026-08-30"
       },
       {
         "@type": "BreadcrumbList",
+        "@id": "https://semaphore.bobochang.cn/usecases#breadcrumb",
         "itemListElement": [
           {
             "@type": "ListItem",
@@ -86,6 +94,24 @@
             "name": "ASCII Art Use Cases",
             "item": "https://semaphore.bobochang.cn/usecases"
           }
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://semaphore.bobochang.cn/#website",
+        "url": "https://semaphore.bobochang.cn/",
+        "name": "Semaphore",
+        "publisher": {
+          "@id": "https://semaphore.bobochang.cn/#person"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://semaphore.bobochang.cn/#person",
+        "name": "bobochang",
+        "url": "https://bobochang.cn",
+        "sameAs": [
+          "https://github.com/can4hou6joeng4"
         ]
       }
     ]
