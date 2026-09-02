@@ -203,7 +203,7 @@ Phase 2 is complete. Read docs/handoff-2026-08-14-followups.md Task 1 and docs/g
 ### Phase 3 only — Cloudflare AI crawl
 
 ```text
-Phase 3 is complete. Verify only if current production evidence contradicts the recorded state: ai_bots_protection=disabled, is_robots_txt_managed=false, and repo-owned Content-Signal search=yes,ai-input=yes,ai-train=no. Do not change the dashboard or enable Web Analytics.
+Phase 3 is complete. Verify only if current production evidence contradicts the recorded state: ai_bots_protection=disabled, is_robots_txt_managed=false, and repo-owned Content-Signal search=yes,ai-input=yes,ai-train=no. Do not change the dashboard or enable Web Analytics. The zone's Web Analytics (RUM) site was DELETED on 2026-09-01 and must stay deleted: canonical HTML no longer carries no-transform, so a RUM site would inject a beacon tag into every browser response (CSP blocks it loading, but the tag still lands and falsifies faq.html's "no analytics script" claim). See AGENTS.md trap 16.
 ```
 
 ### Phase 4 only — publish Show HN + V2EX
