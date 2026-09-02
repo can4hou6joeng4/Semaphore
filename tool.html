@@ -157,7 +157,7 @@
       "breadcrumb": {
         "@id": "https://semaphore.bobochang.cn/tool#breadcrumb"
       },
-      "dateModified": "2026-08-30"
+      "dateModified": "2026-09-02"
     },
     {
       "@type": "BreadcrumbList",
@@ -379,6 +379,80 @@
           </div>
         </div>
       </figure>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="tool-controls">
+    <div class="kicker">[ what_the_controls_do ]</div>
+    <h2 class="h2">Every control, and when to move it</h2>
+    <p class="lede" style="margin-top:18px">The converter samples your image on a local canvas, reduces each grid cell to one perceptual brightness value, and picks the character whose ink coverage is closest. Everything below changes either how the grid is measured or which characters it can choose from. Nothing is uploaded at any point, so the whole loop runs at the speed of your own machine.</p>
+
+    <div class="table-wrap" tabindex="0">
+      <table class="tbl">
+        <caption>converter controls, with the range each one accepts</caption>
+        <thead>
+          <tr><th scope="col">control</th><th scope="col">range</th><th scope="col">default</th><th scope="col">what it changes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">charset</th>
+            <td class="num">6 presets</td>
+            <td class="num">detailed</td>
+            <td>Which characters the output may use. This is the single biggest lever on how the result reads — see the comparison on the home page.</td>
+          </tr>
+          <tr>
+            <th scope="row">columns</th>
+            <td class="num">40–240</td>
+            <td class="num">120</td>
+            <td>Width of the output grid in characters. Row count follows from it and the source proportions, so this alone sets the resolution.</td>
+          </tr>
+          <tr>
+            <th scope="row">brightness</th>
+            <td class="num">-100 … +100</td>
+            <td class="num">0</td>
+            <td>Shifts every cell along the ramp before a character is chosen. Raise it when a dark photo collapses into solid ink.</td>
+          </tr>
+          <tr>
+            <th scope="row">contrast</th>
+            <td class="num">-100 … +100</td>
+            <td class="num">0</td>
+            <td>Spreads mid-tones apart. The usual fix when an image converts to visual mush: the ramp is being used, but only its middle.</td>
+          </tr>
+          <tr>
+            <th scope="row">invert</th>
+            <td class="num">on / off</td>
+            <td class="num">off</td>
+            <td>Flips the ramp. Off assumes light characters on a dark ground; turn it on when the output is destined for a white page.</td>
+          </tr>
+          <tr>
+            <th scope="row">dither</th>
+            <td class="num">on / off</td>
+            <td class="num">on</td>
+            <td>Braille only. Applies Floyd–Steinberg error diffusion so each of the eight dots per cell is decided against its neighbours rather than in isolation.</td>
+          </tr>
+          <tr>
+            <th scope="row">color</th>
+            <td class="num">green · gray · original</td>
+            <td class="num">green</td>
+            <td>Affects the on-screen render and the PNG export only. Clipboard and <code>.txt</code> output are always plain characters.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> cells are not square</h3>
+        <p>A monospace cell is about three parts wide to five parts tall, so the converter emits roughly three rows for every five columns. At 120 columns a square photo comes out 72 rows deep. Paste into a font with different metrics and the picture stretches — the characters are right, the grid is not.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> columns beat every other setting</h3>
+        <p>A sixty-eight step ramp needs enough characters before its shades read as shading. Below about sixty columns the detailed ramp turns to speckle and a shorter one — <a href="/charsets/minimal">minimal</a> or <a href="/charsets/blocks">blocks</a> — will hold the shape better than any amount of contrast.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">$</span> what leaves the tab</h3>
+        <p>Nothing. Production ships <code>connect-src 'none'</code>, so the page cannot open a fetch, XHR or WebSocket even if its code tried. Only your charset and color choice are remembered on the device; image bytes never are. See <a href="/privacy">privacy</a>.</p>
+      </article>
     </div>
   </section>
 

@@ -275,6 +275,76 @@ main.frame {
 }
 .tag--green { color: var(--green-soft); border-color: color-mix(in oklab, var(--green) 30%, transparent); }
 
+/* ========================= tables ============================
+   Reference tables (charset comparison, control ranges). The whole
+   site is already monospace, so a table needs no grid lines to stay
+   legible — a single rule under the header and generous row padding
+   read as a terminal listing rather than as a spreadsheet.
+
+   Wrapped in .table-wrap because a 5-column table cannot reflow below
+   ~600px: the wrapper scrolls horizontally instead of forcing every
+   cell to one character wide. tabindex on the wrapper is what makes
+   that scroll reachable from the keyboard.                          */
+.table-wrap { overflow-x: auto; margin-top: 30px; }
+.table-wrap:focus-visible { outline: 1px solid var(--green-soft); outline-offset: 3px; }
+
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-s);
+  text-align: left;
+  /* stops long prose cells collapsing to one word per line while the
+     glyph columns stay only as wide as their content */
+  min-width: 560px;
+}
+.tbl caption {
+  caption-side: top;
+  text-align: left;
+  font-size: var(--fs-xs);
+  letter-spacing: .12em;
+  color: var(--ink-faint);
+  padding-bottom: 12px;
+}
+.tbl th, .tbl td {
+  padding: 12px 18px 12px 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  line-height: 1.7;
+}
+.tbl thead th {
+  font-weight: 700;
+  color: var(--green-soft);
+  font-size: var(--fs-xs);
+  letter-spacing: .1em;
+  border-bottom-color: var(--line-strong);
+  white-space: nowrap;
+}
+.tbl tbody tr:last-child th, .tbl tbody tr:last-child td { border-bottom: 0; }
+.tbl tbody th { font-weight: 700; color: var(--ink); white-space: nowrap; }
+.tbl td { color: var(--ink-dim); }
+/* the ramp column prints raw glyphs — never let them wrap mid-ramp */
+.tbl .ramp { color: var(--green); white-space: pre; letter-spacing: .12em; }
+.tbl .num { color: var(--ink); white-space: nowrap; }
+
+/* ========================= ordered steps =====================
+   Numbered procedures in the guides. The visible marker is the
+   list's own counter rather than a hand-typed <span>, so the markup
+   matches the HowTo schema the page already publishes.             */
+.steps { list-style: none; counter-reset: step; padding: 0; margin: 34px 0 0; }
+.steps > li { counter-increment: step; position: relative; padding-left: 42px; margin-bottom: 22px; }
+.steps > li::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute; left: 0; top: 0;
+  color: var(--green); font-weight: 700;
+}
+.steps > li:last-child { margin-bottom: 0; }
+.steps h3 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.steps p { font-size: var(--fs-s); line-height: 1.8; color: var(--ink-dim); }
+
+@media (max-width: 600px) {
+  .tbl th, .tbl td { padding-right: 14px; }
+}
+
 /* ========================= forms ============================= */
 .field { display: grid; gap: 8px; }
 .field-label {
