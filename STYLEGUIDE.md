@@ -283,17 +283,29 @@ or picking a different one. ASCII hyphen, never U+2212 minus.
 
 ### Numbered steps
 
-For procedures in the guides. The marker is the list counter, so the visible markup
-matches the `HowTo` schema the page publishes — do not hand-type `<span class="p">01</span>`:
+For procedures in the guides. The container is a real `<ol>` and each step an
+`<li class="card">`, so the visible markup matches the `HowTo` schema the page
+publishes and a passage extractor reads the steps in order. The card look and the
+per-page grid come from the page's own `.guide-steps`; `terminal.css` only strips
+the list marker:
 
 ```html
-<ol class="steps">
-  <li>
-    <h3>open a terminal-safe preset</h3>
+<ol class="guide-steps">
+  <li class="card">
+    <h3 class="card-title"><span class="p">01</span> open a terminal-safe preset</h3>
     <p>…</p>
   </li>
 </ol>
 ```
+
+The `01` stays a hand-typed `<span class="p">` rather than a CSS counter, because it
+is part of the established card-title rhythm and `seo.test.ts` matches on the visible
+step text. Keep the numbers in sync with the `HowToStep` positions in the same file.
+
+Q&A cards use the same card, with `Q` in place of the number, inside a `.grid-2`. When
+a page carries four or more of them, add `FAQPage` to its `WebPage` `@type` array and
+mirror the answers verbatim into `mainEntity` — never write an answer in schema that
+is not on the page.
 
 ## Engine quick reference
 
