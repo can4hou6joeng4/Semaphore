@@ -91,11 +91,15 @@ No third-party requests. The font is self-hosted (`@font-face` lives in
 deployed CSP is `connect-src 'none'`, so anything that tries would be blocked
 in production but pass locally. Canonical HTML responses deliberately do **not**
 ship `Cache-Control: no-transform`: Cloudflare reads that directive as "do not
-compress" and it cost 69% of HTML transfer to guard against something
-`script-src 'self'` already blocks. Do not add it back. The one edge rewrite CSP
-would miss is Email Obfuscation, which only fires on `mailto:` links — so never
-put an email address in the markup (link the repo's issue tracker instead).
-`src/seo.test.ts` pins both halves of that trade.
+compress" and it cost 70% of HTML transfer. That is only safe because the zone's
+Web Analytics site was deleted — `no-transform` had been suppressing the beacon
+*injection*, which CSP does not prevent (CSP blocks the script from loading, but
+the `<script>` tag still lands in the markup and falsifies the "no analytics
+script" claim). Do not add `no-transform` back, and do not create a Web Analytics
+site for this zone. The one edge rewrite CSP would miss is Email Obfuscation,
+which only fires on `mailto:` links — so never put an email address in the markup
+(link the repo's issue tracker instead). `src/seo.test.ts` pins the `mailto:` half.
+See AGENTS.md trap 16 for the full history.
 
 `terminal.css` is NOT linked by hand: every `src/main-<page>.ts` entry imports it as
 its first line, and Vite extracts it into a hashed `/assets/*.css` link at build time.

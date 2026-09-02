@@ -164,18 +164,36 @@ Things a fresh read of the code will not reveal:
     renaming it silently breaks URL submission to those engines — nothing fails loudly,
     and no test covers it. Submission history is in `docs/growth-launch.md`.
 16. **`no-transform` was removed from the canonical HTML rules on 2026-09-01, and must
-    not come back.** Cloudflare honours it by disabling response compression
+    not come back — but only because Cloudflare Web Analytics was deleted at the same
+    time.** Cloudflare honours `no-transform` by disabling response compression
     (RFC 9111 §5.2.2.6), so all 14 canonical documents shipped uncompressed while
-    `/404` — the one HTML route with no `_headers` rule — was served brotli. It cost
-    69% of HTML transfer (178KB → 54KB) on the LCP critical path to guard against
-    edge script injection that `script-src 'self'` already blocks: Web Analytics is
-    cross-origin, Rocket Loader injects inline. The one edge rewrite CSP would *not*
-    catch is **Email Obfuscation**, which injects its decoder from same-origin
-    `/cdn-cgi/` — it is ON at the zone, and only fires on a `mailto:`. So the safety
-    of this trade rests on there being zero `mailto:` links in the markup; adding one
-    lets Cloudflare code run in the page. Link the repo's issue tracker for contact
-    instead. `src/seo.test.ts` pins both halves. Zone state when changed:
-    `rocket_loader off`, `mirage off`, `email_obfuscation on`.
+    `/404` — the one HTML route with no `_headers` rule — was served brotli. Removing
+    it recovered 70% of HTML transfer (178KB → 53KB) on the LCP critical path.
+
+    **The first attempt got the reasoning wrong, and it matters.** The original
+    argument was that `script-src 'self'` already blocks the Web Analytics beacon, so
+    `no-transform` was redundant. CSP does block the beacon from *loading* — but
+    `no-transform` was preventing the edge from *injecting the `<script>` tag at all*.
+    Those are different things. With `no-transform` gone, a beacon tag from the
+    zone-level RUM ruleset appeared in every browser response: blocked by CSP, so no
+    telemetry and no request, but a console error for every visitor and a `<script>`
+    tag that made faq.html's "no analytics script" claim false.
+
+    Two more traps found while fixing it. **Cloudflare only injects for requests that
+    look like a browser** — it needs both a browser `User-Agent` *and* an
+    `Accept: text/html` header, so a plain `curl` check is a false negative. Always
+    verify with both headers set. And **neither `auto_install: false` on the RUM site
+    nor pausing its rule stopped the injection**; only deleting the RUM site did
+    (`DELETE /accounts/{acct}/rum/site_info/{site_tag}`). The zone's `ruleset.enabled`
+    field is not writable through the API.
+
+    So the invariant is: **no `no-transform`, and no Web Analytics site on the zone.**
+    If a RUM site is ever re-created for `bobochang.cn`, the beacon comes back. The
+    remaining edge rewrite CSP would not catch is **Email Obfuscation**, which injects
+    from same-origin `/cdn-cgi/` and is ON at the zone — it only fires on a `mailto:`,
+    so never put an email address in the markup; link the issue tracker instead.
+    `src/seo.test.ts` pins the `mailto:` half. Zone state when changed:
+    `rocket_loader off`, `mirage off`, `email_obfuscation on`, no RUM site.
 
 ## Growth / launch handoff
 
