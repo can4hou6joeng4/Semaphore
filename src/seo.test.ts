@@ -951,15 +951,17 @@ describe("SEO page contract", () => {
     expect(terminalCss).toMatch(/\.guide-steps\s*\{[^}]*list-style:\s*none/);
   });
 
-  it("publishes the guides' visible Q&A as FAQPage answers", function () {
-    /* Both guides carry four on-page questions with real answers. Answer text
-       is mirrored verbatim from the page — schema must never assert something
-       a reader cannot find, so a reworded card has to fail here. */
+  it("publishes visible Q&A as FAQPage answers", function () {
+    /* Both guides carry four on-page questions with real answers, and /zh
+       carries the ten FAQ answers in Chinese. Answer text is mirrored verbatim
+       from the page — schema must never assert something a reader cannot
+       find, so a reworded card has to fail here. */
     [
-      ["guides/readme-banner.html", readmeBannerHtml],
-      ["guides/ssh-motd.html", sshMotdHtml]
+      ["guides/readme-banner.html", readmeBannerHtml, 4],
+      ["guides/ssh-motd.html", sshMotdHtml, 4],
+      ["zh.html", zhHtml, 10]
     ].forEach(function (entry) {
-      const html = entry[1];
+      const html = entry[1] as string;
       const page = jsonLd(html).flatMap(function (block) {
         return (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
       }).find(function (node) {
@@ -967,15 +969,16 @@ describe("SEO page contract", () => {
       }) as { mainEntity?: Array<{ acceptedAnswer?: { text?: string } }> } | undefined;
       expect(page, entry[0] + " publishes no FAQPage").toBeTruthy();
       const answers = page?.mainEntity || [];
-      expect(answers.length, entry[0] + " answer count").toBe(4);
+      expect(answers.length, entry[0] + " answer count").toBe(entry[2]);
       /* the visible card count must not drift from the schema */
       expect((html.match(/<span class="p">Q<\/span>/g) || []).length).toBe(answers.length);
       answers.forEach(function (question) {
         const text = question.acceptedAnswer?.text || "";
         /* strip the inline <code> the page wraps some terms in, then compare
            the first clause — enough to catch a reworded answer, tolerant of
-           markup differences between prose and plain schema text */
-        const opening = text.split(/[.?]/)[0].slice(0, 40);
+           markup differences between prose and plain schema text. Chinese
+           answers end sentences with 。 so it is a delimiter too. */
+        const opening = text.split(/[.?。？]/)[0].slice(0, 40);
         expect(html.replace(/<\/?code>/g, ""), entry[0] + ": " + opening)
           .toContain(opening);
       });
