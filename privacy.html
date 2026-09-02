@@ -41,16 +41,24 @@
   "@graph": [
     {
       "@type": "WebPage",
+      "@id": "https://semaphore.bobochang.cn/privacy#webpage",
       "name": "Semaphore Privacy",
       "url": "https://semaphore.bobochang.cn/privacy",
       "description": "How Semaphore keeps image conversion local and what limited data exists when static files are requested.",
       "isPartOf": {
         "@id": "https://semaphore.bobochang.cn/#website"
       },
+      "author": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      },
+      "breadcrumb": {
+        "@id": "https://semaphore.bobochang.cn/privacy#breadcrumb"
+      },
       "dateModified": "2026-08-10"
     },
     {
       "@type": "BreadcrumbList",
+      "@id": "https://semaphore.bobochang.cn/privacy#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -64,6 +72,24 @@
           "name": "Privacy",
           "item": "https://semaphore.bobochang.cn/privacy"
         }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://semaphore.bobochang.cn/#website",
+      "url": "https://semaphore.bobochang.cn/",
+      "name": "Semaphore",
+      "publisher": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://semaphore.bobochang.cn/#person",
+      "name": "bobochang",
+      "url": "https://bobochang.cn",
+      "sameAs": [
+        "https://github.com/can4hou6joeng4"
       ]
     }
   ]

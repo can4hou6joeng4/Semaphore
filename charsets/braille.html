@@ -61,16 +61,27 @@
   "@graph": [
     {
       "@type": "WebPage",
+      "@id": "https://semaphore.bobochang.cn/charsets/braille#webpage",
       "name": "Image to ASCII Braille Art",
       "url": "https://semaphore.bobochang.cn/charsets/braille",
       "description": "How Semaphore converts images into high-detail Unicode braille ASCII art locally in the browser.",
       "isPartOf": {
         "@id": "https://semaphore.bobochang.cn/#website"
       },
+      "mainEntity": {
+        "@id": "https://semaphore.bobochang.cn/#webapp"
+      },
+      "author": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      },
+      "breadcrumb": {
+        "@id": "https://semaphore.bobochang.cn/charsets/braille#breadcrumb"
+      },
       "dateModified": "2026-09-01"
     },
     {
       "@type": "BreadcrumbList",
+      "@id": "https://semaphore.bobochang.cn/charsets/braille#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -85,6 +96,37 @@
           "item": "https://semaphore.bobochang.cn/charsets/braille"
         }
       ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://semaphore.bobochang.cn/#website",
+      "url": "https://semaphore.bobochang.cn/",
+      "name": "Semaphore",
+      "publisher": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://semaphore.bobochang.cn/#person",
+      "name": "bobochang",
+      "url": "https://bobochang.cn",
+      "sameAs": [
+        "https://github.com/can4hou6joeng4"
+      ]
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://semaphore.bobochang.cn/#webapp",
+      "name": "Semaphore",
+      "applicationCategory": "MultimediaApplication",
+      "isAccessibleForFree": true,
+      "author": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      },
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      }
     }
   ]
 }
