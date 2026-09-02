@@ -327,19 +327,11 @@ main.frame {
 .tbl .num { color: var(--ink); white-space: nowrap; }
 
 /* ========================= ordered steps =====================
-   Numbered procedures in the guides. The visible marker is the
-   list's own counter rather than a hand-typed <span>, so the markup
-   matches the HowTo schema the page already publishes.             */
-.steps { list-style: none; counter-reset: step; padding: 0; margin: 34px 0 0; }
-.steps > li { counter-increment: step; position: relative; padding-left: 42px; margin-bottom: 22px; }
-.steps > li::before {
-  content: counter(step, decimal-leading-zero);
-  position: absolute; left: 0; top: 0;
-  color: var(--green); font-weight: 700;
-}
-.steps > li:last-child { margin-bottom: 0; }
-.steps h3 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
-.steps p { font-size: var(--fs-s); line-height: 1.8; color: var(--ink-dim); }
+   Numbered procedures in the guides. The list is a real <ol> so the
+   visible markup matches the HowTo schema the page publishes and a
+   passage extractor reads the steps in order; the card look and the
+   per-page grid come from the page's own .guide-steps.            */
+.guide-steps { list-style: none; padding-left: 0; }
 
 @media (max-width: 600px) {
   .tbl th, .tbl td { padding-right: 14px; }

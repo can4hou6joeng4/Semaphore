@@ -68,7 +68,12 @@ function jsonLd(html: string): unknown[] {
 function schemaTypes(value: unknown): string[] {
   if (!value || typeof value !== "object") return [];
   const node = value as Record<string, unknown>;
-  const own = typeof node["@type"] === "string" ? [node["@type"] as string] : [];
+  /* @type may be an array — a page that is both a WebPage and a FAQPage
+     declares both. Reading only the string form silently returned [] and
+     would have made every type assertion on such a node vacuous. */
+  const own = typeof node["@type"] === "string"
+    ? [node["@type"] as string]
+    : Array.isArray(node["@type"]) ? (node["@type"] as string[]) : [];
   const graph = Array.isArray(node["@graph"])
     ? node["@graph"].flatMap(schemaTypes)
     : [];
@@ -920,6 +925,60 @@ describe("SEO page contract", () => {
     expect(brailleHtml).not.toContain('class="cs-ramp"');
     [indexHtml, toolHtml].forEach(function (html) {
       expect(html).not.toMatch(/<td class="ramp">[^<]*[⠀-⣿]/);
+    });
+  });
+
+  it("ships guide steps as a real ordered list", function () {
+    /* The site had zero <ol> elements: every procedure was a card grid, which
+       reads fine and is the weakest possible structure for a passage extractor
+       — and it left the visible markup disagreeing with the HowTo schema the
+       same page publishes. The <li> count must match the HowToStep count. */
+    [
+      ["guides/readme-banner.html", readmeBannerHtml],
+      ["guides/ssh-motd.html", sshMotdHtml]
+    ].forEach(function (entry) {
+      const html = entry[1];
+      expect(html, entry[0] + " still uses a div for its steps")
+        .toContain('<ol class="guide-steps">');
+      const items = html.match(/<li class="card">/g) || [];
+      const howTo = jsonLd(html).flatMap(function (block) {
+        const graph = (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
+        return graph;
+      }).find(function (node) { return node["@type"] === "HowTo"; }) as
+        { step?: unknown[] } | undefined;
+      expect(items.length, entry[0] + " step count").toBe((howTo?.step || []).length);
+    });
+    expect(terminalCss).toMatch(/\.guide-steps\s*\{[^}]*list-style:\s*none/);
+  });
+
+  it("publishes the guides' visible Q&A as FAQPage answers", function () {
+    /* Both guides carry four on-page questions with real answers. Answer text
+       is mirrored verbatim from the page — schema must never assert something
+       a reader cannot find, so a reworded card has to fail here. */
+    [
+      ["guides/readme-banner.html", readmeBannerHtml],
+      ["guides/ssh-motd.html", sshMotdHtml]
+    ].forEach(function (entry) {
+      const html = entry[1];
+      const page = jsonLd(html).flatMap(function (block) {
+        return (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
+      }).find(function (node) {
+        return schemaTypes(node).includes("FAQPage");
+      }) as { mainEntity?: Array<{ acceptedAnswer?: { text?: string } }> } | undefined;
+      expect(page, entry[0] + " publishes no FAQPage").toBeTruthy();
+      const answers = page?.mainEntity || [];
+      expect(answers.length, entry[0] + " answer count").toBe(4);
+      /* the visible card count must not drift from the schema */
+      expect((html.match(/<span class="p">Q<\/span>/g) || []).length).toBe(answers.length);
+      answers.forEach(function (question) {
+        const text = question.acceptedAnswer?.text || "";
+        /* strip the inline <code> the page wraps some terms in, then compare
+           the first clause — enough to catch a reworded answer, tolerant of
+           markup differences between prose and plain schema text */
+        const opening = text.split(/[.?]/)[0].slice(0, 40);
+        expect(html.replace(/<\/?code>/g, ""), entry[0] + ": " + opening)
+          .toContain(opening);
+      });
     });
   });
 
