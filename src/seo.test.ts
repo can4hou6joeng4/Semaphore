@@ -716,15 +716,19 @@ describe("SEO page contract", () => {
   });
 
   it("keeps canonical HTML compressible at the edge", function () {
-    /* These routes used to carry no-transform to stop Cloudflare injecting a
-       script the CSP would reject. Cloudflare also reads no-transform as "do
-       not compress" (RFC 9111 §5.2.2.6), so the 14 canonical documents shipped
+    /* These routes used to carry no-transform. Cloudflare reads it as "do not
+       compress" (RFC 9111 §5.2.2.6), so the 14 canonical documents shipped
        uncompressed while /404 — the one HTML route with no rule here — was
-       served brotli. That cost 69% of HTML transfer on the LCP path to guard
-       against something script-src 'self' already blocks: Web Analytics is
-       cross-origin, Rocket Loader is inline. Email Obfuscation is the only
-       edge rewrite CSP would miss, and it needs a mailto: to fire — hence the
-       companion assertion below. */
+       served brotli: 70% of HTML transfer, on the LCP path.
+
+       It was NOT redundant with CSP, which is what the first removal attempt
+       assumed. script-src 'self' stops the Web Analytics beacon from loading;
+       no-transform was stopping the edge from injecting the <script> tag in
+       the first place. Removing it made the tag appear in every browser
+       response — blocked, so no telemetry, but a console error per visitor and
+       a claim in faq.html turned false. The zone's RUM site was deleted to fix
+       that, and THAT is what makes this assertion safe to keep. No source-text
+       test can catch a re-created RUM site; see AGENTS.md trap 16. */
     [
       "/",
       "/tool",

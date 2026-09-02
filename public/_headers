@@ -11,19 +11,25 @@
 #            background revalidation.
 # Canonical HTML routes are always revalidated, and deliberately do NOT carry
 #            no-transform. Cloudflare honours no-transform by disabling response
-#            compression (RFC 9111 §5.2.2.6), which cost 69% of HTML transfer —
-#            178KB down to 54KB across the 14 routes — on the LCP critical path.
-#            It was there to stop the edge injecting a script the CSP would then
-#            reject, but the CSP already does that job: Web Analytics loads from
-#            static.cloudflareinsights.com and Rocket Loader injects inline, so
-#            script-src 'self' blocks both regardless. The one feature CSP would
-#            NOT catch is Email Obfuscation, which injects from same-origin
-#            /cdn-cgi/ — it is on at the zone, but only fires on mailto: links
-#            and there are none in the served HTML. Adding a mailto: anywhere
-#            would let Cloudflare code run in the page; use a link to the repo's
-#            issue tracker instead, or turn the zone setting off first.
-#            Zone state when this was changed (2026-09-01): rocket_loader off,
-#            mirage off, email_obfuscation on.
+#            compression (RFC 9111 §5.2.2.6), which cost 70% of HTML transfer —
+#            178KB down to 53KB across the 14 routes — on the LCP critical path.
+#            Dropping it is only safe because the zone's Web Analytics (RUM)
+#            site was DELETED at the same time, 2026-09-01. no-transform had
+#            been suppressing the beacon INJECTION, which is not what CSP does:
+#            script-src 'self' stops the beacon from loading, but the <script>
+#            tag still lands in the markup, which spams the console and makes
+#            faq.html's "no analytics script" claim false. Re-creating a RUM
+#            site for this zone brings it straight back — see AGENTS.md trap 16.
+#            Note Cloudflare only injects when the request looks like a browser
+#            (browser User-Agent AND Accept: text/html), so a plain curl check
+#            is a false negative.
+#            The one edge rewrite CSP would NOT catch is Email Obfuscation:
+#            it injects from same-origin /cdn-cgi/ and is on at the zone, but
+#            only fires on mailto: links, and there are none in the served HTML.
+#            Never put an email address in the markup — link the repo's issue
+#            tracker instead. src/seo.test.ts pins that half.
+#            Zone state when this was changed: rocket_loader off, mirage off,
+#            email_obfuscation on, no RUM site.
 # /*         Baseline hardening + a content policy that ENFORCES the privacy
 #            claim instead of just asserting it: connect-src 'none' means the
 #            page cannot open a fetch/XHR/WebSocket to anywhere, so a dropped
