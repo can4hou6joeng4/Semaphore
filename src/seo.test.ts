@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { CHARSETS } from "./ascii-engine";
+import { FACTORY_DEFAULTS } from "./tool-params";
 import indexHtml from "../index.html?raw";
 import toolHtml from "../tool.html?raw";
 import usecasesHtml from "../usecases.html?raw";
@@ -850,6 +851,76 @@ describe("SEO page contract", () => {
       expect(page.html, page.path + " ships a mailto: link").not.toContain("mailto:");
     });
     expect(notFoundHtml).not.toContain("mailto:");
+  });
+
+  it("keeps the charset comparison table true to the engine", function () {
+    /* The table is the most extractable thing on the home page, so its numbers
+       are pinned to CHARSETS rather than hand-maintained. A ramp gaining one
+       character must fail here, not drift silently into an AI's answer. */
+    const table = indexHtml.slice(indexHtml.indexOf("<caption>the six charsets"));
+    expect(table).not.toBe(indexHtml);
+    Object.keys(CHARSETS).forEach(function (name) {
+      expect(table, name + " missing from the comparison table")
+        .toContain('href="/charsets/' + name + '"');
+    });
+    Object.keys(CHARSETS).forEach(function (name) {
+      const ramp = CHARSETS[name].ramp;
+      if (!ramp) return;              /* braille has no ramp — see below */
+      expect(table, name + " step count").toContain(">" + ramp.length + "</td>");
+    });
+  });
+
+  it("documents every converter control against the input it describes", function () {
+    /* The ranges are only useful to a reader or an AI if they are the real
+       ones, so read them back off the range inputs on the same page. */
+    const table = toolHtml.slice(toolHtml.indexOf('data-screen-label="tool-controls"'));
+    expect(table).not.toBe(toolHtml);
+    const inputs = Array.from(toolHtml.matchAll(
+      /<input type="range" id="(cols|bright|contrast)"[^>]*min="(-?\d+)" max="(-?\d+)"/g
+    ));
+    expect(inputs).toHaveLength(3);
+    inputs.forEach(function (input) {
+      expect(table, input[1] + " min").toContain(input[2]);
+      expect(table, input[1] + " max").toContain(input[3]);
+    });
+    expect(table).toContain(">" + FACTORY_DEFAULTS.cols + "</td>");
+    expect(table).toContain(">" + FACTORY_DEFAULTS.charset + "</td>");
+    expect(table).toContain(">" + FACTORY_DEFAULTS.color + "</td>");
+  });
+
+  it("ships reference tables with a caption and a keyboard-reachable scroll", function () {
+    /* .tbl sets min-width: 560px, so on a phone the wrapper is the only thing
+       that scrolls. Without tabindex that scroll is unreachable by keyboard. */
+    [["index.html", indexHtml], ["tool.html", toolHtml]].forEach(function (entry) {
+      const html = entry[1];
+      const tables = html.match(/<table class="tbl">/g) || [];
+      expect(tables.length, entry[0] + " has no reference table").toBeGreaterThan(0);
+      expect(html.match(/<div class="table-wrap" tabindex="0">/g) || [])
+        .toHaveLength(tables.length);
+      expect(html.match(/<caption>/g) || []).toHaveLength(tables.length);
+      expect(html.match(/<th scope="col">/g) || []).not.toHaveLength(0);
+    });
+    expect(terminalCss).toContain(".table-wrap");
+    expect(terminalCss).toMatch(/\.tbl\s*\{[^}]*min-width:\s*560px/);
+  });
+
+  it("keeps every glyph on the page inside the shipped font subset", function () {
+    /* The subset covers exactly what the site already uses, so a new character
+       silently falls back to a system face mid-render. U+2212 MINUS is the easy
+       mistake next to a numeric range — write ASCII hyphen. */
+    pages.forEach(function (page) {
+      expect(page.html, page.path + " uses U+2212; the subset has no glyph for it")
+        .not.toContain("−");
+    });
+    /* JetBrains Mono ships 0 of 256 braille glyphs. That is fine for engine
+       output, which is expected to fall back, but a literal braille ramp in
+       static markup would render in a different face beside ramps that do not.
+       charsets/braille.html deliberately omits .cs-ramp for this reason; the
+       comparison table describes the cell instead of printing one. */
+    expect(brailleHtml).not.toContain('class="cs-ramp"');
+    [indexHtml, toolHtml].forEach(function (html) {
+      expect(html).not.toMatch(/<td class="ramp">[^<]*[⠀-⣿]/);
+    });
   });
 
   it("ships a HowTo for the README banner guide", function () {

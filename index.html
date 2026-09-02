@@ -276,7 +276,7 @@
       "author": {
         "@id": "https://semaphore.bobochang.cn/#person"
       },
-      "dateModified": "2026-09-01"
+      "dateModified": "2026-09-02"
     },
     {
       "@type": "Person",
@@ -496,6 +496,59 @@
       </figure>
     </div>
     <p class="fs-s text-faint" style="margin-top:18px">rendered live in your browser by the same engine that powers the converter — <a href="/tool">try your own photo as ASCII art</a>.</p>
+
+    <div class="table-wrap" tabindex="0">
+      <table class="tbl">
+        <caption>the six charsets, ordered by how many tonal steps each one carries</caption>
+        <thead>
+          <tr><th scope="col">charset</th><th scope="col">characters</th><th scope="col">steps</th><th scope="col">best for</th><th scope="col">portability</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"><a href="/charsets/braille">braille</a></th>
+            <td>2×4 dot cells</td>
+            <td class="num">256 patterns</td>
+            <td>The most detail available. Eight dots per cell, dithered, so a face keeps its structure at low column counts.</td>
+            <td>Needs a font with braille glyphs. JetBrains Mono has none, so it falls back to a system face.</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/charsets/detailed">detailed</a></th>
+            <td class="ramp">.'^",:Il!~+?][1)|/tfjxnuvzXYUJCLQ0Omwqpdbkao*#MW&amp;8%B@$</td>
+            <td class="num">68</td>
+            <td>Photographs and portraits. Adjacent shades differ by roughly 1.5%, which is what keeps a cheekbone readable.</td>
+            <td>Plain 7-bit ASCII. Safe anywhere.</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/charsets/standard">standard</a></th>
+            <td class="ramp"> .:-=+*#%@</td>
+            <td class="num">10</td>
+            <td>The classic look, and the safest default when you do not control the destination font.</td>
+            <td>Plain 7-bit ASCII. Safe anywhere.</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/charsets/blocks">blocks</a></th>
+            <td class="ramp"> ░▒▓█</td>
+            <td class="num">5</td>
+            <td>Pixel-art and poster looks. Each glyph paints its whole cell, so regions merge into flat areas.</td>
+            <td>Unicode block elements. Most terminals have them; some README renderers substitute a font.</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/charsets/minimal">minimal</a></th>
+            <td class="ramp"> .:*#</td>
+            <td class="num">5</td>
+            <td>Small sizes — icons, avatars, anything under about sixty columns where a long ramp turns to speckle.</td>
+            <td>Plain 7-bit ASCII. Safe anywhere.</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/charsets/binary">binary</a></th>
+            <td class="ramp"> 01</td>
+            <td class="num">3</td>
+            <td>Silhouettes and the code-rain look. Three steps leave no gradient, so shape survives and tone does not.</td>
+            <td>Plain 7-bit ASCII. Safe anywhere.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <section class="sec" data-screen-label="export-and-use">
