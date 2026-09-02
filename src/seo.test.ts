@@ -471,16 +471,89 @@ describe("SEO page contract", () => {
     const types = jsonLd(toolHtml).flatMap(schemaTypes);
     expect(types).toContain("WebPage");
     expect(types).toContain("BreadcrumbList");
-    /* The application is ONE entity. /tool points at the site-wide #webapp node
-       instead of declaring a second WebApplication, which would split the app
-       across two URLs in a consumer's entity graph. */
-    expect(types).not.toContain("WebApplication");
     const schema = jsonLd(toolHtml)[0] as { "@graph"?: Record<string, unknown>[] };
     const page = (schema["@graph"] || []).find(function (node) {
       return node["@type"] === "WebPage";
     });
     expect(page?.mainEntity).toEqual({
       "@id": "https://semaphore.bobochang.cn/#webapp"
+    });
+  });
+
+  it("keeps one app entity by @id rather than by omission", function () {
+    /* This assertion used to forbid WebApplication outside index.html, on the
+       reasoning that a second declaration would split the app across two URLs.
+       The goal was right and the mechanism backwards: in JSON-LD an identical
+       @id is the instruction to MERGE, and a DIFFERENT @id (say /tool#webapp)
+       is what would split the entity. Forbidding the node outright left every
+       page except index.html referencing an @id nothing defined, so /tool --
+       the page most likely to be cited -- resolved to a bare URI with no type,
+       no name and no author. Pin the real invariant instead. */
+    const appIds = new Set<string>();
+    pages.forEach(function (page) {
+      jsonLd(page.html).forEach(function (block) {
+        const graph = (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
+        graph.forEach(function (node) {
+          if (node["@type"] !== "WebApplication") return;
+          expect(node["@id"], page.path + " declares a second app entity").toBe(
+            "https://semaphore.bobochang.cn/#webapp"
+          );
+          appIds.add(node["@id"] as string);
+        });
+      });
+    });
+    expect(appIds.size).toBe(1);
+  });
+
+  it("resolves every @id a page references within that same page", function () {
+    /* JSON-LD is parsed per document, so a reference to #website on /tool is a
+       bare URI unless that page also carries the node. Consumers do not fetch
+       index.html to resolve it. Every page must therefore define what it cites. */
+    pages.forEach(function (page) {
+      const defined = new Set<string>();
+      const referenced: string[] = [];
+      jsonLd(page.html).forEach(function (block) {
+        const graph = (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
+        graph.forEach(function (node) {
+          if (typeof node["@id"] === "string" && Object.keys(node).length > 1) {
+            defined.add(node["@id"]);
+          }
+          Object.values(node).forEach(function (value) {
+            const items = Array.isArray(value) ? value : [value];
+            items.forEach(function (item) {
+              if (item && typeof item === "object" && !Array.isArray(item)) {
+                const keys = Object.keys(item as object);
+                if (keys.length === 1 && keys[0] === "@id") {
+                  referenced.push((item as { "@id": string })["@id"]);
+                }
+              }
+            });
+          });
+        });
+      });
+      const dangling = referenced.filter(function (id) { return !defined.has(id); });
+      expect(dangling, page.path + " references undefined @id").toEqual([]);
+    });
+  });
+
+  it("attributes every page to the operator", function () {
+    /* 13 of 14 pages carried no author at all, which is the weakest E-E-A-T
+       signal on a single-author tool that competes on trust. Match on the
+       #webpage @id rather than on "@type": faq.html's page node is a FAQPage,
+       and a type-based check would silently skip exactly the page whose ten
+       answers are the most quotable content on the site. */
+    pages.forEach(function (page) {
+      const authored = jsonLd(page.html).some(function (block) {
+        const graph = (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
+        return graph.some(function (node) {
+          return typeof node["@id"] === "string"
+            && (node["@id"] as string).endsWith("#webpage")
+            && JSON.stringify(node["author"]) === JSON.stringify({
+              "@id": "https://semaphore.bobochang.cn/#person"
+            });
+        });
+      });
+      expect(authored, page.path + " publishes no page-level author").toBe(true);
     });
   });
 
@@ -570,10 +643,17 @@ describe("SEO page contract", () => {
     const sizeLimitCopy = "Semaphore does not impose a fixed source-dimension limit; " +
       "practical limits depend on your browser and available memory. Output is capped at " +
       "40–240 columns. Dense braille at high column counts may take longer on older devices.";
-    const faqSchema = jsonLd(faqHtml).find(function (schema) {
-      return schemaTypes(schema).includes("FAQPage");
+    /* Find the FAQPage node inside the @graph rather than treating the whole
+       block as one. faq.html used to ship two top-level JSON-LD blocks; they
+       were merged into a single @graph so the page could define the #website
+       and #person nodes it references. */
+    const faqNode = jsonLd(faqHtml).flatMap(function (block) {
+      const graph = (block as { "@graph"?: Record<string, unknown>[] })["@graph"];
+      return graph || [block as Record<string, unknown>];
+    }).find(function (node) {
+      return schemaTypes(node).includes("FAQPage");
     }) as { mainEntity?: Array<{ name?: string; acceptedAnswer?: { text?: string } }> };
-    const sizeQuestion = (faqSchema.mainEntity || []).find(function (question) {
+    const sizeQuestion = (faqNode?.mainEntity || []).find(function (question) {
       return question.name === "Any size limits?";
     });
 

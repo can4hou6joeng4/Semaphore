@@ -38,121 +38,147 @@
       margin-inline: auto;
     }
   </style>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "@id": "https://semaphore.bobochang.cn/faq#webpage",
-    "name": "Image to ASCII FAQ",
-    "url": "https://semaphore.bobochang.cn/faq",
-    "isPartOf": {
-      "@id": "https://semaphore.bobochang.cn/#website"
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://semaphore.bobochang.cn/faq#webpage",
+      "name": "Image to ASCII FAQ",
+      "url": "https://semaphore.bobochang.cn/faq",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "author": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      },
+      "breadcrumb": {
+        "@id": "https://semaphore.bobochang.cn/faq#breadcrumb"
+      },
+      "dateModified": "2026-08-13",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do my images get uploaded anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Never. The conversion runs entirely in your browser using the canvas API; once the page has loaded it even works offline. If you're the trust-but-verify type, read the privacy statement, then open devtools and watch the network tab stay silent."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you run analytics in my browser?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The page ships no analytics script, no cookies, and a Content-Security-Policy with connect-src 'none', so it cannot open a fetch, XHR or WebSocket to anywhere — including a Cloudflare Web Analytics beacon. What the operator can see is aggregate HTTP traffic at the Cloudflare edge: which paths were requested and roughly how often. Those are server logs of the page load itself, not a second phone-home from your tab. Your image bytes never leave the device and are never part of those counts."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — free, no account, no watermark, no daily quota. The whole tool ships as static files."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the site remember my settings?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Only small preferences stay on your device: color theme (CRT or paper), and the last charset and color mode you picked on the tool. They live in localStorage and never include image bytes. Reset params clears the tool prefs; URL query parameters still override them when present."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which image formats can I feed it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Anything your browser can decode: png, jpg, webp and gif (first frame). Drop it, paste it, or browse for it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I get a sharper result?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Start from a high-contrast image with a tight crop. Push columns up to 160-200, nudge contrast +15, and try invert if your subject is dark-on-light. For photographic detail, the braille charset is the sharp one."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does braille mode actually do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each character becomes a 2×4 grid of dots from the Unicode braille block, dithered with Floyd–Steinberg — roughly eight times the spatial resolution of a classic ramp. The braille ASCII guide shows the full pipeline and a live example. It needs a font with braille glyphs, which every modern OS has."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I keep the original colors?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Color mode original samples the source color per character, gray keeps neutral tones, and green is the classic phosphor look. Color survives in the .png export; plain-text copies are characters only, by nature."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use the output commercially?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The output is yours — posters, readmes, merch, client work, anything. We don't claim rights over your art."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Any size limits?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Semaphore does not impose a fixed source-dimension limit; practical limits depend on your browser and available memory. Output is capped at 40–240 columns. Dense braille at high column counts may take longer on older devices."
+          }
+        }
+      ]
     },
-    "dateModified": "2026-08-13",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Do my images get uploaded anywhere?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Never. The conversion runs entirely in your browser using the canvas API; once the page has loaded it even works offline. If you're the trust-but-verify type, read the privacy statement, then open devtools and watch the network tab stay silent."
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://semaphore.bobochang.cn/faq#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Semaphore",
+          "item": "https://semaphore.bobochang.cn/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Image to ASCII FAQ",
+          "item": "https://semaphore.bobochang.cn/faq"
         }
-      },
-      {
-        "@type": "Question",
-        "name": "Do you run analytics in my browser?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No. The page ships no analytics script, no cookies, and a Content-Security-Policy with connect-src 'none', so it cannot open a fetch, XHR or WebSocket to anywhere — including a Cloudflare Web Analytics beacon. What the operator can see is aggregate HTTP traffic at the Cloudflare edge: which paths were requested and roughly how often. Those are server logs of the page load itself, not a second phone-home from your tab. Your image bytes never leave the device and are never part of those counts."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Is it free?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes — free, no account, no watermark, no daily quota. The whole tool ships as static files."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Does the site remember my settings?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Only small preferences stay on your device: color theme (CRT or paper), and the last charset and color mode you picked on the tool. They live in localStorage and never include image bytes. Reset params clears the tool prefs; URL query parameters still override them when present."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Which image formats can I feed it?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Anything your browser can decode: png, jpg, webp and gif (first frame). Drop it, paste it, or browse for it."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do I get a sharper result?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Start from a high-contrast image with a tight crop. Push columns up to 160-200, nudge contrast +15, and try invert if your subject is dark-on-light. For photographic detail, the braille charset is the sharp one."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What does braille mode actually do?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Each character becomes a 2×4 grid of dots from the Unicode braille block, dithered with Floyd–Steinberg — roughly eight times the spatial resolution of a classic ramp. The braille ASCII guide shows the full pipeline and a live example. It needs a font with braille glyphs, which every modern OS has."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I keep the original colors?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Color mode original samples the source color per character, gray keeps neutral tones, and green is the classic phosphor look. Color survives in the .png export; plain-text copies are characters only, by nature."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I use the output commercially?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The output is yours — posters, readmes, merch, client work, anything. We don't claim rights over your art."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Any size limits?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Semaphore does not impose a fixed source-dimension limit; practical limits depend on your browser and available memory. Output is capped at 40–240 columns. Dense braille at high column counts may take longer on older devices."
-        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://semaphore.bobochang.cn/#website",
+      "url": "https://semaphore.bobochang.cn/",
+      "name": "Semaphore",
+      "publisher": {
+        "@id": "https://semaphore.bobochang.cn/#person"
       }
-    ]
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Semaphore",
-        "item": "https://semaphore.bobochang.cn/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Image to ASCII FAQ",
-        "item": "https://semaphore.bobochang.cn/faq"
-      }
-    ]
-  }
-  </script>
+    },
+    {
+      "@type": "Person",
+      "@id": "https://semaphore.bobochang.cn/#person",
+      "name": "bobochang",
+      "url": "https://bobochang.cn",
+      "sameAs": [
+        "https://github.com/can4hou6joeng4"
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body data-page="faq" data-path="~/faq">
   <main class="frame">
