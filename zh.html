@@ -41,6 +41,7 @@
   "@graph": [
     {
       "@type": "WebPage",
+      "@id": "https://semaphore.bobochang.cn/zh#webpage",
       "name": "图片转 ASCII 字符画",
       "url": "https://semaphore.bobochang.cn/zh",
       "inLanguage": "zh-CN",
@@ -48,10 +49,17 @@
       "isPartOf": {
         "@id": "https://semaphore.bobochang.cn/#website"
       },
+      "author": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      },
+      "breadcrumb": {
+        "@id": "https://semaphore.bobochang.cn/zh#breadcrumb"
+      },
       "dateModified": "2026-08-10"
     },
     {
       "@type": "BreadcrumbList",
+      "@id": "https://semaphore.bobochang.cn/zh#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -65,6 +73,24 @@
           "name": "中文简介",
           "item": "https://semaphore.bobochang.cn/zh"
         }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://semaphore.bobochang.cn/#website",
+      "url": "https://semaphore.bobochang.cn/",
+      "name": "Semaphore",
+      "publisher": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://semaphore.bobochang.cn/#person",
+      "name": "bobochang",
+      "url": "https://bobochang.cn",
+      "sameAs": [
+        "https://github.com/can4hou6joeng4"
       ]
     }
   ]
