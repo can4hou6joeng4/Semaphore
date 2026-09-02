@@ -53,7 +53,7 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebPage",
+      "@type": ["WebPage", "FAQPage"],
       "@id": "https://semaphore.bobochang.cn/guides/readme-banner#webpage",
       "name": "README ASCII Banner from an Image",
       "url": "https://semaphore.bobochang.cn/guides/readme-banner",
@@ -67,7 +67,41 @@
       "breadcrumb": {
         "@id": "https://semaphore.bobochang.cn/guides/readme-banner#breadcrumb"
       },
-      "dateModified": "2026-08-10"
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why did the ASCII banner collapse into a paragraph?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The art is outside the fenced code block, or the fence opened with fewer than three backticks. Markdown treats runs of spaces as one space in normal prose, and those spaces are what carry the light tones."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does the banner scroll sideways on a phone?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The column count is too high. A fenced block does not wrap, it scrolls. Around 60 columns fits most phone-width README views."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do the block characters look uneven in some renderers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A renderer whose monospace stack has no glyph for ░▒▓█ substitutes a fallback face for just those characters, and the mark loses its even cell width. The standard charset is plain 7-bit ASCII and cannot hit this."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does the ASCII banner look stretched?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Monospace cells are about three parts wide to five parts tall, and the converter emits rows on that assumption. A destination whose line height differs will squash or stretch the result."
+          }
+        }
+      ],
+      "dateModified": "2026-09-03"
     },
     {
       "@type": "HowTo",
@@ -174,27 +208,30 @@
   <section class="sec" data-screen-label="guide-steps">
     <div class="kicker">[ steps ]</div>
     <h2 class="h2">Four steps to a paste-ready banner</h2>
-    <div class="guide-steps">
-      <article class="card">
+    <ol class="guide-steps">
+      <li class="card">
         <h3 class="card-title"><span class="p">01</span> open a README-friendly preset</h3>
         <p>Start with <code>blocks</code> or <code>standard</code> at about 80 columns. Wide logos stay legible; dense photos belong in <a href="/charsets/braille">braille mode</a> instead.</p>
-      </article>
-      <article class="card">
+      </li>
+      <li class="card">
         <h3 class="card-title"><span class="p">02</span> drop the image locally</h3>
         <p>PNG with transparency, JPG export, or a simple monochrome mark all work. The tool samples pixels on a local canvas; production CSP is <code>connect-src 'none'</code>.</p>
-      </article>
-      <article class="card">
+      </li>
+      <li class="card">
         <h3 class="card-title"><span class="p">03</span> tune for monochrome Markdown</h3>
         <p>Bump contrast if edges look soft. Invert if the subject is dark on light. Keep columns low enough that a phone-width README still wraps as one block of text, not a horizontal scroll marathon.</p>
-      </article>
-      <article class="card">
+      </li>
+      <li class="card">
         <h3 class="card-title"><span class="p">04</span> paste into a fenced code block</h3>
-        <p>Copy plain text from the tool and drop it into <code>README.md</code>:</p>
+        <p>Copy plain text from the tool and drop it into <code>README.md</code>. The fence is load-bearing: without it Markdown collapses the runs of spaces that carry the shading, and the mark falls apart. Tag it <code>text</code> so no syntax highlighter tries to colour the glyphs.</p>
         <pre class="guide-code">```text
-# paste the ASCII banner here
+████▓▓▒▒░░       ░░▒▒▓▓████
+ ███▓▓▒▒░    ░     ░▒▒▓▓███
+████▓▓▒▒░░       ░░▒▒▓▓████
 ```</pre>
-      </article>
-    </div>
+        <p class="fs-s text-faint" style="margin-top:12px">Set by hand to show the fence and the shading — your own art comes out of the converter.</p>
+      </li>
+    </ol>
   </section>
 
   <section class="sec" data-screen-label="guide-tips">
@@ -214,6 +251,29 @@
         <div class="row" style="margin-top:14px">
           <a class="btn btn--ghost btn--sm" href="/tool?charset=standard&amp;cols=90&amp;color=green">try classic</a>
         </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="guide-answers">
+    <div class="kicker">[ quick_answers ]</div>
+    <h2 class="h2">When the banner does not survive the render</h2>
+    <div class="grid-2" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">Q</span> the shape collapsed into a paragraph</h3>
+        <p>The art is outside the fence, or the fence opened with fewer than three backticks. Markdown treats runs of spaces as one space in normal prose, and those spaces are what carry the light tones. Nothing else about the art matters if the fence is wrong.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">Q</span> it scrolls sideways on a phone</h3>
+        <p>Column count is too high. A fenced block does not wrap; it scrolls. Around 60 columns fits most phone-width README views, and the tool caps at 240 for the same reason it starts at 40 — beyond a certain width the art stops being readable in place.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">Q</span> the blocks look uneven somewhere else</h3>
+        <p>A renderer whose monospace stack has no glyph for <code>░▒▓█</code> substitutes a fallback face for just those characters, and the mark loses its even cell width. <a href="/charsets/standard">standard</a> is plain 7-bit ASCII and cannot hit this, which is why it is the safer choice when you do not control the destination.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">Q</span> it came out stretched</h3>
+        <p>Monospace cells are about three parts wide to five parts tall, and the converter emits rows on that assumption. A destination whose line height differs will squash or stretch the result — the characters are right, the grid is not. See <a href="/tool">the control reference</a>.</p>
       </article>
     </div>
   </section>

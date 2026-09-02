@@ -58,7 +58,7 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebPage",
+      "@type": ["WebPage", "FAQPage"],
       "@id": "https://semaphore.bobochang.cn/guides/ssh-motd#webpage",
       "name": "SSH MOTD ASCII Art from an Image",
       "url": "https://semaphore.bobochang.cn/guides/ssh-motd",
@@ -72,7 +72,41 @@
       "breadcrumb": {
         "@id": "https://semaphore.bobochang.cn/guides/ssh-motd#breadcrumb"
       },
-      "dateModified": "2026-08-30"
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Which charset is safest for an SSH MOTD?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use standard when SSH clients and fonts are unknown. Use blocks only when the target font renders ░▒▓█ consistently. Braille carries more detail but relies on Unicode fallback glyphs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does color copy to the MOTD?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Clipboard and .txt exports are plain characters. Add ANSI color later only if every target terminal and the system's MOTD pipeline support it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does the banner wrap?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The converted row is wider than the terminal, or the target font is not truly monospaced. Lower the column count and test with the same client used for SSH."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What belongs beside the art?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Keep static identity text short. Do not bake secrets, internal addresses, or stale service state into the artwork; let system-owned dynamic MOTD components report live facts."
+          }
+        }
+      ],
+      "dateModified": "2026-09-03"
     },
     {
       "@type": "HowTo",
@@ -199,30 +233,30 @@
   <section class="sec" data-screen-label="guide-steps">
     <div class="kicker">[ steps ]</div>
     <h2 class="h2">Five steps from image to MOTD</h2>
-    <div class="guide-steps">
-      <article class="card">
+    <ol class="guide-steps">
+      <li class="card">
         <h3 class="card-title"><span class="p">01</span> open a terminal-safe preset</h3>
         <p>Start with <code>standard</code>, 64 columns, gray output, and contrast at +20. Plain-text copy contains characters only; gray simply gives the closest on-screen preview of an uncolored MOTD.</p>
-      </article>
-      <article class="card">
+      </li>
+      <li class="card">
         <h3 class="card-title"><span class="p">02</span> crop for silhouette</h3>
         <p>Use a logo or subject with a clear outline and remove empty margins before conversion. Fine photographic texture usually disappears at login-banner width.</p>
-      </article>
-      <article class="card">
+      </li>
+      <li class="card">
         <h3 class="card-title"><span class="p">03</span> tune for the narrowest client</h3>
         <p>Keep the result between 40 and 80 columns. If lines wrap, reduce columns before sacrificing contrast. Use <code>invert</code> when a dark mark arrives on a light background.</p>
-      </article>
-      <article class="card">
+      </li>
+      <li class="card">
         <h3 class="card-title"><span class="p">04</span> copy and inspect the file</h3>
         <p>Copy plain text, save it as <code>motd.txt</code>, and inspect the exact width in a terminal before installation:</p>
         <pre class="guide-code">wc -L motd.txt
 cat motd.txt</pre>
-      </article>
-      <article class="card">
+      </li>
+      <li class="card">
         <h3 class="card-title"><span class="p">05</span> install through the path your OS owns</h3>
         <p>Some systems read a static <code>/etc/motd</code>; others assemble login text from scripts such as <code>/etc/update-motd.d/</code>. Check the target distribution, preserve its managed content, add the reviewed banner at that layer, then open a fresh SSH session to verify the result.</p>
-      </article>
-    </div>
+      </li>
+    </ol>
   </section>
 
   <section class="sec" data-screen-label="guide-answers">
