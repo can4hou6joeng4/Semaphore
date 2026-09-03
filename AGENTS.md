@@ -58,6 +58,11 @@ Only the entries whose role is not obvious from the filename:
 - `src/tool-params.ts` — the boot-state contract for the converter: `FACTORY_DEFAULTS`,
   URL-query parsing with clamping, and the `localStorage` prefs. Pure, so it is the part
   of `tool.ts` that unit tests can reach.
+- `src/llms-full.ts` — generates `/llms-full.txt` at build time: `public/llms.txt` followed
+  by every canonical page's readable text as markdown, in sitemap order. Pure string code,
+  so `vite.config.ts` and `seo.test.ts` run the same function over the same HTML. There is
+  no `public/llms-full.txt` and there must never be one — Vite copies `public/` after the
+  bundle, so a file there would silently shadow the generated one.
 - `src/seo.test.ts` — not a unit test. It imports the HTML pages, `_headers`, `robots.txt`,
   `sitemap.xml` and several `.ts` sources as raw text and asserts the STYLEGUIDE contract
   against them. It is the enforcement arm of `STYLEGUIDE.md` and will fail on markup and
@@ -91,7 +96,8 @@ a test failure or a silently unshipped page rather than a visible mistake:
 4. A `Cache-Control: public, max-age=0, must-revalidate` rule in `public/_headers`,
    keeping the prefix disjoint from `/assets/*`, `/fonts/*` and `/static/*` (see Traps
    1 and 2). No `no-transform` — see Trap 16.
-5. `public/sitemap.xml` and `public/llms.txt`.
+5. `public/sitemap.xml` and `public/llms.txt`. (`/llms-full.txt` is generated from the
+   sitemap at build time and needs no edit.)
 6. The `pages` array in `src/seo.test.ts` — that array drives the whole head/canonical/
    sitemap/headers contract, so registering there is what actually enforces steps 1–5.
 

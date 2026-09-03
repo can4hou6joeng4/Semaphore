@@ -58,4 +58,7 @@ Columns (40–240), brightness, contrast, invert, and color mode (`green` phosph
 - Semaphore does not impose a fixed source-dimension limit; practical limits depend on the browser and available memory. Output is capped at 40–240 columns.
 - Saved on-device preferences: theme (CRT/paper) and last-used charset/color — never image bytes.
 - Built with Vite and TypeScript, no framework, hosted on Cloudflare Pages.
+
+## Full text
+- [llms-full.txt](https://semaphore.bobochang.cn/llms-full.txt): every canonical page as markdown, generated at build time from the same HTML, in sitemap order
 - Source: https://github.com/can4hou6joeng4/Semaphore
