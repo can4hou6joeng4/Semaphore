@@ -166,6 +166,11 @@ Card             `<article class="card"><h3 class="card-title"><span class="p">$
                  card under the page `h1`, `h3` for a card inside an `h2` section.
 Grid             `<div class="grid-3">…cards…</div>`
 Terminal window  `<figure class="term"><figcaption class="term-head"><span class="term-title"><span class="p">$</span> cat banner.txt</span><span class="term-dots">– □ ✕</span></figcaption><div class="term-body"><pre class="ascii-pre">…</pre></div></figure>`
+                 if the `<pre>` holds art set by hand rather than engine output, say so in
+                 place with a `<p class="fs-s text-faint">` directly under the figure. A
+                 disclaimer three screens away does not travel with an extracted passage,
+                 and an AI quoting the panel as "Semaphore output" is quoting something the
+                 engine never produced. `seo.test.ts` pins the note count to the panel count.
 FAQ item         `<details class="qa"><summary>…question…</summary><div class="qa-a"><p>…</p></div></details>`
 Tag row          `<div class="row"><span class="tag">readme</span><span class="tag--green tag">plain text</span></div>`
 Field            `<div class="field"><label class="field-label" for="x">columns <span class="val" id="xv">120</span></label><input type="range" id="x"></div>`
