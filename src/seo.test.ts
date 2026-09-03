@@ -985,6 +985,32 @@ describe("SEO page contract", () => {
     });
   });
 
+  it("labels hand-set ASCII art in place", function () {
+    /* The usecases panels are drawn by hand to show each format. An extractor
+       reading a figure does not see a disclaimer three screens below it, so
+       the note sits directly under every panel — and its count is pinned to
+       the panel count so a new panel cannot ship unlabelled. */
+    const panels = usecasesHtml.match(/<pre class="ascii-pre">/g) || [];
+    expect(panels.length).toBeGreaterThan(0);
+    expect(usecasesHtml.match(/Set by hand to show the format/g) || [])
+      .toHaveLength(panels.length);
+    expect(readmeBannerHtml).toContain("Set by hand to show the fence");
+  });
+
+  it("cites primary sources for the algorithms it names", function () {
+    /* The site explained the Unicode braille block, Floyd–Steinberg dithering
+       and perceptual luma weighting and cited none of them — three external
+       links sitewide, all to the same repo. An <a href> is markup, not a
+       request, so this is compatible with connect-src 'none'. The engine's
+       coefficients are BT.709's, so that is the document to cite. */
+    expect(brailleHtml).toContain(
+      'href="https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering"'
+    );
+    expect(brailleHtml).toContain('href="https://www.unicode.org/charts/PDF/U2800.pdf"');
+    expect(standardHtml).toContain('href="https://www.itu.int/rec/R-REC-BT.709"');
+    expect(engineSource).toContain("0.2126 * r + 0.7152 * g + 0.0722 * bl");
+  });
+
   it("ships a HowTo for the README banner guide", function () {
     expect(jsonLd(readmeBannerHtml).flatMap(schemaTypes)).toContain("HowTo");
     expect(readmeBannerHtml).toContain('href="/tool?charset=blocks&amp;cols=80&amp;color=green"');
