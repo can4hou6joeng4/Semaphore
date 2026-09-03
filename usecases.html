@@ -76,6 +76,10 @@
         "breadcrumb": {
           "@id": "https://semaphore.bobochang.cn/usecases#breadcrumb"
         },
+        "speakable": {
+          "@type": "SpeakableSpecification",
+          "cssSelector": ["h1", ".lede"]
+        },
         "dateModified": "2026-09-03"
       },
       {
@@ -208,7 +212,7 @@ $ _                     </pre>
           </figure>
           <p class="fs-s text-faint" style="margin-top:10px">Set by hand to show the format — the converter makes the real one from your image.</p>
           <h2 class="card-title"><span class="p">$</span> code comment headers</h2>
-          <p>Section dividers your future self can spot from three screens away. Works in any language that has comments.</p>
+          <p>Section dividers your future self can spot from three screens away. Use <a href="/charsets/standard">standard</a> or <a href="/charsets/minimal">minimal</a> at 40–60 columns: that leaves room for the comment prefix inside an 80-column line, and both ramps are plain 7-bit ASCII, so no source file's encoding is put at risk. Works in any language that has comments.</p>
           <div class="row">
             <span class="tag">source code</span>
             <span class="tag tag--green">headers</span>
@@ -233,7 +237,7 @@ $ _                     </pre>
           </figure>
           <p class="fs-s text-faint" style="margin-top:10px">Set by hand to show the format — the converter makes the real one from your image.</p>
           <h2 class="card-title"><span class="p">$</span> plain-text mail &amp; forums</h2>
-          <p>Signatures, forum posts and newsletters that survive text-only clients untouched. No blocked-image icon, ever.</p>
+          <p>Signatures, forum posts and newsletters that survive text-only clients untouched. No blocked-image icon, ever. Stay with <a href="/charsets/standard">standard</a> at 60–72 columns: plain-text mail conventionally wraps between 72 and 78 characters and turns a wider banner into rubble, and unlike blocks or braille the standard ramp does not depend on the reader's font.</p>
           <div class="row">
             <span class="tag">email</span>
             <span class="tag tag--green">usenet energy</span>
@@ -258,7 +262,7 @@ $ _                     </pre>
           </figure>
           <p class="fs-s text-faint" style="margin-top:10px">Set by hand to show the format — the converter makes the real one from your image.</p>
           <h2 class="card-title"><span class="p">$</span> terminal wallpaper</h2>
-          <p>Fetch scripts, prompt art and tmux dashboards — decorate the place you actually live. Your terminal is a room; hang something on the wall.</p>
+          <p>Fetch scripts, prompt art and tmux dashboards — decorate the place you actually live. Size to the pane, not the screen: a fetch script leaves roughly 40 columns beside its info block, a status pane far fewer. <a href="/charsets/braille">Braille</a> packs the most detail into that width when the terminal font has the glyphs; <a href="/charsets/standard">standard</a> is the fallback when it does not.</p>
           <div class="row">
             <span class="tag">ricing</span>
             <span class="tag tag--green">dotfiles</span>
@@ -286,7 +290,7 @@ $ _                     </pre>
           </figure>
           <p class="fs-s text-faint" style="margin-top:10px">Set by hand to show the format — the converter makes the real one from your image.</p>
           <h2 class="card-title"><span class="p">$</span> prints &amp; merch</h2>
-          <p>Monospace posters, tees and zine pages — ASCII plots beautifully because it is ink-native. Vector sharpness, typewriter soul.</p>
+          <p>Monospace posters, tees and zine pages. Print is where the 240-column ceiling earns its place: run <a href="/charsets/detailed">detailed</a> at 200–240 columns, export the <code>.png</code> for the print shop or the text for a typewriter-style layout, and the shading holds at arm's length in a way no screen shows.</p>
           <div class="row">
             <span class="tag">print</span>
             <span class="tag tag--green">risograph safe</span>
