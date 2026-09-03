@@ -352,6 +352,13 @@ main.frame {
   padding: 9px 12px; width: 100%;
 }
 .input:focus-visible { outline: none; border-color: var(--green); box-shadow: var(--glow); }
+/* iOS Safari zooms the viewport when a focused input or select is set below
+   16px and does not zoom back out. --fs-s is 13px, and #charset is the most-used
+   control on /tool, so on coarse-pointer narrow screens the field steps up to
+   16px. Range inputs are unaffected and keep their size. */
+@media (max-width: 960px) and (pointer: coarse) {
+  .input, select.input { font-size: 16px; }
+}
 
 .selectwrap { position: relative; }
 .selectwrap select { appearance: none; padding-right: 34px; cursor: pointer; }

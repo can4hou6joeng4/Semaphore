@@ -8,12 +8,21 @@ Operational steps that cannot ship as code alone. Mirror of GitHub issue #8 with
 
 1. Property: `https://semaphore.bobochang.cn` (already verified via HTML meta on home).
 2. Sitemap `https://semaphore.bobochang.cn/sitemap.xml` is already successful: GSC
-   last read it on 2026-08-14 and reports all 13 discovered pages. Do not resubmit it.
+   last read it on 2026-08-14, when it had 13 pages. Do not resubmit it — GSC re-reads
+   on its own. It has had 14 entries since 2026-08-30 (`/guides/ssh-motd`), and 13 of
+   them carry a `lastmod` of 2026-09-01…03 after the GEO fixes.
 3. Request Indexing was completed on 2026-08-14 for the five ramp pages added
    2026-08-13:
    `/charsets/standard`, `/charsets/detailed`, `/charsets/blocks`,
    `/charsets/minimal`, `/charsets/binary`.
-4. Bing Webmaster (optional): import the same sitemap
+   **Pending:** `/guides/ssh-motd` has never been through URL Inspection. Request it,
+   plus `/tool` and `/`, both substantially longer since 2026-09-02.
+4. Bing Webmaster Tools — **pending, owner only.** Add the site with the meta-tag
+   method, paste the code into `index.html` beside `google-site-verification` as
+   `<meta name="msvalidate.01" content="…">`, and add a `toMatch` assertion next to the
+   Search Console one in `seo.test.ts`. Then import the sitemap. IndexNow alone gives no
+   index-coverage diagnostics; this is what unlocks them. ChatGPT search runs on Bing's
+   index, so this is not optional for AI visibility.
 
 Production pre-flight passed for all 13 canonical URLs on 2026-08-14. The sitemap was
 also confirmed successful in GSC with all 13 pages discovered. With the owner's explicit
@@ -30,6 +39,40 @@ The five new ramp pages were submitted to `https://api.indexnow.org/indexnow` on
 the site root. This covers participating engines such as Bing, Yandex and Seznam;
 Google does not participate; the separate Search Console requests above were completed
 through the authorized browser session.
+
+**Pending as of 2026-09-03 — needs the owner's go-ahead.** IndexNow writes require
+current authorization (see handoff-prompts.md). Thirteen canonical URLs have changed
+since the 2026-08-14 submission and `/guides/ssh-motd` has never been submitted at all.
+One POST covers everything. The key is the filename of the 64-hex `.txt` in `public/`
+and is already live at the site root, so nothing here is secret:
+
+```bash
+curl -sS -o /dev/null -w '%{http_code}\n' -X POST https://api.indexnow.org/indexnow \
+  -H 'Content-Type: application/json; charset=utf-8' \
+  --data '{
+    "host": "semaphore.bobochang.cn",
+    "key": "88829be3dbb668183178343924ec91149a78743b00f26df312b59fb35c080825",
+    "keyLocation": "https://semaphore.bobochang.cn/88829be3dbb668183178343924ec91149a78743b00f26df312b59fb35c080825.txt",
+    "urlList": [
+      "https://semaphore.bobochang.cn/",
+      "https://semaphore.bobochang.cn/tool",
+      "https://semaphore.bobochang.cn/usecases",
+      "https://semaphore.bobochang.cn/privacy",
+      "https://semaphore.bobochang.cn/zh",
+      "https://semaphore.bobochang.cn/charsets/standard",
+      "https://semaphore.bobochang.cn/charsets/detailed",
+      "https://semaphore.bobochang.cn/charsets/blocks",
+      "https://semaphore.bobochang.cn/charsets/minimal",
+      "https://semaphore.bobochang.cn/charsets/binary",
+      "https://semaphore.bobochang.cn/charsets/braille",
+      "https://semaphore.bobochang.cn/guides/readme-banner",
+      "https://semaphore.bobochang.cn/guides/ssh-motd"
+    ]
+  }'
+```
+
+`/faq` is left out: its content has not changed since 2026-08-13. Expect `200` or `202`;
+record the date and status here afterwards.
 
 ## Cloudflare AI crawl control
 
@@ -114,11 +157,54 @@ Semaphore — 浏览器里把图片转成 ASCII，不上传，CSP 直接 connect
 
 ## Awesome lists
 
-Existing submissions were rechecked on 2026-08-14. Three PRs remain open and
-mergeable: `devtooligan/awesome-ascii-art#3`, `pluja/awesome-privacy#967`, and
-`moul/awesome-ascii-art#7`. `paulaime/awesome-privacy#52` is closed. Do not open
-more list PRs or nudge maintainers without new activity; the intended 2-3 quality
-submissions already exist.
+Rechecked on 2026-09-01 during the GEO audit, correcting the 2026-08-14 note: of the
+three PRs recorded as "open and mergeable", two target repositories that are effectively
+dead. `devtooligan/awesome-ascii-art#3` — last push 2024-04-24, and the repo has never
+merged a single PR. `moul/awesome-ascii-art#7` — last push 2023-12-01, last merged PR
+2022-07-17. Treat only `pluja/awesome-privacy#967` as live (19.6k stars, 100+ open PRs;
+one polite rebase or nudge is reasonable). `paulaime/awesome-privacy#52` is closed.
+
+Two listings are merged and verified: `marcelscruz/dev-resources` #1198 (2026-08-03,
+1.3k stars) and `90dy/awesome-ascii` #3 (2026-07-21). **The `90dy/awesome-ascii` entry
+at README line 59 links the GitHub repo, not the site.** A one-line PR pointing it at
+`https://semaphore.bobochang.cn/` is the cheapest citation-surface fix available and the
+one exception to "do not open more list PRs" — owner's call, since it is public under the
+owner's account.
+
+## Wikidata item
+
+**Not created yet — needs a logged-in Wikidata account; anonymous users cannot create
+items.** This is the largest single lever left for entity recognition. "Semaphore"
+collides with Semaphore CI, the Semaphore zero-knowledge protocol, Semaphore UI (Ansible)
+and the concurrency primitive — which has its own Wikipedia article — so nothing today
+anchors "Semaphore the ASCII converter" as an entity for ChatGPT, Gemini or Perplexity.
+
+Values verified against the live Wikidata API on 2026-09-03. Description must not start
+with an article and stays lowercase, per Wikidata style.
+
+| statement | property | value |
+|---|---|---|
+| label (en) | — | Semaphore |
+| description (en) | — | browser-based image to ASCII art converter that runs entirely on the user's device |
+| label / description (zh) | — | Semaphore / 在浏览器本地运行的图片转 ASCII 字符画工具 |
+| instance of | P31 | web application — Q189210 |
+| official website | P856 | `https://semaphore.bobochang.cn/` |
+| source code repository URL | P1324 | `https://github.com/can4hou6joeng4/Semaphore` |
+| copyright license | P275 | MIT License — Q334661 |
+| programmed in | P277 | TypeScript — Q978185 |
+| platform | P400 | web browser — Q6368 |
+| language of work or name | P407 | English — Q1860; Simplified Chinese — Q13414913 |
+| inception | P571 | 2026-07-19 (first commit) |
+| software version identifier | P348 | 1.2.0 — from `package.json`; update on release |
+
+Attach references (P854 reference URL) to the key statements or the item risks deletion
+under the notability policy: the `90dy/awesome-ascii` listing, the `marcelscruz/dev-resources`
+entry and the repository itself are the citable ones. Do not add a `developer` (P178)
+statement — there is no item for the author and inventing one is worse than omitting it.
+
+Afterwards, put the new Q-number into `sameAs` on the `WebSite` and `WebApplication` nodes
+in `index.html`. `seo.test.ts` uses `toEqual` on the WebSite node, so extend that assertion
+in the same commit or the build goes red.
 
 ## After posts
 

@@ -1047,6 +1047,46 @@ describe("SEO page contract", () => {
     expect(llmsTxt).toContain("https://semaphore.bobochang.cn/llms-full.txt");
   });
 
+  it("marks the title and lede of every page as speakable", function () {
+    /* speakable is the one explicit "this is the summary" marker schema.org
+       offers a machine reader. Its Google rich result is news-only, so this
+       claims nothing about search; it points a consumer at the h1 and the lede,
+       which every page has for exactly that purpose. Selectors must match real
+       elements, so both are asserted against the markup too. */
+    pages.forEach(function (page) {
+      const node = jsonLd(page.html).flatMap(function (block) {
+        return (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
+      }).find(function (n) {
+        return typeof n["@id"] === "string" && (n["@id"] as string).endsWith("#webpage");
+      }) as { speakable?: unknown } | undefined;
+      expect(node?.speakable, page.path + " has no speakable").toEqual({
+        "@type": "SpeakableSpecification",
+        cssSelector: ["h1", ".lede"]
+      });
+      expect(page.html.match(/<h1\b/g) || []).toHaveLength(1);
+      expect(page.html).toMatch(/class="lede[ "]/);
+    });
+  });
+
+  it("stops iOS Safari zooming into the tool controls", function () {
+    /* Inputs set below 16px make iOS Safari zoom the viewport on focus and
+       leave it there. --fs-s is 13px and #charset is the most-used control. */
+    expect(terminalCss).toMatch(
+      /@media \(max-width: 960px\) and \(pointer: coarse\)\s*\{\s*\.input, select\.input \{ font-size: 16px; \}/
+    );
+  });
+
+  it("names the operator and a contact path on the privacy page", function () {
+    /* The page carrying the product's central claim said "the operator" and
+       gave a skeptical reader nobody to address. The contact path is the issue
+       tracker and never an email address: Email Obfuscation is on at the zone,
+       and a mailto: would let Cloudflare inject a script (AGENTS.md trap 16). */
+    expect(privacyHtml).toContain(
+      'built and operated by <a href="https://bobochang.cn">bobochang</a>'
+    );
+    expect(privacyHtml).toContain('href="https://github.com/can4hou6joeng4/Semaphore/issues"');
+  });
+
   it("ships a HowTo for the README banner guide", function () {
     expect(jsonLd(readmeBannerHtml).flatMap(schemaTypes)).toContain("HowTo");
     expect(readmeBannerHtml).toContain('href="/tool?charset=blocks&amp;cols=80&amp;color=green"');
