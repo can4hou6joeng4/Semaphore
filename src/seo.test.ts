@@ -2,6 +2,8 @@ import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { CHARSETS } from "./ascii-engine";
 import { FACTORY_DEFAULTS } from "./tool-params";
+import { buildLlmsFull } from "./llms-full";
+import viteConfig from "../vite.config.ts?raw";
 import indexHtml from "../index.html?raw";
 import toolHtml from "../tool.html?raw";
 import usecasesHtml from "../usecases.html?raw";
@@ -1009,6 +1011,40 @@ describe("SEO page contract", () => {
     expect(brailleHtml).toContain('href="https://www.unicode.org/charts/PDF/U2800.pdf"');
     expect(standardHtml).toContain('href="https://www.itu.int/rec/R-REC-BT.709"');
     expect(engineSource).toContain("0.2126 * r + 0.7152 * g + 0.0722 * bl");
+  });
+
+  it("generates llms-full.txt from the same pages it publishes", function () {
+    /* /llms-full.txt is built, not hand-written: the curated llms.txt followed
+       by the readable text of every canonical page. Running the generator here
+       over the same HTML the build reads is what keeps the file honest — a
+       leaked tag, a runtime placeholder or a dropped page fails before deploy. */
+    const full = buildLlmsFull(llmsTxt, pages.map(function (page) {
+      return { url: page.canonical, html: page.html };
+    }));
+    expect(full.startsWith(llmsTxt.trim())).toBe(true);
+    const body = full.slice(llmsTxt.trim().length);
+    pages.forEach(function (page) {
+      expect(body, page.path + " missing from llms-full").toContain("\n" + page.canonical + "\n");
+    });
+    /* no markup leaks: these tag names cannot appear in honest prose */
+    expect(body).not.toMatch(/<\/?(p|div|span|a|h[1-6]|li|td|th|pre|section|article|figure)\b/);
+    expect(body).not.toContain("&amp;");
+    /* real prose, tables and lists come through */
+    expect(body).toContain(
+      "Each character becomes a 2×4 grid of dots from the Unicode braille block"
+    );
+    expect(body).toContain("| charset | characters | steps |");
+    expect(body).toContain("1. **open a terminal-safe preset**");
+    expect(body).toContain("图片会被上传到什么地方吗？");
+    /* runtime placeholders, chrome and hidden nodes do not */
+    expect(body).not.toContain("rendering braille portrait");
+    expect(body).not.toContain("plain text is forever");
+    expect(body).not.toContain("JavaScript is off");
+    expect(body).not.toContain("– □ ✕");
+    /* and the build emits it, with the page list taken from the sitemap */
+    expect(viteConfig).toContain('fileName: "llms-full.txt"');
+    expect(viteConfig).toContain("public/sitemap.xml");
+    expect(llmsTxt).toContain("https://semaphore.bobochang.cn/llms-full.txt");
   });
 
   it("ships a HowTo for the README banner guide", function () {
