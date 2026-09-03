@@ -71,8 +71,13 @@ curl -sS -o /dev/null -w '%{http_code}\n' -X POST https://api.indexnow.org/index
   }'
 ```
 
-`/faq` is left out: its content has not changed since 2026-08-13. Expect `200` or `202`;
-record the date and status here afterwards.
+`/faq` is left out: its content has not changed since 2026-08-13.
+
+**Submitted 2026-09-03 16:52 UTC with the owner's authorization: HTTP 200, empty body**
+(200 means the key verified and the URLs were accepted; 202 would have meant "accepted,
+key not yet verified"). All 13 URLs above in one POST. This is a recrawl hint to Bing,
+Yandex and Seznam; it does not prove indexing. Google does not participate — the GSC
+URL-inspection requests in the section above are still pending and need the owner.
 
 ## Cloudflare AI crawl control
 
@@ -165,11 +170,11 @@ merged a single PR. `moul/awesome-ascii-art#7` — last push 2023-12-01, last me
 one polite rebase or nudge is reasonable). `paulaime/awesome-privacy#52` is closed.
 
 Two listings are merged and verified: `marcelscruz/dev-resources` #1198 (2026-08-03,
-1.3k stars) and `90dy/awesome-ascii` #3 (2026-07-21). **The `90dy/awesome-ascii` entry
-at README line 59 links the GitHub repo, not the site.** A one-line PR pointing it at
-`https://semaphore.bobochang.cn/` is the cheapest citation-surface fix available and the
-one exception to "do not open more list PRs" — owner's call, since it is public under the
-owner's account.
+1.3k stars) and `90dy/awesome-ascii` #3 (2026-07-21). The `90dy/awesome-ascii` entry at
+README line 59 linked the GitHub repo, not the site. **Fix PR opened 2026-09-03 with the
+owner's authorization: `90dy/awesome-ascii#4`** — primary link to the site, repo kept as
+a trailing `source` link, matching the web-hosted entries in the same section (Taag,
+Monodraw, Boxes). Awaiting the maintainer; last upstream activity was 2026-07-21.
 
 ## Wikidata item
 
