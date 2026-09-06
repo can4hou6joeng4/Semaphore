@@ -104,6 +104,14 @@ crawler, so search indexing is unaffected either way.
 
 **Deferred by the owner on 2026-08-14. Do not publish until explicitly resumed.**
 
+**Superseded in approach, 2026-09-06.** The GEO audit measured the ceiling for browser
+image-to-ASCII "Show HN" launch posts over the previous 18 months at about 4 points; the
+largest ASCII-related HN event in that window was a technical essay at 1,353 points. A
+technical article on the braille/Floyd–Steinberg pipeline is drafted at
+[`article-braille-dithering.md`](./article-braille-dithering.md), with publication notes
+at its end. Prefer publishing that as a plain link over the launch post below. The launch
+copy is kept for reference.
+
 **Title:**
 
 ```text
