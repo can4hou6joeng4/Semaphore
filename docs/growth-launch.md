@@ -1,8 +1,6 @@
 # Growth launch checklist
 
-Operational steps that cannot ship as code alone. Mirror of GitHub issue #8 with final copy.
-
-**Full agent takeover prompt (GSC, CF, posts, awesome PRs, regression):** see [handoff-prompts.md](./handoff-prompts.md).
+Operational steps that cannot ship as code alone.
 
 ## Google Search Console
 
@@ -41,7 +39,7 @@ Google does not participate; the separate Search Console requests above were com
 through the authorized browser session.
 
 **Pending as of 2026-09-03 — needs the owner's go-ahead.** IndexNow writes require
-current authorization (see handoff-prompts.md). Thirteen canonical URLs have changed
+the owner's explicit authorization each time. Thirteen canonical URLs have changed
 since the 2026-08-14 submission and `/guides/ssh-motd` has never been submitted at all.
 One POST covers everything. The key is the filename of the 64-hex `.txt` in `public/`
 and is already live at the site root, so nothing here is secret:

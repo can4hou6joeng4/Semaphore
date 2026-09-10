@@ -220,8 +220,8 @@ Things a fresh read of the code will not reveal:
 ## Growth / launch handoff
 
 Post-deploy distribution (Search Console, Cloudflare AI crawl, Show HN, V2EX,
-awesome-list PRs) is **not** encoded in the app. Use the full agent prompt in
-[`docs/handoff-prompts.md`](docs/handoff-prompts.md); checklist copy lives in
+awesome-list PRs) is **not** encoded in the app. The checklist, what has already been
+submitted and what is still pending live in
 [`docs/growth-launch.md`](docs/growth-launch.md). Never satisfy growth by adding
 in-page analytics or weakening `connect-src 'none'`.
 
