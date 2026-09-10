@@ -21,6 +21,9 @@
   },
   "author": "bobochang (https://bobochang.cn)",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "devDependencies": {
     "typescript": "^7.0.2",
     "vite": "^8.2.2",

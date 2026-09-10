@@ -228,7 +228,7 @@ in-page analytics or weakening `connect-src 'none'`.
 ## Verification
 
 ```bash
-npm install                                          # Node 22 is what CI uses
+npm install                                          # Node 22 — .nvmrc is what CI reads
 npm run dev                                          # vite dev server
 npm test                                             # vitest run
 npm run test:watch                                   # vitest in watch mode
