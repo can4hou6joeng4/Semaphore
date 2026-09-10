@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/can4hou6joeng4/Semaphore/actions/workflows/deploy.yml?branch=main"><img src="https://img.shields.io/github/actions/workflow/status/can4hou6joeng4/Semaphore/deploy.yml?branch=main&style=for-the-badge" alt="Build status"></a>
   <a href="https://github.com/can4hou6joeng4/Semaphore/releases"><img src="https://img.shields.io/github/v/release/can4hou6joeng4/Semaphore?include_prereleases&style=for-the-badge" alt="GitHub release"></a>
-  <a href="https://github.com/can4hou6joeng4/Semaphore/stargazers"><img src="https://img.shields.io/github/stars/can4hou6joeng4/Semaphore?style=for-the-badge" alt="Stars"></a>
+  <a href="https://github.com/can4hou6joeng4/Semaphore"><img src="https://img.shields.io/github/stars/can4hou6joeng4/Semaphore?style=for-the-badge" alt="Stars"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge" alt="License"></a>
   <a href="https://semaphore.bobochang.cn"><img src="https://img.shields.io/badge/live-open-2ea44f?style=for-the-badge" alt="Live site"></a>
 </p>
@@ -21,7 +21,7 @@
 - **拖入即转**:PNG / JPG / WebP / GIF 拖进浏览器,即可在本地实时预览并调节字符画
 - **绝不上传**:像素在本地 `<canvas>` 上采样,线上还下发 `connect-src 'none'`,页面**根本无法**往外发请求
 - **六套字符集**:从经典亮度梯度到**抖动 2×4 盲文点阵**,同宽度下 8 倍像素密度
-- **实时调参**:列数、亮度、对比度、反色,以及绿 / 灰度 / 原色三种配色——**每帧重新转换**
+- **实时调参**:列数、亮度、对比度、反色、Floyd–Steinberg 抖动,以及绿 / 灰度 / 原色三种配色——**每帧重新转换**
 - **多种导出**:复制纯文本、下载 `.txt` 或 `.png`,或生成一张带参数的**分享卡**
 - **CRT 终端质感**:扫描线、荧光辉光、vim 状态栏——**整个站点就是一台终端**
 
@@ -29,7 +29,17 @@
 
 打开 **[semaphore.bobochang.cn/tool](https://semaphore.bobochang.cn/tool)** 拖一张图进去,就这样。不用注册,不排队,没有水印。中文简介见 **[semaphore.bobochang.cn/zh](https://semaphore.bobochang.cn/zh)**。需要保留照片细节时,可以先看[图片转盲文 ASCII 指南](https://semaphore.bobochang.cn/charsets/braille),再使用预设直接转换。README 横幅可参考[纯文本横幅教程](https://semaphore.bobochang.cn/guides/readme-banner),终端登录横幅可参考[SSH MOTD ASCII 指南](https://semaphore.bobochang.cn/guides/ssh-motd)。
 
-想自己跑:
+每个控件都对应一个 URL 参数,所以一组预设就是一条链接。超出范围的值会被夹到合法区间,`charset` / `color` 会记住上次的选择:
+
+```text
+https://semaphore.bobochang.cn/tool?charset=blocks&cols=80&color=green
+https://semaphore.bobochang.cn/tool?charset=standard&cols=64&contrast=20&color=gray
+https://semaphore.bobochang.cn/tool?charset=braille&dither=false&invert=true
+```
+
+`charset`(上面六个名字)· `cols` 40–240 · `brightness` / `contrast` −100–100 · `invert` / `dither` true 或 false · `color` green、gray 或 original。
+
+想自己跑(Node 22,见 `.nvmrc`):
 
 ```bash
 git clone https://github.com/can4hou6joeng4/Semaphore.git
@@ -92,9 +102,10 @@ Semaphore 是水手隔水通话的方式:没有电报,没有网络,只有一双�
 
 ## 支持
 
-- 如果 Semaphore 帮你省下了一趟"先上传再转换"的路,点个 star 或者[分享出去](https://twitter.com/intent/tweet?url=https://github.com/can4hou6joeng4/Semaphore&text=Semaphore%20-%20turn%20any%20image%20into%20ASCII%20art%2C%20right%20in%20your%20browser.)。
+- 如果 Semaphore 帮你省下了一趟"先上传再转换"的路,点个 star 或者[分享出去](https://x.com/intent/post?url=https://github.com/can4hou6joeng4/Semaphore&text=Semaphore%20-%20turn%20any%20image%20into%20ASCII%20art%2C%20right%20in%20your%20browser.)。
 - 发现 bug,或者想要一套还不存在的字符集?[提个 issue](https://github.com/can4hou6joeng4/Semaphore/issues/new/choose)——先看一眼 [CONTRIBUTING.md](CONTRIBUTING.md)。
 - 提问和想法请走 [Discussions](https://github.com/can4hou6joeng4/Semaphore/discussions)。
+- 各版本改了什么见 [CHANGELOG.md](CHANGELOG.md)。安全问题请走[私密报告](SECURITY.md),不要开公开 issue。
 
 ## 许可证
 

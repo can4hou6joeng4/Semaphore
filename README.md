@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/can4hou6joeng4/Semaphore/actions/workflows/deploy.yml?branch=main"><img src="https://img.shields.io/github/actions/workflow/status/can4hou6joeng4/Semaphore/deploy.yml?branch=main&style=for-the-badge" alt="Build status"></a>
   <a href="https://github.com/can4hou6joeng4/Semaphore/releases"><img src="https://img.shields.io/github/v/release/can4hou6joeng4/Semaphore?include_prereleases&style=for-the-badge" alt="GitHub release"></a>
-  <a href="https://github.com/can4hou6joeng4/Semaphore/stargazers"><img src="https://img.shields.io/github/stars/can4hou6joeng4/Semaphore?style=for-the-badge" alt="Stars"></a>
+  <a href="https://github.com/can4hou6joeng4/Semaphore"><img src="https://img.shields.io/github/stars/can4hou6joeng4/Semaphore?style=for-the-badge" alt="Stars"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge" alt="License"></a>
   <a href="https://semaphore.bobochang.cn"><img src="https://img.shields.io/badge/live-open-2ea44f?style=for-the-badge" alt="Live site"></a>
 </p>
@@ -21,7 +21,7 @@
 - **Drop and convert**: PNG / JPG / WebP / GIF — drag it into the browser and get live ASCII feedback while you tune the output
 - **Nothing is uploaded**: pixels are sampled on a local `<canvas>`, and production ships `connect-src 'none'` so the page **cannot** phone home
 - **Six charsets**: from classic luminance ramps to a **dithered 2×4 braille matrix** with 8× the pixel density
-- **Live controls**: columns, brightness, contrast, invert, and green / grayscale / original color — **re-converted every frame**
+- **Live controls**: columns, brightness, contrast, invert, Floyd–Steinberg dithering, and green / grayscale / original color — **re-converted every frame**
 - **Flexible export**: copy plain text, download `.txt` or `.png`, or generate a **share card** with the parameters baked in
 - **CRT terminal aesthetics**: scanlines, phosphor glow, and a vim statusbar — **the whole site is one terminal**
 
@@ -35,7 +35,17 @@ Guides and locales:
 - [SSH MOTD ASCII art guide](https://semaphore.bobochang.cn/guides/ssh-motd)
 - [中文简介](https://semaphore.bobochang.cn/zh) · [README 简体中文](README_CN.md)
 
-Prefer to run it yourself:
+Every control is also a URL parameter, so a preset is just a link. Values outside the supported range are clamped, and `charset` / `color` are remembered for next time:
+
+```text
+https://semaphore.bobochang.cn/tool?charset=blocks&cols=80&color=green
+https://semaphore.bobochang.cn/tool?charset=standard&cols=64&contrast=20&color=gray
+https://semaphore.bobochang.cn/tool?charset=braille&dither=false&invert=true
+```
+
+`charset` (six names above) · `cols` 40–240 · `brightness` / `contrast` −100–100 · `invert` / `dither` true or false · `color` green, gray or original.
+
+Prefer to run it yourself (Node 22, see `.nvmrc`):
 
 ```bash
 git clone https://github.com/can4hou6joeng4/Semaphore.git
@@ -98,9 +108,10 @@ Semaphore is the sailors' way of talking across water: no telegraph, no network 
 
 ## Support
 
-- If Semaphore saved you a trip to an upload-first converter, give it a star or [share it](https://twitter.com/intent/tweet?url=https://github.com/can4hou6joeng4/Semaphore&text=Semaphore%20-%20turn%20any%20image%20into%20ASCII%20art%2C%20right%20in%20your%20browser.).
+- If Semaphore saved you a trip to an upload-first converter, give it a star or [share it](https://x.com/intent/post?url=https://github.com/can4hou6joeng4/Semaphore&text=Semaphore%20-%20turn%20any%20image%20into%20ASCII%20art%2C%20right%20in%20your%20browser.).
 - Found a bug or want a charset that does not exist yet? [Open an issue](https://github.com/can4hou6joeng4/Semaphore/issues/new/choose) — see [CONTRIBUTING.md](CONTRIBUTING.md) first.
 - Questions and ideas go to [Discussions](https://github.com/can4hou6joeng4/Semaphore/discussions).
+- What changed between releases is in [CHANGELOG.md](CHANGELOG.md). Security problems go through [private reporting](SECURITY.md), not a public issue.
 
 ## License
 
