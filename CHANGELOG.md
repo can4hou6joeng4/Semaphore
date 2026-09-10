@@ -4,10 +4,49 @@ All notable changes to Semaphore are documented in this file.
 
 ## Unreleased
 
+### Features
+
+- Give `/tool` real prose (211 → 634 body words) and add the site's first two reference tables, each pinned to its source of truth: the six-charset comparison on the home page (step counts asserted against `CHARSETS`) and the control range/default table on `/tool` (asserted against the page's range inputs and `FACTORY_DEFAULTS`). Three cards explain the mono cell aspect ratio, the mechanism behind "looks right on the site, squashed after pasting". (#21)
+- Rebuild both guides as real `<ol>` steps tied to their `HowToStep` count, publish `/guides/ssh-motd`'s four existing answers as `FAQPage` schema, add a four-question troubleshooting section to `/guides/readme-banner`, and show an actual banner there instead of a `# paste the ASCII banner here` placeholder. (#22)
+- Give `/zh` real content instead of a 200-word dead end: the charset table, all ten FAQ answers in Chinese mirrored into `FAQPage` schema, and inbound links from `/tool`, `/faq` and `/usecases`. (#23)
+- Generate `/llms-full.txt` at build time from `public/llms.txt` plus the readable text of every canonical page in sitemap order (`src/llms-full.ts`, pure string code shared by `vite.config.ts` and the tests). The route previously returned 404; the dev server serves it too. (#25)
+- Add `speakable` (`h1` + `.lede`) to every page's `WebPage` node, and replace four metaphorical use-case blurbs with concrete charset and column recommendations in the form `ssh-motd` already used. (#26)
+
+### SEO and discovery
+
+- Resolve the entity graph on every page, not just the home page: 19 dangling `@id` references across 13 files are removed by inlining lean `WebSite`, `Person` and, where referenced, `WebApplication` stubs under the canonical `@id`s; `author` lands on all 14 `#webpage` nodes; every `WebPage` and `BreadcrumbList` gains an `@id`. The test that forbade a second `WebApplication` on `/tool` was inverted (identical `@id` is the merge instruction in JSON-LD) and is replaced by three that pin the invariant directly. (#20)
+- Remove two invalid `WebApplication` properties, `privacyPolicy` and `codeRepository`; the repo link moves onto a real `SoftwareSourceCode` node linked back via `targetProduct`. (#18)
+- Correct the charset nav copy and `llms.txt`: `blocks` is four fills and a space, not "five solid fills"; `binary` is a space, a zero and a one. (#18)
+- Cite the algorithms the site names: Floyd–Steinberg dithering, the Unicode braille block (U+2800), and Rec. 709 luma weighting, whose coefficients are asserted against the engine source so the citation cannot outlive the code. (#24)
+- Name the operator on `/privacy` and link the issue tracker as the contact path. Never an email address: Email Obfuscation is on at the zone and a `mailto:` would let Cloudflare inject a script (AGENTS.md trap 16). (#26)
+- Move `dateModified` and sitemap `lastmod` only on pages whose content changed (2026-09-01 to 2026-09-03), keeping `lastmod` a real per-page signal. (#18, #21–#24, #26)
+
+### Performance
+
+- Drop `no-transform` from the 14 canonical HTML routes. Cloudflare honours it by disabling compression, so every page shipped uncompressed while `/404`, the one route without a `_headers` rule, was brotli: 178 KB → 54 KB across the routes, home page 27 KB → 7.8 KB, all on the LCP critical path. (#18)
+- Delete the zone's Web Analytics (RUM) site. The first rationale for removing `no-transform` was wrong: CSP blocks the beacon from loading, but `no-transform` was what stopped the edge from injecting the `<script>` tag at all, so every visitor got a console error and `faq.html`'s "no analytics script" claim was false in the served HTML. Only deleting the RUM site stopped it; `curl` without a browser `User-Agent` and `Accept: text/html` is a false negative. The invariant (no `no-transform`, no RUM site, no `mailto:`) is AGENTS.md trap 16, pinned by tests where a source-text test can reach it. (#19)
+- Step the `#charset` select up to 16px on coarse-pointer screens under 960px so iOS Safari stops zooming the viewport on focus. (#26)
+
+### Fixes
+
+- Label the six hand-set panels on `/usecases` directly under each figure instead of in a disclaimer three screens below; a test pins note count to panel count. (#24)
+- Hide the home page's decorative `{}` brace spans from assistive tech (they were announced as "left brace right brace"), and keep the leading space in `.ramp` cells so `llms-full.txt` does not misquote a charset whose darkest step is a space. (#25)
+- Fix `schemaTypes()` in the SEO test helper: an array `@type` returned `[]`, silently making every type assertion on such a node vacuous. (#22)
+- Remove the `.steps` CSS rule #21 shipped and never used, and rewrite its `STYLEGUIDE.md` recipe to document the card grid the guides actually use. (#22)
+
+### Documentation
+
+- Correct `docs/growth-launch.md`: two of the three "mergeable" awesome-list targets are dormant repos; IndexNow, Bing verification and Wikidata are staged as single owner actions. Record the 2026-09-03 IndexNow POST (13 URLs, HTTP 200) and the `90dy/awesome-ascii#4` link fix. (#26, #27)
+- Draft the braille / Floyd–Steinberg technical article in `docs/article-braille-dithering.md`, every claim verified against `src/ascii-engine.ts`. Three image placeholders remain; publishing is the owner's call. (#29)
+- Drop the one local filesystem path from the handoff record. (#28)
+- Refresh `AGENTS.md` against the current tree: add `src/charset-page.ts`, `public/_redirects`, the commit-prefix convention, and the wrangler command that serves `dist/` with `_headers` applied. (#30)
+
 ### Maintenance
 
 - Remove the unused `AsciiEngine.VERSION` export and its synchronization test; the
   value had no runtime consumer and was tree-shaken out of every build.
+- Add the `.tbl` and `.guide-steps` recipes to `STYLEGUIDE.md`. `.tbl` sets `min-width: 560px`, which makes the `tabindex` on `.table-wrap` load-bearing for keyboard scrolling below ~600px; a test pins it. (#21, #22)
+- Pin two font-subset traps by test: no `U+2212 MINUS` in copy (use the ASCII hyphen), and no literal braille ramp outside engine output, since JetBrains Mono ships 0 of 256 braille glyphs. (#21)
 
 ## 1.2.0 - 2026-08-13
 
