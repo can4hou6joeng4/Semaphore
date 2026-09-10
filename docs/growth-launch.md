@@ -24,8 +24,8 @@ Operational steps that cannot ship as code alone.
 
 Production pre-flight passed for all 13 canonical URLs on 2026-08-14. The sitemap was
 also confirmed successful in GSC with all 13 pages discovered. With the owner's explicit
-authorization to control the logged-in Chrome session, the agent submitted each of the
-five URLs above through URL Inspection. Every URL received Google's confirmation:
+authorization to control the logged-in Chrome session, each of the
+five URLs above was submitted through URL Inspection. Every URL received Google's confirmation:
 "Indexing requested" and "URL was added to a priority crawl queue." No quota, CAPTCHA
 or eligibility error appeared. This requests recrawling; it does not guarantee or prove
 that Google has indexed the pages yet.

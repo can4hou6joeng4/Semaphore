@@ -6,6 +6,6 @@ coverage/
 *.log
 .playwright-cli/
 
-# agent overrides (machine-specific)
+# per-machine instruction overrides
 AGENTS.local.md
 CLAUDE.local.md
