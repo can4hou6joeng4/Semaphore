@@ -45,14 +45,23 @@ Only the entries whose role is not obvious from the filename:
   markup or CSS. When you change a pattern in code, change it there in the same commit,
   or the next author will reintroduce what you just fixed.
 - `src/shared.ts` — injects the header, vim statusbar and CRT overlays into every page,
-  and owns the theme. Pages must never hand-write that chrome.
+  and owns the theme. Pages must never hand-write that chrome. It exports the two
+  helpers every page module uses: `Site` (statusbar state and right-hand metrics, toast,
+  theme) and `Util` (clipboard, download, cached mono advance measurement, `fitPre`).
+  Reach for these before writing a page-local copy.
 - `src/ascii-engine.ts` — the conversion engine. `convert()` and `renderPNG()` need a
   real `<canvas>`; `coverRect()`, `toHTML()` and `CHARSETS` are pure.
 - `src/sharecard.ts` — one layout, two renderers (SVG string and canvas PNG). `layout()`
   is the shared math; if you change one renderer without the other they drift.
 - `src/main-<page>.ts` — the only script a page loads. Each one is a two-to-four line
   manifest: `terminal.css`, `shared`, then the page's behavior module (`landing` + `demo`
-  for the home page, `tool` for the converter). Page logic belongs in the module, not here.
+  for the home page, `tool` for the converter, `charset-page` for the five ramp pages).
+  Page logic belongs in the module, not here. `main-braille.ts` is the one standing
+  exception: its demo logic lives inline because braille needs a rendered-width guard
+  against the system fallback font (Trap 6) that the ramp pages do not.
+- `src/charset-page.ts` — one module behind `/charsets/standard|detailed|blocks|minimal|
+  binary`. The charset comes from `<body data-charset="…">`, so those five pages share a
+  single entry and differ only in markup.
 - `src/terminal.css` — the single stylesheet for every page, imported by the entries
   (not linked from HTML). Vite extracts it to a hashed `/assets/*.css`.
 - `src/tool-params.ts` — the boot-state contract for the converter: `FACTORY_DEFAULTS`,
@@ -69,6 +78,8 @@ Only the entries whose role is not obvious from the filename:
   copy changes as readily as on logic ones — read the failing assertion before "fixing"
   either side.
 - `public/_headers` — Cloudflare Pages response headers. Caching policy and the CSP.
+- `public/_redirects` — Cloudflare Pages redirects. Currently one rule, the 301 from the
+  old `/braille` URL to `/charsets/braille`; a renamed page needs its old path added here.
 - `public/static/` — stable-named assets (samples, share card). `public/fonts/` — the
   self-hosted font subset. Neither may move under `/assets/` (see Traps).
 - `docs/images/` — README assets only, never served by the site.
@@ -82,6 +93,9 @@ Only the entries whose role is not obvious from the filename:
   site itself (the README is allowed one).
 - Keep the existing code voice: `function` declarations, explicit return types, comment
   blocks that explain *why* a non-obvious thing is done, not what the line does.
+- Commits use `feat:` / `fix:` / `perf:` / `chore:` / `docs:` prefixes, one logical change
+  each (`CONTRIBUTING.md`). The PR template asks which pages were checked in a browser —
+  fill that in for anything visual or canvas-dependent, since the suite cannot cover it.
 
 ## Adding or renaming a page
 
@@ -100,6 +114,8 @@ a test failure or a silently unshipped page rather than a visible mistake:
    sitemap at build time and needs no edit.)
 6. The `pages` array in `src/seo.test.ts` — that array drives the whole head/canonical/
    sitemap/headers contract, so registering there is what actually enforces steps 1–5.
+7. When *renaming*, a 301 from the old path in `public/_redirects`, and the old
+   `_headers` rule removed (an orphaned rule is harmless but misleading).
 
 ## Traps
 
@@ -159,7 +175,7 @@ Things a fresh read of the code will not reveal:
 14. **Test files are type-checked by `npm run build`.** `tsconfig.json` has no `exclude`
     and includes all of `src`, so a `*.test.ts` type error fails the build. Node APIs used
     from tests need a declaration in `src/node-shim.d.ts` — production sources stay
-    DOM-only. (The comment in that file claiming tests are excluded is out of date.)
+    DOM-only.
 15. **The 64-hex `.txt` file in `public/` is the IndexNow key — do not delete it.**
     `public/88829be3…c080825.txt` looks like stray build junk and is not. IndexNow
     requires a key file whose *filename* and *contents* are the same key, served from
@@ -215,11 +231,13 @@ in-page analytics or weakening `connect-src 'none'`.
 npm install                                          # Node 22 is what CI uses
 npm run dev                                          # vite dev server
 npm test                                             # vitest run
+npm run test:watch                                   # vitest in watch mode
 npx vitest run src/tool-params.test.ts               # a single file
 npx vitest run -t "publishes every canonical page"   # a single test by name
 npm run typecheck                                    # tsc --noEmit on its own
 npm run build                                        # tsc --noEmit + vite build to dist/
-npm run preview                                      # serve the built dist/
+npm run preview                                      # serve the built dist/ (no _headers)
+npx wrangler pages dev dist                          # serve dist/ WITH _headers and _redirects
 ```
 
 Pull requests run `npm test` then `npm run build` (`.github/workflows/ci.yml`). A push to
@@ -229,7 +247,8 @@ environment, so green CI is the only gate before production.
 
 `convert()` and `renderPNG()` need a canvas, so they are not unit-tested. Verify anything
 canvas- or CSP-dependent in a real browser. To reproduce the deployed environment locally,
-serve `dist/` with the real `public/_headers` applied and check for zero CSP violations
-and zero JS errors — the site records uncaught errors into `document.documentElement`'s
+serve `dist/` with the real `public/_headers` applied (`npx wrangler pages dev dist` does;
+`vite preview` and `vite dev` do not, which is why a stray `fetch()` passes locally) and
+check for zero CSP violations and zero JS errors — the site records uncaught errors into `document.documentElement`'s
 `data-js-errors` attribute, and sets `data-chrome="ready"` once `shared.ts` has injected
 the page chrome, so both are greppable from a headless DOM dump.
