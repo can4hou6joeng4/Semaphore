@@ -14,6 +14,7 @@ All notable changes to Semaphore are documented in this file.
 
 ### SEO and discovery
 
+- Print a visible byline on every page: the footer now reads `built by bobochang · source · MIT · updated <date>` (`作者 · 源码 · MIT 许可 · 更新于` on `/zh`). `Person` schema was on all 14 pages but the name appeared in prose only on `/privacy`, and a date only there; answer engines read the page, not the graph. The `<time>` value is tested against the page's `dateModified`, which the sitemap test already ties to `lastmod`.
 - Describe the app in full on every page that declares it: `/tool` and the six charset pages carried a five-property `WebApplication` stub while the complete node (description, price, feature list, licence, screenshot) lived only on `/`. A test now diffs every declaration against the home page's. The node also gains a `disambiguatingDescription`, because "Semaphore" is a flag code, a concurrency primitive and a CI service before it is this tool.
 - State `inLanguage` on every `#webpage` node (only `/zh` had it) and anchor each page's subject to a public entity with `about`/`mentions` carrying Wikipedia IRIs — ASCII art, Braille Patterns, Floyd–Steinberg dithering, Block Elements. `/` and `/faq` gain the `description` the other twelve already had.
 - Point `speakable` at the first lede by XPath instead of `cssSelector: [".lede"]`, which matched every section intro (seven on the home page). Add `og:locale:alternate zh_CN` to `/` so the locale pair is declared in both directions.
