@@ -62,6 +62,14 @@
       "@id": "https://semaphore.bobochang.cn/guides/ssh-motd#webpage",
       "name": "SSH MOTD ASCII Art from an Image",
       "url": "https://semaphore.bobochang.cn/guides/ssh-motd",
+      "inLanguage": "en",
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "ASCII art",
+          "sameAs": "https://en.wikipedia.org/wiki/ASCII_art"
+        }
+      ],
       "description": "How to convert a logo or photo into plain-text ASCII art for an SSH MOTD or terminal login banner.",
       "isPartOf": {
         "@id": "https://semaphore.bobochang.cn/#website"
@@ -108,7 +116,10 @@
       ],
       "speakable": {
         "@type": "SpeakableSpecification",
-        "cssSelector": ["h1", ".lede"]
+        "xpath": [
+          "/html/body//h1",
+          "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
+        ]
       },
       "dateModified": "2026-09-12"
     },

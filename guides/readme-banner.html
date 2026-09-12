@@ -57,6 +57,14 @@
       "@id": "https://semaphore.bobochang.cn/guides/readme-banner#webpage",
       "name": "README ASCII Banner from an Image",
       "url": "https://semaphore.bobochang.cn/guides/readme-banner",
+      "inLanguage": "en",
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "ASCII art",
+          "sameAs": "https://en.wikipedia.org/wiki/ASCII_art"
+        }
+      ],
       "description": "How to convert a logo or photo into a plain-text README banner with Semaphore.",
       "isPartOf": {
         "@id": "https://semaphore.bobochang.cn/#website"
@@ -103,7 +111,10 @@
       ],
       "speakable": {
         "@type": "SpeakableSpecification",
-        "cssSelector": ["h1", ".lede"]
+        "xpath": [
+          "/html/body//h1",
+          "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
+        ]
       },
       "dateModified": "2026-09-12"
     },

@@ -67,6 +67,14 @@
       "@id": "https://semaphore.bobochang.cn/charsets/binary#webpage",
       "name": "Image to Binary ASCII Art",
       "url": "https://semaphore.bobochang.cn/charsets/binary",
+      "inLanguage": "en",
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "ASCII art",
+          "sameAs": "https://en.wikipedia.org/wiki/ASCII_art"
+        }
+      ],
       "description": "How Semaphore reduces an image to ones and zeroes, and why a three-step ramp renders shape rather than tone.",
       "isPartOf": {
         "@id": "https://semaphore.bobochang.cn/#website"
@@ -82,7 +90,10 @@
       },
       "speakable": {
         "@type": "SpeakableSpecification",
-        "cssSelector": ["h1", ".lede"]
+        "xpath": [
+          "/html/body//h1",
+          "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
+        ]
       },
       "dateModified": "2026-09-12"
     },
@@ -125,15 +136,38 @@
     {
       "@type": "WebApplication",
       "@id": "https://semaphore.bobochang.cn/#webapp",
-      "name": "Semaphore",
-      "applicationCategory": "MultimediaApplication",
-      "isAccessibleForFree": true,
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
       "author": {
         "@id": "https://semaphore.bobochang.cn/#person"
       },
-      "isPartOf": {
-        "@id": "https://semaphore.bobochang.cn/#website"
-      }
+      "name": "Semaphore",
+      "url": "https://semaphore.bobochang.cn/",
+      "description": "Free image to ASCII converter that runs entirely in your browser. Drop a photo, choose a charset including braille, export plain text or PNG. Nothing is uploaded.",
+      "disambiguatingDescription": "A browser-based image to ASCII art converter by bobochang. Not the flag signalling system, the concurrency primitive, or the CI service of the same name.",
+      "applicationCategory": "MultimediaApplication",
+      "applicationSubCategory": "Image converter",
+      "operatingSystem": "Any (runs in a web browser)",
+      "browserRequirements": "Requires JavaScript and HTML5 canvas",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Converts PNG, JPG, WebP and GIF to ASCII art",
+        "Runs 100% client-side — images are never uploaded",
+        "Six charsets including a dithered 2x4 braille mode",
+        "Live controls for columns, brightness, contrast, invert and color",
+        "Export as plain text, .txt, .png or a share card"
+      ],
+      "screenshot": "https://semaphore.bobochang.cn/static/social-card.jpg",
+      "license": "https://opensource.org/licenses/MIT",
+      "sameAs": [
+        "https://github.com/can4hou6joeng4/Semaphore"
+      ]
     }
   ]
 }

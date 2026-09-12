@@ -17,6 +17,7 @@
 <meta name="twitter:image:alt" content="Semaphore — free image to ASCII converter, nothing uploaded">
 <meta property="og:site_name" content="Semaphore">
 <meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="600">
 <meta property="og:image:alt" content="Semaphore — free image to ASCII converter, nothing uploaded">
@@ -267,6 +268,27 @@
       "@id": "https://semaphore.bobochang.cn/#webpage",
       "name": "Image to ASCII Art Converter",
       "url": "https://semaphore.bobochang.cn/",
+      "inLanguage": "en",
+      "description": "Free image to ASCII converter in your browser. Drop a photo, pick a charset (including braille), export text or PNG. Nothing is uploaded.",
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "ASCII art",
+          "sameAs": "https://en.wikipedia.org/wiki/ASCII_art"
+        }
+      ],
+      "mentions": [
+        {
+          "@type": "Thing",
+          "name": "Braille Patterns",
+          "sameAs": "https://en.wikipedia.org/wiki/Braille_Patterns"
+        },
+        {
+          "@type": "Thing",
+          "name": "Floyd–Steinberg dithering",
+          "sameAs": "https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering"
+        }
+      ],
       "isPartOf": {
         "@id": "https://semaphore.bobochang.cn/#website"
       },
@@ -278,7 +300,10 @@
       },
       "speakable": {
         "@type": "SpeakableSpecification",
-        "cssSelector": ["h1", ".lede"]
+        "xpath": [
+          "/html/body//h1",
+          "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
+        ]
       },
       "dateModified": "2026-09-12"
     },
@@ -316,6 +341,7 @@
       "name": "Semaphore",
       "url": "https://semaphore.bobochang.cn/",
       "description": "Free image to ASCII converter that runs entirely in your browser. Drop a photo, choose a charset including braille, export plain text or PNG. Nothing is uploaded.",
+      "disambiguatingDescription": "A browser-based image to ASCII art converter by bobochang. Not the flag signalling system, the concurrency primitive, or the CI service of the same name.",
       "applicationCategory": "MultimediaApplication",
       "applicationSubCategory": "Image converter",
       "operatingSystem": "Any (runs in a web browser)",

@@ -66,6 +66,14 @@
         "@id": "https://semaphore.bobochang.cn/usecases#webpage",
         "name": "ASCII Art Use Cases",
         "url": "https://semaphore.bobochang.cn/usecases",
+        "inLanguage": "en",
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "ASCII art",
+            "sameAs": "https://en.wikipedia.org/wiki/ASCII_art"
+          }
+        ],
         "description": "Where image to ASCII still beats pixels — README banners, SSH splash screens, code comments, mail and terminal ricing.",
         "isPartOf": {
           "@id": "https://semaphore.bobochang.cn/#website"
@@ -78,9 +86,12 @@
         },
         "speakable": {
           "@type": "SpeakableSpecification",
-          "cssSelector": ["h1", ".lede"]
+          "xpath": [
+            "/html/body//h1",
+            "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
+          ]
         },
-        "dateModified": "2026-09-03"
+        "dateModified": "2026-09-12"
       },
       {
         "@type": "BreadcrumbList",

@@ -513,6 +513,66 @@ describe("SEO page contract", () => {
     expect(appIds.size).toBe(1);
   });
 
+  it("describes the app in full on every page that declares it", function () {
+    /* JSON-LD is parsed per document. A five-property stub on /tool told a
+       consumer the app's name and category and nothing else, on the page
+       most likely to be cited for the head term. Every declaration must
+       carry the same description, price, feature list and licence as the
+       home page, and the name disambiguation: "Semaphore" is a flag code,
+       a concurrency primitive and a CI service before it is this tool. */
+    const home = jsonLd(indexHtml).flatMap(function (block) {
+      return (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
+    }).find(function (node) { return node["@type"] === "WebApplication"; });
+    expect(home).toBeTruthy();
+    ["description", "disambiguatingDescription", "operatingSystem", "offers",
+     "featureList", "screenshot", "license", "url"].forEach(function (key) {
+      expect(home, "home app node lacks " + key).toHaveProperty(key);
+    });
+    pages.forEach(function (page) {
+      jsonLd(page.html).forEach(function (block) {
+        const graph = (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
+        graph.forEach(function (node) {
+          if (node["@type"] !== "WebApplication") return;
+          expect(node, page.path + " ships a reduced app node").toEqual(home);
+        });
+      });
+    });
+  });
+
+  it("states each page's language and anchors its subject to a public entity", function () {
+    /* The WebSite node lists both languages, which says nothing about which
+       one a given page is in; /zh said zh-CN and the thirteen English pages
+       said nothing. `about` gives a model a stable IRI for what the page is
+       on, so "Semaphore" attaches to the ASCII-art concept it already knows
+       rather than floating as an unconnected name. Wikipedia URLs are inert
+       identifiers here — no request is ever made to them. /privacy is about
+       this site, not a public concept, and stays unanchored. */
+    pages.forEach(function (page) {
+      const node = jsonLd(page.html).flatMap(function (block) {
+        return (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
+      }).find(function (n) {
+        return typeof n["@id"] === "string" && (n["@id"] as string).endsWith("#webpage");
+      }) as { inLanguage?: string; about?: Array<{ sameAs?: string }> } | undefined;
+      const lang = page.path === "zh.html" ? "zh-CN" : "en";
+      expect(node?.inLanguage, page.path + " inLanguage").toBe(lang);
+      expect(page.html).toContain('<html lang="' + lang + '">');
+      if (page.path === "privacy.html") return;
+      const about = node?.about || [];
+      expect(about.length, page.path + " has no about").toBeGreaterThan(0);
+      about.forEach(function (thing) {
+        expect(thing.sameAs, page.path + " about without a public IRI")
+          .toMatch(/^https:\/\/en\.wikipedia\.org\/wiki\//);
+      });
+    });
+  });
+
+  it("declares the locale pair in both directions", function () {
+    /* hreflang already pairs / with /zh for search; og:locale:alternate is
+       the same pairing for social scrapers, and only /zh declared it. */
+    expect(indexHtml).toContain('<meta property="og:locale:alternate" content="zh_CN">');
+    expect(zhHtml).toContain('<meta property="og:locale:alternate" content="en_US">');
+  });
+
   it("resolves every @id a page references within that same page", function () {
     /* JSON-LD is parsed per document, so a reference to #website on /tool is a
        bare URI unless that page also carries the node. Consumers do not fetch
@@ -1089,12 +1149,14 @@ describe("SEO page contract", () => {
     expect(llmsTxt).toContain("https://semaphore.bobochang.cn/llms-full.txt");
   });
 
-  it("marks the title and lede of every page as speakable", function () {
+  it("marks the title and the first lede of every page as speakable", function () {
     /* speakable is the one explicit "this is the summary" marker schema.org
        offers a machine reader. Its Google rich result is news-only, so this
-       claims nothing about search; it points a consumer at the h1 and the lede,
-       which every page has for exactly that purpose. Selectors must match real
-       elements, so both are asserted against the markup too. */
+       claims nothing about search; it points a consumer at the h1 and the
+       opening lede. It used to be cssSelector [".lede"], which matched every
+       section intro (seven on the home page) — a CSS selector cannot say
+       "the first one", XPath can. Both targets are asserted against the
+       markup: one h1, and a <p class="lede"> the XPath's class test hits. */
     pages.forEach(function (page) {
       const node = jsonLd(page.html).flatMap(function (block) {
         return (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
@@ -1103,10 +1165,13 @@ describe("SEO page contract", () => {
       }) as { speakable?: unknown } | undefined;
       expect(node?.speakable, page.path + " has no speakable").toEqual({
         "@type": "SpeakableSpecification",
-        cssSelector: ["h1", ".lede"]
+        xpath: [
+          "/html/body//h1",
+          "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
+        ]
       });
       expect(page.html.match(/<h1\b/g) || []).toHaveLength(1);
-      expect(page.html).toMatch(/class="lede[ "]/);
+      expect(page.html).toMatch(/<p class="lede[ "]/);
     });
   });
 
