@@ -37,6 +37,7 @@ All notable changes to Semaphore are documented in this file.
 
 ### Fixes
 
+- Scale the two real-output panels on `/usecases` to their container (`100cqw / 39`, capped at 8px): the 64-column MOTD panel was 307px wide and clipped on phones up to about 430px. Keep the footer's `updated` date on one line; it broke at its hyphens on narrow screens.
 - Localise the injected chrome on `/zh`: nav labels, the `► open tool` CTA, the statusbar's initial state and the header's aria-labels follow `<html lang>`, so the one Chinese page no longer gets an English header and statusbar. Hrefs and theme names are unchanged.
 - Label the six hand-set panels on `/usecases` directly under each figure instead of in a disclaimer three screens below; a test pins note count to panel count.
 - Hide the home page's decorative `{}` brace spans from assistive tech (they were announced as "left brace right brace"), and keep the leading space in `.ramp` cells so `llms-full.txt` does not misquote a charset whose darkest step is a space.
