@@ -573,6 +573,16 @@ describe("SEO page contract", () => {
     expect(zhHtml).toContain('<meta property="og:locale:alternate" content="en_US">');
   });
 
+  it("gives /faq a real outline: one heading per question", function () {
+    /* Ten <details><summary> blocks left the page with a single h1 and no
+       outline. A summary may contain heading content, so each question is
+       an <h2> inside its summary; the FAQPage names stay verbatim. */
+    const questions = faqHtml.match(/<summary><h2>[^<]+<\/h2><\/summary>/g) || [];
+    expect(questions).toHaveLength(10);
+    expect(faqHtml).not.toMatch(/<summary>[^<]/);
+    expect(terminalCss).toContain("details.qa summary h2, details.qa summary h3 { font: inherit; margin: 0;");
+  });
+
   it("prints a visible byline, source link, licence and date on every page", function () {
     /* Person JSON-LD was on every page while a reader saw "bobochang" only
        in the /privacy lede, and a date only there. Answer engines extract
@@ -1071,7 +1081,7 @@ describe("SEO page contract", () => {
       const answers = page?.mainEntity || [];
       expect(answers.length, entry[0] + " answer count").toBe(entry[2]);
       /* the visible card count must not drift from the schema */
-      expect((html.match(/<span class="p">Q<\/span>/g) || []).length).toBe(answers.length);
+      expect((html.match(/<span class="p" aria-hidden="true">Q<\/span>/g) || []).length).toBe(answers.length);
       answers.forEach(function (question) {
         const text = question.acceptedAnswer?.text || "";
         /* strip the inline <code> the page wraps some terms in, then compare
@@ -1100,7 +1110,7 @@ describe("SEO page contract", () => {
         return schemaTypes(node).includes("FAQPage");
       }) as { mainEntity?: Array<{ name?: string }> } | undefined;
       const headings = Array.from(
-        html.matchAll(/<span class="p">Q<\/span> ([^<]+)<\/h3>/g),
+        html.matchAll(/<span class="p" aria-hidden="true">Q<\/span> ([^<]+)<\/h3>/g),
         function (match) { return match[1].toLowerCase(); }
       );
       (page?.mainEntity || []).forEach(function (question) {
@@ -1162,6 +1172,9 @@ describe("SEO page contract", () => {
     /* runtime placeholders, chrome and hidden nodes do not */
     expect(body).not.toContain("rendering braille portrait");
     expect(body).not.toContain("plain text is forever");
+    /* the $ and Q card prefixes are aria-hidden decoration, not heading text */
+    expect(body).not.toMatch(/^#+ [$Q] /m);
+    expect(body).not.toMatch(/^\*\*[$Q] /m);
     expect(body).not.toContain("JavaScript is off");
     expect(body).not.toContain("– □ ✕");
     /* and the build emits it, with the page list taken from the sitemap */

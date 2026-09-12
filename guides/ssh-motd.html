@@ -231,15 +231,15 @@
     <p class="lede" style="margin-top:18px">An MOTD (message of the day) arrives over the same text stream as the prompt. It cannot depend on an image host, browser, or GUI. A compact ASCII mark can identify the machine, separate environments, and stay readable through slow or restricted connections.</p>
     <div class="grid-3" style="margin-top:34px">
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> width is the budget</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> width is the budget</h3>
         <p>Design for the narrowest client that matters. A 64-column mark leaves room inside a conventional 80-column terminal and avoids surprise wrapping.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> glyphs are the format</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> glyphs are the format</h3>
         <p>The <a href="/charsets/standard">standard charset</a> is the safest default for unknown fonts. Blocks add weight; minimal works when the logo has a strong silhouette.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> bytes stay local</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> bytes stay local</h3>
         <p>Semaphore samples the source on a local canvas. There is no upload endpoint, and production CSP is <code>connect-src 'none'</code>.</p>
       </article>
     </div>
@@ -280,19 +280,19 @@ cat motd.txt</pre>
     <h2 class="h2">Settings that survive real terminals</h2>
     <div class="grid-2" style="margin-top:34px">
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> which charset is safest for an SSH MOTD?</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> which charset is safest for an SSH MOTD?</h3>
         <p>Use <code>standard</code> when SSH clients and fonts are unknown. Use <code>blocks</code> only when the target font renders <code>░▒▓█</code> consistently. Braille carries more detail but relies on Unicode fallback glyphs.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> does color copy to the MOTD?</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> does color copy to the MOTD?</h3>
         <p>No. Clipboard and <code>.txt</code> exports are plain characters. Add ANSI color later only if every target terminal and the system's MOTD pipeline support it.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> why does the banner wrap?</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> why does the banner wrap?</h3>
         <p>The converted row is wider than the terminal, or the target font is not truly monospaced. Lower the column count and test with the same client used for SSH.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> what belongs beside the art?</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> what belongs beside the art?</h3>
         <p>Keep static identity text short. Do not bake secrets, internal addresses, or stale service state into the artwork; let system-owned dynamic MOTD components report live facts.</p>
       </article>
     </div>

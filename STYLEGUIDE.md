@@ -177,11 +177,11 @@ Disabled command `<button class="btn btn--ghost" type="button" disabled>copy tex
                  conversion is pending, then enable them only after that result renders. If a
                  replacement source fails before changing the result, restore the still-valid
                  commands. Runtime code toggles the property, never a visual-only class.
-Card             `<article class="card"><h3 class="card-title"><span class="p">$</span> runs locally</h3><p>…</p></article>`
+Card             `<article class="card"><h3 class="card-title"><span class="p" aria-hidden="true">$</span> runs locally</h3><p>…</p></article>`
                  choose the heading tag from the document outline: `h2` for a top-level
                  card under the page `h1`, `h3` for a card inside an `h2` section.
 Grid             `<div class="grid-3">…cards…</div>`
-Terminal window  `<figure class="term"><figcaption class="term-head"><span class="term-title"><span class="p">$</span> cat banner.txt</span><span class="term-dots">– □ ✕</span></figcaption><div class="term-body"><pre class="ascii-pre">…</pre></div></figure>`
+Terminal window  `<figure class="term"><figcaption class="term-head"><span class="term-title"><span class="p" aria-hidden="true">$</span> cat banner.txt</span><span class="term-dots">– □ ✕</span></figcaption><div class="term-body"><pre class="ascii-pre">…</pre></div></figure>`
                  if the `<pre>` holds art set by hand rather than engine output, say so in
                  place with a `<p class="fs-s text-faint">` directly under the figure. A
                  disclaimer three screens away does not travel with an extracted passage,
@@ -322,6 +322,19 @@ the list marker:
 The `01` stays a hand-typed `<span class="p">` rather than a CSS counter, because it
 is part of the established card-title rhythm and `seo.test.ts` matches on the visible
 step text. Keep the numbers in sync with the `HowToStep` positions in the same file.
+
+The `$` and `Q` prefixes are decoration and carry `aria-hidden="true"`: a screen
+reader does not announce "dollar", and `src/llms-full.ts` drops aria-hidden nodes, so
+the heading a model extracts is the heading. The `01` step numbers are not hidden —
+they carry order — and the generator already folds them into the list counter.
+
+Section `<h2>`s that explain a mechanism are phrased as the question they answer
+("How does image to braille art work?", "Why is nothing uploaded?"): that is the
+string an answer engine matches a query against. CTA headings may stay imperative.
+
+`/faq` puts each question in an `<h2>` inside its `<summary>` so the page has a real
+outline; `terminal.css` resets the heading to the summary's type. The home-page FAQ
+teaser keeps bare summaries under its own section `<h2>`.
 
 Q&A cards use the same card, with `Q` in place of the number, inside a `.grid-2`. When
 a page carries four or more of them, add `FAQPage` to its `WebPage` `@type` array and

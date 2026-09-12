@@ -294,7 +294,7 @@
 
         <figure class="term" id="srcInfo">
           <figcaption class="term-head">
-            <span class="term-title"><span class="p">$</span> file info</span>
+            <span class="term-title"><span class="p" aria-hidden="true">$</span> file info</span>
             <span class="term-dots">– □ ✕</span>
           </figcaption>
           <div class="term-body" style="padding:12px">
@@ -389,7 +389,7 @@
 
         <figure class="term out-term">
           <figcaption class="term-head">
-            <span class="term-title" id="outTitle"><span class="p">$</span> ~/output — waiting for source</span>
+            <span class="term-title" id="outTitle"><span class="p" aria-hidden="true">$</span> ~/output — waiting for source</span>
             <span class="term-dots">– □ ✕</span>
           </figcaption>
           <div class="term-body out-body" id="outBody" role="region"
@@ -409,7 +409,7 @@
     <div class="cardmodal hidden" id="cardModal" role="dialog" aria-modal="true" aria-label="share card">
       <figure class="term cardmodal-panel">
         <figcaption class="term-head">
-          <span class="term-title"><span class="p">$</span> share card — preview</span>
+          <span class="term-title"><span class="p" aria-hidden="true">$</span> share card — preview</span>
           <button class="cardmodal-close" id="cardClose" type="button" aria-label="close share card preview">[ x ]</button>
         </figcaption>
         <div class="term-body">
@@ -434,7 +434,7 @@
 
   <section class="sec" data-screen-label="tool-controls">
     <div class="kicker">[ what_the_controls_do ]</div>
-    <h2 class="h2">Every control, and when to move it</h2>
+    <h2 class="h2">What does each converter control do?</h2>
     <p class="lede" style="margin-top:18px">The converter samples your image on a local canvas, reduces each grid cell to one perceptual brightness value, and picks the character at that brightness's position in a ramp ordered by ink coverage. Everything below changes either how the grid is measured or which characters it can choose from. Nothing is uploaded at any point, so the whole loop runs at the speed of your own machine.</p>
 
     <div class="table-wrap" tabindex="0">
@@ -492,15 +492,15 @@
 
     <div class="grid-3" style="margin-top:34px">
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> cells are not square</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> cells are not square</h3>
         <p>A monospace cell is about three parts wide to five parts tall, so the converter emits roughly three rows for every five columns. At 120 columns a square photo comes out 72 rows deep. Paste into a font with different metrics and the picture stretches — the characters are right, the grid is not.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> columns beat every other setting</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> columns beat every other setting</h3>
         <p>A sixty-eight step ramp needs enough characters before its shades read as shading. Below about sixty columns the detailed ramp turns to speckle and a shorter one — <a href="/charsets/minimal">minimal</a> or <a href="/charsets/blocks">blocks</a> — will hold the shape better than any amount of contrast.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> what leaves the tab</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> what leaves the tab</h3>
         <p>Nothing. Production ships <code>connect-src 'none'</code>, so the page cannot open a fetch, XHR or WebSocket even if its code tried. Only your charset and color choice are remembered on the device; image bytes never are. See <a href="/privacy">privacy</a>.</p>
       </article>
     </div>

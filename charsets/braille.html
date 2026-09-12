@@ -204,7 +204,7 @@
       </div>
       <figure class="term braille-term">
         <figcaption class="term-head">
-          <span class="term-title"><span class="p">$</span> semaphore --charset braille --dither</span>
+          <span class="term-title"><span class="p" aria-hidden="true">$</span> semaphore --charset braille --dither</span>
           <span class="term-dots">– □ ✕</span>
         </figcaption>
         <div class="term-body braille-stage" id="brailleStage">
@@ -216,7 +216,7 @@
 
   <section class="sec" data-screen-label="braille-pipeline">
     <div class="kicker">[ how_braille_ascii_works ]</div>
-    <h2 class="h2">Eight pixels travel as one character</h2>
+    <h2 class="h2">How does image to braille art work?</h2>
     <p class="lede" style="margin-top:18px">Unicode reserves 256 braille characters: every possible on/off pattern in a 2×4 dot cell. Semaphore samples eight luminance values, applies a threshold, and writes the matching code point.</p>
     <div class="grid-3" style="margin-top:34px">
       <article class="card">
@@ -239,11 +239,11 @@
     <h2 class="h2">Braille detail or classic ASCII texture?</h2>
     <div class="grid-2 compare-grid">
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> choose braille for detail</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> choose braille for detail</h3>
         <p>Portraits, landscapes and screenshots with fine edges benefit most. Start around 100–160 columns, keep dithering on, then raise contrast only if the subject looks washed out.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> choose a ramp for compatibility</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> choose a ramp for compatibility</h3>
         <p>Classic <code> .:-=+*#%@</code> art has the familiar ASCII look and survives environments whose fonts lack braille glyphs. <a href="/charsets/blocks">Blocks</a> suit low-resolution posters; <a href="/charsets/binary">binary</a> suits graphic patterns; <a href="/charsets/detailed">detailed</a> keeps photographic tone inside ordinary text.</p>
       </article>
     </div>
@@ -255,27 +255,27 @@
     <h2 class="h2">The other five charsets</h2>
     <div class="grid-3" style="margin-top:34px">
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/standard">standard</a></h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/standard">standard</a></h3>
         <p>Ten steps of plain ASCII. The classic look, maximum portability.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/detailed">detailed</a></h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/detailed">detailed</a></h3>
         <p>Sixty-eight shades of punctuation and letters. The photographic ramp.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/blocks">blocks</a></h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/blocks">blocks</a></h3>
         <p>Four fills and a space. Reads as pixels rather than characters.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/minimal">minimal</a></h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/minimal">minimal</a></h3>
         <p>Five steps, wide apart. Built for tiny avatars and icons.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> <a href="/charsets/binary">binary</a></h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/binary">binary</a></h3>
         <p>A space, a zero, a one. The code-rain look.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> <a href="/usecases">where it goes</a></h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/usecases">where it goes</a></h3>
         <p>READMEs, splash screens, comment headers and other plain-text homes.</p>
       </article>
     </div>
