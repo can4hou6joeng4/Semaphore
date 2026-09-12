@@ -280,7 +280,7 @@
         "@type": "SpeakableSpecification",
         "cssSelector": ["h1", ".lede"]
       },
-      "dateModified": "2026-09-02"
+      "dateModified": "2026-09-12"
     },
     {
       "@type": "Person",
@@ -503,7 +503,7 @@
 
     <div class="table-wrap" tabindex="0">
       <table class="tbl">
-        <caption>the six charsets, ordered by how many tonal steps each one carries</caption>
+        <caption>the six charsets, from the most detail to the least</caption>
         <thead>
           <tr><th scope="col">charset</th><th scope="col">characters</th><th scope="col">steps</th><th scope="col">best for</th><th scope="col">portability</th></tr>
         </thead>
@@ -511,13 +511,13 @@
           <tr>
             <th scope="row"><a href="/charsets/braille">braille</a></th>
             <td>2×4 dot cells</td>
-            <td class="num">256 patterns</td>
+            <td class="num">9 tones · 256 patterns</td>
             <td>The most detail available. Eight dots per cell, dithered, so a face keeps its structure at low column counts.</td>
             <td>Needs a font with braille glyphs. JetBrains Mono has none, so it falls back to a system face.</td>
           </tr>
           <tr>
             <th scope="row"><a href="/charsets/detailed">detailed</a></th>
-            <td class="ramp">.'^",:Il!~+?][1)|/tfjxnuvzXYUJCLQ0Omwqpdbkao*#MW&amp;8%B@$</td>
+            <td class="ramp"> .'`^",:;Il!i~+_-?][}{1)(|\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&amp;8%B@$</td>
             <td class="num">68</td>
             <td>Photographs and portraits. Adjacent shades differ by roughly 1.5%, which is what keeps a cheekbone readable.</td>
             <td>Plain 7-bit ASCII. Safe anywhere.</td>

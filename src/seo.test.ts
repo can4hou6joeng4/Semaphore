@@ -877,6 +877,23 @@ describe("SEO page contract", () => {
     });
   });
 
+  it("prints every ramp string exactly as the engine ships it", function () {
+    /* The step count above was pinned while the detailed ramp itself drifted:
+       the cell showed 54 characters beside a "68" for weeks, because a count
+       cannot tell which glyphs are missing. Assert the escaped string, leading
+       space included, on both pages that carry the table. `&` is the only ramp
+       character HTML needs escaped; `"` is fine in text content. */
+    [[indexHtml, "/"], [zhHtml, "/zh"]].forEach(function (pair) {
+      const html = pair[0], path = pair[1];
+      Object.keys(CHARSETS).forEach(function (name) {
+        const ramp = CHARSETS[name].ramp;
+        if (!ramp) return;
+        const cell = '<td class="ramp">' + ramp.replace(/&/g, "&amp;") + "</td>";
+        expect(html, name + " ramp misquoted on " + path).toContain(cell);
+      });
+    });
+  });
+
   it("documents every converter control against the input it describes", function () {
     /* The ranges are only useful to a reader or an AI if they are the real
        ones, so read them back off the range inputs on the same page. */
