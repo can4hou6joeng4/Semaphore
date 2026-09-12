@@ -434,6 +434,9 @@ details.qa summary {
   transition: color .15s ease;
 }
 details.qa summary::-webkit-details-marker { display: none; }
+/* /faq puts each question in an <h2> inside its <summary> so the page has a real
+   outline; the heading takes the summary's type instead of the h2 defaults. */
+details.qa summary h2, details.qa summary h3 { font: inherit; margin: 0; letter-spacing: inherit; }
 details.qa summary::before {
   content: ">"; color: var(--green); flex: none;
   transition: transform .18s ease; transform-origin: center;

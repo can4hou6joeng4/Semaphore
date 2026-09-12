@@ -444,19 +444,19 @@
 
   <section class="sec" data-screen-label="why-local">
     <div class="kicker">[ why_local ]</div>
-    <h2 class="h2">Image to ASCII without uploading</h2>
+    <h2 class="h2">Why is nothing uploaded?</h2>
     <p class="lede" style="margin-top:18px">Semaphore reads pixels on a local <code>&lt;canvas&gt;</code> and emits plain text for README files, CLI output, code comments, and chat. Conversion, preview and export stay inside this tab; there is no upload endpoint or processing queue.</p>
     <div class="grid-3" style="margin-top:34px">
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> no phone-home</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> no phone-home</h3>
         <p>The page makes no third-party runtime requests. Production ships <code>Content-Security-Policy: connect-src 'none'</code>, blocking fetch, XHR and WebSocket.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> live, not queued</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> live, not queued</h3>
         <p>Columns, brightness, contrast, invert and color re-run every change. The ASCII art updates immediately instead of waiting on a server job.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> edge counts only</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> edge counts only</h3>
         <p>Cloudflare edge counts are static-file request logs, not client telemetry. No analytics beacon runs in the tab, and image bytes never enter those requests.</p>
       </article>
     </div>
@@ -469,7 +469,7 @@
     <p class="lede" style="margin-top:18px">Drop, convert, retune — replayed live by the real engine, not a video. Same converter you drive by hand on the tool page.</p>
     <figure class="term demo-term" id="demoTerm" aria-hidden="true">
       <figcaption class="term-head">
-        <span class="term-title"><span class="p">$</span> semaphore --interactive</span>
+        <span class="term-title"><span class="p" aria-hidden="true">$</span> semaphore --interactive</span>
         <span class="term-dots">– □ ✕</span>
       </figcaption>
       <div class="term-body demo-stage" id="demoStage">
@@ -498,28 +498,28 @@
     <div class="charset-grid" id="charsetGrid">
       <figure class="term">
         <figcaption class="term-head">
-          <span class="term-title"><span class="p">$</span> semaphore portrait.png --charset standard</span>
+          <span class="term-title"><span class="p" aria-hidden="true">$</span> semaphore portrait.png --charset standard</span>
           <span class="term-dots">– □ ✕</span>
         </figcaption>
         <div class="term-body"><pre class="ascii-pre" data-charset="standard" aria-hidden="true"></pre></div>
       </figure>
       <figure class="term">
         <figcaption class="term-head">
-          <span class="term-title"><span class="p">$</span> semaphore portrait.png --charset blocks</span>
+          <span class="term-title"><span class="p" aria-hidden="true">$</span> semaphore portrait.png --charset blocks</span>
           <span class="term-dots">– □ ✕</span>
         </figcaption>
         <div class="term-body"><pre class="ascii-pre" data-charset="blocks" aria-hidden="true"></pre></div>
       </figure>
       <figure class="term">
         <figcaption class="term-head">
-          <span class="term-title"><span class="p">$</span> semaphore portrait.png --charset binary</span>
+          <span class="term-title"><span class="p" aria-hidden="true">$</span> semaphore portrait.png --charset binary</span>
           <span class="term-dots">– □ ✕</span>
         </figcaption>
         <div class="term-body"><pre class="ascii-pre" data-charset="binary" aria-hidden="true"></pre></div>
       </figure>
       <figure class="term">
         <figcaption class="term-head">
-          <span class="term-title"><span class="p">$</span> semaphore portrait.png --charset braille</span>
+          <span class="term-title"><span class="p" aria-hidden="true">$</span> semaphore portrait.png --charset braille</span>
           <span class="term-dots">– □ ✕</span>
         </figcaption>
         <div class="term-body"><pre class="ascii-pre" data-charset="braille" aria-hidden="true"></pre></div>
@@ -587,15 +587,15 @@
     <p class="lede" style="margin-top:18px">ASCII art earns its keep where images cannot go. Convert once, then ship characters through any channel that only accepts text.</p>
     <div class="grid-3" style="margin-top:34px">
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> copy or .txt</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> copy or .txt</h3>
         <p>One click copies the glyph grid to the clipboard, or download a .txt for READMEs, code comments, IRC, Discord, and commit messages.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> PNG render</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> PNG render</h3>
         <p>Need a still for a slide or social post? Export a crisp PNG of the ASCII art while keeping the monospace look intact.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> share card</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> share card</h3>
         <p>Bake charset, columns and color into a branded card so someone else can reproduce the conversion — or just admire the result.</p>
       </article>
     </div>
@@ -607,15 +607,15 @@
     <p class="lede" style="margin-top:18px">Pixels need hosts, CDNs and alt text. Character grids travel as plain text — that is the whole point of an image to ASCII workflow.</p>
     <div class="grid-3" style="margin-top:34px">
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> readme banners</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> readme banners</h3>
         <p>A logo that renders on every git host with no image hosting and no broken hotlinks. <a href="/guides/readme-banner">Guide</a>.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> cli splash screens</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> cli splash screens</h3>
         <p>Greet users of your tools where only a terminal exists — MOTDs, installers, TUI headers. Follow the <a href="/guides/ssh-motd">SSH MOTD ASCII art guide</a>.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">$</span> plain-text everywhere</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> plain-text everywhere</h3>
         <p>Email, forums, code review comments, chat — if the medium takes characters, it takes ASCII art.</p>
       </article>
     </div>

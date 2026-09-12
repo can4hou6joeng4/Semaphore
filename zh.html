@@ -317,43 +317,43 @@
     <h2 class="h2">常见问题</h2>
     <div class="grid-2" style="margin-top:34px">
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> 图片会被上传到什么地方吗？</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 图片会被上传到什么地方吗？</h3>
         <p>不会。转换完全通过浏览器的 canvas API 在本地完成，页面加载完成后即使断网也能用。如果你倾向于自己验证，打开开发者工具的网络面板，它应当保持安静。</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> 页面里跑统计脚本吗？</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 页面里跑统计脚本吗？</h3>
         <p>没有。页面不含统计脚本、不用 cookie，CSP 设为 <code>connect-src 'none'</code>，因此它无法向任何地方发起 fetch、XHR 或 WebSocket。运营者能看到的只有 Cloudflare 边缘的聚合 HTTP 请求量——那是页面加载本身的服务器日志，不是你标签页里的二次回传，其中从不包含图片字节。</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> 是免费的吗？</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 是免费的吗？</h3>
         <p>免费，无需账号，没有水印，没有每日配额。整个工具以静态文件形式发布，采用 MIT 许可。</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> 会记住我的设置吗？</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 会记住我的设置吗？</h3>
         <p>只保存少量偏好在你的设备上：配色主题（CRT 或纸质），以及你在工具里最后选择的字符集和配色模式。它们存在 <code>localStorage</code> 里，从不包含图片字节。「reset params」会清空工具偏好；URL 查询参数在存在时仍然优先。</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> 支持哪些图片格式？</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 支持哪些图片格式？</h3>
         <p>你的浏览器能解码的都可以：png、jpg、webp 和 gif（取首帧）。拖入、粘贴或浏览选择均可。</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> 怎样得到更清晰的结果？</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 怎样得到更清晰的结果？</h3>
         <p>从高对比、裁剪紧凑的图开始。把列数提到 160 至 200，对比度加约 +15；若主体是深色压在浅底上，试试反相。要照片级细节，<a href="/charsets/braille">braille</a> 是最锐利的那一套。</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> 盲文模式究竟在做什么？</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 盲文模式究竟在做什么？</h3>
         <p>每个字符变成一个取自 Unicode 盲文区的 2×4 点阵，并用 Floyd–Steinberg 误差扩散做抖动——空间分辨率约为传统字符表的八倍。它需要含盲文字形的字体，现代操作系统都自带。</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> 能保留原图颜色吗？</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 能保留原图颜色吗？</h3>
         <p>可以。配色模式 <code>original</code> 按字符采样源图颜色，<code>gray</code> 保留中性灰阶，<code>green</code> 是经典荧光屏观感。颜色会保留在 <code>.png</code> 导出里；纯文本复制在本质上只有字符。</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> 输出可以商用吗？</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 输出可以商用吗？</h3>
         <p>输出属于你——海报、README、周边、客户项目都可以。我们不对你的作品主张任何权利。</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> 有尺寸限制吗？</h3>
+        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 有尺寸限制吗？</h3>
         <p>Semaphore 不设固定的源图尺寸上限，实际上限取决于你的浏览器和可用内存。输出限制在 40 至 240 列。高列数下的密集盲文在老设备上可能更慢。</p>
       </article>
     </div>

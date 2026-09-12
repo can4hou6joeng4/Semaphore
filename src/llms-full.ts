@@ -160,8 +160,12 @@ export function pageToMarkdown(html: string, origin: string): { title: string; b
     }
     switch (block.tag) {
       case "summary": {
+        /* /faq wraps the question in an <h2> inside the summary, which the
+           heading branch has already emitted; only a bare summary is a line. */
+        const text = collapse(block.text);
+        if (!text) return;
         const level = Math.min(lastHeading + 2, 6);
-        emit("#".repeat(level) + " " + collapse(block.text));
+        emit("#".repeat(level) + " " + text);
         return;
       }
       case "p":

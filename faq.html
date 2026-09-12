@@ -227,7 +227,7 @@
       <div class="qa-list">
 
         <details class="qa" open>
-          <summary>Do my images get uploaded anywhere?</summary>
+          <summary><h2>Do my images get uploaded anywhere?</h2></summary>
           <div class="qa-a">
             <p>Never. The conversion runs entirely in your browser using the canvas API; with the page open it keeps working even if you switch the network off, and only a reload needs a connection.</p>
             <p>If you're the trust-but-verify type, read the <a href="/privacy">privacy statement</a>, then open devtools and watch the network tab stay silent.</p>
@@ -235,7 +235,7 @@
         </details>
 
         <details class="qa">
-          <summary>Do you run analytics in my browser?</summary>
+          <summary><h2>Do you run analytics in my browser?</h2></summary>
           <div class="qa-a">
             <p>No. The page ships no analytics script, no cookies, and a <code>Content-Security-Policy</code> with <code>connect-src 'none'</code>, so it <strong>cannot</strong> open a fetch, XHR or WebSocket to anywhere — including a Cloudflare Web Analytics beacon.</p>
             <p>What the operator <em>can</em> see is aggregate HTTP traffic at the Cloudflare edge: which paths were requested and roughly how often. Those are server logs of the page load itself, not a second phone-home from your tab. Your image bytes never leave the device and are never part of those counts.</p>
@@ -243,28 +243,28 @@
         </details>
 
         <details class="qa">
-          <summary>Is it free?</summary>
+          <summary><h2>Is it free?</h2></summary>
           <div class="qa-a">
             <p>Yes — free, no account, no watermark, no daily quota. The whole tool ships as static files.</p>
           </div>
         </details>
 
         <details class="qa">
-          <summary>Does the site remember my settings?</summary>
+          <summary><h2>Does the site remember my settings?</h2></summary>
           <div class="qa-a">
             <p>Only small preferences stay on your device: color theme (CRT or paper), and the last charset and color mode you picked on the tool. They live in <code>localStorage</code> and never include image bytes. Reset params clears the tool prefs; URL query parameters still override them when present.</p>
           </div>
         </details>
 
         <details class="qa">
-          <summary>Which image formats can I feed it?</summary>
+          <summary><h2>Which image formats can I feed it?</h2></summary>
           <div class="qa-a">
             <p>Anything your browser can decode: <code>png</code>, <code>jpg</code>, <code>webp</code> and <code>gif</code> (first frame). Drop it, paste it, or browse for it.</p>
           </div>
         </details>
 
         <details class="qa">
-          <summary>How do I get a sharper result?</summary>
+          <summary><h2>How do I get a sharper result?</h2></summary>
           <div class="qa-a">
             <p>Start from a high-contrast image with a tight crop. Push <code>columns</code> up to 160-200, nudge contrast +15, and try <code>invert</code> if your subject is dark-on-light.</p>
             <p>For photographic detail, the braille charset is the sharp one.</p>
@@ -272,7 +272,7 @@
         </details>
 
         <details class="qa">
-          <summary>What does braille mode actually do?</summary>
+          <summary><h2>What does braille mode actually do?</h2></summary>
           <div class="qa-a">
             <p>Each character becomes a 2×4 grid of dots from the Unicode braille block, dithered with Floyd–Steinberg — roughly eight times the spatial resolution of a classic ramp. The <a href="/charsets/braille">braille ASCII guide</a> shows the full pipeline and a live example.</p>
             <p>It needs a font with braille glyphs, which every modern OS has.</p>
@@ -280,7 +280,7 @@
         </details>
 
         <details class="qa">
-          <summary>Can I keep the original colors?</summary>
+          <summary><h2>Can I keep the original colors?</h2></summary>
           <div class="qa-a">
             <p>Yes. Color mode <code>original</code> samples the source color per character, <code>gray</code> keeps neutral tones, and <code>green</code> is the classic phosphor look.</p>
             <p>Color survives in the .png export; plain-text copies are characters only, by nature.</p>
@@ -288,14 +288,14 @@
         </details>
 
         <details class="qa">
-          <summary>Can I use the output commercially?</summary>
+          <summary><h2>Can I use the output commercially?</h2></summary>
           <div class="qa-a">
             <p>The output is yours — posters, readmes, merch, client work, anything. We don't claim rights over your art.</p>
           </div>
         </details>
 
         <details class="qa">
-          <summary>Any size limits?</summary>
+          <summary><h2>Any size limits?</h2></summary>
           <div class="qa-a">
             <p>Semaphore does not impose a fixed source-dimension limit; practical limits depend on your browser and available memory. Output is capped at 40–240 columns. Dense braille at high column counts may take longer on older devices.</p>
           </div>
