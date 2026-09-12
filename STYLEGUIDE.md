@@ -81,6 +81,16 @@ Structured data must describe facts supported by the visible site. Do not use
 `alternateName` as a list of keyword phrases, and do not add `aggregateRating`
 without a real, visible rating source.
 
+Every page's `@graph` carries the same full `WebApplication` node as the home page
+(copy it verbatim; a test diffs them). Each `#webpage` node states its own
+`inLanguage` (`en`, or `zh-CN` on `/zh`) and an `about` list whose entries carry a
+Wikipedia `sameAs` IRI for the concept the page explains — ASCII art, Braille
+Patterns, Floyd–Steinberg dithering, Block Elements. These are identifiers, never
+fetched. `/privacy` is about this site and has no `about`. `speakable` uses XPath,
+not `cssSelector`: `.lede` is a layout class on every section intro, and XPath is
+what can say "the first one". The two paired pages, `/` and `/zh`, each declare the
+other's locale in `og:locale:alternate` as well as in hreflang.
+
 `404.html` is the deliberate exception: it has `robots=noindex, follow` and no
 canonical or `og:url`, because the same document is served for every unknown URL.
 It must remain a top-level Vite input so Cloudflare Pages returns a real 404 instead
