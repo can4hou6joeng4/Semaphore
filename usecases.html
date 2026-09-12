@@ -43,6 +43,14 @@
       font-size: 10px;
       line-height: 1;
     }
+    /* the two panels that show real converter output are shown whole */
+    [data-screen-label="usecases-grid"] .term--full .term-body {
+      height: auto;
+      padding-block: 14px;
+    }
+    [data-screen-label="usecases-grid"] .term--full .ascii-pre {
+      font-size: 8px;
+    }
     [data-screen-label="usecases-grid"] .card-title {
       margin-top: 18px;
     }
@@ -152,22 +160,51 @@
       <div class="grid-2">
 
         <article class="card">
-          <figure class="term">
+          <figure class="term term--full">
             <figcaption class="term-head">
               <span class="term-title"><span class="p" aria-hidden="true">$</span> cat README.md</span>
               <span class="term-dots">– □ ✕</span>
             </figcaption>
             <div class="term-body">
 <pre class="ascii-pre">
- ████   █████  █████ ██████ ██████
-██  ██ ██     ██       ██     ██
-██████  ████  ██       ██     ██
-██  ██     ██ ██       ██     ██
-██  ██ █████   █████ ██████ ██████
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓</pre>
+                              ░░░░░░▒▒▒▒▒▒▒░                
+                            ░░░▒▒▒▒▒▒▒▓▓▓▓▓▒▒               
+                             ░░▒▒▒▒▓▓▓▓▓▓▓▓▓▓▒              
+    ░░                        ░░▒▒▒▓▓▓▓▓▓▓▓▓▓▓▒             
+    ░░░                        ░░▒▒▒▓▓███████▓▓░            
+     ▒░                        ░░░  ░▓▓████████▓░           
+    ░▒░                       ▒▒░      ▒▓██████▓▒░          
+   ░▒▒▒                    ░▓██▓░        ░▓████▓▓░          
+   ░░▒▒░                 ▒▓████▒        ░░░▒███▓▓░          
+                      ░▒▓██████▒         ░▒░▒▓█▓▓░          
+                      ▒▓███████▓░          ▒░▓▓▓▓▒          
+                      ░▒████████▓░          ▒▓▓▓▓▒          
+                        ▒▓█████▓▓▒░░░░░░▒  ░▒▓██▓▓          
+                          ▓█▓▓▓▓▒▒░▒▓█████▓▓▓███▓▓░         
+       ▓▓░         ░▒ ▒▓▒░▓▓▒▒▒▒░▒▒▓████████████▓▒          
+       ░▓▓          ░▒█████▓▒░▒▒░░▒▓▓███████████▓░          
+         ░▒           ░▓███▓▒░▒▒▒▒▓▓▓██████████▓░     ░░   ░
+          ▒▓     ░░    ░▒▓▓▓▒░░▒▒▒▒▓▒▓▓▓▓▓▓▓▓▓▓░░░░░   ░▓▒▓▒
+          ▒▓░     ░▒▒▓░  ░▒▓▒░░▒▒▒▒▒▒▓▓▓▓▓▓▓▒▒░▒▓▒ ░▓▓▒ ░▒▒ 
+          ░▓▒        ░▒▒░░▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒░░▓▓▓▓  ▓▓▓░    
+          ░▓▓ ░░▒▒░░░░▒▒▒░▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▒▒▒▓███▓▓▓▓▒      
+          ░▒▒▒ ░▒▓▓▓▓▓▒▒░░░░░▒▒▒▒▒▒▒▒▓▓▓▓▓▒▒▓█████▓▒        
+          ░░░▓▓ ░▒▒▓▒▓▒▒░░░░░░▒▒▒▒▒▒▒▓▓▓▒░  ░▒▒░░░          
+           ░ ▓▓   ░░░▒▒▒░░░░░░░░░░▒▒▒▒▒░░░                  
+             ▒▓            ░░░░░░░░░░░▒▒▒░                  
+             ▒▒                  ░░▒▒▒▓▓▒░                  
+            ░▓▒░          ░░░░░░▒▒▒▒▓▓▓▓▓▒                  
+            ░▓▓▒▒░        ░░░░░░▒▒▒▒▓▓▓▓▓░                  
+            ▒▓▓▓▓▒░       ░░░░░░░▒▒▒▓▓▓▓▒                   
+            ▒▓▓▓▓▓▒         ░░░░░░▒▒▓▓▓░                    
+            ▒▒▓▓▓▓▒            ░░░▒▒▒▒                     ░
+            ░▒▒▓▓▓▒             ░░░░                  ▒▒▒▒▒▒
+            ░▒▒▒▒▓░                                  ▒▒▒▒▒▒▒
+             ░▒▒▒▒                                  ▒▒▒▒▒▒▒▒
+             ░▒▒▒░                                 ▒▒▒▒▒▒▒▒▒</pre>
             </div>
           </figure>
-          <p class="fs-s text-faint" style="margin-top:10px">Set by hand to show the format — the converter makes the real one from your image.</p>
+          <p class="fs-s text-faint" style="margin-top:10px">Converter output of the sample portrait: <code>blocks</code> · 60 columns · contrast +15 · 35 rows. <a href="/tool?charset=blocks&amp;cols=60&amp;contrast=15">Reproduce it</a>.</p>
           <h2 class="card-title"><span class="p" aria-hidden="true">$</span> readme banners</h2>
           <p>Your project logo rendered in every git host on earth, with zero image hosting. Pull requests deserve a marquee too. Walk through it in the <a href="/guides/readme-banner">README banner guide</a>.</p>
           <div class="row">
@@ -178,24 +215,53 @@
         </article>
 
         <article class="card">
-          <figure class="term">
+          <figure class="term term--full">
             <figcaption class="term-head">
               <span class="term-title"><span class="p" aria-hidden="true">$</span> ssh deploy@prod</span>
               <span class="term-dots">– □ ✕</span>
             </figcaption>
             <div class="term-body">
 <pre class="ascii-pre">
-        ░▒▓██▓▒░
-       ░▒▓████▓▒░
-        ░▒▓██▓▒░
-
-semaphore deploy console
- v2.4.1 · 3 nodes ready
-────────────────────────
-$ _                     </pre>
+                                ...:::-=++**+=:                 
+                             ..:-======+******+-                
+                               .-=++++**########=               
+     .                          :-==+**##%%%%%%%#-              
+    .:.                          .-==++#%@@@%%%%%#:             
+     :-.                         .::..-*%@@@@@@@@%#:            
+     --                         .-:     :+%@@@@@@@%*:           
+    -==.                      :*%%=        :*@@@@@%#-           
+   .===-                   .+#@@@*.          =%@@@%#-           
+    .::                  :+%@@@@@*.        :=:-#@@%#-           
+                       .*%@@@@@@@*.         .==:#%%%+           
+                       .+@@@@@@@@%=           -=*%%%*           
+                        .+@@@@@@@%%+:          +#%%%#.          
+                          :%@@%@@#+-.:-+*+**:.:*%@%%#=          
+       ..               :   +%+*#*==-=#@@@@@@@%@@@@%%=          
+       -*+           --=*#++%#=--=-=+*%@@@@@@@@@@@@%*.          
+        -#+           :#@@@@@#-:=+=-+*%%@@@@@@@@@@@#=           
+          ++            +@%%%%=:-=++*##%@@@%@@@@%%#-.    :-.  .-
+          :##     ..     -#*##=.:=+++*+*%%%%%%%%%*:.-.::   +**#+
+           *%.     .=++-   =+*+-:==++++*######**+.-%*  +#*: =*= 
+           =%=        :=*= .=++===-=+++*+***+++--+%%#: -%#=.    
+           -#+ .:--:.::-=+-:=====+++=++=+****+==#@@@%*=##=      
+           =#*:.:+###**+==-::--=====+++***##*=+%@%%@%%%+        
+           -:=%+ .=*#***+=::::---====++**#*+:  =%@%%#:          
+           .- #*  .:-==+==-:::::---==++++=:.                    
+              +*       ..:::::::::::--::----.                   
+              =+                    ..-=+**=.                   
+             :*+                 .:-==+*###+:                   
+             -*+=:         .:::---==++**#%#*-                   
+             -***++:        .:-----=++*####=                    
+            .=*#***+        ..::::--=+*###+                     
+             =******.         ....::-=+**=                      
+             =******.            ..:-==-.                    .:-
+             :+****+.              ...                   -+++++=
+             .=++**=                                    :=+++===
+              -++++.                                   -========
+              :=++:                                   :========-</pre>
             </div>
           </figure>
-          <p class="fs-s text-faint" style="margin-top:10px">Set by hand to show the format — the converter makes the real one from your image.</p>
+          <p class="fs-s text-faint" style="margin-top:10px">Converter output of the sample portrait: <code>standard</code> · 64 columns · contrast +20 · gray · 37 rows. <a href="/tool?charset=standard&amp;cols=64&amp;contrast=20&amp;color=gray">Reproduce it</a>.</p>
           <h2 class="card-title"><span class="p" aria-hidden="true">$</span> cli splash screens</h2>
           <p>Greet the humans inside your terminals — login MOTDs, build banners, version splashes. The only art form guaranteed to render over ssh. The <a href="/guides/ssh-motd">SSH MOTD guide</a> covers safe glyphs, line width, file review, and OS-owned MOTD paths.</p>
           <div class="row">
