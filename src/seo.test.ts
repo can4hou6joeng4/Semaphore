@@ -1004,6 +1004,31 @@ describe("SEO page contract", () => {
     });
   });
 
+  it("shows each guide FAQ question as the heading its schema names", function () {
+    /* Google's FAQ policy wants the marked-up question visible, and an
+       extractor keys on the heading. readme-banner shipped fragments ("the
+       shape collapsed into a paragraph") under Question names that were
+       real questions; compare them case-insensitively so the card's
+       lowercase-after-Q style stays. */
+    [["guides/readme-banner.html", readmeBannerHtml],
+     ["guides/ssh-motd.html", sshMotdHtml]].forEach(function (entry) {
+      const html = entry[1] as string;
+      const page = jsonLd(html).flatMap(function (block) {
+        return (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
+      }).find(function (node) {
+        return schemaTypes(node).includes("FAQPage");
+      }) as { mainEntity?: Array<{ name?: string }> } | undefined;
+      const headings = Array.from(
+        html.matchAll(/<span class="p">Q<\/span> ([^<]+)<\/h3>/g),
+        function (match) { return match[1].toLowerCase(); }
+      );
+      (page?.mainEntity || []).forEach(function (question) {
+        expect(headings, entry[0] + " hides " + question.name)
+          .toContain((question.name || "").toLowerCase());
+      });
+    });
+  });
+
   it("labels hand-set ASCII art in place", function () {
     /* The usecases panels are drawn by hand to show each format. An extractor
        reading a figure does not see a disclaimer three screens below it, so

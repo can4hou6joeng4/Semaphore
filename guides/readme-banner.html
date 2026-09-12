@@ -105,7 +105,7 @@
         "@type": "SpeakableSpecification",
         "cssSelector": ["h1", ".lede"]
       },
-      "dateModified": "2026-09-03"
+      "dateModified": "2026-09-12"
     },
     {
       "@type": "HowTo",
@@ -264,19 +264,19 @@
     <h2 class="h2">When the banner does not survive the render</h2>
     <div class="grid-2" style="margin-top:34px">
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> the shape collapsed into a paragraph</h3>
+        <h3 class="card-title"><span class="p">Q</span> why did the ASCII banner collapse into a paragraph?</h3>
         <p>The art is outside the fence, or the fence opened with fewer than three backticks. Markdown treats runs of spaces as one space in normal prose, and those spaces are what carry the light tones. Nothing else about the art matters if the fence is wrong.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> it scrolls sideways on a phone</h3>
+        <h3 class="card-title"><span class="p">Q</span> why does the banner scroll sideways on a phone?</h3>
         <p>Column count is too high. A fenced block does not wrap; it scrolls. Around 60 columns fits most phone-width README views, and the tool caps at 240 for the same reason it starts at 40 — beyond a certain width the art stops being readable in place.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> the blocks look uneven somewhere else</h3>
+        <h3 class="card-title"><span class="p">Q</span> why do the block characters look uneven in some renderers?</h3>
         <p>A renderer whose monospace stack has no glyph for <code>░▒▓█</code> substitutes a fallback face for just those characters, and the mark loses its even cell width. <a href="/charsets/standard">standard</a> is plain 7-bit ASCII and cannot hit this, which is why it is the safer choice when you do not control the destination.</p>
       </article>
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> it came out stretched</h3>
+        <h3 class="card-title"><span class="p">Q</span> why does the ASCII banner look stretched?</h3>
         <p>Monospace cells are about three parts wide to five parts tall, and the converter emits rows on that assumption. A destination whose line height differs will squash or stretch the result — the characters are right, the grid is not. See <a href="/tool">the control reference</a>.</p>
       </article>
     </div>
