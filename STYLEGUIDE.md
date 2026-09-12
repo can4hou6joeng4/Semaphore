@@ -140,7 +140,10 @@ One module script at the END of `<body>` — Vite bundles the rest:
 
 `shared.ts` prepends the sticky header (brand → `/`, nav usecases/faq,
 amber `► open tool` CTA) and appends the vim statusbar + CRT overlays.
-DO NOT create `.site-head`, `.statusbar`, `.crt-*` yourself.
+DO NOT create `.site-head`, `.statusbar`, `.crt-*` yourself. The labels follow
+`<html lang>`: on `/zh` the nav reads 使用场景 / 常见问题, the CTA `► 打开工具` and the
+statusbar starts at 就绪; hrefs, theme names and the metric tokens do not change.
+A new page in another language adds a `CHROME` entry, not a hand-written header.
 
 The footer is hand-written and carries the visible byline: author link, source link,
 licence and an `updated <time datetime>` whose value equals the page's JSON-LD
