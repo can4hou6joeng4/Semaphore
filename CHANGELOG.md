@@ -33,6 +33,10 @@ All notable changes to Semaphore are documented in this file.
 - Hide the home page's decorative `{}` brace spans from assistive tech (they were announced as "left brace right brace"), and keep the leading space in `.ramp` cells so `llms-full.txt` does not misquote a charset whose darkest step is a space.
 - Fix `schemaTypes()` in the SEO test helper: an array `@type` returned `[]`, silently making every type assertion on such a node vacuous.
 - Remove the `.steps` CSS rule that shipped with the reference tables and was never used, and rewrite its `STYLEGUIDE.md` recipe to document the card grid the guides actually use.
+- Print the full 68-character `detailed` ramp in the comparison table on `/` and `/zh`; the cell had shown 54 characters beside a "68", and the test only pinned the count. It now asserts the escaped ramp string itself. Braille is labelled `9 tones · 256 patterns` since the column is about tone.
+- Say exactly what "offline" means on `/`, `/faq` and in `llms.txt`: an open tab keeps converting with the network off, a reload needs a connection (there is no service worker). `llms.txt` also stops narrowing the accepted formats to four when the tool decodes whatever the browser's `<img>` can, and `/tool` no longer describes the ramp lookup as a nearest-ink search.
+- Head the four `/guides/readme-banner` answer cards with the questions their `FAQPage` schema names instead of fragments, complete the first `/guides/ssh-motd` question the same way, and add a test that compares every guide heading to its schema `Question.name`. The SSH guide now warns that `wc -L` counts bytes on macOS/BSD, and expands MOTD once.
+- Cite Rec. 709 on `/charsets/binary`, the one other charset page that states the luma weighting.
 
 ### Documentation
 
