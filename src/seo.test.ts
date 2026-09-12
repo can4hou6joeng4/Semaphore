@@ -436,6 +436,17 @@ describe("SEO page contract", () => {
     );
   });
 
+  it("localises the injected chrome on the Chinese page", function () {
+    /* shared.ts hard-coded English nav labels, CTA and the statusbar "ready"
+       on /zh (lang="zh-CN"), the one page where that reads as mixed chrome.
+       Labels follow <html lang>; hrefs and theme names do not. */
+    expect(sharedSource).toContain('document.documentElement.lang.toLowerCase().startsWith("zh")');
+    expect(sharedSource).toContain('labels: { usecases: "使用场景", faq: "常见问题" }');
+    expect(sharedSource).toContain('cta: "► 打开工具", ready: "就绪"');
+    expect(sharedSource).toContain('labels: { usecases: "usecases", faq: "faq" }');
+    expect(zhHtml).toContain('<html lang="zh-CN">');
+  });
+
   it("scopes status announcements to state and toast messages", function () {
     expect(sharedSource).not.toContain('bar.setAttribute("role", "status")');
     expect(sharedSource).toContain(

@@ -35,6 +35,7 @@ All notable changes to Semaphore are documented in this file.
 
 ### Fixes
 
+- Localise the injected chrome on `/zh`: nav labels, the `► open tool` CTA, the statusbar's initial state and the header's aria-labels follow `<html lang>`, so the one Chinese page no longer gets an English header and statusbar. Hrefs and theme names are unchanged.
 - Label the six hand-set panels on `/usecases` directly under each figure instead of in a disclaimer three screens below; a test pins note count to panel count.
 - Hide the home page's decorative `{}` brace spans from assistive tech (they were announced as "left brace right brace"), and keep the leading space in `.ramp` cells so `llms-full.txt` does not misquote a charset whose darkest step is a space.
 - Fix `schemaTypes()` in the SEO test helper: an array `@type` returned `[]`, silently making every type assertion on such a node vacuous.
