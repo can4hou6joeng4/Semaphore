@@ -511,6 +511,8 @@ details.qa .qa-a code { color: var(--green-soft); background: var(--bg-deep); pa
 }
 .site-foot nav { display: flex; gap: 22px; flex-wrap: wrap; }
 .site-foot a { color: var(--ink-faint); text-decoration: none; }
+/* the byline date must not break at its hyphens ("2026-" / "09-12" on a phone) */
+.site-foot time { white-space: nowrap; }
 .site-foot a:hover { color: var(--green); }
 
 /* Without JS there is no injected header and no conversion — the engine runs in

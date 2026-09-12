@@ -645,6 +645,7 @@ describe("SEO page contract", () => {
         '<time datetime="' + date + '">' + date + "</time>"
       );
     });
+    expect(terminalCss).toContain(".site-foot time { white-space: nowrap; }");
   });
 
   it("resolves every @id a page references within that same page", function () {
@@ -1177,6 +1178,10 @@ describe("SEO page contract", () => {
     expect(usecasesHtml).toContain('href="/tool?charset=blocks&amp;cols=60&amp;contrast=15"');
     expect(usecasesHtml).toContain('href="/tool?charset=standard&amp;cols=64&amp;contrast=20&amp;color=gray"');
     expect(usecasesHtml.match(/<figure class="term term--full">/g) || []).toHaveLength(2);
+    /* 64 columns at 8px is 307px, wider than a 390px phone's panel; the type
+       follows the panel width instead */
+    expect(usecasesHtml).toContain("container-type: inline-size;");
+    expect(usecasesHtml).toContain("font-size: min(8px, calc(100cqw / 39));");
     expect(usecasesHtml.match(/Set by hand to show the format/g) || [])
       .toHaveLength(panels.length - real.length);
     expect(readmeBannerHtml).toContain("Set by hand to show the fence");
