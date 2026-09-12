@@ -1246,9 +1246,22 @@ describe("SEO page contract", () => {
   });
 
   it("links the SSH MOTD workflow from relevant site surfaces", function () {
-    [indexHtml, toolHtml, usecasesHtml].forEach(function (html) {
+    /* The two guides answer the highest-intent queries on the site and had
+       three and four inbound links against fifteen for /tool. Every charset
+       page's "where it goes" card now points at both; the guides link each
+       other. */
+    [indexHtml, toolHtml, usecasesHtml, readmeBannerHtml,
+     standardHtml, detailedHtml, blocksHtml, minimalHtml, binaryHtml, brailleHtml
+    ].forEach(function (html) {
       expect(html).toContain('href="/guides/ssh-motd"');
     });
+    [sshMotdHtml, standardHtml, detailedHtml, blocksHtml, minimalHtml, binaryHtml,
+     brailleHtml].forEach(function (html) {
+      expect(html).toContain('href="/guides/readme-banner"');
+    });
+    /* / and /tool compete for one query if they share an h1 */
+    expect(indexHtml).toMatch(/<h1 class="display">Image to<br>ASCII<br>converter/);
+    expect(toolHtml).toContain('<h1 class="h2">Convert an image to ASCII art, live</h1>');
     expect(llmsTxt).toContain("https://semaphore.bobochang.cn/guides/ssh-motd");
   });
 
