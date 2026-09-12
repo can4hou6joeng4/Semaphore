@@ -130,7 +130,7 @@ One module script at the END of `<body>` — Vite bundles the rest:
     <div class="sec" data-screen-label="…">…layout-only block…</div>
     …
     <footer class="site-foot">
-      <span>© 2026 Semaphore — plain text is forever</span>
+      <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="YYYY-MM-DD">YYYY-MM-DD</time></span>
       <nav><a href="/usecases">usecases</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">open tool</a></nav>
     </footer>
   </main>
@@ -141,6 +141,12 @@ One module script at the END of `<body>` — Vite bundles the rest:
 `shared.ts` prepends the sticky header (brand → `/`, nav usecases/faq,
 amber `► open tool` CTA) and appends the vim statusbar + CRT overlays.
 DO NOT create `.site-head`, `.statusbar`, `.crt-*` yourself.
+
+The footer is hand-written and carries the visible byline: author link, source link,
+licence and an `updated <time datetime>` whose value equals the page's JSON-LD
+`dateModified` (a test compares them, and the sitemap test ties that date to
+`lastmod`). Changing a page's content means changing all three in the same commit.
+`/zh` says the same in Chinese (`作者 · 源码 · MIT 许可 · 更新于`).
 
 Use `section` only for a thematic block with a visible heading. A heading-free
 `section` needs a specific `aria-label` only when it is a useful named landmark,
