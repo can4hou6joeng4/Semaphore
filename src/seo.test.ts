@@ -589,9 +589,41 @@ describe("SEO page contract", () => {
        outline. A summary may contain heading content, so each question is
        an <h2> inside its summary; the FAQPage names stay verbatim. */
     const questions = faqHtml.match(/<summary><h2>[^<]+<\/h2><\/summary>/g) || [];
-    expect(questions).toHaveLength(10);
+    expect(questions).toHaveLength(13);
     expect(faqHtml).not.toMatch(/<summary>[^<]/);
     expect(terminalCss).toContain("details.qa summary h2, details.qa summary h3 { font: inherit; margin: 0;");
+  });
+
+  it("keeps every /faq schema answer verbatim on the page and vice versa", function () {
+    /* The guides and /zh are checked by opening clause; /faq answers carry
+       links and <code>, so compare after stripping inline markup. Count both
+       ways so a card without schema, or schema without a card, fails. */
+    const node = jsonLd(faqHtml).flatMap(function (block) {
+      return (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
+    }).find(function (n) { return schemaTypes(n).includes("FAQPage"); }) as
+      { mainEntity?: Array<{ name?: string; acceptedAnswer?: { text?: string } }> };
+    const answers = node?.mainEntity || [];
+    const visible = faqHtml.match(/<summary><h2>[^<]+<\/h2><\/summary>/g) || [];
+    expect(answers.length).toBe(visible.length);
+    const plain = faqHtml.replace(/<\/?(code|a)\b[^>]*>/g, "");
+    answers.forEach(function (q) {
+      expect(plain, "question " + q.name).toContain("<h2>" + q.name + "</h2>");
+      expect(plain, "answer to " + q.name).toContain(q.acceptedAnswer?.text || "\u0000");
+    });
+  });
+
+  it("consolidates destination advice into one table on /tool", function () {
+    /* The column budgets were scattered over five pages (README 60–80, MOTD
+       64, mail 60–72, comments 40–60, print 200–240). One table on the tool
+       page is the extractable answer to "what columns for a README". */
+    const table = toolHtml.slice(toolHtml.indexOf("<caption>where the output is going"));
+    expect(table).not.toBe(toolHtml);
+    ["README banner", "SSH MOTD", "code comment header", "plain-text email",
+     "avatar or small logo", "photo, chat or forum post", "print or poster"
+    ].forEach(function (row) { expect(table).toContain(row); });
+    expect(table).toContain('href="/guides/readme-banner"');
+    expect(table).toContain('href="/guides/ssh-motd"');
+    expect(table).toContain(">200–240</td>");
   });
 
   it("prints a visible byline, source link, licence and date on every page", function () {
@@ -1021,7 +1053,7 @@ describe("SEO page contract", () => {
       const html = entry[1];
       const tables = html.match(/<table class="tbl">/g) || [];
       expect(tables.length, entry[0] + " has no reference table").toBeGreaterThan(0);
-      expect(html.match(/<div class="table-wrap" tabindex="0">/g) || [])
+      expect(html.match(/<div class="table-wrap" tabindex="0"[^>]*>/g) || [])
         .toHaveLength(tables.length);
       expect(html.match(/<caption>/g) || []).toHaveLength(tables.length);
       expect(html.match(/<th scope="col">/g) || []).not.toHaveLength(0);
