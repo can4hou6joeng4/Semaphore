@@ -877,6 +877,23 @@ describe("SEO page contract", () => {
     });
   });
 
+  it("prints every ramp string exactly as the engine ships it", function () {
+    /* The step count above was pinned while the detailed ramp itself drifted:
+       the cell showed 54 characters beside a "68" for weeks, because a count
+       cannot tell which glyphs are missing. Assert the escaped string, leading
+       space included, on both pages that carry the table. `&` is the only ramp
+       character HTML needs escaped; `"` is fine in text content. */
+    [[indexHtml, "/"], [zhHtml, "/zh"]].forEach(function (pair) {
+      const html = pair[0], path = pair[1];
+      Object.keys(CHARSETS).forEach(function (name) {
+        const ramp = CHARSETS[name].ramp;
+        if (!ramp) return;
+        const cell = '<td class="ramp">' + ramp.replace(/&/g, "&amp;") + "</td>";
+        expect(html, name + " ramp misquoted on " + path).toContain(cell);
+      });
+    });
+  });
+
   it("documents every converter control against the input it describes", function () {
     /* The ranges are only useful to a reader or an AI if they are the real
        ones, so read them back off the range inputs on the same page. */
@@ -983,6 +1000,31 @@ describe("SEO page contract", () => {
         const opening = text.split(/[.?。？]/)[0].slice(0, 40);
         expect(html.replace(/<\/?code>/g, ""), entry[0] + ": " + opening)
           .toContain(opening);
+      });
+    });
+  });
+
+  it("shows each guide FAQ question as the heading its schema names", function () {
+    /* Google's FAQ policy wants the marked-up question visible, and an
+       extractor keys on the heading. readme-banner shipped fragments ("the
+       shape collapsed into a paragraph") under Question names that were
+       real questions; compare them case-insensitively so the card's
+       lowercase-after-Q style stays. */
+    [["guides/readme-banner.html", readmeBannerHtml],
+     ["guides/ssh-motd.html", sshMotdHtml]].forEach(function (entry) {
+      const html = entry[1] as string;
+      const page = jsonLd(html).flatMap(function (block) {
+        return (block as { "@graph"?: Record<string, unknown>[] })["@graph"] || [];
+      }).find(function (node) {
+        return schemaTypes(node).includes("FAQPage");
+      }) as { mainEntity?: Array<{ name?: string }> } | undefined;
+      const headings = Array.from(
+        html.matchAll(/<span class="p">Q<\/span> ([^<]+)<\/h3>/g),
+        function (match) { return match[1].toLowerCase(); }
+      );
+      (page?.mainEntity || []).forEach(function (question) {
+        expect(headings, entry[0] + " hides " + question.name)
+          .toContain((question.name || "").toLowerCase());
       });
     });
   });

@@ -110,7 +110,7 @@
         "@type": "SpeakableSpecification",
         "cssSelector": ["h1", ".lede"]
       },
-      "dateModified": "2026-09-03"
+      "dateModified": "2026-09-12"
     },
     {
       "@type": "HowTo",
@@ -217,7 +217,7 @@
   <section class="sec" data-screen-label="guide-why">
     <div class="kicker">[ why_plain_text_motd ]</div>
     <h2 class="h2">Why ASCII belongs in an SSH login</h2>
-    <p class="lede" style="margin-top:18px">An MOTD arrives over the same text stream as the prompt. It cannot depend on an image host, browser, or GUI. A compact ASCII mark can identify the machine, separate environments, and stay readable through slow or restricted connections.</p>
+    <p class="lede" style="margin-top:18px">An MOTD (message of the day) arrives over the same text stream as the prompt. It cannot depend on an image host, browser, or GUI. A compact ASCII mark can identify the machine, separate environments, and stay readable through slow or restricted connections.</p>
     <div class="grid-3" style="margin-top:34px">
       <article class="card">
         <h3 class="card-title"><span class="p">$</span> width is the budget</h3>
@@ -255,6 +255,7 @@
         <p>Copy plain text, save it as <code>motd.txt</code>, and inspect the exact width in a terminal before installation:</p>
         <pre class="guide-code">wc -L motd.txt
 cat motd.txt</pre>
+        <p><code>wc -L</code> counts display columns on GNU coreutils but bytes on macOS and BSD, so a <code>blocks</code> or braille banner reads about three times too wide there. One more reason to start on <code>standard</code>: every character is one byte, so the count is exact everywhere.</p>
       </li>
       <li class="card">
         <h3 class="card-title"><span class="p">05</span> install through the path your OS owns</h3>
@@ -268,7 +269,7 @@ cat motd.txt</pre>
     <h2 class="h2">Settings that survive real terminals</h2>
     <div class="grid-2" style="margin-top:34px">
       <article class="card">
-        <h3 class="card-title"><span class="p">Q</span> which charset is safest?</h3>
+        <h3 class="card-title"><span class="p">Q</span> which charset is safest for an SSH MOTD?</h3>
         <p>Use <code>standard</code> when SSH clients and fonts are unknown. Use <code>blocks</code> only when the target font renders <code>░▒▓█</code> consistently. Braille carries more detail but relies on Unicode fallback glyphs.</p>
       </article>
       <article class="card">

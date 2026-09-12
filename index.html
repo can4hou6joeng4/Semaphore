@@ -280,7 +280,7 @@
         "@type": "SpeakableSpecification",
         "cssSelector": ["h1", ".lede"]
       },
-      "dateModified": "2026-09-02"
+      "dateModified": "2026-09-12"
     },
     {
       "@type": "Person",
@@ -434,7 +434,7 @@
         <p>Cloudflare edge counts are static-file request logs, not client telemetry. No analytics beacon runs in the tab, and image bytes never enter those requests.</p>
       </article>
     </div>
-    <p class="fs-s text-faint" style="margin-top:26px">Free, no account, no watermark. Once cached, the converter works offline. <a href="/tool">Open the ASCII converter</a>, read the <a href="/faq">FAQ</a>, or inspect the engine on <a href="https://github.com/can4hou6joeng4/Semaphore">GitHub</a>.</p>
+    <p class="fs-s text-faint" style="margin-top:26px">Free, no account, no watermark. Once the page is open, converting and exporting need no network; only a reload does. <a href="/tool">Open the ASCII converter</a>, read the <a href="/faq">FAQ</a>, or inspect the engine on <a href="https://github.com/can4hou6joeng4/Semaphore">GitHub</a>.</p>
   </section>
 
   <section class="sec" data-screen-label="live-demo" id="demoSection">
@@ -503,7 +503,7 @@
 
     <div class="table-wrap" tabindex="0">
       <table class="tbl">
-        <caption>the six charsets, ordered by how many tonal steps each one carries</caption>
+        <caption>the six charsets, from the most detail to the least</caption>
         <thead>
           <tr><th scope="col">charset</th><th scope="col">characters</th><th scope="col">steps</th><th scope="col">best for</th><th scope="col">portability</th></tr>
         </thead>
@@ -511,13 +511,13 @@
           <tr>
             <th scope="row"><a href="/charsets/braille">braille</a></th>
             <td>2×4 dot cells</td>
-            <td class="num">256 patterns</td>
+            <td class="num">9 tones · 256 patterns</td>
             <td>The most detail available. Eight dots per cell, dithered, so a face keeps its structure at low column counts.</td>
             <td>Needs a font with braille glyphs. JetBrains Mono has none, so it falls back to a system face.</td>
           </tr>
           <tr>
             <th scope="row"><a href="/charsets/detailed">detailed</a></th>
-            <td class="ramp">.'^",:Il!~+?][1)|/tfjxnuvzXYUJCLQ0Omwqpdbkao*#MW&amp;8%B@$</td>
+            <td class="ramp"> .'`^",:;Il!i~+_-?][}{1)(|\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&amp;8%B@$</td>
             <td class="num">68</td>
             <td>Photographs and portraits. Adjacent shades differ by roughly 1.5%, which is what keeps a cheekbone readable.</td>
             <td>Plain 7-bit ASCII. Safe anywhere.</td>
@@ -602,7 +602,7 @@
     <div class="qa-list" style="margin-top:34px">
       <details class="qa" open>
         <summary>Do my images get uploaded?</summary>
-        <div class="qa-a"><p>Never — the image to ASCII conversion runs entirely in your browser on a local canvas. It even works offline once the page is loaded. Production CSP blocks any outbound connect.</p></div>
+        <div class="qa-a"><p>Never — the image to ASCII conversion runs entirely in your browser on a local canvas. It keeps working with the network off for as long as the tab stays open; only a reload needs a connection. Production CSP blocks any outbound connect.</p></div>
       </details>
       <details class="qa">
         <summary>Is this ASCII art generator free?</summary>
