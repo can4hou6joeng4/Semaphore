@@ -43,13 +43,17 @@
       font-size: 10px;
       line-height: 1;
     }
-    /* the two panels that show real converter output are shown whole */
+    /* The two panels that show real converter output are shown whole. The
+       wider one is 64 columns; at 0.6em per column that is 38.4em, so the
+       type scales with the panel's own width and never clips on a phone
+       (8px fits from about 430px up; a 320px phone gets ~5.6px). */
     [data-screen-label="usecases-grid"] .term--full .term-body {
       height: auto;
       padding-block: 14px;
+      container-type: inline-size;
     }
     [data-screen-label="usecases-grid"] .term--full .ascii-pre {
-      font-size: 8px;
+      font-size: min(8px, calc(100cqw / 39));
     }
     [data-screen-label="usecases-grid"] .card-title {
       margin-top: 18px;
