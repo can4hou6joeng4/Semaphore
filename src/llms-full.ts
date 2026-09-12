@@ -278,7 +278,14 @@ export function pageToMarkdown(html: string, origin: string): { title: string; b
     }
     if (tag === "ol" || tag === "ul") { lists.push({ ordered: tag === "ol", n: 0 }); continue; }
     if (tag === "table") { tables.push({ caption: "", rows: [], row: [] }); continue; }
-    if (tag === "a") { hrefs.push(attr(attrs, "href")); append("\u0001"); continue; }
+    if (tag === "a") {
+      /* attribute values are entity-encoded like text: a preset link's
+         `&amp;` must come out as `&` or the markdown URL is wrong */
+      const href = attr(attrs, "href");
+      hrefs.push(href === null ? null : decode(href));
+      append("\u0001");
+      continue;
+    }
     if (tag === "br") { append("\n"); continue; }
     if (tag === "code") append("`");
     else if (tag === "b" || tag === "strong") append("**");

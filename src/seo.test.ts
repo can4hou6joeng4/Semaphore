@@ -1170,8 +1170,15 @@ describe("SEO page contract", () => {
        the panel count so a new panel cannot ship unlabelled. */
     const panels = usecasesHtml.match(/<pre class="ascii-pre">/g) || [];
     expect(panels.length).toBeGreaterThan(0);
+    /* two panels are real converter output of the sample portrait and say
+       so, with the parameters and a preset link that reproduces them */
+    const real = usecasesHtml.match(/Converter output of the sample portrait: /g) || [];
+    expect(real).toHaveLength(2);
+    expect(usecasesHtml).toContain('href="/tool?charset=blocks&amp;cols=60&amp;contrast=15"');
+    expect(usecasesHtml).toContain('href="/tool?charset=standard&amp;cols=64&amp;contrast=20&amp;color=gray"');
+    expect(usecasesHtml.match(/<figure class="term term--full">/g) || []).toHaveLength(2);
     expect(usecasesHtml.match(/Set by hand to show the format/g) || [])
-      .toHaveLength(panels.length);
+      .toHaveLength(panels.length - real.length);
     expect(readmeBannerHtml).toContain("Set by hand to show the fence");
   });
 
