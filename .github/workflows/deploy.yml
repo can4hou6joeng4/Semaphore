@@ -40,3 +40,19 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name semaphore
+      # IndexNow: tell Bing/Yandex/Seznam which URLs changed. This is a
+      # build-time request from the runner, never from the page, so the
+      # site's connect-src 'none' is untouched. The key is public by
+      # protocol design (it is served at the site root); the request
+      # proves control of the host, not of a secret. Submission failures
+      # must not fail a deploy that already succeeded.
+      - name: Submit sitemap URLs to IndexNow
+        continue-on-error: true
+        run: |
+          key=$(ls public | grep -E '^[0-9a-f]{64}\.txt$' | sed 's/\.txt$//')
+          urls=$(grep -o '<loc>[^<]*</loc>' public/sitemap.xml | sed 's/<[^>]*>//g' | jq -R . | jq -s .)
+          jq -n --arg host semaphore.bobochang.cn --arg key "$key" --argjson urlList "$urls" \
+            '{host:$host, key:$key, keyLocation:("https://"+$host+"/"+$key+".txt"), urlList:$urlList}' \
+            | curl -sS -o /dev/null -w 'IndexNow HTTP %{http_code}\n' \
+                -H 'Content-Type: application/json; charset=utf-8' \
+                --data @- https://api.indexnow.org/indexnow

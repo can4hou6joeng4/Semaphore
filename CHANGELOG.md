@@ -55,6 +55,7 @@ All notable changes to Semaphore are documented in this file.
 
 ### Maintenance
 
+- Submit the sitemap's URLs to IndexNow after every production deploy, from the GitHub Actions runner (never from the page, so `connect-src 'none'` is untouched); a failed submission does not fail the deploy.
 - Remove the unused `AsciiEngine.VERSION` export and its synchronization test; the
   value had no runtime consumer and was tree-shaken out of every build.
 - Add the `.tbl` and `.guide-steps` recipes to `STYLEGUIDE.md`. `.tbl` sets `min-width: 560px`, which makes the `tabindex` on `.table-wrap` load-bearing for keyboard scrolling below ~600px; a test pins it.
