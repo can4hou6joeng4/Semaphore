@@ -490,6 +490,59 @@
       </table>
     </div>
 
+    <div class="table-wrap" tabindex="0" style="margin-top:34px">
+      <table class="tbl">
+        <caption>where the output is going, and the charset and width that survive there</caption>
+        <thead>
+          <tr><th scope="col">destination</th><th scope="col">charset</th><th scope="col">columns</th><th scope="col">why</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"><a href="/guides/readme-banner">README banner</a></th>
+            <td class="num">blocks or standard</td>
+            <td class="num">60–80</td>
+            <td>Inside a fenced code block. Around 60 columns fits a phone-width README without sideways scrolling.</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/guides/ssh-motd">SSH MOTD</a></th>
+            <td class="num">standard</td>
+            <td class="num">40–80, 64 to be safe</td>
+            <td>Plain 7-bit characters render in every terminal font; 64 leaves margin inside an 80-column window.</td>
+          </tr>
+          <tr>
+            <th scope="row">code comment header</th>
+            <td class="num">standard or minimal</td>
+            <td class="num">40–60</td>
+            <td>Leaves room for the comment prefix inside an 80-column line.</td>
+          </tr>
+          <tr>
+            <th scope="row">plain-text email</th>
+            <td class="num">standard</td>
+            <td class="num">60–72</td>
+            <td>Mail clients wrap between 72 and 78 characters; anything wider comes out as rubble.</td>
+          </tr>
+          <tr>
+            <th scope="row">avatar or small logo</th>
+            <td class="num">minimal</td>
+            <td class="num">40–80</td>
+            <td>A long ramp turns to speckle at small sizes; five steps hold the shape.</td>
+          </tr>
+          <tr>
+            <th scope="row">photo, chat or forum post</th>
+            <td class="num">braille</td>
+            <td class="num">100–160</td>
+            <td>Eight dots per cell keep a face readable; needs a font with braille glyphs, which every modern OS ships.</td>
+          </tr>
+          <tr>
+            <th scope="row">print or poster</th>
+            <td class="num">detailed</td>
+            <td class="num">200–240</td>
+            <td>The 240-column ceiling exists for paper: export the <code>.png</code> and let the printer handle the resolution.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <div class="grid-3" style="margin-top:34px">
       <article class="card">
         <h3 class="card-title"><span class="p" aria-hidden="true">$</span> cells are not square</h3>

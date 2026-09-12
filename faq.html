@@ -165,6 +165,30 @@
             "@type": "Answer",
             "text": "Semaphore does not impose a fixed source-dimension limit; practical limits depend on your browser and available memory. Output is capped at 40–240 columns. Dense braille at high column counts may take longer on older devices."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a command-line version?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Semaphore is a web page by design: the whole engine is one MIT-licensed TypeScript file, and there is no CLI, API or npm package. For a terminal workflow use jp2a, chafa or ascii-image-converter; use Semaphore when you want a live preview, braille output, or the guarantee that the image never leaves your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I get ANSI color codes in the text?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Plain-text copies and .txt downloads are characters only, so they paste cleanly into a README, a comment or a MOTD. Color survives in the .png export and in the share card. A future ANSI export is not planned."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is this different from other image to ASCII sites?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Three facts. Nothing is uploaded, and the deployed Content-Security-Policy (connect-src 'none') enforces that rather than promising it. The braille charset packs a 2×4 dithered dot grid into each cell, roughly eight times the spatial resolution of a classic ramp. And the source is MIT-licensed on GitHub, so every claim here can be checked against the code."
+          }
         }
       ]
     },
@@ -298,6 +322,27 @@
           <summary><h2>Any size limits?</h2></summary>
           <div class="qa-a">
             <p>Semaphore does not impose a fixed source-dimension limit; practical limits depend on your browser and available memory. Output is capped at 40–240 columns. Dense braille at high column counts may take longer on older devices.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>Is there a command-line version?</h2></summary>
+          <div class="qa-a">
+            <p>No. Semaphore is a web page by design: the whole engine is one MIT-licensed TypeScript file, and there is no CLI, API or npm package. For a terminal workflow use <a href="https://github.com/cslarsen/jp2a">jp2a</a>, <a href="https://hpjansson.org/chafa/">chafa</a> or <a href="https://github.com/TheZoraiz/ascii-image-converter">ascii-image-converter</a>; use Semaphore when you want a live preview, braille output, or the guarantee that the image never leaves your device.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>Can I get ANSI color codes in the text?</h2></summary>
+          <div class="qa-a">
+            <p>No. Plain-text copies and <code>.txt</code> downloads are characters only, so they paste cleanly into a README, a comment or a MOTD. Color survives in the <code>.png</code> export and in the share card. A future ANSI export is not planned.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>How is this different from other image to ASCII sites?</h2></summary>
+          <div class="qa-a">
+            <p>Three facts. Nothing is uploaded, and the deployed Content-Security-Policy (<code>connect-src 'none'</code>) enforces that rather than promising it. The braille charset packs a 2×4 dithered dot grid into each cell, roughly eight times the spatial resolution of a classic ramp. And the source is <a href="https://github.com/can4hou6joeng4/Semaphore">MIT-licensed on GitHub</a>, so every claim here can be checked against the code.</p>
           </div>
         </details>
 
