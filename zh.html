@@ -44,6 +44,25 @@
       "@id": "https://semaphore.bobochang.cn/zh#webpage",
       "name": "图片转 ASCII 字符画",
       "url": "https://semaphore.bobochang.cn/zh",
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "ASCII art",
+          "sameAs": "https://en.wikipedia.org/wiki/ASCII_art"
+        }
+      ],
+      "mentions": [
+        {
+          "@type": "Thing",
+          "name": "Braille Patterns",
+          "sameAs": "https://en.wikipedia.org/wiki/Braille_Patterns"
+        },
+        {
+          "@type": "Thing",
+          "name": "Floyd–Steinberg dithering",
+          "sameAs": "https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering"
+        }
+      ],
       "inLanguage": "zh-CN",
       "description": "免费的图片转 ASCII 工具，完全在浏览器本地运行，不上传图片。",
       "isPartOf": {
@@ -139,7 +158,10 @@
       ],
       "speakable": {
         "@type": "SpeakableSpecification",
-        "cssSelector": ["h1", ".lede"]
+        "xpath": [
+          "/html/body//h1",
+          "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
+        ]
       },
       "dateModified": "2026-09-12"
     },

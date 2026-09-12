@@ -44,6 +44,7 @@
       "@id": "https://semaphore.bobochang.cn/privacy#webpage",
       "name": "Semaphore Privacy",
       "url": "https://semaphore.bobochang.cn/privacy",
+      "inLanguage": "en",
       "description": "How Semaphore keeps image conversion local and what limited data exists when static files are requested.",
       "isPartOf": {
         "@id": "https://semaphore.bobochang.cn/#website"
@@ -56,9 +57,12 @@
       },
       "speakable": {
         "@type": "SpeakableSpecification",
-        "cssSelector": ["h1", ".lede"]
+        "xpath": [
+          "/html/body//h1",
+          "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
+        ]
       },
-      "dateModified": "2026-09-03"
+      "dateModified": "2026-09-12"
     },
     {
       "@type": "BreadcrumbList",
@@ -157,7 +161,7 @@
   </section>
 
   <div class="sec sec--tight" data-screen-label="privacy-cta">
-    <p class="lede">Last updated: September 3, 2026.</p>
+    <p class="lede">Last updated: September 12, 2026.</p>
     <a class="btn btn--green" href="/tool" style="margin-top:22px">Convert locally</a>
   </div>
 
