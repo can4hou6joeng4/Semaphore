@@ -573,6 +573,27 @@ describe("SEO page contract", () => {
     expect(zhHtml).toContain('<meta property="og:locale:alternate" content="en_US">');
   });
 
+  it("prints a visible byline, source link, licence and date on every page", function () {
+    /* Person JSON-LD was on every page while a reader saw "bobochang" only
+       in the /privacy lede, and a date only there. Answer engines extract
+       the visible byline and date, not the graph. The footer carries them,
+       and the <time> is read from the same dateModified the sitemap test
+       pins, so three freshness signals cannot disagree. The link to the
+       author domain is also the one inbound link the operator controls
+       that does not depend on JavaScript. */
+    pages.forEach(function (page) {
+      const foot = page.html.slice(page.html.indexOf('<footer class="site-foot">'));
+      expect(foot).not.toBe(page.html);
+      expect(foot).toContain('<a href="https://bobochang.cn">bobochang</a>');
+      expect(foot).toContain('<a href="https://github.com/can4hou6joeng4/Semaphore">');
+      expect(foot).toContain("MIT");
+      const date = (page.html.match(/"dateModified": "([^"]+)"/) || [])[1];
+      expect(foot, page.path + " footer date").toContain(
+        '<time datetime="' + date + '">' + date + "</time>"
+      );
+    });
+  });
+
   it("resolves every @id a page references within that same page", function () {
     /* JSON-LD is parsed per document, so a reference to #website on /tool is a
        bare URI unless that page also carries the node. Consumers do not fetch
