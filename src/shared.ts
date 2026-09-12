@@ -63,7 +63,7 @@ function paintTheme(t: string): void {
   const lab = document.querySelector("[data-theme-label]");
   if (lab) lab.textContent = t;
   const btn = document.querySelector(".theme-toggle");
-  if (btn) btn.setAttribute("aria-label", "switch color theme (current: " + t + ")");
+  if (btn) btn.setAttribute("aria-label", themeLabel(t));
 }
 
 function setTheme(t: string): void {
@@ -80,9 +80,38 @@ paintTheme(_theme); // before chrome injection, pre-paint
 
 /* ------------------------- data ----------------------------- */
 const NAV = [
-  { id: "usecases", href: "/usecases", label: "usecases" },
-  { id: "faq",      href: "/faq",      label: "faq" }
+  { id: "usecases", href: "/usecases" },
+  { id: "faq",      href: "/faq"      }
 ];
+
+/* Chrome strings. /zh is the only page with lang="zh-CN"; every other page is
+   English, so the header and statusbar it injects were English there too and
+   a rendering crawler saw mixed-language chrome on the one Chinese page. Only
+   labels switch — hrefs, theme names and the metric tokens are the same. */
+interface ChromeStrings {
+  labels: Record<string, string>;
+  home: string; nav: string; cta: string; ready: string;
+  themeBefore: string; themeAfter: string;
+}
+const CHROME: Record<"en" | "zh", ChromeStrings> = {
+  en: {
+    labels: { usecases: "usecases", faq: "faq" },
+    home: "semaphore — home", nav: "site", cta: "► open tool", ready: "ready",
+    themeBefore: "switch color theme (current: ", themeAfter: ")"
+  },
+  zh: {
+    labels: { usecases: "使用场景", faq: "常见问题" },
+    home: "semaphore — 首页", nav: "站点", cta: "► 打开工具", ready: "就绪",
+    themeBefore: "切换配色（当前：", themeAfter: "）"
+  }
+};
+function strings(): ChromeStrings {
+  return document.documentElement.lang.toLowerCase().startsWith("zh") ? CHROME.zh : CHROME.en;
+}
+function themeLabel(t: string): string {
+  const s = strings();
+  return s.themeBefore + t + s.themeAfter;
+}
 
 const FAVICON =
   "data:image/svg+xml," + encodeURIComponent(
@@ -106,20 +135,21 @@ function esc(s: unknown): string {
 
 /* ---------------------- chrome builders --------------------- */
 function buildHeader(page: string): HTMLElement {
+  const s = strings();
   const head = el("header", "site-head");
   const rail = el("div", "rail");
 
   const brand = el("a", "brand") as HTMLAnchorElement;
   brand.href = "/";
-  brand.setAttribute("aria-label", "semaphore — home");
+  brand.setAttribute("aria-label", s.home);
   brand.innerHTML = '<span class="brand-mark" aria-hidden="true">▚</span>' +
                     '<span class="brand-name">Semaphore</span>';
   rail.appendChild(brand);
 
   const nav = el("nav", "site-nav");
-  nav.setAttribute("aria-label", "site");
+  nav.setAttribute("aria-label", s.nav);
   NAV.forEach(function (item) {
-    const a = el("a", null, esc(item.label)) as HTMLAnchorElement;
+    const a = el("a", null, esc(s.labels[item.id])) as HTMLAnchorElement;
     a.href = item.href;
     if (page === item.id) a.setAttribute("aria-current", "page");
     nav.appendChild(a);
@@ -127,14 +157,14 @@ function buildHeader(page: string): HTMLElement {
 
   const tt = el("button", "theme-toggle") as HTMLButtonElement;
   tt.type = "button";
-  tt.setAttribute("aria-label", "switch color theme (current: " + currentTheme() + ")");
+  tt.setAttribute("aria-label", themeLabel(currentTheme()));
   tt.innerHTML = '[ <span data-theme-label>' + esc(currentTheme()) + "</span> ]";
   tt.addEventListener("click", function () {
     setTheme(currentTheme() === "crt" ? "paper" : "crt");
   });
   nav.appendChild(tt);
 
-  const cta = el("a", "btn btn--amber btn--sm", "► open tool") as HTMLAnchorElement;
+  const cta = el("a", "btn btn--amber btn--sm", esc(s.cta)) as HTMLAnchorElement;
   cta.href = "/tool";
   if (page === "tool") cta.setAttribute("aria-current", "page");
   nav.appendChild(cta);
@@ -151,7 +181,7 @@ function buildStatusbar(page: string, path: string): HTMLElement {
     '<div class="sb-seg sb-hide-m">' + esc(path) + "</div>" +
     '<div class="sb-seg" role="status" aria-live="polite" aria-atomic="true">' +
     '<span class="sb-dot" data-sb-dot aria-hidden="true"></span>' +
-    '<span data-sb-state>ready</span></div>' +
+    '<span data-sb-state>' + esc(strings().ready) + "</span></div>" +
     '<div class="sb-right" data-sb-right></div>';
   const right = bar.querySelector("[data-sb-right]")!;
   defaultRight().forEach(function (t) {
