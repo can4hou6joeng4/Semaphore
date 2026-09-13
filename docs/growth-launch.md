@@ -107,7 +107,8 @@ image-to-ASCII "Show HN" launch posts over the previous 18 months at about 4 poi
 largest ASCII-related HN event in that window was a technical essay at 1,353 points. A
 technical article on the braille/Floyd–Steinberg pipeline is drafted at
 [`article-braille-dithering.md`](./article-braille-dithering.md), with publication notes
-at its end. Prefer publishing that as a plain link over the launch post below. The launch
+in [`article-braille-dithering-notes.md`](./article-braille-dithering-notes.md). As of
+2026-09-14 the three figures are in and every number is re-measured; it is publishable. Prefer publishing that as a plain link over the launch post below. The launch
 copy is kept for reference.
 
 **Title:**
