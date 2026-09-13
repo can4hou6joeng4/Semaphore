@@ -41,6 +41,9 @@ which is the "one-line local hack" the note asked for.
   add Unicode 16 octants (2×4 filled blocks, no dot gaps); the honest answer is font
   support, and it is not in the article because I could not verify current coverage.
 
+**Outcome (2026-09-14).** Published on `bobochang.cn`; HN and dev.to both skipped because
+the owner has no account on either. The plan below is kept as written.
+
 **Where and how.** Canonical home is a post on `bobochang.cn` (feeds the Person entity
 and gives the site an inbound link from the author's own domain). Submit that URL to HN
 as a plain link — not "Show HN" — with the title as written. Cross-post to dev.to with a
