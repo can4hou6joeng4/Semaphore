@@ -1,8 +1,8 @@
 # Unicode braille is an 8-pixel bitmap font
 
-*Draft for publication. Written 2026-09-06 against `src/ascii-engine.ts` at commit
-5471153 and reviewed against it line by line; code blocks are quoted verbatim except
-where marked. Not yet published — see the notes at the end.*
+*Written against `src/ascii-engine.ts` as of commit 46a5f63 (the file's last change)
+and reviewed against it line by line; code blocks are quoted verbatim except where
+marked. Figures were rendered with the shipped engine and font in Chrome 152 on macOS.*
 
 ---
 
@@ -56,7 +56,8 @@ for (let r = 0; r < rows; r++) {
     let code = 0x2800;
     for (let dy = 0; dy < 4; dy++) {
       for (let dx = 0; dx < 2; dx++) {
-        const gi = (r * 4 + dy) * gw + (q * 2 + dx);
+        const gx = q * 2 + dx, gy = r * 4 + dy;
+        const gi = gy * gw + gx;
         if (grid.lum[gi] >= 128) code |= BITS[dy][dx];
       }
     }
@@ -77,16 +78,18 @@ samples it at *2C × 4R*: eight times as many, in the same number of characters,
 output is still plain text. At 120 columns that is 240 samples across. A face keeps its
 eye sockets; lettering in a logo stays legible.
 
-*[before/after 1 goes here: same source, 120 columns, `detailed` ramp on the left,
-braille on the right]*
+![Left: the 68-step detailed ramp at 120 columns, 70 rows. Right: braille at 120 columns, dithered, 80 rows. Same portrait; the braille side keeps the eye sockets and the line of the jaw that the ramp smears.](images/braille-1-ramp-vs-braille.webp)
+
+*Same source, 120 columns. Left: `detailed` ramp, 68 steps. Right: braille, dithered. Both are plain text; the right one has eight times as many samples.*
 
 The cost is tone. Each dot is on or off, so a braille character has no notion of medium
 grey. Threshold a smooth gradient at 50% and you get a hard edge where it crosses the
 midpoint, flat black on one side, flat white on the other. Every pixel darker than the
 threshold becomes 0, every lighter one 1, and everything about *how much* darker is gone.
 
-*[before/after 2 goes here: braille of the same photo, thresholded on the left, dithered
-on the right — this is the pair the whole article turns on]*
+![Left: braille thresholded at 50 percent with no dither, flat black and flat white with a hard edge between them. Right: the same photo with Floyd–Steinberg error diffusion, mid-tones rendered as dot density.](images/braille-2-threshold-vs-dither.webp)
+
+*Same photo, same grid. Left: every sample thresholded at 50%. Right: Floyd–Steinberg. The right side is the one this article is about.*
 
 ## Error diffusion
 
@@ -213,7 +216,9 @@ It also ties back to the title. Split a 3:5 cell into 2 × 4 and each dot covers
 0.30 × 0.25 of the cell — very nearly square. That is why braille works as pixels at all,
 where a 1 × 2 split of the same cell would not.
 
-*[before/after 3 goes here: stretched vs correct aspect, same source]*
+![Left: braille rendered with cellAspect 1, 117 rows, the face stretched tall. Right: cellAspect derived from the measured 0.68em advance of the fallback braille font, 80 rows, correct proportions.](images/braille-3-aspect.webp)
+
+*Same source, 120 columns. Left: `cellAspect: 1`, as if cells were square — 117 rows. Right: the aspect derived from the measured advance of the braille fallback face — 80 rows.*
 
 Where does `aspect` come from? Not from a constant, in the shipped tool. JetBrains Mono,
 which the site uses for everything else, ships zero of the 256 braille glyphs — I parsed
@@ -221,9 +226,9 @@ the font's cmap to check — and so does Menlo. Braille therefore renders in wha
 fallback face the OS supplies, and that face's cell width is not the primary font's. So
 the page measures it: fifty copies of `⣿` in a hidden span at 100px, width divided by
 5000, and both the row count and the fitted font size derive from that number. On the
-Mac I am typing this on the fallback measures about 0.68em, not 0.60, so the same
-square image comes out closer to 82 rows than 72. The engine only names the glyph to
-measure; the page does the measuring. `1/0.6` is what you get if you call the engine bare
+Mac I am typing this on (Chrome 152, Apple Braille as the fallback) it measures 0.684em,
+not 0.60, so the 1100×1069 sample portrait at 120 columns comes out at 80 rows instead
+of 70. The engine only names the glyph to measure; the page does the measuring. `1/0.6` is what you get if you call the engine bare
 and pass nothing.
 
 In a README or a chat window you are at the mercy of the renderer, which is why braille
@@ -238,53 +243,3 @@ is MIT on GitHub, and the engine is one file, `src/ascii-engine.ts`. The braille
 page renders a live example of the pipeline above.*
 
 ---
-
-## Publication notes (not part of the article)
-
-**Status: not ready to publish. One blocker remains and it needs a browser.**
-
-The three reviews (engine-against-source, standards, HN-reader) agreed on one thing the
-draft cannot fix from a text editor: an essay about a visual technique with no pictures
-loses to the one with pictures. Three before/after pairs are marked in the text with
-*[…]* placeholders. Make them with the tool itself, same source image throughout, 120
-columns:
-
-1. `detailed` ramp vs `braille` — the "8× samples" claim.
-2. braille with dither **off** vs **on** — the claim the whole article turns on; the
-   tool has the toggle.
-3. braille rendered with `cellAspect: 1` vs the measured aspect — needs a one-line
-   local hack or two screenshots at different fonts; the stretched one is the point.
-
-Export each as `.png` from the tool, no colour, and drop them in. Replace the
-placeholders. Do not publish with the placeholders in.
-
-**Facts an HN commenter will check, all now verified against the source:**
-- Every quoted block is verbatim from `src/ascii-engine.ts` except the packer, which is
-  the real loop with the colour-accumulation lines removed — the text says so.
-- The site does **not** use `1/0.6`; it measures. The article now says exactly that. The
-  0.68em / ~82 rows figures are from the reviewer's CoreText measurement of Apple Braille;
-  confirm on your own machine before publishing or delete the sentence.
-- "Tens of milliseconds" was removed. `convert()` records `ms` and the tool shows it; if
-  you want a number, measure one and state the machine.
-- The gamma section no longer argues that encoded-space dithering is "right". It says
-  what the code computes (Y′), why that is a standard quantity, where it is wrong
-  (saturated colours), and that the difference is unmeasured. Expect the Ditherpunk link
-  anyway; the reply is "yes, and here is the number" once you have made before/after 2
-  with a linearised variant.
-- Prior art (drawille 2014, chafa, notcurses, btop) is acknowledged up front. Someone may
-  add Unicode 16 octants (2×4 filled blocks, no dot gaps); the honest answer is font
-  support, and it is not in the article because I could not verify current coverage.
-
-**Where and how.** Canonical home is a post on `bobochang.cn` (feeds the Person entity
-and gives the site an inbound link from the author's own domain). Submit that URL to HN
-as a plain link — not "Show HN" — with the title as written. Cross-post to dev.to with a
-canonical tag. Weekday, 14:00–16:00 UTC; stay two hours for comments.
-
-**Why this instead of the launch post.** The GEO audit put the ceiling for browser
-image-to-ASCII "Show HN" posts over 18 months at about 4 points, against 1,353 for the
-period's best ASCII technical essay. Explaining the pipeline is the leverage; announcing
-the tool is not. The tool is named once, in the first sentence, as the author's — every
-later reference is a maker's note, not a plug.
-
-**Owner decision.** Publishing goes out under the owner's name and is not authorised by
-this draft existing.

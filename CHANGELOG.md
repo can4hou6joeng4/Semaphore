@@ -50,6 +50,7 @@ All notable changes to Semaphore are documented in this file.
 
 ### Documentation
 
+- Finish the braille / Floyd–Steinberg article: the three before/after figures are rendered with the shipped engine and font (`docs/images/braille-*.webp`), the fallback advance is re-measured (0.684em → 80 rows for the sample portrait, replacing the reviewer's ~82), the packer excerpt is restored to the engine's exact lines, and the publication notes move to `docs/article-braille-dithering-notes.md` so the article body is the publishable text.
 - Correct `docs/growth-launch.md`: two of the three "mergeable" awesome-list targets are dormant repos; IndexNow, Bing verification and Wikidata are staged as single owner actions. Record the 2026-09-03 IndexNow POST (13 URLs, HTTP 200) and the `90dy/awesome-ascii#4` link fix.
 - Draft the braille / Floyd–Steinberg technical article in `docs/article-braille-dithering.md`, every claim verified against `src/ascii-engine.ts`. Three image placeholders remain; publishing is the owner's call.
 - Refresh `AGENTS.md` against the current tree: add `src/charset-page.ts`, `public/_redirects`, the commit-prefix convention, and the wrangler command that serves `dist/` with `_headers` applied.
