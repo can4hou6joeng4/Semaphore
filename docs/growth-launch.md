@@ -168,6 +168,17 @@ Semaphore — 浏览器里把图片转成 ASCII，不上传，CSP 直接 connect
 
 ## Awesome lists
 
+**2026-09-13, with the owner's go-ahead ("催更评论你直接为我发送即可"):** polite nudge
+comments posted on all three open PRs — `90dy/awesome-ascii#4`,
+`devtooligan/awesome-ascii-art#3` and `pluja/awesome-privacy#967` (all still
+`MERGEABLE`, 0 prior comments). `pluja/awesome-privacy` merges in batches (last batch
+2026-07-06, before that 2026-02-16), so expect months, not days. Same day: the GitHub
+profile README (`can4hou6joeng4/can4hou6joeng4`) gained a link to
+`semaphore.bobochang.cn` in the Semaphore row, and `bobochang.cn` (Homeport) now ships a
+static fleet index in its served HTML so non-JS crawlers see the site link — until then
+the whole `bobochang.cn` domain had zero results in Bing (`site:` checked in a real
+browser). Do not nudge these PRs again for at least a month.
+
 Rechecked on 2026-09-01 during the GEO audit, correcting the 2026-08-14 note: of the
 three PRs recorded as "open and mergeable", two target repositories that are effectively
 dead. `devtooligan/awesome-ascii-art#3` — last push 2024-04-24, and the repo has never
