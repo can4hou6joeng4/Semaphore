@@ -1,5 +1,7 @@
 # Unicode braille is an 8-pixel bitmap font
 
+*Published 2026-09-14 at <https://bobochang.cn/writing/unicode-braille-8-pixel-bitmap-font/> (source: `posts/` in the Homeport repo). This copy is the engine-reviewed text it was published from.*
+
 *Written against `src/ascii-engine.ts` as of commit 46a5f63 (the file's last change)
 and reviewed against it line by line; code blocks are quoted verbatim except where
 marked. Figures were rendered with the shipped engine and font in Chrome 152 on macOS.*

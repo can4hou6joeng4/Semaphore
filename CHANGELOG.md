@@ -16,6 +16,7 @@ All notable changes to Semaphore are documented in this file.
 
 ### SEO and discovery
 
+- Link the published braille write-up (<https://bobochang.cn/writing/unicode-braille-8-pixel-bitmap-font/>) from the `/charsets/braille` lede; the article links back to that page, the repo and the engine file.
 - Link both guides from every charset page's "where it goes" card and from each other; `/guides/ssh-motd` had three inbound links and `/guides/readme-banner` four, against fifteen for `/tool`. Give `/tool` its own h1 ("Convert an image to ASCII art, live") instead of sharing "Image to ASCII converter" with the home page.
 - Shape headings for extraction: `/faq` puts each of its ten questions in an `<h2>` inside the `<summary>` (the page had one h1 and no outline); four mechanism `<h2>`s become the question they answer ("How does image to braille art work?", "Why is nothing uploaded?", "How does the standard ramp map brightness to characters?", "What does each converter control do?"); the `$` and `Q` card prefixes are `aria-hidden`, so they no longer lead every extracted heading in `llms-full.txt` or get read out as "dollar".
 - Print a visible byline on every page: the footer now reads `built by bobochang · source · MIT · updated <date>` (`作者 · 源码 · MIT 许可 · 更新于` on `/zh`). `Person` schema was on all 14 pages but the name appeared in prose only on `/privacy`, and a date only there; answer engines read the page, not the graph. The `<time>` value is tested against the page's `dateModified`, which the sitemap test already ties to `lastmod`.
