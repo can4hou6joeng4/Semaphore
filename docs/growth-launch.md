@@ -108,7 +108,13 @@ largest ASCII-related HN event in that window was a technical essay at 1,353 poi
 technical article on the braille/Floyd–Steinberg pipeline is drafted at
 [`article-braille-dithering.md`](./article-braille-dithering.md), with publication notes
 in [`article-braille-dithering-notes.md`](./article-braille-dithering-notes.md). As of
-2026-09-14 the three figures are in and every number is re-measured; it is publishable. Prefer publishing that as a plain link over the launch post below. The launch
+2026-09-14 the three figures are in and every number is re-measured. **Published the same
+day, with the owner's go-ahead, at
+<https://bobochang.cn/writing/unicode-braille-8-pixel-bitmap-font/>** — a static page on the
+author's domain (TechArticle JSON-LD, links to `/charsets/braille`, the repo and the engine
+file), listed in bobochang.cn's new `sitemap.xml` and its server-side fleet index.
+`/charsets/braille` links back from its lede. Not submitted to HN (owner has no account;
+deferred). dev.to cross-post with a canonical tag is still open. Prefer publishing that as a plain link over the launch post below. The launch
 copy is kept for reference.
 
 **Title:**

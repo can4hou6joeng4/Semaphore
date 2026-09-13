@@ -1197,6 +1197,11 @@ describe("SEO page contract", () => {
       'href="https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering"'
     );
     expect(brailleHtml).toContain('href="https://www.unicode.org/charts/PDF/U2800.pdf"');
+    /* the long-form write-up lives on the author's domain; this is the one
+       page whose subject it explains, so it links there once, in the lede */
+    expect(brailleHtml).toContain(
+      'href="https://bobochang.cn/writing/unicode-braille-8-pixel-bitmap-font/"'
+    );
     expect(standardHtml).toContain('href="https://www.itu.int/rec/R-REC-BT.709"');
     expect(engineSource).toContain("0.2126 * r + 0.7152 * g + 0.0722 * bl");
   });
