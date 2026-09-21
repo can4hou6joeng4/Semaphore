@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Image to ASCII FAQ — Privacy, Formats, Braille | Semaphore</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Image to ASCII FAQ — Privacy, Formats, Braille | Semaphore">
+<meta property="og:description" content="FAQ for the free image to ASCII converter: no upload, no in-page analytics, formats, braille mode, color, licensing and size limits.">
+<meta property="og:url" content="https://semaphore.bobochang.cn/faq">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Image to ASCII FAQ — Privacy, Formats, Braille | Semaphore">
+<meta name="twitter:description" content="FAQ for the free image to ASCII converter: no upload, no in-page analytics, formats, braille mode, color, licensing and size limits.">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:image:alt" content="Semaphore — frequently asked questions">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en_US">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — frequently asked questions">
+<link rel="canonical" href="https://semaphore.bobochang.cn/faq">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#050a06">
+  <meta name="description" content="FAQ for the free image to ASCII converter: no upload, no in-page analytics, formats, braille mode, color, licensing and size limits.">
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
+  <style>
+    /* faq page — layout only, colors from tokens */
+    .qa-list {
+      max-width: 820px;
+      border-top: 1px solid var(--line);
+    }
+    [data-screen-label="faq-cta"] {
+      text-align: center;
+    }
+    [data-screen-label="faq-cta"] .lede {
+      margin-inline: auto;
+    }
+  </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://semaphore.bobochang.cn/faq#webpage",
+      "name": "Image to ASCII FAQ",
+      "url": "https://semaphore.bobochang.cn/faq",
+      "inLanguage": "en",
+      "description": "FAQ for the free image to ASCII converter: no upload, no in-page analytics, formats, braille mode, color, licensing and size limits.",
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "ASCII art",
+          "sameAs": "https://en.wikipedia.org/wiki/ASCII_art"
+        }
+      ],
+      "mentions": [
+        {
+          "@type": "Thing",
+          "name": "Braille Patterns",
+          "sameAs": "https://en.wikipedia.org/wiki/Braille_Patterns"
+        },
+        {
+          "@type": "Thing",
+          "name": "Floyd–Steinberg dithering",
+          "sameAs": "https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering"
+        }
+      ],
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "author": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      },
+      "breadcrumb": {
+        "@id": "https://semaphore.bobochang.cn/faq#breadcrumb"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "xpath": [
+          "/html/body//h1",
+          "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
+        ]
+      },
+      "dateModified": "2026-09-12",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do my images get uploaded anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Never. The conversion runs entirely in your browser using the canvas API; with the page open it keeps working even if you switch the network off, and only a reload needs a connection. If you're the trust-but-verify type, read the privacy statement, then open devtools and watch the network tab stay silent."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you run analytics in my browser?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The page ships no analytics script, no cookies, and a Content-Security-Policy with connect-src 'none', so it cannot open a fetch, XHR or WebSocket to anywhere — including a Cloudflare Web Analytics beacon. What the operator can see is aggregate HTTP traffic at the Cloudflare edge: which paths were requested and roughly how often. Those are server logs of the page load itself, not a second phone-home from your tab. Your image bytes never leave the device and are never part of those counts."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — free, no account, no watermark, no daily quota. The whole tool ships as static files."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the site remember my settings?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Only small preferences stay on your device: color theme (CRT or paper), and the last charset and color mode you picked on the tool. They live in localStorage and never include image bytes. Reset params clears the tool prefs; URL query parameters still override them when present."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which image formats can I feed it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Anything your browser can decode: png, jpg, webp and gif (first frame). Drop it, paste it, or browse for it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I get a sharper result?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Start from a high-contrast image with a tight crop. Push columns up to 160-200, nudge contrast +15, and try invert if your subject is dark-on-light. For photographic detail, the braille charset is the sharp one."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does braille mode actually do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each character becomes a 2×4 grid of dots from the Unicode braille block, dithered with Floyd–Steinberg — roughly eight times the spatial resolution of a classic ramp. The braille ASCII guide shows the full pipeline and a live example. It needs a font with braille glyphs, which every modern OS has."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I keep the original colors?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Color mode original samples the source color per character, gray keeps neutral tones, and green is the classic phosphor look. Color survives in the .png export; plain-text copies are characters only, by nature."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use the output commercially?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The output is yours — posters, readmes, merch, client work, anything. We don't claim rights over your art."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Any size limits?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Semaphore does not impose a fixed source-dimension limit; practical limits depend on your browser and available memory. Output is capped at 40–240 columns. Dense braille at high column counts may take longer on older devices."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a command-line version?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Semaphore is a web page by design: the whole engine is one MIT-licensed TypeScript file, and there is no CLI, API or npm package. For a terminal workflow use jp2a, chafa or ascii-image-converter; use Semaphore when you want a live preview, braille output, or the guarantee that the image never leaves your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I get ANSI color codes in the text?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Plain-text copies and .txt downloads are characters only, so they paste cleanly into a README, a comment or a MOTD. Color survives in the .png export and in the share card. A future ANSI export is not planned."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is this different from other image to ASCII sites?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Three facts. Nothing is uploaded, and the deployed Content-Security-Policy (connect-src 'none') enforces that rather than promising it. The braille charset packs a 2×4 dithered dot grid into each cell, roughly eight times the spatial resolution of a classic ramp. And the source is MIT-licensed on GitHub, so every claim here can be checked against the code."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://semaphore.bobochang.cn/faq#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Semaphore",
+          "item": "https://semaphore.bobochang.cn/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Image to ASCII FAQ",
+          "item": "https://semaphore.bobochang.cn/faq"
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://semaphore.bobochang.cn/#website",
+      "url": "https://semaphore.bobochang.cn/",
+      "name": "Semaphore",
+      "publisher": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://semaphore.bobochang.cn/#person",
+      "name": "bobochang",
+      "url": "https://bobochang.cn",
+      "sameAs": [
+        "https://github.com/can4hou6joeng4"
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body data-page="faq" data-path="~/faq">
+  <main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the site header and the live ASCII
+    previews will not render. Semaphore converts images inside your own tab rather than
+    on a server, so there is nothing to fall back to — the written content below still
+    reads. <a href="/">home</a> · <a href="/tool">image to ASCII converter</a></p>
+  </noscript>
+
+    <section class="sec" data-screen-label="faq-head">
+      <div class="kicker"><b>~/faq</b> · man semaphore</div>
+      <h1 class="h2">Image to ASCII — questions answered</h1>
+      <p class="lede" style="margin-top:18px">Short answers about the converter, privacy and export. Can't find yours? <a href="/tool">Open the image to ASCII tool</a> and poke it — it can't break anything.</p>
+    </section>
+
+    <div class="sec" data-screen-label="faq-list">
+      <div class="qa-list">
+
+        <details class="qa" open>
+          <summary><h2>Do my images get uploaded anywhere?</h2></summary>
+          <div class="qa-a">
+            <p>Never. The conversion runs entirely in your browser using the canvas API; with the page open it keeps working even if you switch the network off, and only a reload needs a connection.</p>
+            <p>If you're the trust-but-verify type, read the <a href="/privacy">privacy statement</a>, then open devtools and watch the network tab stay silent.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>Do you run analytics in my browser?</h2></summary>
+          <div class="qa-a">
+            <p>No. The page ships no analytics script, no cookies, and a <code>Content-Security-Policy</code> with <code>connect-src 'none'</code>, so it <strong>cannot</strong> open a fetch, XHR or WebSocket to anywhere — including a Cloudflare Web Analytics beacon.</p>
+            <p>What the operator <em>can</em> see is aggregate HTTP traffic at the Cloudflare edge: which paths were requested and roughly how often. Those are server logs of the page load itself, not a second phone-home from your tab. Your image bytes never leave the device and are never part of those counts.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>Is it free?</h2></summary>
+          <div class="qa-a">
+            <p>Yes — free, no account, no watermark, no daily quota. The whole tool ships as static files.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>Does the site remember my settings?</h2></summary>
+          <div class="qa-a">
+            <p>Only small preferences stay on your device: color theme (CRT or paper), and the last charset and color mode you picked on the tool. They live in <code>localStorage</code> and never include image bytes. Reset params clears the tool prefs; URL query parameters still override them when present.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>Which image formats can I feed it?</h2></summary>
+          <div class="qa-a">
+            <p>Anything your browser can decode: <code>png</code>, <code>jpg</code>, <code>webp</code> and <code>gif</code> (first frame). Drop it, paste it, or browse for it.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>How do I get a sharper result?</h2></summary>
+          <div class="qa-a">
+            <p>Start from a high-contrast image with a tight crop. Push <code>columns</code> up to 160-200, nudge contrast +15, and try <code>invert</code> if your subject is dark-on-light.</p>
+            <p>For photographic detail, the braille charset is the sharp one.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>What does braille mode actually do?</h2></summary>
+          <div class="qa-a">
+            <p>Each character becomes a 2×4 grid of dots from the Unicode braille block, dithered with Floyd–Steinberg — roughly eight times the spatial resolution of a classic ramp. The <a href="/charsets/braille">braille ASCII guide</a> shows the full pipeline and a live example.</p>
+            <p>It needs a font with braille glyphs, which every modern OS has.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>Can I keep the original colors?</h2></summary>
+          <div class="qa-a">
+            <p>Yes. Color mode <code>original</code> samples the source color per character, <code>gray</code> keeps neutral tones, and <code>green</code> is the classic phosphor look.</p>
+            <p>Color survives in the .png export; plain-text copies are characters only, by nature.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>Can I use the output commercially?</h2></summary>
+          <div class="qa-a">
+            <p>The output is yours — posters, readmes, merch, client work, anything. We don't claim rights over your art.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>Any size limits?</h2></summary>
+          <div class="qa-a">
+            <p>Semaphore does not impose a fixed source-dimension limit; practical limits depend on your browser and available memory. Output is capped at 40–240 columns. Dense braille at high column counts may take longer on older devices.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>Is there a command-line version?</h2></summary>
+          <div class="qa-a">
+            <p>No. Semaphore is a web page by design: the whole engine is one MIT-licensed TypeScript file, and there is no CLI, API or npm package. For a terminal workflow use <a href="https://github.com/cslarsen/jp2a">jp2a</a>, <a href="https://hpjansson.org/chafa/">chafa</a> or <a href="https://github.com/TheZoraiz/ascii-image-converter">ascii-image-converter</a>; use Semaphore when you want a live preview, braille output, or the guarantee that the image never leaves your device.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>Can I get ANSI color codes in the text?</h2></summary>
+          <div class="qa-a">
+            <p>No. Plain-text copies and <code>.txt</code> downloads are characters only, so they paste cleanly into a README, a comment or a MOTD. Color survives in the <code>.png</code> export and in the share card. A future ANSI export is not planned.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary><h2>How is this different from other image to ASCII sites?</h2></summary>
+          <div class="qa-a">
+            <p>Three facts. Nothing is uploaded, and the deployed Content-Security-Policy (<code>connect-src 'none'</code>) enforces that rather than promising it. The braille charset packs a 2×4 dithered dot grid into each cell, roughly eight times the spatial resolution of a classic ramp. And the source is <a href="https://github.com/can4hou6joeng4/Semaphore">MIT-licensed on GitHub</a>, so every claim here can be checked against the code.</p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+
+    <div class="sec sec--tight" data-screen-label="faq-cta">
+      <p class="lede">Still curious? The tool answers most questions in about ten seconds.</p>
+      <a class="btn btn--ghost" href="/tool" style="margin-top:22px">open the tool</a>
+    </div>
+
+    <footer class="site-foot">
+      <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-12">2026-09-12</time></span>
+      <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/zh">中文</a><a href="/tool">image to ASCII</a></nav>
+    </footer>
+
+  </main>
+
+<script type="module" src="/src/main-faq.ts"></script>
+</body>
+</html>

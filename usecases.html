@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASCII Art Use Cases — README, CLI, Plain Text | Semaphore</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ASCII Art Use Cases — README, CLI, Plain Text | Semaphore">
+<meta property="og:description" content="Where image to ASCII still beats pixels — README banners, SSH splash screens, code comments, mail and terminal ricing. Convert locally with Semaphore.">
+<meta property="og:url" content="https://semaphore.bobochang.cn/usecases">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ASCII Art Use Cases — README, CLI, Plain Text | Semaphore">
+<meta name="twitter:description" content="Where image to ASCII still beats pixels — README banners, SSH splash screens, code comments, mail and terminal ricing. Convert locally with Semaphore.">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:image:alt" content="Semaphore — where ASCII art still wins">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en_US">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — where ASCII art still wins">
+<link rel="canonical" href="https://semaphore.bobochang.cn/usecases">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#050a06">
+  <meta name="description" content="Where image to ASCII still beats pixels — README banners, SSH splash screens, code comments, mail and terminal ricing. Convert locally with Semaphore.">
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
+  <style>
+    /* usecases page — layout only, colors from tokens */
+    [data-screen-label="usecases-grid"] .grid-2 {
+      gap: 18px;
+    }
+    [data-screen-label="usecases-grid"] .term {
+      margin: 0;
+    }
+    [data-screen-label="usecases-grid"] .term-body {
+      height: 200px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+    [data-screen-label="usecases-grid"] .ascii-pre {
+      font-size: 10px;
+      line-height: 1;
+    }
+    /* The two panels that show real converter output are shown whole. The
+       wider one is 64 columns; at 0.6em per column that is 38.4em, so the
+       type scales with the panel's own width and never clips on a phone
+       (8px fits from about 430px up; a 320px phone gets ~5.6px). */
+    [data-screen-label="usecases-grid"] .term--full .term-body {
+      height: auto;
+      padding-block: 14px;
+      container-type: inline-size;
+    }
+    [data-screen-label="usecases-grid"] .term--full .ascii-pre {
+      font-size: min(8px, calc(100cqw / 39));
+    }
+    [data-screen-label="usecases-grid"] .card-title {
+      margin-top: 18px;
+    }
+    [data-screen-label="usecases-grid"] .card .row {
+      margin-top: 14px;
+    }
+    section[data-screen-label="usecases-cta"] {
+      text-align: center;
+    }
+    section[data-screen-label="usecases-cta"] .lede {
+      margin-inline: auto;
+      margin-top: 16px;
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://semaphore.bobochang.cn/usecases#webpage",
+        "name": "ASCII Art Use Cases",
+        "url": "https://semaphore.bobochang.cn/usecases",
+        "inLanguage": "en",
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "ASCII art",
+            "sameAs": "https://en.wikipedia.org/wiki/ASCII_art"
+          }
+        ],
+        "description": "Where image to ASCII still beats pixels — README banners, SSH splash screens, code comments, mail and terminal ricing.",
+        "isPartOf": {
+          "@id": "https://semaphore.bobochang.cn/#website"
+        },
+        "author": {
+          "@id": "https://semaphore.bobochang.cn/#person"
+        },
+        "breadcrumb": {
+          "@id": "https://semaphore.bobochang.cn/usecases#breadcrumb"
+        },
+        "speakable": {
+          "@type": "SpeakableSpecification",
+          "xpath": [
+            "/html/body//h1",
+            "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
+          ]
+        },
+        "dateModified": "2026-09-12"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://semaphore.bobochang.cn/usecases#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Semaphore",
+            "item": "https://semaphore.bobochang.cn/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "ASCII Art Use Cases",
+            "item": "https://semaphore.bobochang.cn/usecases"
+          }
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://semaphore.bobochang.cn/#website",
+        "url": "https://semaphore.bobochang.cn/",
+        "name": "Semaphore",
+        "publisher": {
+          "@id": "https://semaphore.bobochang.cn/#person"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://semaphore.bobochang.cn/#person",
+        "name": "bobochang",
+        "url": "https://bobochang.cn",
+        "sameAs": [
+          "https://github.com/can4hou6joeng4"
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body data-page="usecases" data-path="~/usecases">
+  <main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the site header and the live ASCII
+    previews will not render. Semaphore converts images inside your own tab rather than
+    on a server, so there is nothing to fall back to — the written content below still
+    reads. <a href="/">home</a> · <a href="/tool">image to ASCII converter</a></p>
+  </noscript>
+
+    <section class="sec" data-screen-label="usecases-head">
+      <div class="kicker"><b>~/usecases</b> · where plain text wins</div>
+      <h1 class="h2">Where image to ASCII still wins</h1>
+      <p class="lede" style="margin-top:18px">Places where ASCII art from a photo beats pixels — no attachments, no image host, no broken links. Convert locally with the <a href="/tool">image to ASCII tool</a>, then paste characters anywhere text goes. Follow the <a href="/guides/readme-banner">README banner guide</a> or the <a href="/guides/ssh-motd">SSH MOTD ASCII art guide</a> for a task-specific workflow.</p>
+    </section>
+
+    <div class="sec" data-screen-label="usecases-grid">
+      <div class="grid-2">
+
+        <article class="card">
+          <figure class="term term--full">
+            <figcaption class="term-head">
+              <span class="term-title"><span class="p" aria-hidden="true">$</span> cat README.md</span>
+              <span class="term-dots">– □ ✕</span>
+            </figcaption>
+            <div class="term-body">
+<pre class="ascii-pre">
+                              ░░░░░░▒▒▒▒▒▒▒░                
+                            ░░░▒▒▒▒▒▒▒▓▓▓▓▓▒▒               
+                             ░░▒▒▒▒▓▓▓▓▓▓▓▓▓▓▒              
+    ░░                        ░░▒▒▒▓▓▓▓▓▓▓▓▓▓▓▒             
+    ░░░                        ░░▒▒▒▓▓███████▓▓░            
+     ▒░                        ░░░  ░▓▓████████▓░           
+    ░▒░                       ▒▒░      ▒▓██████▓▒░          
+   ░▒▒▒                    ░▓██▓░        ░▓████▓▓░          
+   ░░▒▒░                 ▒▓████▒        ░░░▒███▓▓░          
+                      ░▒▓██████▒         ░▒░▒▓█▓▓░          
+                      ▒▓███████▓░          ▒░▓▓▓▓▒          
+                      ░▒████████▓░          ▒▓▓▓▓▒          
+                        ▒▓█████▓▓▒░░░░░░▒  ░▒▓██▓▓          
+                          ▓█▓▓▓▓▒▒░▒▓█████▓▓▓███▓▓░         
+       ▓▓░         ░▒ ▒▓▒░▓▓▒▒▒▒░▒▒▓████████████▓▒          
+       ░▓▓          ░▒█████▓▒░▒▒░░▒▓▓███████████▓░          
+         ░▒           ░▓███▓▒░▒▒▒▒▓▓▓██████████▓░     ░░   ░
+          ▒▓     ░░    ░▒▓▓▓▒░░▒▒▒▒▓▒▓▓▓▓▓▓▓▓▓▓░░░░░   ░▓▒▓▒
+          ▒▓░     ░▒▒▓░  ░▒▓▒░░▒▒▒▒▒▒▓▓▓▓▓▓▓▒▒░▒▓▒ ░▓▓▒ ░▒▒ 
+          ░▓▒        ░▒▒░░▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒░░▓▓▓▓  ▓▓▓░    
+          ░▓▓ ░░▒▒░░░░▒▒▒░▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▒▒▒▓███▓▓▓▓▒      
+          ░▒▒▒ ░▒▓▓▓▓▓▒▒░░░░░▒▒▒▒▒▒▒▒▓▓▓▓▓▒▒▓█████▓▒        
+          ░░░▓▓ ░▒▒▓▒▓▒▒░░░░░░▒▒▒▒▒▒▒▓▓▓▒░  ░▒▒░░░          
+           ░ ▓▓   ░░░▒▒▒░░░░░░░░░░▒▒▒▒▒░░░                  
+             ▒▓            ░░░░░░░░░░░▒▒▒░                  
+             ▒▒                  ░░▒▒▒▓▓▒░                  
+            ░▓▒░          ░░░░░░▒▒▒▒▓▓▓▓▓▒                  
+            ░▓▓▒▒░        ░░░░░░▒▒▒▒▓▓▓▓▓░                  
+            ▒▓▓▓▓▒░       ░░░░░░░▒▒▒▓▓▓▓▒                   
+            ▒▓▓▓▓▓▒         ░░░░░░▒▒▓▓▓░                    
+            ▒▒▓▓▓▓▒            ░░░▒▒▒▒                     ░
+            ░▒▒▓▓▓▒             ░░░░                  ▒▒▒▒▒▒
+            ░▒▒▒▒▓░                                  ▒▒▒▒▒▒▒
+             ░▒▒▒▒                                  ▒▒▒▒▒▒▒▒
+             ░▒▒▒░                                 ▒▒▒▒▒▒▒▒▒</pre>
+            </div>
+          </figure>
+          <p class="fs-s text-faint" style="margin-top:10px">Converter output of the sample portrait: <code>blocks</code> · 60 columns · contrast +15 · 35 rows. <a href="/tool?charset=blocks&amp;cols=60&amp;contrast=15">Reproduce it</a>.</p>
+          <h2 class="card-title"><span class="p" aria-hidden="true">$</span> readme banners</h2>
+          <p>Your project logo rendered in every git host on earth, with zero image hosting. Pull requests deserve a marquee too. Walk through it in the <a href="/guides/readme-banner">README banner guide</a>.</p>
+          <div class="row">
+            <span class="tag">github</span>
+            <span class="tag">markdown</span>
+            <span class="tag tag--green">plain text</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <figure class="term term--full">
+            <figcaption class="term-head">
+              <span class="term-title"><span class="p" aria-hidden="true">$</span> ssh deploy@prod</span>
+              <span class="term-dots">– □ ✕</span>
+            </figcaption>
+            <div class="term-body">
+<pre class="ascii-pre">
+                                ...:::-=++**+=:                 
+                             ..:-======+******+-                
+                               .-=++++**########=               
+     .                          :-==+**##%%%%%%%#-              
+    .:.                          .-==++#%@@@%%%%%#:             
+     :-.                         .::..-*%@@@@@@@@%#:            
+     --                         .-:     :+%@@@@@@@%*:           
+    -==.                      :*%%=        :*@@@@@%#-           
+   .===-                   .+#@@@*.          =%@@@%#-           
+    .::                  :+%@@@@@*.        :=:-#@@%#-           
+                       .*%@@@@@@@*.         .==:#%%%+           
+                       .+@@@@@@@@%=           -=*%%%*           
+                        .+@@@@@@@%%+:          +#%%%#.          
+                          :%@@%@@#+-.:-+*+**:.:*%@%%#=          
+       ..               :   +%+*#*==-=#@@@@@@@%@@@@%%=          
+       -*+           --=*#++%#=--=-=+*%@@@@@@@@@@@@%*.          
+        -#+           :#@@@@@#-:=+=-+*%%@@@@@@@@@@@#=           
+          ++            +@%%%%=:-=++*##%@@@%@@@@%%#-.    :-.  .-
+          :##     ..     -#*##=.:=+++*+*%%%%%%%%%*:.-.::   +**#+
+           *%.     .=++-   =+*+-:==++++*######**+.-%*  +#*: =*= 
+           =%=        :=*= .=++===-=+++*+***+++--+%%#: -%#=.    
+           -#+ .:--:.::-=+-:=====+++=++=+****+==#@@@%*=##=      
+           =#*:.:+###**+==-::--=====+++***##*=+%@%%@%%%+        
+           -:=%+ .=*#***+=::::---====++**#*+:  =%@%%#:          
+           .- #*  .:-==+==-:::::---==++++=:.                    
+              +*       ..:::::::::::--::----.                   
+              =+                    ..-=+**=.                   
+             :*+                 .:-==+*###+:                   
+             -*+=:         .:::---==++**#%#*-                   
+             -***++:        .:-----=++*####=                    
+            .=*#***+        ..::::--=+*###+                     
+             =******.         ....::-=+**=                      
+             =******.            ..:-==-.                    .:-
+             :+****+.              ...                   -+++++=
+             .=++**=                                    :=+++===
+              -++++.                                   -========
+              :=++:                                   :========-</pre>
+            </div>
+          </figure>
+          <p class="fs-s text-faint" style="margin-top:10px">Converter output of the sample portrait: <code>standard</code> · 64 columns · contrast +20 · gray · 37 rows. <a href="/tool?charset=standard&amp;cols=64&amp;contrast=20&amp;color=gray">Reproduce it</a>.</p>
+          <h2 class="card-title"><span class="p" aria-hidden="true">$</span> cli splash screens</h2>
+          <p>Greet the humans inside your terminals — login MOTDs, build banners, version splashes. The only art form guaranteed to render over ssh. The <a href="/guides/ssh-motd">SSH MOTD guide</a> covers safe glyphs, line width, file review, and OS-owned MOTD paths.</p>
+          <div class="row">
+            <span class="tag">motd</span>
+            <span class="tag tag--green">devtools</span>
+            <a class="tag" href="/tool?charset=blocks&amp;cols=64">try preset</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <figure class="term">
+            <figcaption class="term-head">
+              <span class="term-title"><span class="p" aria-hidden="true">$</span> vim api/routes.ts</span>
+              <span class="term-dots">– □ ✕</span>
+            </figcaption>
+            <div class="term-body">
+<pre class="ascii-pre">
+/* ================================== */
+/* =                                = */
+/* =   ▓▒░  ROUTES · public api     = */
+/* =   ▓▒░  keep handlers thin      = */
+/* =                                = */
+/* ================================== */</pre>
+            </div>
+          </figure>
+          <p class="fs-s text-faint" style="margin-top:10px">Set by hand to show the format — the converter makes the real one from your image.</p>
+          <h2 class="card-title"><span class="p" aria-hidden="true">$</span> code comment headers</h2>
+          <p>Section dividers your future self can spot from three screens away. Use <a href="/charsets/standard">standard</a> or <a href="/charsets/minimal">minimal</a> at 40–60 columns: that leaves room for the comment prefix inside an 80-column line, and both ramps are plain 7-bit ASCII, so no source file's encoding is put at risk. Works in any language that has comments.</p>
+          <div class="row">
+            <span class="tag">source code</span>
+            <span class="tag tag--green">headers</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <figure class="term">
+            <figcaption class="term-head">
+              <span class="term-title"><span class="p" aria-hidden="true">$</span> mutt</span>
+              <span class="term-dots">– □ ✕</span>
+            </figcaption>
+            <div class="term-body">
+<pre class="ascii-pre">
+--
+  ░▓▓░
+  ▓██▓    ── ada @ semaphore
+  ░▓▓░
+ ▒▓▓▓▓▒
+............................</pre>
+            </div>
+          </figure>
+          <p class="fs-s text-faint" style="margin-top:10px">Set by hand to show the format — the converter makes the real one from your image.</p>
+          <h2 class="card-title"><span class="p" aria-hidden="true">$</span> plain-text mail &amp; forums</h2>
+          <p>Signatures, forum posts and newsletters that survive text-only clients untouched. No blocked-image icon, ever. Stay with <a href="/charsets/standard">standard</a> at 60–72 columns: plain-text mail conventionally wraps between 72 and 78 characters and turns a wider banner into rubble, and unlike blocks or braille the standard ramp does not depend on the reader's font.</p>
+          <div class="row">
+            <span class="tag">email</span>
+            <span class="tag tag--green">usenet energy</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <figure class="term">
+            <figcaption class="term-head">
+              <span class="term-title"><span class="p" aria-hidden="true">$</span> neofetch</span>
+              <span class="term-dots">– □ ✕</span>
+            </figcaption>
+            <div class="term-body">
+<pre class="ascii-pre">
+  ░▒▓▓▒░
+ ▒▓████▓▒    os      semaphore os
+ ▓██▓▓██▓    shell   zsh 5.9
+ ▓██████▓    uptime  247 days
+ ▒▓████▓▒    memory  64 KiB of pure text
+  ░▒▓▓▒░                                </pre>
+            </div>
+          </figure>
+          <p class="fs-s text-faint" style="margin-top:10px">Set by hand to show the format — the converter makes the real one from your image.</p>
+          <h2 class="card-title"><span class="p" aria-hidden="true">$</span> terminal wallpaper</h2>
+          <p>Fetch scripts, prompt art and tmux dashboards — decorate the place you actually live. Size to the pane, not the screen: a fetch script leaves roughly 40 columns beside its info block, a status pane far fewer. <a href="/charsets/braille">Braille</a> packs the most detail into that width when the terminal font has the glyphs; <a href="/charsets/standard">standard</a> is the fallback when it does not.</p>
+          <div class="row">
+            <span class="tag">ricing</span>
+            <span class="tag tag--green">dotfiles</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <figure class="term">
+            <figcaption class="term-head">
+              <span class="term-title"><span class="p" aria-hidden="true">$</span> lpr poster.txt</span>
+              <span class="term-dots">– □ ✕</span>
+            </figcaption>
+            <div class="term-body">
+<pre class="ascii-pre">
+████████████████████████▓▓▓▓▓▒▒▒▒▒░░░░░
+█████████████████████▓▓▓▓▓▒▒▒▒▒░░░░░
+██████████████████▓▓▓▓▓▒▒▒▒▒░░░░░
+███████████████▓▓▓▓▓▒▒▒▒▒░░░░░
+████████████▓▓▓▓▓▒▒▒▒▒░░░░░
+█████████▓▓▓▓▓▒▒▒▒▒░░░░░
+██████▓▓▓▓▓▒▒▒▒▒░░░░░
+███▓▓▓▓▓▒▒▒▒▒░░░░░
+▓▓▓▓▓▒▒▒▒▒░░░░░</pre>
+            </div>
+          </figure>
+          <p class="fs-s text-faint" style="margin-top:10px">Set by hand to show the format — the converter makes the real one from your image.</p>
+          <h2 class="card-title"><span class="p" aria-hidden="true">$</span> prints &amp; merch</h2>
+          <p>Monospace posters, tees and zine pages. Print is where the 240-column ceiling earns its place: run <a href="/charsets/detailed">detailed</a> at 200–240 columns, export the <code>.png</code> for the print shop or the text for a typewriter-style layout, and the shading holds at arm's length in a way no screen shows.</p>
+          <div class="row">
+            <span class="tag">print</span>
+            <span class="tag tag--green">risograph safe</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <section class="sec sec--tight" data-screen-label="usecases-cta">
+      <h2 class="h2">Got pixels? Make characters.</h2>
+      <p class="lede">The panels above are hand-drawn to show the shape of each format — feed the converter your own photo to make the real thing.</p>
+      <a class="btn btn--green btn--lg" href="/tool" style="margin-top:26px">Open the tool</a>
+    </section>
+
+    <footer class="site-foot">
+      <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-12">2026-09-12</time></span>
+      <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/zh">中文</a><a href="/tool">image to ASCII</a></nav>
+    </footer>
+
+  </main>
+
+<script type="module" src="/src/main-usecases.ts"></script>
+</body>
+</html>

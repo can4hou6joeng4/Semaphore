@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image to ASCII Art Converter — Free, No Upload | Semaphore</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Image to ASCII Art Converter — Free, No Upload | Semaphore">
+<meta property="og:description" content="Free image to ASCII converter in your browser. Drop a photo, pick a charset (including braille), export text or PNG. Nothing is uploaded.">
+<meta property="og:url" content="https://semaphore.bobochang.cn/">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Image to ASCII Art Converter — Free, No Upload | Semaphore">
+<meta name="twitter:description" content="Free image to ASCII converter in your browser. Drop a photo, pick a charset (including braille), export text or PNG. Nothing is uploaded.">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:image:alt" content="Semaphore — free image to ASCII converter, nothing uploaded">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — free image to ASCII converter, nothing uploaded">
+<link rel="canonical" href="https://semaphore.bobochang.cn/">
+<link rel="alternate" hreflang="en" href="https://semaphore.bobochang.cn/">
+<link rel="alternate" hreflang="zh-CN" href="https://semaphore.bobochang.cn/zh">
+<link rel="alternate" hreflang="x-default" href="https://semaphore.bobochang.cn/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#050a06">
+<meta name="description" content="Free image to ASCII converter in your browser. Drop a photo, pick a charset (including braille), export text or PNG. Nothing is uploaded.">
+<meta name="google-site-verification" content="Aj59_lSkXQWhlSIre8XACRuFnjhXvi58tWscRuGiEgc">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
+<!-- The hero is the largest above-the-fold paint but it is drawn to a canvas from
+     landing.ts, so no img element references it and the preload scanner cannot find
+     it while parsing. This starts the fetch during parse instead of after the module
+     runs. Same-origin, already permitted by the CSP's img-src 'self'. -->
+<link rel="preload" as="image" href="/static/sample-hero.webp" type="image/webp" fetchpriority="high">
+<style>
+  /* ---- landing layout only (colors via tokens) ---- */
+
+  /* hero before/after — a REGISTERED reveal: one wide photograph
+     is drawn to a canvas (cover-fill); the photo layer shows that
+     canvas and the ascii layer converts the SAME canvas, so both
+     are pixel-aligned. Dragging only moves the clip boundary —
+     the ascii "wipes" across the photo. --ba-pos 0–100. */
+  .ba-stage {
+    --ba-pos: 50;
+    position: relative;
+    overflow: hidden;
+    /* the stage keeps the plate's native 1760×854 ratio at every
+       viewport. The height cap (82vh on short windows) is folded into
+       the width formula instead of max-height: with aspect-ratio +
+       max-height the photo canvas cover-fills the squashed box while
+       the ascii pre keeps its own ratio — the two layers de-register.
+       Deriving width from the same cap keeps both layers pixel-aligned. */
+    aspect-ratio: 1760 / 854;
+    width: min(100%, 1760px, calc(82vh * 1760 / 854));
+    margin-inline: auto;
+    background: var(--bg-deep);
+    border-bottom: 1px solid var(--line);
+    cursor: ew-resize;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .ba-photo, .ba-ascii { position: absolute; inset: 0; overflow: hidden; }
+  /* photo (composed scene canvas) revealed LEFT of the divider */
+  .ba-photo { clip-path: inset(0 calc((100 - var(--ba-pos)) * 1%) 0 0); }
+  .ba-photo canvas { width: 100%; height: 100%; display: block; }
+  /* ascii of the same scene revealed RIGHT of the divider */
+  .ba-ascii {
+    background: var(--bg-deep);
+    clip-path: inset(0 0 0 calc(var(--ba-pos) * 1%));
+  }
+  .ba-ascii .ascii-pre { position: absolute; top: 0; left: 0; margin: 0; opacity: .9; }
+  .ba-label {
+    position: absolute; top: 22px; z-index: 3;
+    font-size: var(--fs-xs); letter-spacing: .12em;
+    color: var(--green);
+    text-shadow: 0 0 8px var(--bg-deep), var(--glow);
+    pointer-events: none;
+    transition: opacity .25s ease;
+  }
+  .ba-label { z-index: 6; }
+  .ba-label--before { left: 22px; }
+  .ba-label--after  {
+    right: 22px;
+    /* plain text like the mock — brighter ink + dark halo over dense glyphs */
+    color: color-mix(in oklab, var(--green) 35%, white);
+    text-shadow:
+      0 0 3px var(--bg-deep), 0 0 6px var(--bg-deep),
+      0 0 10px var(--bg-deep), 0 1px 2px var(--bg-deep);
+  }
+  [data-theme="paper"] .ba-label--after { color: var(--ink); text-shadow: none; }
+  /* the photo stays dark in every theme — keep its label light */
+  [data-theme="paper"] .ba-label--before {
+    color: var(--panel);
+    text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink),
+                 -1px 1px 0 var(--ink), 1px 1px 0 var(--ink);
+  }
+  .ba-line {
+    position: absolute; top: 0; bottom: 0; left: calc(var(--ba-pos) * 1%); z-index: 4;
+    width: 1px; background: var(--green-soft);
+    box-shadow: var(--glow);
+    pointer-events: none;
+  }
+  .ba-handle {
+    position: absolute; top: 50%; left: calc(var(--ba-pos) * 1%); z-index: 5;
+    transform: translate(-50%, -50%);
+    width: 44px; height: 44px; border-radius: 50%;
+    display: grid; place-items: center; padding: 0;
+    background: var(--bg-deep);
+    border: 1px solid var(--line-strong);
+    color: var(--green);
+    font-family: var(--mono); font-size: 15px; line-height: 1;
+    letter-spacing: .18em; text-indent: .18em;
+    cursor: ew-resize;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .ba-handle:hover { border-color: var(--green-soft); box-shadow: var(--glow); }
+
+  /* hero copy grid */
+  .sec[data-screen-label="hero-copy"] { border-top: 0; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+    gap: 48px; align-items: center;
+  }
+  /* the original mock sets the headline in phosphor green */
+  .hero-grid .display {
+    color: var(--green);
+    text-shadow: var(--glow);
+    font-size: clamp(36px, 4.3vw, 58px);
+  }
+  [data-theme="paper"] .hero-grid .display { text-shadow: none; }
+  .hero-cta { justify-self: end; text-align: right; }
+
+  /* charset showcase 2×2 */
+  .charset-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px; margin-top: 34px;
+  }
+  .charset-grid .term-body {
+    height: 230px; overflow: hidden;
+    display: grid; place-items: center;
+  }
+
+  /* faq teaser list */
+  .qa-list { border-top: 1px solid var(--line); }
+
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+    .hero-cta { justify-self: start; text-align: left; }
+    .charset-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  /* ---- live-demo stage (section: live-demo) ---- */
+  .demo-term { margin: 34px 0 0; }
+  .demo-stage {
+    position: relative;
+    height: 400px;
+    padding: 18px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 18px;
+    pointer-events: none; /* the stage is a replay, not a control */
+  }
+  .demo-left {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    justify-items: start;
+    transition: opacity .35s ease;
+  }
+  .demo-chip {
+    width: 108px;
+    padding: 9px 9px 7px;
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    background: var(--panel);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    transition: transform .75s cubic-bezier(.4, 0, .2, 1),
+                opacity .75s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .demo-chip img { width: 68px; height: 56px; object-fit: cover; object-position: 74% 30%; }
+  .demo-chip-name { color: var(--ink-dim); line-height: 1.5; }
+  .demo-chip.is-hover { transform: translateY(-2px); border-color: var(--green-soft); }
+  .demo-chip.is-held { border-color: var(--green-soft); box-shadow: var(--glow); }
+  .demo-chip.is-dropped { transition-duration: .24s; opacity: 0; }
+  .demo-drop {
+    width: 100%;
+    padding: 20px 10px;
+    display: grid;
+    place-items: center;
+    font-size: var(--fs-xs);
+    letter-spacing: .08em;
+  }
+  .demo-drop.is-flash {
+    border-color: var(--green);
+    color: var(--green);
+    background: color-mix(in oklab, var(--green) 14%, transparent);
+    box-shadow: var(--glow);
+  }
+  .demo-right {
+    min-width: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 8px;
+    transition: opacity .35s ease;
+  }
+  .demo-cmd, .demo-status {
+    min-height: 21px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .demo-cmd { color: var(--ink-dim); }
+  .demo-out { min-height: 0; display: grid; place-items: center; overflow: hidden; }
+  .demo-cursor {
+    position: absolute; left: 0; top: 0; z-index: 6;
+    width: 16px; height: 16px;
+    pointer-events: none;
+    opacity: 0;
+    transition: transform .75s cubic-bezier(.4, 0, .2, 1), opacity .35s ease;
+    will-change: transform;
+  }
+  .demo-stage.is-live .demo-cursor { opacity: 1; }
+  .demo-cursor::after {
+    content: "";
+    position: absolute; left: -5px; top: -1px;
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 15px solid var(--ink);
+    transform-origin: 5px 1px;
+    transform: rotate(-38deg);
+    transition: transform .18s ease;
+    filter: drop-shadow(1px 1px 0 var(--bg-deep));
+  }
+  .demo-cursor.is-down::after { transform: rotate(-38deg) scale(.88); }
+  .demo-stage.is-fade .demo-left,
+  .demo-stage.is-fade .demo-right,
+  .demo-stage.is-fade .demo-cursor { opacity: 0; }
+  @media (max-width: 760px) {
+    .demo-stage {
+      height: 470px;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+    .demo-left {
+      grid-template-columns: 108px minmax(0, 1fr);
+      align-items: stretch;
+      justify-items: stretch;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .demo-cursor { display: none; }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://semaphore.bobochang.cn/#webpage",
+      "name": "Image to ASCII Art Converter",
+      "url": "https://semaphore.bobochang.cn/",
+      "inLanguage": "en",
+      "description": "Free image to ASCII converter in your browser. Drop a photo, pick a charset (including braille), export text or PNG. Nothing is uploaded.",
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "ASCII art",
+          "sameAs": "https://en.wikipedia.org/wiki/ASCII_art"
+        }
+      ],
+      "mentions": [
+        {
+          "@type": "Thing",
+          "name": "Braille Patterns",
+          "sameAs": "https://en.wikipedia.org/wiki/Braille_Patterns"
+        },
+        {
+          "@type": "Thing",
+          "name": "Floyd–Steinberg dithering",
+          "sameAs": "https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering"
+        }
+      ],
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "mainEntity": {
+        "@id": "https://semaphore.bobochang.cn/#webapp"
+      },
+      "author": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "xpath": [
+          "/html/body//h1",
+          "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
+        ]
+      },
+      "dateModified": "2026-09-12"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://semaphore.bobochang.cn/#person",
+      "name": "bobochang",
+      "url": "https://bobochang.cn",
+      "sameAs": [
+        "https://github.com/can4hou6joeng4"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://semaphore.bobochang.cn/#website",
+      "url": "https://semaphore.bobochang.cn/",
+      "name": "Semaphore",
+      "inLanguage": ["en", "zh-CN"],
+      "publisher": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      },
+      "sameAs": [
+        "https://github.com/can4hou6joeng4/Semaphore"
+      ]
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://semaphore.bobochang.cn/#webapp",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "author": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      },
+      "name": "Semaphore",
+      "url": "https://semaphore.bobochang.cn/",
+      "description": "Free image to ASCII converter that runs entirely in your browser. Drop a photo, choose a charset including braille, export plain text or PNG. Nothing is uploaded.",
+      "disambiguatingDescription": "A browser-based image to ASCII art converter by bobochang. Not the flag signalling system, the concurrency primitive, or the CI service of the same name.",
+      "applicationCategory": "MultimediaApplication",
+      "applicationSubCategory": "Image converter",
+      "operatingSystem": "Any (runs in a web browser)",
+      "browserRequirements": "Requires JavaScript and HTML5 canvas",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Converts PNG, JPG, WebP and GIF to ASCII art",
+        "Runs 100% client-side — images are never uploaded",
+        "Six charsets including a dithered 2x4 braille mode",
+        "Live controls for columns, brightness, contrast, invert and color",
+        "Export as plain text, .txt, .png or a share card"
+      ],
+      "screenshot": "https://semaphore.bobochang.cn/static/social-card.jpg",
+      "license": "https://opensource.org/licenses/MIT",
+      "sameAs": [
+        "https://github.com/can4hou6joeng4/Semaphore"
+      ]
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": "https://semaphore.bobochang.cn/#source",
+      "name": "Semaphore source code",
+      "codeRepository": "https://github.com/can4hou6joeng4/Semaphore",
+      "programmingLanguage": "TypeScript",
+      "runtimePlatform": "Web browser",
+      "license": "https://opensource.org/licenses/MIT",
+      "author": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      },
+      "targetProduct": {
+        "@id": "https://semaphore.bobochang.cn/#webapp"
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body data-page="home" data-path="~/main">
+<main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the site header and the live ASCII
+    previews will not render. Semaphore converts images inside your own tab rather than
+    on a server, so there is nothing to fall back to — the written content below still
+    reads. <a href="/">home</a> · <a href="/tool">image to ASCII converter</a></p>
+  </noscript>
+
+  <div class="sec sec--flush" data-screen-label="hero-slider">
+    <div class="ba-stage" id="baStage">
+      <div class="ba-photo">
+        <canvas id="heroPhoto" aria-hidden="true"></canvas>
+      </div>
+      <div class="ba-ascii" id="baAsciiPane">
+        <pre class="ascii-pre" id="heroAscii" aria-hidden="true"></pre>
+      </div>
+      <span class="ba-label ba-label--before">Before</span>
+      <span class="ba-label ba-label--after">After</span>
+      <div class="ba-line" aria-hidden="true"></div>
+      <button class="ba-handle" id="baHandle" type="button" role="slider" tabindex="0"
+        aria-label="compare photo and ascii" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">‹ ›</button>
+    </div>
+  </div>
+
+  <section class="sec" data-screen-label="hero-copy">
+    <div class="hero-grid">
+      <div>
+        <h1 class="display">Image to<br>ASCII<br>converter <span class="accent" aria-hidden="true">{</span><span class="cursor-blink" aria-hidden="true"></span><span class="accent" aria-hidden="true">}</span></h1>
+        <p class="lede" style="margin-top:26px"><span class="text-green">A free image to ASCII converter that runs on your device — <a href="/tool">open the tool</a> and drop a photo.</span><br>Nothing is uploaded. Tune charset, density and color, then paste the ASCII art into a terminal, README, chat, or comment.</p>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn--green btn--lg" href="/tool">Convert image to ASCII</a>
+        <div class="fs-xs text-faint" style="margin-top:14px">$ no upload · no account · free</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="how-it-works">
+    <div class="kicker">[ how_it_works ]</div>
+    <h2 class="h2">How the image to ASCII converter works</h2>
+    <p class="lede" style="margin-top:18px">Three steps, all local. Your browser samples the image on a canvas, maps luminance to characters, and redraws live as you tweak parameters.</p>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p">01</span> drop an image</h3>
+        <p>png · jpg · webp · gif — decoded locally by your browser, never uploaded to a server.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">02</span> tune the ASCII</h3>
+        <p>six charsets from classic ramps to braille dots; adjust columns, brightness, contrast, invert and color.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p">03</span> export anywhere</h3>
+        <p>copy plain text, download a .txt, render a .png, or build a share card with the settings printed on it.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="why-local">
+    <div class="kicker">[ why_local ]</div>
+    <h2 class="h2">Why is nothing uploaded?</h2>
+    <p class="lede" style="margin-top:18px">Semaphore reads pixels on a local <code>&lt;canvas&gt;</code> and emits plain text for README files, CLI output, code comments, and chat. Conversion, preview and export stay inside this tab; there is no upload endpoint or processing queue.</p>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> no phone-home</h3>
+        <p>The page makes no third-party runtime requests. Production ships <code>Content-Security-Policy: connect-src 'none'</code>, blocking fetch, XHR and WebSocket.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> live, not queued</h3>
+        <p>Columns, brightness, contrast, invert and color re-run every change. The ASCII art updates immediately instead of waiting on a server job.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> edge counts only</h3>
+        <p>Cloudflare edge counts are static-file request logs, not client telemetry. No analytics beacon runs in the tab, and image bytes never enter those requests.</p>
+      </article>
+    </div>
+    <p class="fs-s text-faint" style="margin-top:26px">Free, no account, no watermark. Once the page is open, converting and exporting need no network; only a reload does. <a href="/tool">Open the ASCII converter</a>, read the <a href="/faq">FAQ</a>, or inspect the engine on <a href="https://github.com/can4hou6joeng4/Semaphore">GitHub</a>.</p>
+  </section>
+
+  <section class="sec" data-screen-label="live-demo" id="demoSection">
+    <div class="kicker">[ live_demo ]</div>
+    <h2 class="h2">Watch an image become ASCII</h2>
+    <p class="lede" style="margin-top:18px">Drop, convert, retune — replayed live by the real engine, not a video. Same converter you drive by hand on the tool page.</p>
+    <figure class="term demo-term" id="demoTerm" aria-hidden="true">
+      <figcaption class="term-head">
+        <span class="term-title"><span class="p" aria-hidden="true">$</span> semaphore --interactive</span>
+        <span class="term-dots">– □ ✕</span>
+      </figcaption>
+      <div class="term-body demo-stage" id="demoStage">
+        <div class="demo-left">
+          <div class="demo-chip" id="demoChip">
+            <img src="/static/sample-portrait-thumb.webp" alt="" width="68" height="56">
+            <span class="fs-xs demo-chip-name">portrait.png</span>
+          </div>
+          <div class="dropzone demo-drop" id="demoDrop">[ drop here ]</div>
+        </div>
+        <div class="demo-right">
+          <div class="fs-xs demo-cmd" id="demoCmd">$ semaphore portrait.png --charset detailed</div>
+          <div class="demo-out" id="demoOut"><pre class="ascii-pre" id="demoPre"></pre></div>
+          <div class="fs-xs text-faint demo-status" id="demoStatus"></div>
+        </div>
+        <div class="demo-cursor" id="demoCursor"></div>
+      </div>
+    </figure>
+    <p class="fs-s text-faint" style="margin-top:18px">captured live from the engine on this page — <a href="/tool">open the image to ASCII tool</a> to drive it yourself.</p>
+  </section>
+
+  <section class="sec" data-screen-label="charsets">
+    <div class="kicker">[ charsets ]</div>
+    <h2 class="h2">ASCII art charsets for every texture</h2>
+    <p class="lede" style="margin-top:18px">The charset is the alphabet of your image to ASCII conversion. Classic ramps read well in any monospace font; blocks suit posters; binary leans cyberpunk; <a href="/charsets/braille">braille ASCII</a> packs a 2×4 dithered dot matrix for photographic detail. Every charset now has its own page: <a href="/charsets/standard">standard</a>, <a href="/charsets/detailed">detailed</a>, <a href="/charsets/blocks">blocks</a>, <a href="/charsets/minimal">minimal</a>, <a href="/charsets/binary">binary</a> and <a href="/charsets/braille">braille</a>. Four of the six run live below from the same portrait.</p>
+    <div class="charset-grid" id="charsetGrid">
+      <figure class="term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p" aria-hidden="true">$</span> semaphore portrait.png --charset standard</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body"><pre class="ascii-pre" data-charset="standard" aria-hidden="true"></pre></div>
+      </figure>
+      <figure class="term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p" aria-hidden="true">$</span> semaphore portrait.png --charset blocks</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body"><pre class="ascii-pre" data-charset="blocks" aria-hidden="true"></pre></div>
+      </figure>
+      <figure class="term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p" aria-hidden="true">$</span> semaphore portrait.png --charset binary</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body"><pre class="ascii-pre" data-charset="binary" aria-hidden="true"></pre></div>
+      </figure>
+      <figure class="term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p" aria-hidden="true">$</span> semaphore portrait.png --charset braille</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body"><pre class="ascii-pre" data-charset="braille" aria-hidden="true"></pre></div>
+      </figure>
+    </div>
+    <p class="fs-s text-faint" style="margin-top:18px">rendered live in your browser by the same engine that powers the converter — <a href="/tool">try your own photo as ASCII art</a>.</p>
+
+    <div class="table-wrap" tabindex="0">
+      <table class="tbl">
+        <caption>the six charsets, from the most detail to the least</caption>
+        <thead>
+          <tr><th scope="col">charset</th><th scope="col">characters</th><th scope="col">steps</th><th scope="col">best for</th><th scope="col">portability</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"><a href="/charsets/braille">braille</a></th>
+            <td>2×4 dot cells</td>
+            <td class="num">9 tones · 256 patterns</td>
+            <td>The most detail available. Eight dots per cell, dithered, so a face keeps its structure at low column counts.</td>
+            <td>Needs a font with braille glyphs. JetBrains Mono has none, so it falls back to a system face.</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/charsets/detailed">detailed</a></th>
+            <td class="ramp"> .'`^",:;Il!i~+_-?][}{1)(|\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&amp;8%B@$</td>
+            <td class="num">68</td>
+            <td>Photographs and portraits. Adjacent shades differ by roughly 1.5%, which is what keeps a cheekbone readable.</td>
+            <td>Plain 7-bit ASCII. Safe anywhere.</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/charsets/standard">standard</a></th>
+            <td class="ramp"> .:-=+*#%@</td>
+            <td class="num">10</td>
+            <td>The classic look, and the safest default when you do not control the destination font.</td>
+            <td>Plain 7-bit ASCII. Safe anywhere.</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/charsets/blocks">blocks</a></th>
+            <td class="ramp"> ░▒▓█</td>
+            <td class="num">5</td>
+            <td>Pixel-art and poster looks. Each glyph paints its whole cell, so regions merge into flat areas.</td>
+            <td>Unicode block elements. Most terminals have them; some README renderers substitute a font.</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/charsets/minimal">minimal</a></th>
+            <td class="ramp"> .:*#</td>
+            <td class="num">5</td>
+            <td>Small sizes — icons, avatars, anything under about sixty columns where a long ramp turns to speckle.</td>
+            <td>Plain 7-bit ASCII. Safe anywhere.</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/charsets/binary">binary</a></th>
+            <td class="ramp"> 01</td>
+            <td class="num">3</td>
+            <td>Silhouettes and the code-rain look. Three steps leave no gradient, so shape survives and tone does not.</td>
+            <td>Plain 7-bit ASCII. Safe anywhere.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="export-and-use">
+    <div class="kicker">[ export ]</div>
+    <h2 class="h2">From photo to plain-text ASCII art</h2>
+    <p class="lede" style="margin-top:18px">ASCII art earns its keep where images cannot go. Convert once, then ship characters through any channel that only accepts text.</p>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> copy or .txt</h3>
+        <p>One click copies the glyph grid to the clipboard, or download a .txt for READMEs, code comments, IRC, Discord, and commit messages.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> PNG render</h3>
+        <p>Need a still for a slide or social post? Export a crisp PNG of the ASCII art while keeping the monospace look intact.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> share card</h3>
+        <p>Bake charset, columns and color into a branded card so someone else can reproduce the conversion — or just admire the result.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="usecases-teaser">
+    <div class="kicker">[ usecases ]</div>
+    <h2 class="h2">Plain text goes where images cannot</h2>
+    <p class="lede" style="margin-top:18px">Pixels need hosts, CDNs and alt text. Character grids travel as plain text — that is the whole point of an image to ASCII workflow.</p>
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> readme banners</h3>
+        <p>A logo that renders on every git host with no image hosting and no broken hotlinks. <a href="/guides/readme-banner">Guide</a>.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> cli splash screens</h3>
+        <p>Greet users of your tools where only a terminal exists — MOTDs, installers, TUI headers. Follow the <a href="/guides/ssh-motd">SSH MOTD ASCII art guide</a>.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> plain-text everywhere</h3>
+        <p>Email, forums, code review comments, chat — if the medium takes characters, it takes ASCII art.</p>
+      </article>
+    </div>
+    <a class="btn btn--ghost" href="/usecases" style="margin-top:26px">browse ASCII art use cases</a>
+  </section>
+
+  <section class="sec" data-screen-label="faq-teaser">
+    <div class="kicker">[ faq ]</div>
+    <h2 class="h2">Image to ASCII FAQ</h2>
+    <div class="qa-list" style="margin-top:34px">
+      <details class="qa" open>
+        <summary>Do my images get uploaded?</summary>
+        <div class="qa-a"><p>Never — the image to ASCII conversion runs entirely in your browser on a local canvas. It keeps working with the network off for as long as the tab stays open; only a reload needs a connection. Production CSP blocks any outbound connect.</p></div>
+      </details>
+      <details class="qa">
+        <summary>Is this ASCII art generator free?</summary>
+        <div class="qa-a"><p>Yes — free, no account, no watermark, no quota. Static files only.</p></div>
+      </details>
+      <details class="qa">
+        <summary>Which image formats can I convert to ASCII?</summary>
+        <div class="qa-a"><p>Anything your browser can decode: png, jpg, webp and gif (first frame). Drop it on the <a href="/tool">converter</a> or pick a sample.</p></div>
+      </details>
+      <details class="qa">
+        <summary>How do I get sharper ASCII art from a photo?</summary>
+        <div class="qa-a"><p>Start from a high-contrast crop. Raise columns toward 160–200, nudge contrast up, and try the braille charset when you need photographic detail at the same width.</p></div>
+      </details>
+    </div>
+    <a class="btn btn--ghost" href="/faq" style="margin-top:26px">read the full FAQ</a>
+  </section>
+
+  <footer class="site-foot">
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-12">2026-09-12</time></span>
+    <nav><a href="/usecases">usecases</a><a href="/guides/readme-banner">readme guide</a><a href="/zh">中文</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII tool</a></nav>
+  </footer>
+
+</main>
+<script type="module" src="/src/main-index.ts"></script>
+</body>
+</html>

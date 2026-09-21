@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#39ff7a"/>
+      <stop offset="1" stop-color="#18a84f"/>
+    </linearGradient>
+  </defs>
+  <rect width="240" height="240" rx="48" fill="#050a06"/>
+  <rect x="4" y="4" width="232" height="232" rx="44" fill="none" stroke="#39ff7a" stroke-opacity=".45" stroke-width="3"/>
+  <!-- crossed semaphore flags -->
+  <g stroke-linecap="round">
+    <line x1="76" y1="176" x2="148" y2="66" stroke="#0f5c2e" stroke-width="10"/>
+    <line x1="164" y1="176" x2="92" y2="66" stroke="#0f5c2e" stroke-width="10"/>
+    <polygon points="148,66 196,52 182,100" fill="url(#g)"/>
+    <polygon points="92,66 44,52 58,100" fill="#39ff7a" fill-opacity=".85"/>
+  </g>
+  <!-- ascii baseline -->
+  <text x="120" y="212" font-family="Menlo,monospace" font-size="26" font-weight="700" fill="#39ff7a" text-anchor="middle" opacity=".9">.:*#@</text>
+</svg>

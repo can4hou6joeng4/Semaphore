@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image to ASCII Converter — Live Preview, No Upload | Semaphore</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Image to ASCII Converter — Live Preview, No Upload | Semaphore">
+<meta property="og:description" content="Convert any image to ASCII art in your browser. Six charsets including braille, live controls, export text or PNG. Nothing is uploaded.">
+<meta property="og:url" content="https://semaphore.bobochang.cn/tool">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card-tool.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Image to ASCII Converter — Live Preview, No Upload | Semaphore">
+<meta name="twitter:description" content="Convert any image to ASCII art in your browser. Six charsets including braille, live controls, export text or PNG. Nothing is uploaded.">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card-tool.jpg">
+<meta name="twitter:image:alt" content="Semaphore — image to ASCII converter workbench">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en_US">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — image to ASCII converter workbench">
+<link rel="canonical" href="https://semaphore.bobochang.cn/tool">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#050a06">
+<meta name="description" content="Convert any image to ASCII art in your browser. Six charsets including braille, live controls, export text or PNG. Nothing is uploaded.">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
+<style>
+  /* ---- tool workbench layout (colors via tokens only) ---- */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: 312px minmax(0, 1fr);
+    height: calc(100vh - var(--header-h) - var(--statusbar-h));
+    min-height: 640px;
+  }
+  .tool-grid figure.term { margin: 0; }
+
+  /* left rail: source + parameters */
+  .tool-side {
+    display: flex; flex-direction: column; gap: 24px;
+    padding: 24px;
+    border-right: 1px solid var(--line);
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .tool-side > * { flex-shrink: 0; }
+  .tool-side:focus-visible, .out-body:focus-visible { outline-offset: -2px; }
+  .side-block { display: grid; gap: 10px; }
+  .drop-title {
+    font-size: var(--fs-m); color: var(--green-soft);
+    letter-spacing: .03em; margin-bottom: 6px;
+  }
+  .samples { display: flex; gap: 14px; }
+  .sample-item { display: grid; gap: 5px; justify-items: center; }
+  .sample {
+    width: 68px; height: 56px; padding: 0; overflow: hidden; cursor: pointer;
+    background: var(--bg-deep);
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .sample:hover, .sample:focus-visible { border-color: var(--green); box-shadow: var(--glow); }
+  .sample img, .sample canvas { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .source-thumb.is-unavailable { visibility: hidden; }
+  .source-thumb {
+    width: auto; height: auto; max-width: 100%; max-height: 110px;
+    margin-inline: auto;
+  }
+
+  /* right rail: readout + actions + output stage */
+  .tool-main {
+    display: flex; flex-direction: column; gap: 14px;
+    padding: 24px;
+    min-width: 0; min-height: 0; overflow: hidden;
+  }
+  .cmdline { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .actions { justify-content: space-between; }
+  .actions input[type="range"] { width: 150px; }
+  input[type="range"]:disabled { opacity: .35; cursor: default; }
+
+  .out-term { flex: 1; display: flex; flex-direction: column; min-height: 440px; overflow: hidden; }
+  .out-body {
+    flex: 1; min-height: 0; overflow: auto; position: relative; display: flex;
+    scrollbar-gutter: stable;
+  }
+  .out-body .ascii-pre {
+    box-sizing: border-box; flex: none;
+    width: max-content; min-width: 100%; min-height: 100%; margin: 0;
+    text-align: center;
+  }
+  .ascii-pre.is-empty {
+    display: grid; place-items: center;
+    font-size: var(--fs-s); color: var(--ink-dim); text-shadow: none;
+  }
+
+  @media (max-width: 960px) {
+    .tool-grid {
+      grid-template-columns: minmax(0, 1fr);
+      height: auto; min-height: 0;
+    }
+    .tool-side { border-right: 0; border-bottom: 1px solid var(--line); overflow-y: visible; }
+    .out-term { min-height: 380px; }
+  }
+
+  /* ---- share card modal (tokens only) ---- */
+  .cardmodal {
+    position: fixed; inset: 0; z-index: 800;
+    display: grid; place-items: center;
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    padding: 20px;
+  }
+  .cardmodal-panel { width: min(780px, calc(100vw - 40px)); margin: 0; }
+  .cardmodal-close {
+    font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .06em;
+    background: transparent; color: var(--ink-faint);
+    border: 1px solid transparent; border-radius: 2px;
+    padding: 2px 6px; cursor: pointer; flex: none;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .cardmodal-close:hover { color: var(--green); border-color: var(--line); }
+  .cardmodal-preview {
+    border: 1px solid var(--line); border-radius: 2px;
+    background: var(--bg-deep);
+    max-height: 46vh; overflow: auto;
+    /* The preview opens as a 1x1 placeholder and is replaced by a rendered card
+       whose height depends on the art's row count, so the ratio cannot be pinned
+       on the image without distorting it. Reserve a floor on the container
+       instead, so the modal does not resize under the buttons on first render. */
+    min-height: 240px;
+  }
+  .cardmodal-preview img { margin-inline: auto; }
+  .cardmodal-controls { margin-top: 14px; }
+  .cardmodal-seg { flex: none; }
+  .cardmodal-seg button { flex: none; padding: 8px 18px; }
+  #cardCaption { flex: 1 1 180px; width: auto; min-width: 150px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://semaphore.bobochang.cn/tool#webpage",
+      "name": "Image to ASCII Converter",
+      "url": "https://semaphore.bobochang.cn/tool",
+      "inLanguage": "en",
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "ASCII art",
+          "sameAs": "https://en.wikipedia.org/wiki/ASCII_art"
+        }
+      ],
+      "mentions": [
+        {
+          "@type": "Thing",
+          "name": "Braille Patterns",
+          "sameAs": "https://en.wikipedia.org/wiki/Braille_Patterns"
+        },
+        {
+          "@type": "Thing",
+          "name": "Floyd–Steinberg dithering",
+          "sameAs": "https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering"
+        }
+      ],
+      "description": "Convert images to ASCII art locally in your browser with six charsets, live controls, and text or PNG export.",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "mainEntity": {
+        "@id": "https://semaphore.bobochang.cn/#webapp"
+      },
+      "author": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      },
+      "breadcrumb": {
+        "@id": "https://semaphore.bobochang.cn/tool#breadcrumb"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "xpath": [
+          "/html/body//h1",
+          "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
+        ]
+      },
+      "dateModified": "2026-09-12"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://semaphore.bobochang.cn/tool#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Semaphore",
+          "item": "https://semaphore.bobochang.cn/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Image to ASCII Converter",
+          "item": "https://semaphore.bobochang.cn/tool"
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://semaphore.bobochang.cn/#website",
+      "url": "https://semaphore.bobochang.cn/",
+      "name": "Semaphore",
+      "publisher": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://semaphore.bobochang.cn/#person",
+      "name": "bobochang",
+      "url": "https://bobochang.cn",
+      "sameAs": [
+        "https://github.com/can4hou6joeng4"
+      ]
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://semaphore.bobochang.cn/#webapp",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "author": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      },
+      "name": "Semaphore",
+      "url": "https://semaphore.bobochang.cn/",
+      "description": "Free image to ASCII converter that runs entirely in your browser. Drop a photo, choose a charset including braille, export plain text or PNG. Nothing is uploaded.",
+      "disambiguatingDescription": "A browser-based image to ASCII art converter by bobochang. Not the flag signalling system, the concurrency primitive, or the CI service of the same name.",
+      "applicationCategory": "MultimediaApplication",
+      "applicationSubCategory": "Image converter",
+      "operatingSystem": "Any (runs in a web browser)",
+      "browserRequirements": "Requires JavaScript and HTML5 canvas",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Converts PNG, JPG, WebP and GIF to ASCII art",
+        "Runs 100% client-side — images are never uploaded",
+        "Six charsets including a dithered 2x4 braille mode",
+        "Live controls for columns, brightness, contrast, invert and color",
+        "Export as plain text, .txt, .png or a share card"
+      ],
+      "screenshot": "https://semaphore.bobochang.cn/static/social-card.jpg",
+      "license": "https://opensource.org/licenses/MIT",
+      "sameAs": [
+        "https://github.com/can4hou6joeng4/Semaphore"
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body data-page="tool" data-path="~/tool">
+<main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the converter cannot run. That is the
+    same property that keeps your image private: the conversion happens in this tab, not
+    on a server, so there is no upload path and no server-rendered result to show instead.
+    <a href="/">home</a> · <a href="/faq">how it works</a> · <a href="/privacy">privacy</a></p>
+  </noscript>
+
+  <section class="sec sec--tight" data-screen-label="tool-head">
+    <div class="kicker"><b>~/tool</b> · image to ascii</div>
+    <h1 class="h2">Convert an image to ASCII art, live</h1>
+    <p class="lede" style="margin-top:14px">Drop a photo and copy plain-text ASCII. Tune it live; nothing leaves this tab or gets uploaded.</p>
+  </section>
+
+  <section class="sec sec--flush" data-screen-label="tool-workbench" aria-label="ASCII converter workspace">
+    <div class="tool-grid">
+
+      <aside class="tool-side" aria-label="source and parameters" tabindex="0">
+
+        <div class="side-block">
+          <div class="field-label">source</div>
+          <div class="dropzone" id="drop" role="button" tabindex="0"
+               aria-labelledby="dropTitle dropHint">
+            <div class="drop-title" id="dropTitle">[ drop image here ]</div>
+            <div class="fs-xs text-faint" id="dropHint">or click to browse — png · jpg · webp · gif → ASCII</div>
+          </div>
+          <input type="file" id="file" accept="image/*" class="hidden">
+        </div>
+
+        <figure class="term" id="srcInfo">
+          <figcaption class="term-head">
+            <span class="term-title"><span class="p" aria-hidden="true">$</span> file info</span>
+            <span class="term-dots">– □ ✕</span>
+          </figcaption>
+          <div class="term-body" style="padding:12px">
+            <img class="source-thumb" id="srcThumb" src="/static/sample-portrait.webp"
+                 width="1100" height="1069" alt="loaded source preview">
+            <div class="fs-xs text-dim" id="srcMeta" style="text-align:center;margin-top:8px">portrait.webp — 1100×1069</div>
+          </div>
+        </figure>
+
+        <div class="side-block">
+          <div class="field-label">samples</div>
+          <div class="samples">
+            <div class="sample-item">
+              <button class="sample" id="samplePortrait" type="button" aria-label="load sample: portrait">
+                <img src="/static/sample-portrait.webp" width="1100" height="1069" alt="">
+              </button>
+              <span class="fs-xs text-faint">portrait</span>
+            </div>
+            <div class="sample-item">
+              <button class="sample" id="samplePlanet" type="button" aria-label="load sample: planet">
+                <canvas id="planetThumb" width="136" height="112"></canvas>
+              </button>
+              <span class="fs-xs text-faint">planet</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="side-block">
+          <div class="field-label">parameters</div>
+          <div class="stack">
+            <div class="field">
+              <label class="field-label" for="charset">charset</label>
+              <div class="selectwrap">
+                <select class="input" id="charset">
+                  <option value="standard">standard</option>
+                  <option value="detailed" selected>detailed</option>
+                  <option value="blocks">blocks</option>
+                  <option value="minimal">minimal</option>
+                  <option value="binary">binary</option>
+                  <option value="braille">braille (2×4 dots)</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="cols">columns <span class="val" id="colsv">120</span></label>
+              <input type="range" id="cols" min="40" max="240" step="2" value="120">
+            </div>
+            <div class="field">
+              <label class="field-label" for="bright">brightness <span class="val" id="brightv">0</span></label>
+              <input type="range" id="bright" min="-100" max="100" step="1" value="0">
+            </div>
+            <div class="field">
+              <label class="field-label" for="contrast">contrast <span class="val" id="contrastv">0</span></label>
+              <input type="range" id="contrast" min="-100" max="100" step="1" value="0">
+            </div>
+            <button class="toggle" id="invert" type="button" aria-pressed="false">invert</button>
+            <!-- starts disabled: the default charset is `detailed`, and dithering
+                 only runs in the braille branch — tool.ts keeps this in sync -->
+            <button class="toggle" id="dither" type="button" aria-pressed="true" aria-disabled="true"
+                    title="dithering only applies to the braille charset">dither (braille)</button>
+            <div class="field">
+              <div class="field-label">color</div>
+              <div class="seg" role="radiogroup" aria-label="color">
+                <button type="button" role="radio" data-color="green" aria-checked="true" tabindex="0">green</button>
+                <button type="button" role="radio" data-color="gray" aria-checked="false" tabindex="-1">gray</button>
+                <button type="button" role="radio" data-color="original" aria-checked="false" tabindex="-1">original</button>
+              </div>
+            </div>
+            <button class="btn btn--ghost btn--sm" id="reset" type="button">reset params</button>
+          </div>
+        </div>
+
+      </aside>
+
+      <div class="tool-main">
+
+        <div class="fs-xs text-faint cmdline" id="cmdline">$ semaphore --charset detailed --cols 120 --color green</div>
+
+        <div class="row actions">
+          <div class="row">
+            <label class="field-label" for="zoom">zoom</label>
+            <input type="range" id="zoom" min="3" max="18" step="0.5" value="8" disabled>
+            <button class="toggle" id="fit" type="button" aria-pressed="true">fit width</button>
+          </div>
+          <div class="row">
+            <button class="btn btn--ghost btn--sm" id="copy" type="button" disabled>copy text</button>
+            <button class="btn btn--ghost btn--sm" id="savetxt" type="button" disabled>download .txt</button>
+            <button class="btn btn--ghost btn--sm" id="sharecard" type="button" disabled>share card</button>
+            <button class="btn btn--green btn--sm" id="savepng" type="button" disabled>download .png</button>
+          </div>
+        </div>
+
+        <figure class="term out-term">
+          <figcaption class="term-head">
+            <span class="term-title" id="outTitle"><span class="p" aria-hidden="true">$</span> ~/output — waiting for source</span>
+            <span class="term-dots">– □ ✕</span>
+          </figcaption>
+          <div class="term-body out-body" id="outBody" role="region"
+               aria-label="ASCII output viewport — no source loaded yet" tabindex="0">
+<pre class="ascii-pre is-empty" id="out" aria-hidden="true">┌──────────────────────────────┐
+│                              │
+│    drop an image to begin    │
+│                              │
+└──────────────────────────────┘</pre>
+          </div>
+        </figure>
+
+      </div>
+
+    </div>
+
+    <div class="cardmodal hidden" id="cardModal" role="dialog" aria-modal="true" aria-label="share card">
+      <figure class="term cardmodal-panel">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p" aria-hidden="true">$</span> share card — preview</span>
+          <button class="cardmodal-close" id="cardClose" type="button" aria-label="close share card preview">[ x ]</button>
+        </figcaption>
+        <div class="term-body">
+          <div class="cardmodal-preview">
+            <img id="cardPreview"
+                 src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                 alt="share card preview" style="max-width:100%">
+          </div>
+          <div class="row cardmodal-controls">
+            <div class="seg cardmodal-seg" role="radiogroup" aria-label="card theme">
+              <button type="button" role="radio" data-ctheme="crt" aria-checked="true" tabindex="0">crt</button>
+              <button type="button" role="radio" data-ctheme="paper" aria-checked="false" tabindex="-1">paper</button>
+            </div>
+            <input class="input" id="cardCaption" maxlength="60" value="made with semaphore.bobochang.cn" aria-label="caption">
+            <button class="btn btn--ghost btn--sm" id="cardSvg" type="button" disabled>download .svg</button>
+            <button class="btn btn--green btn--sm" id="cardPng" type="button" disabled>download .png</button>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="tool-controls">
+    <div class="kicker">[ what_the_controls_do ]</div>
+    <h2 class="h2">What does each converter control do?</h2>
+    <p class="lede" style="margin-top:18px">The converter samples your image on a local canvas, reduces each grid cell to one perceptual brightness value, and picks the character at that brightness's position in a ramp ordered by ink coverage. Everything below changes either how the grid is measured or which characters it can choose from. Nothing is uploaded at any point, so the whole loop runs at the speed of your own machine.</p>
+
+    <div class="table-wrap" tabindex="0">
+      <table class="tbl">
+        <caption>converter controls, with the range each one accepts</caption>
+        <thead>
+          <tr><th scope="col">control</th><th scope="col">range</th><th scope="col">default</th><th scope="col">what it changes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">charset</th>
+            <td class="num">6 presets</td>
+            <td class="num">detailed</td>
+            <td>Which characters the output may use. This is the single biggest lever on how the result reads — see the comparison on the home page.</td>
+          </tr>
+          <tr>
+            <th scope="row">columns</th>
+            <td class="num">40–240</td>
+            <td class="num">120</td>
+            <td>Width of the output grid in characters. Row count follows from it and the source proportions, so this alone sets the resolution.</td>
+          </tr>
+          <tr>
+            <th scope="row">brightness</th>
+            <td class="num">-100 … +100</td>
+            <td class="num">0</td>
+            <td>Shifts every cell along the ramp before a character is chosen. Raise it when a dark photo collapses into solid ink.</td>
+          </tr>
+          <tr>
+            <th scope="row">contrast</th>
+            <td class="num">-100 … +100</td>
+            <td class="num">0</td>
+            <td>Spreads mid-tones apart. The usual fix when an image converts to visual mush: the ramp is being used, but only its middle.</td>
+          </tr>
+          <tr>
+            <th scope="row">invert</th>
+            <td class="num">on / off</td>
+            <td class="num">off</td>
+            <td>Flips the ramp. Off assumes light characters on a dark ground; turn it on when the output is destined for a white page.</td>
+          </tr>
+          <tr>
+            <th scope="row">dither</th>
+            <td class="num">on / off</td>
+            <td class="num">on</td>
+            <td>Braille only. Applies Floyd–Steinberg error diffusion so each of the eight dots per cell is decided against its neighbours rather than in isolation.</td>
+          </tr>
+          <tr>
+            <th scope="row">color</th>
+            <td class="num">green · gray · original</td>
+            <td class="num">green</td>
+            <td>Affects the on-screen render and the PNG export only. Clipboard and <code>.txt</code> output are always plain characters.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-wrap" tabindex="0" style="margin-top:34px">
+      <table class="tbl">
+        <caption>where the output is going, and the charset and width that survive there</caption>
+        <thead>
+          <tr><th scope="col">destination</th><th scope="col">charset</th><th scope="col">columns</th><th scope="col">why</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"><a href="/guides/readme-banner">README banner</a></th>
+            <td class="num">blocks or standard</td>
+            <td class="num">60–80</td>
+            <td>Inside a fenced code block. Around 60 columns fits a phone-width README without sideways scrolling.</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/guides/ssh-motd">SSH MOTD</a></th>
+            <td class="num">standard</td>
+            <td class="num">40–80, 64 to be safe</td>
+            <td>Plain 7-bit characters render in every terminal font; 64 leaves margin inside an 80-column window.</td>
+          </tr>
+          <tr>
+            <th scope="row">code comment header</th>
+            <td class="num">standard or minimal</td>
+            <td class="num">40–60</td>
+            <td>Leaves room for the comment prefix inside an 80-column line.</td>
+          </tr>
+          <tr>
+            <th scope="row">plain-text email</th>
+            <td class="num">standard</td>
+            <td class="num">60–72</td>
+            <td>Mail clients wrap between 72 and 78 characters; anything wider comes out as rubble.</td>
+          </tr>
+          <tr>
+            <th scope="row">avatar or small logo</th>
+            <td class="num">minimal</td>
+            <td class="num">40–80</td>
+            <td>A long ramp turns to speckle at small sizes; five steps hold the shape.</td>
+          </tr>
+          <tr>
+            <th scope="row">photo, chat or forum post</th>
+            <td class="num">braille</td>
+            <td class="num">100–160</td>
+            <td>Eight dots per cell keep a face readable; needs a font with braille glyphs, which every modern OS ships.</td>
+          </tr>
+          <tr>
+            <th scope="row">print or poster</th>
+            <td class="num">detailed</td>
+            <td class="num">200–240</td>
+            <td>The 240-column ceiling exists for paper: export the <code>.png</code> and let the printer handle the resolution.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-3" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> cells are not square</h3>
+        <p>A monospace cell is about three parts wide to five parts tall, so the converter emits roughly three rows for every five columns. At 120 columns a square photo comes out 72 rows deep. Paste into a font with different metrics and the picture stretches — the characters are right, the grid is not.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> columns beat every other setting</h3>
+        <p>A sixty-eight step ramp needs enough characters before its shades read as shading. Below about sixty columns the detailed ramp turns to speckle and a shorter one — <a href="/charsets/minimal">minimal</a> or <a href="/charsets/blocks">blocks</a> — will hold the shape better than any amount of contrast.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> what leaves the tab</h3>
+        <p>Nothing. Production ships <code>connect-src 'none'</code>, so the page cannot open a fetch, XHR or WebSocket even if its code tried. Only your charset and color choice are remembered on the device; image bytes never are. See <a href="/privacy">privacy</a>.</p>
+      </article>
+    </div>
+  </section>
+
+  <div class="sec sec--tight" data-screen-label="tool-guides">
+    <nav class="row" aria-label="ASCII converter guides">
+      <span class="field-label">guides</span>
+      <a href="/">overview</a>
+      <a href="/charsets/braille">braille ASCII guide</a>
+      <a href="/guides/ssh-motd">SSH MOTD guide</a>
+      <a href="/faq">FAQ</a>
+    </nav>
+  </div>
+
+  <footer class="site-foot">
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-12">2026-09-12</time></span>
+    <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/zh">中文</a><a href="/tool">image to ASCII</a></nav>
+  </footer>
+
+</main>
+<script type="module" src="/src/main-tool.ts"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy — Nothing Is Uploaded | Semaphore</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Privacy — Nothing Is Uploaded | Semaphore">
+<meta property="og:description" content="Semaphore converts images locally in your browser. No uploads, accounts, cookies, in-page analytics or telemetry.">
+<meta property="og:url" content="https://semaphore.bobochang.cn/privacy">
+<meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Privacy — Nothing Is Uploaded | Semaphore">
+<meta name="twitter:description" content="Semaphore converts images locally in your browser. No uploads, accounts, cookies, in-page analytics or telemetry.">
+<meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
+<meta name="twitter:image:alt" content="Semaphore — private image to ASCII conversion">
+<meta property="og:site_name" content="Semaphore">
+<meta property="og:locale" content="en_US">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Semaphore — private image to ASCII conversion">
+<link rel="canonical" href="https://semaphore.bobochang.cn/privacy">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#050a06">
+<meta name="description" content="Semaphore converts images locally in your browser. No uploads, accounts, cookies, in-page analytics or telemetry.">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
+<style>
+  .privacy-grid { margin-top: 34px; }
+  .privacy-proof {
+    max-width: 900px;
+    display: grid;
+    gap: 18px;
+  }
+  .privacy-proof .term { margin: 0; }
+  .privacy-proof code { overflow-wrap: anywhere; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://semaphore.bobochang.cn/privacy#webpage",
+      "name": "Semaphore Privacy",
+      "url": "https://semaphore.bobochang.cn/privacy",
+      "inLanguage": "en",
+      "description": "How Semaphore keeps image conversion local and what limited data exists when static files are requested.",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#website"
+      },
+      "author": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      },
+      "breadcrumb": {
+        "@id": "https://semaphore.bobochang.cn/privacy#breadcrumb"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "xpath": [
+          "/html/body//h1",
+          "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
+        ]
+      },
+      "dateModified": "2026-09-12"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://semaphore.bobochang.cn/privacy#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Semaphore",
+          "item": "https://semaphore.bobochang.cn/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Privacy",
+          "item": "https://semaphore.bobochang.cn/privacy"
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://semaphore.bobochang.cn/#website",
+      "url": "https://semaphore.bobochang.cn/",
+      "name": "Semaphore",
+      "publisher": {
+        "@id": "https://semaphore.bobochang.cn/#person"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://semaphore.bobochang.cn/#person",
+      "name": "bobochang",
+      "url": "https://bobochang.cn",
+      "sameAs": [
+        "https://github.com/can4hou6joeng4"
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body data-page="privacy" data-path="~/privacy">
+<main class="frame">
+  <noscript>
+    <p class="noscript-note">JavaScript is off, so the site header and the live ASCII
+    previews will not render. Semaphore converts images inside your own tab rather than
+    on a server, so there is nothing to fall back to — the written content below still
+    reads. <a href="/">home</a> · <a href="/tool">image to ASCII converter</a></p>
+  </noscript>
+  <section class="sec" data-screen-label="privacy-head">
+    <div class="kicker"><b>~/privacy</b> · nothing is uploaded</div>
+    <h1 class="h2">Your image stays in your browser</h1>
+    <p class="lede" style="margin-top:18px">Semaphore is a static image to ASCII converter, built and operated by <a href="https://bobochang.cn">bobochang</a>. There is no upload endpoint, account system, analytics script or telemetry pipeline behind it.</p>
+  </section>
+
+  <div class="sec" data-screen-label="privacy-facts">
+    <div class="kicker">[ what_happens_to_your_data ]</div>
+    <div class="grid-3 privacy-grid">
+      <article class="card">
+        <h2 class="card-title"><span class="p">01</span> image bytes stay local</h2>
+        <p>Your browser decodes the selected image and draws it to a local canvas. Conversion, previews and exports happen in the tab. The image is never sent to Semaphore or Cloudflare.</p>
+      </article>
+      <article class="card">
+        <h2 class="card-title"><span class="p">02</span> no tracking state</h2>
+        <p>There are no cookies, tracking pixels, browser analytics or accounts. Preferences that stay on the device: CRT or paper theme, and the last-used tool charset and color mode in <code>localStorage</code>. None of those keys ever hold image bytes.</p>
+      </article>
+      <article class="card">
+        <h2 class="card-title"><span class="p">03</span> exports are explicit</h2>
+        <p>Text reaches your clipboard only when you choose copy. Files and share cards are created locally and downloaded only when you ask. Closing the tab discards the working image.</p>
+      </article>
+    </div>
+  </div>
+
+  <section class="sec" data-screen-label="privacy-proof">
+    <div class="kicker">[ trust_but_verify ]</div>
+    <h2 class="h2">The browser policy enforces the promise</h2>
+    <div class="privacy-proof" style="margin-top:34px">
+      <figure class="term">
+        <figcaption class="term-head">
+          <span class="term-title"><span class="p" aria-hidden="true">$</span> inspect content-security-policy</span>
+          <span class="term-dots">– □ ✕</span>
+        </figcaption>
+        <div class="term-body">
+          <p>Production pages send <code>connect-src 'none'</code>. That blocks page scripts from opening <code>fetch</code>, XHR or WebSocket connections, including analytics beacons.</p>
+        </div>
+      </figure>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> what Cloudflare can see</h3>
+        <p>Loading any website requires ordinary HTTP requests for its static HTML, scripts, styles, fonts and sample image. Cloudflare may process standard request metadata and provide the operator with aggregate edge request counts. Those requests do not contain your selected image or converted output, and Semaphore runs no second in-page reporting request.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> inspect the implementation</h3>
+        <p>Semaphore is open source. You can inspect the client code and production headers in the <a href="https://github.com/can4hou6joeng4/Semaphore">GitHub repository</a>, or open your browser's network panel while converting. If anything you observe contradicts this page, <a href="https://github.com/can4hou6joeng4/Semaphore/issues">open an issue</a> — that is the contact path, and the fix ships in public.</p>
+      </article>
+    </div>
+  </section>
+
+  <div class="sec sec--tight" data-screen-label="privacy-cta">
+    <p class="lede">Last updated: September 12, 2026.</p>
+    <a class="btn btn--green" href="/tool" style="margin-top:22px">Convert locally</a>
+  </div>
+
+  <footer class="site-foot">
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-12">2026-09-12</time></span>
+    <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
+  </footer>
+</main>
+<script type="module" src="/src/main-privacy.ts"></script>
+</body>
+</html>
