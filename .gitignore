@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.wrangler/
+coverage/
+.DS_Store
+*.log
+.playwright-cli/
+
+# per-machine instruction overrides
+AGENTS.local.md
+CLAUDE.local.md
+
+# private operational notes & drafts
+docs/growth*.md
+docs/*notes.md
+
+# tests & CI
+*.test.ts
+.github/

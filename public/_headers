@@ -1,0 +1,100 @@
+# Cloudflare Pages response headers.
+#
+# Path prefixes are kept NON-OVERLAPPING on purpose: when two rules match the
+# same URL, a duplicated header (Cache-Control in particular) is ambiguous.
+#
+# /assets/*  Vite's content-hashed bundles. The hash changes whenever the
+#            bytes change, so a URL's content is immutable.
+# /fonts/*   Version is baked into the filename (…-v2.304-subset.woff2), so
+#            the same reasoning applies.
+# /static/*  Stable filenames (samples, share card). Week-long TTL with
+#            background revalidation.
+# Canonical HTML routes are always revalidated, and deliberately do NOT carry
+#            no-transform. Cloudflare honours no-transform by disabling response
+#            compression (RFC 9111 §5.2.2.6), which cost 70% of HTML transfer —
+#            178KB down to 53KB across the 14 routes — on the LCP critical path.
+#            Dropping it is only safe because the zone's Web Analytics (RUM)
+#            site was DELETED at the same time, 2026-09-01. no-transform had
+#            been suppressing the beacon INJECTION, which is not what CSP does:
+#            script-src 'self' stops the beacon from loading, but the <script>
+#            tag still lands in the markup, which spams the console and makes
+#            faq.html's "no analytics script" claim false. Re-creating a RUM
+#            site for this zone brings it straight back — see AGENTS.md trap 16.
+#            Note Cloudflare only injects when the request looks like a browser
+#            (browser User-Agent AND Accept: text/html), so a plain curl check
+#            is a false negative.
+#            The one edge rewrite CSP would NOT catch is Email Obfuscation:
+#            it injects from same-origin /cdn-cgi/ and is on at the zone, but
+#            only fires on mailto: links, and there are none in the served HTML.
+#            Never put an email address in the markup — link the repo's issue
+#            tracker instead. src/seo.test.ts pins that half.
+#            Zone state when this was changed: rocket_loader off, mirage off,
+#            email_obfuscation on, no RUM site.
+# /*         Baseline hardening + a content policy that ENFORCES the privacy
+#            claim instead of just asserting it: connect-src 'none' means the
+#            page cannot open a fetch/XHR/WebSocket to anywhere, so a dropped
+#            image has no route off the device even if the code tried.
+#            This also blocks Cloudflare Web Analytics (and any other) beacons
+#            on purpose — traffic is observed only as edge HTTP request counts.
+#            HSTS upgrades returning visitors before any HTTP request leaves
+#            the browser. It deliberately excludes subdomains and preload.
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/static/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/tool
+  Cache-Control: public, max-age=0, must-revalidate
+
+/usecases
+  Cache-Control: public, max-age=0, must-revalidate
+
+/faq
+  Cache-Control: public, max-age=0, must-revalidate
+
+/privacy
+  Cache-Control: public, max-age=0, must-revalidate
+
+/charsets/standard
+  Cache-Control: public, max-age=0, must-revalidate
+
+/charsets/detailed
+  Cache-Control: public, max-age=0, must-revalidate
+
+/charsets/blocks
+  Cache-Control: public, max-age=0, must-revalidate
+
+/charsets/minimal
+  Cache-Control: public, max-age=0, must-revalidate
+
+/charsets/binary
+  Cache-Control: public, max-age=0, must-revalidate
+
+/charsets/braille
+  Cache-Control: public, max-age=0, must-revalidate
+
+/guides/readme-banner
+  Cache-Control: public, max-age=0, must-revalidate
+
+/guides/ssh-motd
+  Cache-Control: public, max-age=0, must-revalidate
+
+/zh
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Cross-Origin-Opener-Policy: same-origin
+  Permissions-Policy: accelerometer=(), browsing-topics=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests
