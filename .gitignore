@@ -14,6 +14,5 @@ CLAUDE.local.md
 docs/growth*.md
 docs/*notes.md
 
-# tests & CI
+# tests stay local until package.json has a test script
 *.test.ts
-.github/
