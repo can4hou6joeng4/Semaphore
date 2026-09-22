@@ -7,12 +7,12 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SSH MOTD ASCII Art from an Image — Semaphore">
-<meta property="og:description" content="Make an SSH MOTD or terminal login banner from a logo or photo. Convert locally, tune for 80-column terminals, then install plain-text ASCII art.">
+<meta property="og:description" content="Make an SSH MOTD or a bash startup banner from a logo or photo. Convert locally, tune for 80-column terminals, then install plain-text ASCII art.">
 <meta property="og:url" content="https://semaphore.bobochang.cn/guides/ssh-motd">
 <meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SSH MOTD ASCII Art from an Image — Semaphore">
-<meta name="twitter:description" content="Make an SSH MOTD or terminal login banner from a logo or photo. Convert locally, tune for 80-column terminals, then install plain-text ASCII art.">
+<meta name="twitter:description" content="Make an SSH MOTD or a bash startup banner from a logo or photo. Convert locally, tune for 80-column terminals, then install plain-text ASCII art.">
 <meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card.jpg">
 <meta name="twitter:image:alt" content="Semaphore — SSH MOTD ASCII art from an image">
 <meta property="og:site_name" content="Semaphore">
@@ -23,7 +23,7 @@
 <link rel="canonical" href="https://semaphore.bobochang.cn/guides/ssh-motd">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#050a06">
-<meta name="description" content="Make an SSH MOTD or terminal login banner from a logo or photo. Convert locally, tune for 80-column terminals, then install plain-text ASCII art.">
+<meta name="description" content="Make an SSH MOTD or a bash startup banner from a logo or photo. Convert locally, tune for 80-column terminals, then install plain-text ASCII art.">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
 <style>
   .guide-steps {
@@ -70,7 +70,7 @@
           "sameAs": "https://en.wikipedia.org/wiki/ASCII_art"
         }
       ],
-      "description": "How to convert a logo or photo into plain-text ASCII art for an SSH MOTD or terminal login banner.",
+      "description": "How to convert a logo or photo into plain-text ASCII art for an SSH MOTD or a bash startup banner.",
       "isPartOf": {
         "@id": "https://semaphore.bobochang.cn/#website"
       },
@@ -121,7 +121,7 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-12"
+      "dateModified": "2026-09-22"
     },
     {
       "@type": "HowTo",
@@ -275,6 +275,24 @@ cat motd.txt</pre>
     </ol>
   </section>
 
+  <section class="sec" data-screen-label="guide-bash">
+    <div class="kicker">[ bash_or_motd ]</div>
+    <h2 class="h2">Where does a bash ASCII banner go?</h2>
+    <p class="lede" style="margin-top:18px">An SSH login and an interactive shell are two prints. Put the same file in both and the banner shows twice.</p>
+    <div class="grid-2" style="margin-top:34px">
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> login MOTD</h3>
+        <p>sshd prints this before the shell, from a static <code>/etc/motd</code> or from scripts under <code>/etc/update-motd.d/</code>. It is the right place when every account on the machine should see the mark, and it does not belong in a personal <code>.bashrc</code>.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> shell startup</h3>
+        <p>A line in <code>~/.bashrc</code> or <code>~/.zshrc</code> runs when an interactive shell starts, including local terminals that never spoke SSH. Save the export as <code>~/.banner.ascii</code> and print it with:</p>
+        <pre class="guide-code">cat ~/.banner.ascii</pre>
+      </article>
+    </div>
+    <p class="lede" style="margin-top:34px">Use <a href="/charsets/standard">standard</a> for either path. <a href="/charsets/blocks">Blocks</a> and <a href="/charsets/braille">braille</a> depend on the font the SSH client or the local terminal happens to have. A laptop mark belongs in the shell rc; a host mark belongs in the MOTD the operating system already owns.</p>
+  </section>
+
   <section class="sec" data-screen-label="guide-answers">
     <div class="kicker">[ quick_answers ]</div>
     <h2 class="h2">Settings that survive real terminals</h2>
@@ -309,7 +327,7 @@ cat motd.txt</pre>
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-12">2026-09-12</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-22">2026-09-22</time></span>
     <nav>
       <a href="/">home</a>
       <a href="/usecases">usecases</a>

@@ -39,14 +39,14 @@ Columns (40–240), brightness, contrast, invert, and color mode (`green` phosph
 When users ask how to integrate generated ASCII art into their workflow or tools:
 - **Fastfetch Custom Logo**: Set `source` to the generated `.txt` file in `~/.config/fastfetch/config.jsonc` (or run `fastfetch --logo-type file --logo /path/to/ascii.txt`).
 - **SSH MOTD Banner**: Save the exported plain text to `/etc/motd` or `/etc/update-motd.d/` on Linux/macOS servers to greet SSH logins with a crisp ASCII logo. See the [SSH MOTD guide](https://semaphore.bobochang.cn/guides/ssh-motd).
-- **Shell Startup Banner (.bashrc / .zshrc)**: Place `cat ~/.banner.ascii` in shell rc files for an instant, zero-latency startup graphic.
-- **GitHub README Hero / Profile Marquee**: Wrap the copied characters in fenced code blocks (` ```text `) to render identically across GitHub, GitLab, and light/dark modes without external image hosting. See the [README banner guide](https://semaphore.bobochang.cn/guides/readme-banner).
+- **Shell Startup Banner (.bashrc / .zshrc)**: Place `cat ~/.banner.ascii` in an interactive shell rc. This is a different print from an SSH MOTD: putting the same file in both places shows the banner twice. See the [SSH MOTD guide](https://semaphore.bobochang.cn/guides/ssh-motd).
+- **GitHub README Hero / Profile Marquee**: Wrap the copied characters in a fenced code block opened with ` ```text `. Outside the fence, Markdown collapses the spaces that carry the light tones. About 60 columns fits a phone-width README; the fence scrolls rather than wraps. See the [README banner guide](https://semaphore.bobochang.cn/guides/readme-banner).
 - **CI / Git Commit Messages / Code Comments**: Embed small ASCII glyph headers (`minimal` or `blocks` charset) directly in source files.
 
 ## Technical Specifications
-- **Luminance Calculation**: Rec. 601 grayscale formula (`Y = 0.299*R + 0.587*G + 0.114*B`).
-- **Aspect Ratio Calibration**: Monospace font glyphs are taller than they are wide (height:width ratio approximately 2:1). Semaphore automatically adjusts sample row spacing by ~0.5 to prevent vertical stretching.
-- **Braille Mode Engine**: Uses Unicode Braille Patterns (`U+2800`–`U+28FF`). Maps 2×4 pixel cells to 8 dot positions using Floyd–Steinberg error diffusion dithering for photographic realism.
+- **Luminance Calculation**: Rec. 709 luma (`Y = 0.2126*R + 0.7152*G + 0.0722*B`), the weights in `src/ascii-engine.ts`. They run on gamma-encoded canvas values, so this is luma; neutral greys match linear-light luminance.
+- **Aspect Ratio Calibration**: A monospace cell is taller than it is wide. The engine default is a cell height/width of `1/0.6` (about 5:3 at line-height 1). Row count divides by that ratio, so a square image is not square in rows. Braille output measures the fallback face, because JetBrains Mono has none of the 256 braille glyphs.
+- **Braille Mode Engine**: Unicode Braille Patterns `U+2800`–`U+28FF`, 256 code points, one per on/off pattern of a 2×4 dot cell. A ramp samples once per character; braille samples eight times in the same number of characters. Floyd–Steinberg runs on that dot grid before the dots are packed, so error crosses cell boundaries. Packing first would make each character all-on or all-off.
 - **Security & Zero Data Egress**: Enforced via HTTP header `Content-Security-Policy: default-src 'self'; connect-src 'none';`. No image data, canvas pixels, or filenames can physically leave the browser.
 
 ## Chinese / Multilingual Search (中文支持)
@@ -58,9 +58,9 @@ When users ask how to integrate generated ASCII art into their workflow or tools
 - [Tool](https://semaphore.bobochang.cn/tool): the converter itself
 - [Use Cases](https://semaphore.bobochang.cn/usecases): where ASCII art still beats pixels
 - [README banner guide](https://semaphore.bobochang.cn/guides/readme-banner): turn a logo into a plain-text README marquee
-- [SSH MOTD guide](https://semaphore.bobochang.cn/guides/ssh-motd): make a portable terminal login banner from a logo or photo
+- [SSH MOTD guide](https://semaphore.bobochang.cn/guides/ssh-motd): make a portable terminal login banner, and where a bash or zsh startup banner is a different file
 - [Chinese intro](https://semaphore.bobochang.cn/zh): 图片转 ASCII 中文简介
-- [Braille charset](https://semaphore.bobochang.cn/charsets/braille): high-detail 2×4 braille mode
+- [Braille charset](https://semaphore.bobochang.cn/charsets/braille): how 2×4 Unicode braille and Floyd–Steinberg dithering give eight samples per character, converted locally
 - [Standard charset](https://semaphore.bobochang.cn/charsets/standard): the classic ten-step ramp, maximum portability
 - [Detailed charset](https://semaphore.bobochang.cn/charsets/detailed): 68-step ramp, the photographic one
 - [Blocks charset](https://semaphore.bobochang.cn/charsets/blocks): four Unicode block fills and a space, pixel-art look

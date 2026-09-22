@@ -7,12 +7,12 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:type" content="article">
 <meta property="og:title" content="README ASCII Banner from an Image — Semaphore">
-<meta property="og:description" content="Turn a logo or photo into a plain-text README banner. Convert locally with Semaphore, copy ASCII art, paste into GitHub Markdown — no image host required.">
+<meta property="og:description" content="Turn a logo or photo into a plain-text README banner. Convert locally, paste the characters into a fenced Markdown block — no image host required.">
 <meta property="og:url" content="https://semaphore.bobochang.cn/guides/readme-banner">
 <meta property="og:image" content="https://semaphore.bobochang.cn/static/social-card-readme.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="README ASCII Banner from an Image — Semaphore">
-<meta name="twitter:description" content="Turn a logo or photo into a plain-text README banner. Convert locally with Semaphore, copy ASCII art, paste into GitHub Markdown — no image host required.">
+<meta name="twitter:description" content="Turn a logo or photo into a plain-text README banner. Convert locally, paste the characters into a fenced Markdown block — no image host required.">
 <meta name="twitter:image" content="https://semaphore.bobochang.cn/static/social-card-readme.jpg">
 <meta name="twitter:image:alt" content="Semaphore — README ASCII banner from an image">
 <meta property="og:site_name" content="Semaphore">
@@ -23,7 +23,7 @@
 <link rel="canonical" href="https://semaphore.bobochang.cn/guides/readme-banner">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#050a06">
-<meta name="description" content="Turn a logo or photo into a plain-text README banner. Convert locally with Semaphore, copy ASCII art, paste into GitHub Markdown — no image host required.">
+<meta name="description" content="Turn a logo or photo into a plain-text README banner. Convert locally, paste the characters into a fenced Markdown block — no image host required.">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
 <style>
   .guide-steps {
@@ -65,7 +65,7 @@
           "sameAs": "https://en.wikipedia.org/wiki/ASCII_art"
         }
       ],
-      "description": "How to convert a logo or photo into a plain-text README banner with Semaphore.",
+      "description": "How to convert a logo or photo into a plain-text README banner and paste it into a fenced Markdown block.",
       "isPartOf": {
         "@id": "https://semaphore.bobochang.cn/#website"
       },
@@ -116,7 +116,7 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-12"
+      "dateModified": "2026-09-22"
     },
     {
       "@type": "HowTo",
@@ -220,6 +220,13 @@
     <p class="lede" style="margin-top:18px">Git hosts render fenced code blocks everywhere. An ASCII banner travels with the repo, survives dark mode, and never depends on an external image URL. Semaphore turns your existing mark into that text without sending the file anywhere.</p>
   </section>
 
+  <section class="sec" data-screen-label="guide-markdown">
+    <div class="kicker">[ markdown_banner ]</div>
+    <h2 class="h2">How do you put an ASCII banner in Markdown?</h2>
+    <p class="lede" style="margin-top:18px">The banner is characters inside a fenced code block, not an image. Open the fence with three backticks and the word <code>text</code>, paste the converter output, and close the fence. GitHub, GitLab and a local preview keep the spaces. An image tag points at a host; this file does not.</p>
+    <p class="lede" style="margin-top:18px">A fenced block does not wrap, it scrolls. About 60 columns fits a phone-width README. Around 80 columns is the compact logo preset. A 160-column portrait becomes a sideways scrollbar, which is why dense photos belong in <a href="/charsets/braille">braille</a> on a page that can scroll, and a README mark stays on <a href="/charsets/blocks">blocks</a> or <a href="/charsets/standard">standard</a>.</p>
+  </section>
+
   <section class="sec" data-screen-label="guide-steps">
     <div class="kicker">[ steps ]</div>
     <h2 class="h2">Four steps to a paste-ready banner</h2>
@@ -304,7 +311,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-12">2026-09-12</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-22">2026-09-22</time></span>
     <nav>
       <a href="/">home</a>
       <a href="/usecases">usecases</a>

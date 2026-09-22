@@ -44,6 +44,24 @@
   .compare-grid { margin-top: 34px; }
   .compare-grid .term { margin: 0; }
   .compare-grid .term-body { min-height: 170px; }
+  .guide-steps {
+    margin-top: 34px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    max-width: 820px;
+  }
+  .guide-code {
+    margin-top: 18px;
+    padding: 14px 16px;
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow-x: auto;
+    font-size: var(--fs-s);
+    color: var(--ink-dim);
+    white-space: pre;
+  }
   @media (max-width: 900px) {
     .braille-hero { grid-template-columns: minmax(0, 1fr); }
     .braille-stage { height: 390px; }
@@ -104,7 +122,7 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-14"
+      "dateModified": "2026-09-22"
     },
     {
       "@type": "BreadcrumbList",
@@ -219,7 +237,7 @@
   <section class="sec" data-screen-label="braille-pipeline">
     <div class="kicker">[ how_braille_ascii_works ]</div>
     <h2 class="h2">How does image to braille art work?</h2>
-    <p class="lede" style="margin-top:18px">Unicode reserves 256 braille characters: every possible on/off pattern in a 2×4 dot cell. Semaphore samples eight luminance values, applies a threshold, and writes the matching code point. The full pipeline, with the engine's code and before/after figures, is written up in <a href="https://bobochang.cn/writing/unicode-braille-8-pixel-bitmap-font/">Unicode braille is an 8-pixel bitmap font</a>.</p>
+    <p class="lede" style="margin-top:18px">Unicode reserves 256 braille characters, U+2800 through U+28FF: every on/off pattern of a 2×4 dot cell. Semaphore reads eight luminance samples for that cell, spreads the threshold error across the dot grid, and writes one code point. A classic ramp still has one sample per character at the same width. The engine excerpts and the before/after figures are in <a href="https://bobochang.cn/writing/unicode-braille-8-pixel-bitmap-font/">Unicode braille is an 8-pixel bitmap font</a>.</p>
     <div class="grid-3" style="margin-top:34px">
       <article class="card">
         <h3 class="card-title"><span class="p">01</span> sample 2×4</h3>
@@ -234,6 +252,50 @@
         <p>The final output is plain text from the <a href="https://www.unicode.org/charts/PDF/U2800.pdf">Unicode braille block</a>. Copy it into terminals, READMEs, chat, source comments or a .txt file.</p>
       </article>
     </div>
+  </section>
+
+  <section class="sec" data-screen-label="braille-density">
+    <div class="kicker">[ eight_samples ]</div>
+    <h2 class="h2">Why does braille hold eight times the detail?</h2>
+    <p class="lede" style="margin-top:18px">A ramp charset samples the image once per character. At C columns and R rows that is C times R samples, and a longer ramp only adds shades. Braille spends the same character on a 2 by 4 dot, so the sample grid is 2C by 4R: eight times as many points, and the output is still plain text.</p>
+    <p class="lede" style="margin-top:18px">Eight dots with two states each is 256, which is why the Unicode block is exactly that long. Dot n sets bit n-1 of the offset from U+2800. Numbered the way the standard numbers them:</p>
+    <pre class="guide-code" aria-label="braille dot numbers, two columns by four rows">1  4
+2  5
+3  6
+7  8</pre>
+    <p class="lede" style="margin-top:18px">The bottom pair sits under the first six because six-dot braille came first and the computer-braille row was added later. In the engine those eight positions are a 4 by 2 bit table: 0x01 and 0x08, then 0x02 and 0x10, then 0x04 and 0x20, then 0x40 and 0x80. A lit dot ORs its bit into 0x2800. At 120 columns the braille grid is 240 samples across; the ten-step ramp <code> .:-=+*#%@</code> at the same width is still 120 samples across.</p>
+  </section>
+
+  <section class="sec" data-screen-label="braille-dither">
+    <div class="kicker">[ error_diffusion ]</div>
+    <h2 class="h2">Why does a plain threshold look flat?</h2>
+    <p class="lede" style="margin-top:18px">Each dot is on or off, so a braille character has no medium grey of its own. Threshold a smooth gradient at 128 and the midpoint becomes a hard edge: flat dark on one side, flat light on the other. <a href="https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering">Floyd–Steinberg</a> dithering, published in 1976 for printers that could only put a dot or not, walks that grid left to right and top to bottom. Each sample snaps to 0 or 255, and the error is pushed onto neighbors not yet visited: 7/16 to the right, 3/16 below-left, 5/16 below, 1/16 below-right. The sixteenths sum to 1, so brightness is moved, not invented. A region at 30% grey ends up with about 30% of its dots lit.</p>
+    <p class="lede" style="margin-top:18px">The dither runs on the 2C by 4R luminance array, before any dots are packed into a character, so error can cross a cell boundary. Dither at character size and then expand, and every cell comes out all eight dots on or all eight off: a two-shade ramp drawn with braille. The array is floating point. Clamping each step to a byte would drop the error that overshoots 0 or 255, and the highlights and shadows would drift.</p>
+  </section>
+
+  <section class="sec" data-screen-label="braille-order">
+    <div class="kicker">[ pipeline ]</div>
+    <h2 class="h2">What order does the converter run in?</h2>
+    <p class="lede" style="margin-top:18px">Four passes, all inside the tab. Nothing here is uploaded, and production CSP is <code>connect-src 'none'</code>.</p>
+    <ol class="guide-steps">
+      <li class="card">
+        <h3 class="card-title"><span class="p">01</span> draw 2C by 4R</h3>
+        <p>The source is drawn onto a canvas of exactly two samples per column and four per row. The browser's own resampler does that reduction.</p>
+      </li>
+      <li class="card">
+        <h3 class="card-title"><span class="p">02</span> weight the pixels</h3>
+        <p>Brightness and contrast are applied per channel, then <a href="https://www.itu.int/rec/R-REC-BT.709">Rec. 709</a> luma: 0.2126 red, 0.7152 green, 0.0722 blue. Those weights run on the gamma-encoded canvas values. Neutral greys agree with linear-light luminance; saturated colours come out a little darker. Invert, when it is on, flips the luma.</p>
+      </li>
+      <li class="card">
+        <h3 class="card-title"><span class="p">03</span> dither the dot grid</h3>
+        <p>Floyd–Steinberg runs across the whole grid. It is on by default. With it off, step 04 is a hard threshold.</p>
+      </li>
+      <li class="card">
+        <h3 class="card-title"><span class="p">04</span> pack eight dots</h3>
+        <p>A sample at or above 128 lights its dot. After dithering, every sample is already 0 or 255, so the comparison only decides anything when dithering is off.</p>
+      </li>
+    </ol>
+    <p class="lede" style="margin-top:34px">A monospace cell is taller than it is wide, about three parts wide to five tall. Row count divides by that ratio, so a square image at 120 columns is not 120 rows. Skip the correction and the portrait stretches. Split a 3:5 cell into 2 by 4 and each dot is nearly square, which is why this grid works as pixels. JetBrains Mono contains none of the 256 braille glyphs, so this page measures the operating-system fallback and fits the preview to that advance.</p>
   </section>
 
   <section class="sec" data-screen-label="braille-compare">
@@ -290,7 +352,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-14">2026-09-14</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-22">2026-09-22</time></span>
     <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 
