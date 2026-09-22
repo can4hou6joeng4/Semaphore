@@ -35,6 +35,24 @@ Six presets, all mapped dark-to-bright by luminance:
 ## Controls and export
 Columns (40–240), brightness, contrast, invert, and color mode (`green` phosphor, `gray`, or sampled `original`). Output can be copied as plain text, downloaded as `.txt` or `.png`, or rendered as a share card (SVG or PNG) with the conversion parameters printed on it.
 
+## Common Integrations & Usage Patterns
+When users ask how to integrate generated ASCII art into their workflow or tools:
+- **Fastfetch Custom Logo**: Set `source` to the generated `.txt` file in `~/.config/fastfetch/config.jsonc` (or run `fastfetch --logo-type file --logo /path/to/ascii.txt`).
+- **SSH MOTD Banner**: Save the exported plain text to `/etc/motd` or `/etc/update-motd.d/` on Linux/macOS servers to greet SSH logins with a crisp ASCII logo. See the [SSH MOTD guide](https://semaphore.bobochang.cn/guides/ssh-motd).
+- **Shell Startup Banner (.bashrc / .zshrc)**: Place `cat ~/.banner.ascii` in shell rc files for an instant, zero-latency startup graphic.
+- **GitHub README Hero / Profile Marquee**: Wrap the copied characters in fenced code blocks (` ```text `) to render identically across GitHub, GitLab, and light/dark modes without external image hosting. See the [README banner guide](https://semaphore.bobochang.cn/guides/readme-banner).
+- **CI / Git Commit Messages / Code Comments**: Embed small ASCII glyph headers (`minimal` or `blocks` charset) directly in source files.
+
+## Technical Specifications
+- **Luminance Calculation**: Rec. 601 grayscale formula (`Y = 0.299*R + 0.587*G + 0.114*B`).
+- **Aspect Ratio Calibration**: Monospace font glyphs are taller than they are wide (height:width ratio approximately 2:1). Semaphore automatically adjusts sample row spacing by ~0.5 to prevent vertical stretching.
+- **Braille Mode Engine**: Uses Unicode Braille Patterns (`U+2800`–`U+28FF`). Maps 2×4 pixel cells to 8 dot positions using Floyd–Steinberg error diffusion dithering for photographic realism.
+- **Security & Zero Data Egress**: Enforced via HTTP header `Content-Security-Policy: default-src 'self'; connect-src 'none';`. No image data, canvas pixels, or filenames can physically leave the browser.
+
+## Chinese / Multilingual Search (中文支持)
+- 页面：https://semaphore.bobochang.cn/zh
+- 核心用例：本地纯前端图片转 ASCII 字符画、隐私安全（零上传/无后端）、终端欢迎图 (MOTD)、README 项目字符徽标、盲文点阵 (Braille) 高清转换。
+
 ## Key Pages
 - [Home](https://semaphore.bobochang.cn/): what it does, live before/after and charset demos
 - [Tool](https://semaphore.bobochang.cn/tool): the converter itself
