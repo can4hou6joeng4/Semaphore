@@ -52,7 +52,6 @@
     letter-spacing: .22em;
     overflow-x: auto;
   }
-  .cs-siblings { margin-top: 34px; }
   @media (max-width: 900px) {
     .cs-hero { grid-template-columns: minmax(0, 1fr); }
     .cs-stage { height: 360px; }
@@ -95,7 +94,7 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-12"
+      "dateModified": "2026-09-24"
     },
     {
       "@type": "BreadcrumbList",
@@ -211,68 +210,8 @@
   <section class="sec" data-screen-label="binary-how">
     <div class="kicker">[ how_the_ramp_works ]</div>
     <h2 class="h2">Three steps means shape, not shade</h2>
-    <p class="lede" style="margin-top:18px">The engine works the same way it does for every other charset — average each cell to one brightness value, then index a ramp. The difference is that this ramp has three entries, so two thirds of the tonal range collapses into a single digit.</p>
-    <div class="grid-3" style="margin-top:34px">
-      <article class="card">
-        <h3 class="card-title"><span class="p">01</span> average the cell</h3>
-        <p>Identical to the other ramps: one perceptual luminance value per grid cell, weighted the way the eye weights red, green and blue (the <a href="https://www.itu.int/rec/R-REC-BT.709">Rec. 709</a> luma coefficients).</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">02</span> collapse to three</h3>
-        <p>Shadows fall on the space, mid-tones on <code>0</code>, highlights on <code>1</code>. There is no fourth option, so every subtlety in between is rounded away.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">03</span> read the outline</h3>
-        <p>What is left is a boundary between lit and unlit regions. The eye reconstructs the subject from that edge, the way it reads a stencil or a shadow puppet.</p>
-      </article>
-    </div>
-    <p class="lede" style="margin-top:34px">Two consequences follow, and both are worth knowing before you blame the picture. Contrast is the control that matters most here, because it decides where the two thresholds land. And <code>invert</code> matters more than on any other charset: flipping it swaps which digit carries the subject and which carries the background, which changes the entire image rather than merely darkening it.</p>
-  </section>
-
-  <section class="sec" data-screen-label="binary-choose">
-    <div class="kicker">[ when_to_use_it ]</div>
-    <h2 class="h2">Pick binary when you want the machine look</h2>
-    <div class="grid-2" style="margin-top:34px">
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> choose binary</h3>
-        <p>Code-rain posters, terminal splash screens, glitch art, badge and sticker art — anything meant to read as machine output rather than as drawing. Feed it a high-contrast source with clear separation between subject and background: a silhouette, a logo, a face against a plain wall. Both digits are plain 7-bit ASCII, so the result survives any font and any encoding.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> choose something else</h3>
-        <p>If the subject is carried by gradients rather than edges, three steps will throw it away — <a href="/charsets/detailed">the detailed ramp</a> has sixty-eight and <a href="/charsets/braille">braille</a> resolves finer still. If you want solid graphic areas instead of digits, <a href="/charsets/standard">the standard ramp</a> keeps a familiar ASCII texture with ten shades.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="sec" data-screen-label="binary-siblings">
-    <div class="kicker">[ other_charsets ]</div>
-    <h2 class="h2">The other five charsets</h2>
-    <div class="grid-3 cs-siblings">
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/standard">standard</a></h3>
-        <p>Ten steps of plain ASCII. The classic look, maximum portability.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/detailed">detailed</a></h3>
-        <p>Sixty-eight shades of punctuation and letters. The photographic ramp.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/blocks">blocks</a></h3>
-        <p>Four fills and a space. Reads as pixels rather than characters.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/minimal">minimal</a></h3>
-        <p>Five steps, wide apart. Built for tiny avatars and icons.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/braille">braille</a></h3>
-        <p>Eight dots per character. The highest detail Semaphore can reach.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/usecases">where it goes</a></h3>
-        <p>READMEs, splash screens, comment headers and other plain-text homes. Two worked examples: the <a href="/guides/readme-banner">README banner guide</a> and the <a href="/guides/ssh-motd">SSH MOTD guide</a>.</p>
-      </article>
-    </div>
+    <p class="lede" style="margin-top:18px">The ramp is a space, <code>0</code> and <code>1</code>. There is no fourth step, so a gradient has nowhere to go: shadow is the space, the middle is <code>0</code>, the highlight is <code>1</code>. What remains is the boundary between them.</p>
+    <p class="lede" style="margin-top:18px">Contrast decides where those two cuts fall. Invert swaps which digit carries the subject, so the picture changes rather than merely darkening. Both digits are 7-bit ASCII. The full set of ramps is on the <a href="/#charsets">home page</a>.</p>
   </section>
 
   <section class="sec sec--tight" data-screen-label="binary-cta">
@@ -282,7 +221,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-12">2026-09-12</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-24">2026-09-24</time></span>
     <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 

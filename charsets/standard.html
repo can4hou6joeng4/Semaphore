@@ -52,7 +52,6 @@
     letter-spacing: .22em;
     overflow-x: auto;
   }
-  .cs-siblings { margin-top: 34px; }
   @media (max-width: 900px) {
     .cs-hero { grid-template-columns: minmax(0, 1fr); }
     .cs-stage { height: 360px; }
@@ -95,7 +94,7 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-12"
+      "dateModified": "2026-09-24"
     },
     {
       "@type": "BreadcrumbList",
@@ -211,68 +210,8 @@
   <section class="sec" data-screen-label="standard-how">
     <div class="kicker">[ how_the_ramp_works ]</div>
     <h2 class="h2">How does the standard ramp map brightness to characters?</h2>
-    <p class="lede" style="margin-top:18px">A ramp is an ordered list of characters sorted by how much ink each one puts on screen. Semaphore measures the brightness of every cell in the image, then picks the glyph at the matching position in that list.</p>
-    <div class="grid-3" style="margin-top:34px">
-      <article class="card">
-        <h3 class="card-title"><span class="p">01</span> average the cell</h3>
-        <p>The image is divided into a grid as wide as your column count. Every cell is reduced to one luminance value, weighted for how the eye actually perceives red, green and blue — the <a href="https://www.itu.int/rec/R-REC-BT.709">Rec. 709</a> luma coefficients.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">02</span> index the ramp</h3>
-        <p>That value is scaled across the ten ramp positions. A dark cell lands on a space, a mid-tone on <code>=</code> or <code>+</code>, a highlight on <code>%</code> or <code>@</code>.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">03</span> emit one character</h3>
-        <p>The result is a rectangle of text with no colour information required. Copy it into a README, a comment block or a plain <code>.txt</code> file and it renders identically everywhere.</p>
-      </article>
-    </div>
-    <p class="lede" style="margin-top:34px">Ten steps is coarse on purpose. Fewer shades read as a deliberate graphic rather than a photograph, which is why this ramp still looks like ASCII art instead of a grainy image.</p>
-  </section>
-
-  <section class="sec" data-screen-label="standard-choose">
-    <div class="kicker">[ when_to_use_it ]</div>
-    <h2 class="h2">Pick the standard ramp when portability matters</h2>
-    <div class="grid-2" style="margin-top:34px">
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> choose standard</h3>
-        <p>Logos, silhouettes, high-contrast crops, and anywhere the text has to survive an unknown font — git hosts, mailing lists, source comments, chat clients that reflow text. Start at 100–140 columns and raise contrast if the mid-tones turn to mush.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> choose something else</h3>
-        <p>For a photographic portrait, <a href="/charsets/detailed">the detailed ramp</a> has 68 shades and <a href="/charsets/braille">braille</a> has eight times the spatial resolution. For posters and pixel art, <a href="/charsets/blocks">blocks</a> fill the cell completely instead of suggesting tone with punctuation.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="sec" data-screen-label="standard-siblings">
-    <div class="kicker">[ other_charsets ]</div>
-    <h2 class="h2">The other five charsets</h2>
-    <div class="grid-3 cs-siblings">
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/detailed">detailed</a></h3>
-        <p>Sixty-eight shades of punctuation and letters. The photographic ramp.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/blocks">blocks</a></h3>
-        <p>Four fills and a space. Reads as pixels rather than characters.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/minimal">minimal</a></h3>
-        <p>Five steps, wide apart. Built for tiny avatars and icons.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/binary">binary</a></h3>
-        <p>A space, a zero, a one. The code-rain look.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/braille">braille</a></h3>
-        <p>Eight dots per character. The highest detail Semaphore can reach.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/usecases">where it goes</a></h3>
-        <p>READMEs, splash screens, comment headers and other plain-text homes. Two worked examples: the <a href="/guides/readme-banner">README banner guide</a> and the <a href="/guides/ssh-motd">SSH MOTD guide</a>.</p>
-      </article>
-    </div>
+    <p class="lede" style="margin-top:18px">The ramp is the ten characters <code> .:-=+*#%@</code>, ordered by ink. Each cell is one <a href="https://www.itu.int/rec/R-REC-BT.709">Rec. 709</a> luma value, and that value picks one of the ten: a dark cell is a space, a mid-tone lands on <code>=</code> or <code>+</code>, a highlight on <code>%</code> or <code>@</code>. All ten are 7-bit ASCII.</p>
+    <p class="lede" style="margin-top:18px">Start at 100–140 columns. Below that the ten steps still read, and the mid-tones hold if you raise contrast. The full comparison of all six charsets is on the <a href="/#charsets">home page</a>.</p>
   </section>
 
   <section class="sec sec--tight" data-screen-label="standard-cta">
@@ -282,7 +221,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-12">2026-09-12</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-24">2026-09-24</time></span>
     <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 

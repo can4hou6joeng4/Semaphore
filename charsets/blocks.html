@@ -52,7 +52,6 @@
     letter-spacing: .22em;
     overflow-x: auto;
   }
-  .cs-siblings { margin-top: 34px; }
   @media (max-width: 900px) {
     .cs-hero { grid-template-columns: minmax(0, 1fr); }
     .cs-stage { height: 360px; }
@@ -100,7 +99,7 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-12"
+      "dateModified": "2026-09-24"
     },
     {
       "@type": "BreadcrumbList",
@@ -216,68 +215,8 @@
   <section class="sec" data-screen-label="blocks-how">
     <div class="kicker">[ how_the_ramp_works ]</div>
     <h2 class="h2">Five levels of fill, one per cell</h2>
-    <p class="lede" style="margin-top:18px">The mechanism is the same as any other ramp: brightness in, one character out. What changes is the vocabulary. These glyphs were designed for terminals that had no graphics mode, so their whole job is to cover a fraction of the cell — nothing, a quarter, half, three quarters, all of it.</p>
-    <div class="grid-3" style="margin-top:34px">
-      <article class="card">
-        <h3 class="card-title"><span class="p">01</span> measure the cell</h3>
-        <p>Your column count sets the grid. Each cell of the source collapses to a single perceptual luminance value, so a dark region and a bright region are separated before any character is chosen.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">02</span> quantize to five</h3>
-        <p>That value is bucketed across five positions. Shadow becomes a space, the mid-tones step through <code>░</code>, <code>▒</code> and <code>▓</code>, and anything bright enough lands on <code>█</code>.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">03</span> fill, do not sketch</h3>
-        <p>Because the glyph occupies the full cell, neighbouring cells of the same level merge into one flat area. Edges land where the tone changes, not where a stroke happens to sit.</p>
-      </article>
-    </div>
-    <p class="lede" style="margin-top:34px">Five steps is coarse, and that is the point: banding is a feature here. Photographs posterize into visible terraces, which is why blocks flatter shapes and silhouettes far more than faces. Raise contrast to push those terraces apart, or drop the column count until the mosaic is honest about being a mosaic.</p>
-  </section>
-
-  <section class="sec" data-screen-label="blocks-choose">
-    <div class="kicker">[ when_to_use_it ]</div>
-    <h2 class="h2">Pick blocks when you want flat tone, not texture</h2>
-    <div class="grid-2" style="margin-top:34px">
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> choose blocks</h3>
-        <p>Pixel art, logos, posters, splash screens, retro game covers, anything already built from squares. The self-hosted font subset in Semaphore covers <code>░▒▓█</code>, so these render in the site's own mono face — but a destination with a narrow font may substitute another one, and the four shades keep their order regardless. Solid <code>█</code> is the most widely supported of the four.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> choose something else</h3>
-        <p>For a photograph you want read as a photograph, <a href="/charsets/detailed">the detailed ramp</a> has sixty-eight shades and <a href="/charsets/braille">braille</a> packs eight dots into every cell. If the text has to survive a strictly 7-bit channel, <a href="/charsets/minimal">minimal</a> gets you five steps out of plain punctuation instead.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="sec" data-screen-label="blocks-siblings">
-    <div class="kicker">[ other_charsets ]</div>
-    <h2 class="h2">The other five charsets</h2>
-    <div class="grid-3 cs-siblings">
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/standard">standard</a></h3>
-        <p>Ten shades of plain ASCII. The look people expect by default.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/detailed">detailed</a></h3>
-        <p>Sixty-eight shades of punctuation and letters. The photographic ramp.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/minimal">minimal</a></h3>
-        <p>Five steps, wide apart, all 7-bit. Built for tiny avatars and icons.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/binary">binary</a></h3>
-        <p>A space, a zero, a one. The code-rain look.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/braille">braille</a></h3>
-        <p>Eight dots per character. The highest detail Semaphore can reach.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/usecases">where it goes</a></h3>
-        <p>READMEs, splash screens, comment headers and other plain-text homes. Two worked examples: the <a href="/guides/readme-banner">README banner guide</a> and the <a href="/guides/ssh-motd">SSH MOTD guide</a>.</p>
-      </article>
-    </div>
+    <p class="lede" style="margin-top:18px">The ramp is a space plus <code>░▒▓█</code>. Each glyph paints a fixed fraction of its cell, so two neighbours on the same step join into one flat patch, and the edge appears only where the step changes. A photograph comes out as terraces. That banding is the result this ramp is for; raise contrast to push the terraces apart.</p>
+    <p class="lede" style="margin-top:18px">The site's own font subset contains <code>░▒▓█</code>, so the preview uses that face. A destination font may substitute another, and the four shades keep their order. See every charset side by side on the <a href="/#charsets">home page</a>.</p>
   </section>
 
   <section class="sec sec--tight" data-screen-label="blocks-cta">
@@ -287,7 +226,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-12">2026-09-12</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-24">2026-09-24</time></span>
     <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 

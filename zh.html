@@ -31,7 +31,6 @@
 <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-v2.304-subset.woff2" crossorigin>
 <style>
   .zh-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
-  .zh-grid { margin-top: 34px; }
   section[data-screen-label="zh-cta"] { text-align: center; }
   section[data-screen-label="zh-cta"] .lede { margin-inline: auto; margin-top: 16px; }
 </style>
@@ -40,7 +39,7 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": ["WebPage", "FAQPage"],
+      "@type": "WebPage",
       "@id": "https://semaphore.bobochang.cn/zh#webpage",
       "name": "图片转 ASCII 字符画",
       "url": "https://semaphore.bobochang.cn/zh",
@@ -74,88 +73,6 @@
       "breadcrumb": {
         "@id": "https://semaphore.bobochang.cn/zh#breadcrumb"
       },
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "图片会被上传到什么地方吗？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "不会。转换完全通过浏览器的 canvas API 在本地完成，页面加载完成后即使断网也能用。如果你倾向于自己验证，打开开发者工具的网络面板，它应当保持安静。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "页面里跑统计脚本吗？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "没有。页面不含统计脚本、不用 cookie，CSP 设为 connect-src 'none'，因此它无法向任何地方发起 fetch、XHR 或 WebSocket。运营者能看到的只有 Cloudflare 边缘的聚合 HTTP 请求量——那是页面加载本身的服务器日志，不是你标签页里的二次回传，其中从不包含图片字节。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "是免费的吗？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "免费，无需账号，没有水印，没有每日配额。整个工具以静态文件形式发布，采用 MIT 许可。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "会记住我的设置吗？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "只保存少量偏好在你的设备上：配色主题（CRT 或纸质），以及你在工具里最后选择的字符集和配色模式。它们存在 localStorage 里，从不包含图片字节。「reset params」会清空工具偏好；URL 查询参数在存在时仍然优先。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "支持哪些图片格式？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "你的浏览器能解码的都可以：png、jpg、webp 和 gif（取首帧）。拖入、粘贴或浏览选择均可。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "怎样得到更清晰的结果？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "从高对比、裁剪紧凑的图开始。把列数提到 160 至 200，对比度加约 +15；若主体是深色压在浅底上，试试反相。要照片级细节，braille 是最锐利的那一套。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "盲文模式究竟在做什么？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "每个字符变成一个取自 Unicode 盲文区的 2×4 点阵，并用 Floyd–Steinberg 误差扩散做抖动——空间分辨率约为传统字符表的八倍。它需要含盲文字形的字体，现代操作系统都自带。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "能保留原图颜色吗？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "可以。配色模式 original 按字符采样源图颜色，gray 保留中性灰阶，green 是经典荧光屏观感。颜色会保留在 .png 导出里；纯文本复制在本质上只有字符。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "输出可以商用吗？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "输出属于你——海报、README、周边、客户项目都可以。我们不对你的作品主张任何权利。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "有尺寸限制吗？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Semaphore 不设固定的源图尺寸上限，实际上限取决于你的浏览器和可用内存。输出限制在 40 至 240 列。高列数下的密集盲文在老设备上可能更慢。"
-          }
-        }
-      ],
       "speakable": {
         "@type": "SpeakableSpecification",
         "xpath": [
@@ -163,7 +80,7 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-12"
+      "dateModified": "2026-09-24"
     },
     {
       "@type": "BreadcrumbList",
@@ -220,25 +137,6 @@
     <div class="zh-actions">
       <a class="btn btn--green btn--lg" href="/tool">打开转换工具</a>
       <a class="btn btn--ghost" href="/">English home</a>
-    </div>
-  </section>
-
-  <section class="sec" data-screen-label="zh-how">
-    <div class="kicker">[ 怎么用 ]</div>
-    <h2 class="h2">三步出图</h2>
-    <div class="grid-3 zh-grid">
-      <article class="card">
-        <h3 class="card-title"><span class="p">01</span> 拖入图片</h3>
-        <p>支持 png / jpg / webp / gif（动图取首帧）。解码与采样都在本地 <code>canvas</code> 完成。</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">02</span> 调参数</h3>
-        <p>六套字符集（含盲文点阵）、列数、亮度、对比度、反相与配色，实时预览。</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">03</span> 导出带走</h3>
-        <p>复制纯文本、下载 <code>.txt</code> / <code>.png</code>，或生成带参数的分享卡。</p>
-      </article>
     </div>
   </section>
 
@@ -301,69 +199,10 @@
     <p class="fs-s text-faint" style="margin-top:18px">列数可在 40 至 240 之间调节，默认 120；亮度与对比度各为 -100 至 +100。等宽字符单元大约宽三份、高五份，所以方形图在 120 列下会输出 72 行——粘贴到度量不同的字体里会被拉伸，字符是对的，网格不是。</p>
   </section>
 
-  <section class="sec" data-screen-label="zh-privacy">
-    <div class="kicker">[ 隐私 ]</div>
-    <h2 class="h2">为什么可以说「不上传」</h2>
-    <p class="lede" style="margin-top:18px">常见在线转换站会把文件发到服务器。Semaphore 没有后端 API。图片字节只在你的标签页里被读取；你只会在主动复制或下载时把结果带出浏览器。主题与最近使用的字符集/配色偏好保存在本机 <code>localStorage</code>，从不包含图片内容。</p>
-    <div class="row" style="margin-top:24px">
-      <a class="btn btn--ghost" href="/privacy">英文隐私说明</a>
-      <a class="btn btn--ghost" href="/charsets/braille">盲文字符集指南</a>
-      <a class="btn btn--ghost" href="/guides/readme-banner">README 横幅教程</a>
-    </div>
-  </section>
-
-  <section class="sec" data-screen-label="zh-faq">
-    <div class="kicker">[ 常见问题 ]</div>
-    <h2 class="h2">常见问题</h2>
-    <div class="grid-2" style="margin-top:34px">
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 图片会被上传到什么地方吗？</h3>
-        <p>不会。转换完全通过浏览器的 canvas API 在本地完成，页面加载完成后即使断网也能用。如果你倾向于自己验证，打开开发者工具的网络面板，它应当保持安静。</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 页面里跑统计脚本吗？</h3>
-        <p>没有。页面不含统计脚本、不用 cookie，CSP 设为 <code>connect-src 'none'</code>，因此它无法向任何地方发起 fetch、XHR 或 WebSocket。运营者能看到的只有 Cloudflare 边缘的聚合 HTTP 请求量——那是页面加载本身的服务器日志，不是你标签页里的二次回传，其中从不包含图片字节。</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 是免费的吗？</h3>
-        <p>免费，无需账号，没有水印，没有每日配额。整个工具以静态文件形式发布，采用 MIT 许可。</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 会记住我的设置吗？</h3>
-        <p>只保存少量偏好在你的设备上：配色主题（CRT 或纸质），以及你在工具里最后选择的字符集和配色模式。它们存在 <code>localStorage</code> 里，从不包含图片字节。「reset params」会清空工具偏好；URL 查询参数在存在时仍然优先。</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 支持哪些图片格式？</h3>
-        <p>你的浏览器能解码的都可以：png、jpg、webp 和 gif（取首帧）。拖入、粘贴或浏览选择均可。</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 怎样得到更清晰的结果？</h3>
-        <p>从高对比、裁剪紧凑的图开始。把列数提到 160 至 200，对比度加约 +15；若主体是深色压在浅底上，试试反相。要照片级细节，<a href="/charsets/braille">braille</a> 是最锐利的那一套。</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 盲文模式究竟在做什么？</h3>
-        <p>每个字符变成一个取自 Unicode 盲文区的 2×4 点阵，并用 Floyd–Steinberg 误差扩散做抖动——空间分辨率约为传统字符表的八倍。它需要含盲文字形的字体，现代操作系统都自带。</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 能保留原图颜色吗？</h3>
-        <p>可以。配色模式 <code>original</code> 按字符采样源图颜色，<code>gray</code> 保留中性灰阶，<code>green</code> 是经典荧光屏观感。颜色会保留在 <code>.png</code> 导出里；纯文本复制在本质上只有字符。</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 输出可以商用吗？</h3>
-        <p>输出属于你——海报、README、周边、客户项目都可以。我们不对你的作品主张任何权利。</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">Q</span> 有尺寸限制吗？</h3>
-        <p>Semaphore 不设固定的源图尺寸上限，实际上限取决于你的浏览器和可用内存。输出限制在 40 至 240 列。高列数下的密集盲文在老设备上可能更慢。</p>
-      </article>
-    </div>
-    <p class="fs-s text-faint" style="margin-top:24px">英文版内容更全：<a href="/faq">完整 FAQ</a> · <a href="/privacy">隐私说明</a> · <a href="/usecases">使用场景</a></p>
-  </section>
-
   <section class="sec" data-screen-label="zh-cta">
     <div class="kicker">[ 开始 ]</div>
     <h2 class="h2">立刻转换</h2>
-    <p class="lede">打开工具，拖一张图进去。网络面板在页面加载完成后应保持安静。</p>
+    <p class="lede">打开工具，拖一张图进去。参数和导出在 <a href="/tool">转换器</a>，字符用在哪里在 <a href="/usecases">使用场景</a>，上传、格式和限制在英文 <a href="/faq">FAQ</a>。</p>
     <div class="row" style="justify-content:center; margin-top:28px">
       <a class="btn btn--green btn--lg" href="/tool">打开 /tool</a>
       <a class="btn btn--ghost" href="https://github.com/can4hou6joeng4/Semaphore">GitHub</a>
@@ -371,7 +210,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · 作者 <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">源码</a> · MIT 许可 · 更新于 <time datetime="2026-09-12">2026-09-12</time></span>
+    <span>© 2026 Semaphore — plain text is forever · 作者 <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">源码</a> · MIT 许可 · 更新于 <time datetime="2026-09-24">2026-09-24</time></span>
     <nav>
       <a href="/">home</a>
       <a href="/usecases">usecases</a>

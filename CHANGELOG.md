@@ -4,6 +4,10 @@ All notable changes to Semaphore are documented in this file.
 
 ## Unreleased
 
+### SEO and discovery
+
+- Give each crawled page a body the others do not have. `/` keeps the before/after, the live demos and the six-charset table, and drops the how-it-works, privacy, export, use-case and FAQ sections that repeated `/tool`, `/faq` and `/usecases`. `/zh` keeps the Chinese door and the charset table, and drops the FAQ answers (and the `FAQPage` node that mirrored them). Each of the five ramp pages keeps its own ramp, column range and quantisation, and drops the shared three-step cards, the "choose something else" card and the sibling grid. `lastmod` moves only on those seven pages.
+
 ### Features
 
 - Show real converter output on `/usecases`: the README banner and SSH MOTD panels are now the sample portrait converted by the engine (`blocks` · 60 columns · contrast +15, and `standard` · 64 columns · contrast +20 · gray), captioned with those parameters and a preset link that reproduces each. The other four panels stay hand-set and labelled as such.

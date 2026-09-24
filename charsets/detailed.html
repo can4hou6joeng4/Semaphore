@@ -53,7 +53,6 @@
     overflow-x: auto;
     white-space: pre;
   }
-  .cs-siblings { margin-top: 34px; }
   @media (max-width: 900px) {
     .cs-hero { grid-template-columns: minmax(0, 1fr); }
     .cs-stage { height: 360px; }
@@ -96,7 +95,7 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-12"
+      "dateModified": "2026-09-24"
     },
     {
       "@type": "BreadcrumbList",
@@ -212,68 +211,8 @@
   <section class="sec" data-screen-label="detailed-how">
     <div class="kicker">[ how_the_ramp_works ]</div>
     <h2 class="h2">Tone out of glyph density</h2>
-    <p class="lede" style="margin-top:18px">A monospace glyph covers a fixed rectangle, and the fraction of that rectangle it actually inks is what your eye reads as brightness. A period inks almost nothing. A dollar sign inks nearly everything. Order every available character by that fraction and you have a grayscale palette made of punctuation.</p>
-    <div class="grid-3" style="margin-top:34px">
-      <article class="card">
-        <h3 class="card-title"><span class="p">01</span> weight the luminance</h3>
-        <p>Each cell of the image collapses to a single perceptual brightness value. Green contributes most and blue least, matching how human vision actually distributes sensitivity.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">02</span> index 68 steps</h3>
-        <p>That value picks one of sixty-eight positions instead of one of ten. Adjacent shades differ by roughly a percent and a half of brightness, which is fine enough that gradients stop banding.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">03</span> keep it text</h3>
-        <p>Every glyph in the ramp is ordinary text. The output pastes into a comment block, a chat window or a <code>.txt</code> file with no font requirement beyond a monospace face.</p>
-      </article>
-    </div>
-    <p class="lede" style="margin-top:34px">The trade is legibility of the individual character against fidelity of the whole. Up close the output looks like scrambled source code; at arm's length it resolves into a photograph. That is the effect this ramp exists to produce, and it is why it wants more columns than the coarser sets — try 140–200.</p>
-  </section>
-
-  <section class="sec" data-screen-label="detailed-choose">
-    <div class="kicker">[ when_to_use_it ]</div>
-    <h2 class="h2">Pick the detailed ramp for continuous tone</h2>
-    <div class="grid-2" style="margin-top:34px">
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> choose detailed</h3>
-        <p>Portraits, faces, landscapes, product shots, film stills — anything where the subject is described by smooth gradients rather than hard edges. It is also the safer pick when you do not control the destination font, since every glyph is a common text character rather than a Unicode block.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> choose something else</h3>
-        <p><a href="/charsets/braille">Braille</a> resolves finer detail — eight dots per cell instead of one glyph — but JetBrains Mono ships no braille glyphs, so it always renders in a system fallback. For flat graphic areas <a href="/charsets/blocks">blocks</a> is cleaner, and for a small logo <a href="/charsets/standard">the standard ramp</a> stays readable as characters.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="sec" data-screen-label="detailed-siblings">
-    <div class="kicker">[ other_charsets ]</div>
-    <h2 class="h2">The other five charsets</h2>
-    <div class="grid-3 cs-siblings">
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/standard">standard</a></h3>
-        <p>Ten steps of plain ASCII. The classic look, maximum portability.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/blocks">blocks</a></h3>
-        <p>Four fills and a space. Reads as pixels rather than characters.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/minimal">minimal</a></h3>
-        <p>Five steps, wide apart. Built for tiny avatars and icons.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/binary">binary</a></h3>
-        <p>A space, a zero, a one. The code-rain look.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/braille">braille</a></h3>
-        <p>Eight dots per character. The highest detail Semaphore can reach.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/usecases">where it goes</a></h3>
-        <p>READMEs, splash screens, comment headers and other plain-text homes. Two worked examples: the <a href="/guides/readme-banner">README banner guide</a> and the <a href="/guides/ssh-motd">SSH MOTD guide</a>.</p>
-      </article>
-    </div>
+    <p class="lede" style="margin-top:18px">Sixty-eight glyphs, from a bare space to <code>$</code>, ordered by how much of the cell each one inks. Adjacent steps differ by about one and a half percent of brightness, which is why a cheekbone survives. At arm's length the punctuation reads as a photograph; up close it reads as text.</p>
+    <p class="lede" style="margin-top:18px">It wants 140–200 columns. Fewer than that and consecutive glyphs sit too close for the eye to separate, so the face turns to speckle. Every glyph is ordinary text. The six charsets compared: <a href="/#charsets">home page</a>.</p>
   </section>
 
   <section class="sec sec--tight" data-screen-label="detailed-cta">
@@ -283,7 +222,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-12">2026-09-12</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-24">2026-09-24</time></span>
     <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 

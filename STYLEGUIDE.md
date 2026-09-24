@@ -336,8 +336,14 @@ Section `<h2>`s that explain a mechanism are phrased as the question they answer
 string an answer engine matches a query against. CTA headings may stay imperative.
 
 `/faq` puts each question in an `<h2>` inside its `<summary>` so the page has a real
-outline; `terminal.css` resets the heading to the summary's type. The home-page FAQ
-teaser keeps bare summaries under its own section `<h2>`.
+outline; `terminal.css` resets the heading to the summary's type. The home page does not carry an FAQ teaser. `/`, `/zh` and the five ramp
+charset pages each keep the one fact the others do not: the home page owns the
+six-charset comparison table, each ramp page owns that ramp's steps, column
+range and what its quantisation does, and `/zh` is the Chinese door to those
+pages. Do not copy a `/tool`, `/faq` or `/usecases` section onto `/` or `/zh`,
+and do not copy a ramp page's mechanism paragraph or a sibling-charset card
+grid onto another ramp page. `/charsets/braille` is the one charset page with
+its own structure, because the dot grid and the dither are not a ramp.
 
 Q&A cards use the same card, with `Q` in place of the number, inside a `.grid-2`. When
 a page carries four or more of them, add `FAQPage` to its `WebPage` `@type` array and

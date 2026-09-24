@@ -52,7 +52,6 @@
     letter-spacing: .22em;
     overflow-x: auto;
   }
-  .cs-siblings { margin-top: 34px; }
   @media (max-width: 900px) {
     .cs-hero { grid-template-columns: minmax(0, 1fr); }
     .cs-stage { height: 360px; }
@@ -95,7 +94,7 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-12"
+      "dateModified": "2026-09-24"
     },
     {
       "@type": "BreadcrumbList",
@@ -211,68 +210,8 @@
   <section class="sec" data-screen-label="minimal-how">
     <div class="kicker">[ how_the_ramp_works ]</div>
     <h2 class="h2">One space, four marks, no grey</h2>
-    <p class="lede" style="margin-top:18px">Semaphore reduces each cell of the image to a single brightness figure and then answers one question: which of five characters is closest? With only five answers available, most of the tonal information in the source is deliberately dropped.</p>
-    <div class="grid-3" style="margin-top:34px">
-      <article class="card">
-        <h3 class="card-title"><span class="p">01</span> measure the cell</h3>
-        <p>Your column count sets the grid. Each cell is collapsed into one perceptual luminance value, so a saturated red and a pale blue of the same apparent brightness land on the same rung.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">02</span> quantise to five</h3>
-        <p>That value picks a slot: darkest stays a space, then <code>.</code>, then <code>:</code>, then <code>*</code>, and the brightest cells become <code>#</code>. Anything between two slots is rounded, not blended.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p">03</span> leave the paper alone</h3>
-        <p>Because a period and a colon cover only a fraction of their cell, the ramp writes far less ink than a block or braille render. The whitespace is doing as much work as the marks.</p>
-      </article>
-    </div>
-    <p class="lede" style="margin-top:34px">That rounding is the reason minimal holds up when there is not much room. A sixty-eight step ramp needs many characters before its shades read as shading; give it forty columns and consecutive glyphs differ by an amount the eye cannot separate, so the picture turns into speckle. Five widely spaced steps still produce visible edges at the same size, because the jump from <code>.</code> to <code>*</code> is large enough to survive being tiny.</p>
-  </section>
-
-  <section class="sec" data-screen-label="minimal-choose">
-    <div class="kicker">[ when_to_use_it ]</div>
-    <h2 class="h2">Pick minimal when the output has to stay small</h2>
-    <div class="grid-2" style="margin-top:34px">
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> choose minimal</h3>
-        <p>Avatars, favicons rewritten as text, monogram-style logos, a one-line signature, a badge in a comment header — anything that has to stay legible inside a few hundred characters. Try 40–80 columns, push contrast up until the subject separates cleanly from the background, and switch invert on when the subject is light on a dark field. Simple silhouettes and hard-edged marks respond best.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> choose something else</h3>
-        <p>Faces, fabric and anything with soft gradients need mid-tones this ramp does not have: <a href="/charsets/detailed">the detailed ramp</a> carries sixty-eight shades, and <a href="/charsets/braille">braille</a> packs eight dots into every cell for the sharpest result Semaphore can reach. If you want the same five steps but a filled, pixel-like surface instead of sparse punctuation, use <a href="/charsets/blocks">blocks</a>.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="sec" data-screen-label="minimal-siblings">
-    <div class="kicker">[ other_charsets ]</div>
-    <h2 class="h2">The other five charsets</h2>
-    <div class="grid-3 cs-siblings">
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/standard">standard</a></h3>
-        <p>Ten shades of punctuation. The look most people mean by ASCII art.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/detailed">detailed</a></h3>
-        <p>Sixty-eight shades of punctuation and letters. The photographic ramp.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/blocks">blocks</a></h3>
-        <p>Four fills and a space. The same step count, painted rather than sketched.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/binary">binary</a></h3>
-        <p>A space, a zero, a one. The code-rain look.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/charsets/braille">braille</a></h3>
-        <p>Eight dots per character. The highest detail Semaphore can reach.</p>
-      </article>
-      <article class="card">
-        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> <a href="/usecases">where it goes</a></h3>
-        <p>READMEs, splash screens, comment headers and other plain-text homes. Two worked examples: the <a href="/guides/readme-banner">README banner guide</a> and the <a href="/guides/ssh-motd">SSH MOTD guide</a>.</p>
-      </article>
-    </div>
+    <p class="lede" style="margin-top:18px">The ramp is a space, then <code>.</code>, <code>:</code>, <code>*</code> and <code>#</code>. The jumps between them are wide, so a value between two slots is rounded, never blended. At 40–80 columns those jumps still draw an edge. A sixty-eight step ramp at the same width puts consecutive glyphs too close together, and the picture turns to speckle.</p>
+    <p class="lede" style="margin-top:18px">Raise contrast until the subject separates from the background, and switch invert on when the subject is light on a dark field. All five characters are 7-bit ASCII. The other five ramps are listed on the <a href="/#charsets">home page</a>.</p>
   </section>
 
   <section class="sec sec--tight" data-screen-label="minimal-cta">
@@ -282,7 +221,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-12">2026-09-12</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-24">2026-09-24</time></span>
     <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 

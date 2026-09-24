@@ -54,7 +54,7 @@ When users ask how to integrate generated ASCII art into their workflow or tools
 - 核心用例：本地纯前端图片转 ASCII 字符画、隐私安全（零上传/无后端）、终端欢迎图 (MOTD)、README 项目字符徽标、盲文点阵 (Braille) 高清转换。
 
 ## Key Pages
-- [Home](https://semaphore.bobochang.cn/): what it does, live before/after and charset demos
+- [Home](https://semaphore.bobochang.cn/): the before/after, live charset demos, and the only side-by-side of all six charsets
 - [Tool](https://semaphore.bobochang.cn/tool): the converter itself
 - [Use Cases](https://semaphore.bobochang.cn/usecases): where ASCII art still beats pixels
 - [README banner guide](https://semaphore.bobochang.cn/guides/readme-banner): turn a logo into a plain-text README marquee
