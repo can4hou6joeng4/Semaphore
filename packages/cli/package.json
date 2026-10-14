@@ -6,8 +6,8 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "semaphore-ascii": "./bin/cli.js",
-    "semaphore": "./bin/cli.js"
+    "semaphore-ascii": "bin/cli.js",
+    "semaphore": "bin/cli.js"
   },
   "files": [
     "dist",
