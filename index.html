@@ -302,7 +302,48 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-24"
+      "dateModified": "2026-10-14"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://semaphore.bobochang.cn/#faq",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/#webpage"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does Semaphore convert images to ASCII without uploading them?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Semaphore runs entirely in the browser using the HTML5 Canvas API. When you drop an image, the browser decodes it in memory, samples pixel luminance via Rec. 709 luma, and maps values to monospace characters or braille dot patterns. The production site enforces connect-src 'none', cryptographically guaranteeing that zero image data ever leaves your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does Unicode braille ASCII art have eight times the detail of character ramps?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Standard character ramps use one character per sample. Braille mode uses the Unicode Braille Patterns block (U+2800–U+28FF), mapping each character cell to a 2×4 dot subgrid with Floyd–Steinberg error diffusion dithering. This yields 2× horizontal and 4× vertical resolution within identical monospace column limits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use generated ASCII art in GitHub READMEs and terminal logins?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Output can be copied as plain text or downloaded as a .txt file. For GitHub READMEs, enclose it in a fenced code block (```text) around 60–80 columns. For Linux/macOS SSH MOTD banners, save it to /etc/motd to greet SSH logins with clean 7-bit characters."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which image formats and operating systems are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Semaphore supports PNG, JPEG, WebP, GIF (first frame), SVG, and AVIF on modern browsers across macOS, Windows, Linux, iOS, and Android with no software installation or registration."
+          }
+        }
+      ]
     },
     {
       "@type": "Person",
@@ -540,6 +581,37 @@
     </div>
   </section>
 
+  <section class="sec" data-screen-label="home-faq">
+    <div class="kicker">[ faq ]</div>
+    <h2 class="h2">Frequently asked questions</h2>
+    <div class="faq-list" style="margin-top:20px">
+      <details class="qa">
+        <summary class="qa-q">How does Semaphore convert images to ASCII without uploading them?</summary>
+        <div class="qa-a">
+          <p>Semaphore runs entirely in the browser using the HTML5 Canvas API. When you drop an image, the browser decodes it in memory, samples pixel luminance via Rec. 709 luma, and maps values to monospace characters or braille dot patterns. The production site enforces <code>connect-src 'none'</code>, cryptographically guaranteeing that zero image data ever leaves your device.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary class="qa-q">Why does Unicode braille ASCII art have eight times the detail of character ramps?</summary>
+        <div class="qa-a">
+          <p>Standard character ramps use one character per sample. Braille mode uses the Unicode Braille Patterns block (U+2800–U+28FF), mapping each character cell to a 2×4 dot subgrid with Floyd–Steinberg error diffusion dithering. This yields 2× horizontal and 4× vertical resolution within identical monospace column limits.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary class="qa-q">Can I use generated ASCII art in GitHub READMEs and terminal logins?</summary>
+        <div class="qa-a">
+          <p>Yes. Output can be copied as plain text or downloaded as a <code>.txt</code> file. For GitHub READMEs, enclose it in a fenced code block (<code>```text</code>) around 60–80 columns. For Linux/macOS SSH MOTD banners, save it to <code>/etc/motd</code> to greet SSH logins with clean 7-bit characters.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary class="qa-q">Which image formats and operating systems are supported?</summary>
+        <div class="qa-a">
+          <p>Semaphore supports PNG, JPEG, WebP, GIF (first frame), SVG, and AVIF on modern browsers across macOS, Windows, Linux, iOS, and Android with no software installation or registration.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
   <section class="sec" data-screen-label="where-next">
     <div class="kicker">[ next ]</div>
     <h2 class="h2">The rest of the site has its own job</h2>
@@ -547,7 +619,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-24">2026-09-24</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-10-14">2026-10-14</time></span>
     <nav><a href="/usecases">usecases</a><a href="/guides/readme-banner">readme guide</a><a href="/zh">中文</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII tool</a></nav>
   </footer>
 
