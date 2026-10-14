@@ -1,0 +1,62 @@
+{
+  "name": "semaphore-ascii",
+  "version": "1.0.0",
+  "description": "Zero-upload image-to-ASCII and 2×4 Unicode braille art converter for terminal and Node.js.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "semaphore-ascii": "./bin/cli.js",
+    "semaphore": "./bin/cli.js"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "npm run build",
+    "dev": "tsc --watch",
+    "test": "node --test"
+  },
+  "keywords": [
+    "ascii",
+    "ascii-art",
+    "braille",
+    "braille-art",
+    "cli",
+    "image-to-ascii",
+    "textmode",
+    "ansi",
+    "terminal",
+    "zero-upload"
+  ],
+  "author": "bobochang (https://bobochang.cn)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/can4hou6joeng4/Semaphore.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://semaphore.bobochang.cn",
+  "bugs": {
+    "url": "https://github.com/can4hou6joeng4/Semaphore/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "jpeg-js": "^0.4.4",
+    "omggif": "^1.0.10",
+    "pngjs": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/jpeg-js": "^0.3.7",
+    "@types/node": "^22.0.0",
+    "@types/omggif": "^1.0.5",
+    "@types/pngjs": "^6.0.5",
+    "typescript": "^5.7.0"
+  }
+}
