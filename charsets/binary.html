@@ -94,7 +94,40 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-24"
+      "dateModified": "2026-10-14"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://semaphore.bobochang.cn/charsets/binary#faq",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/charsets/binary#webpage"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does the binary ASCII ramp work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The binary ramp uses only three levels: Space (0–33% luma), digit '0' (34–66% luma), and digit '1' (67–100% luma). It discards subtle gradients to render stark, high-contrast digital silhouettes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What visual aesthetic is binary ASCII best for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is suited for cyberpunk visuals, Matrix-style code rain terminal screens, machine-readable text patterns, and high-impact graphic stencil art."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does the invert toggle change binary output?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Toggling invert flips the threshold cuts, switching whether '1' represents highlights or shadows. On dark terminal backgrounds, inverting lets you choose whether the subject glows or reads as negative space."
+          }
+        }
+      ]
     },
     {
       "@type": "BreadcrumbList",
@@ -212,6 +245,83 @@
     <h2 class="h2">Three steps means shape, not shade</h2>
     <p class="lede" style="margin-top:18px">The ramp is a space, <code>0</code> and <code>1</code>. There is no fourth step, so a gradient has nowhere to go: shadow is the space, the middle is <code>0</code>, the highlight is <code>1</code>. What remains is the boundary between them.</p>
     <p class="lede" style="margin-top:18px">Contrast decides where those two cuts fall. Invert swaps which digit carries the subject, so the picture changes rather than merely darkening. Both digits are 7-bit ASCII. The full set of ramps is on the <a href="/#charsets">home page</a>.</p>
+
+    <div class="table-wrap" style="margin-top:24px">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th scope="col">Level</th>
+            <th scope="col">Glyph</th>
+            <th scope="col">Luminance Interval</th>
+            <th scope="col">Optical Density</th>
+            <th scope="col">Visual Function</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>00</code></td>
+            <td><code>(space)</code></td>
+            <td>0.00 – 0.33</td>
+            <td>0.0%</td>
+            <td>Void, true background, deep ambient shadow</td>
+          </tr>
+          <tr>
+            <td><code>01</code></td>
+            <td><code>0</code></td>
+            <td>0.34 – 0.66</td>
+            <td>~38.0%</td>
+            <td>Midtone contour, boundary ring, structural silhouette</td>
+          </tr>
+          <tr>
+            <td><code>02</code></td>
+            <td><code>1</code></td>
+            <td>0.67 – 1.00</td>
+            <td>~48.5%</td>
+            <td>High-energy stroke, focal highlight, active binary pulse</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-3" style="margin-top:28px">
+      <div class="card card--ghost">
+        <h3 class="h3">Silhouette Photography</h3>
+        <p class="p" style="margin-top:8px">Binary ASCII excels on images with stark lighting: rim-lit profiles, architectural skylines against the sun, and vector logos. Midtones collapse into geometric contours.</p>
+      </div>
+      <div class="card card--ghost">
+        <h3 class="h3">Matrix &amp; Hacker Terminal</h3>
+        <p class="p" style="margin-top:8px">Outputs render cleanly into phosphor-green terminal emulators and retro cyber decks. Without complex punctuation, lines form uniform machine-code textures.</p>
+      </div>
+      <div class="card card--ghost">
+        <h3 class="h3">1-Bit Storage &amp; Telemetry</h3>
+        <p class="p" style="margin-top:8px">Because every character is restricted to {space, 0, 1}, the output is trivially parsed and packed into bitstreams for constrained microcontrollers and serial monitors.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="binary-faq">
+    <div class="kicker">[ faq ]</div>
+    <h2 class="h2">Frequently asked questions</h2>
+    <div class="faq-list" style="margin-top:20px">
+      <details class="qa">
+        <summary class="qa-q">How does the binary ASCII ramp work?</summary>
+        <div class="qa-a">
+          <p>The binary ramp uses only three levels: Space (0–33% luma), digit '0' (34–66% luma), and digit '1' (67–100% luma). It discards subtle gradients to render stark, high-contrast digital silhouettes.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary class="qa-q">What visual aesthetic is binary ASCII best for?</summary>
+        <div class="qa-a">
+          <p>It is suited for cyberpunk visuals, Matrix-style code rain terminal screens, machine-readable text patterns, and high-impact graphic stencil art.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary class="qa-q">How does the invert toggle change binary output?</summary>
+        <div class="qa-a">
+          <p>Toggling invert flips the threshold cuts, switching whether '1' represents highlights or shadows. On dark terminal backgrounds, inverting lets you choose whether the subject glows or reads as negative space.</p>
+        </div>
+      </details>
+    </div>
   </section>
 
   <section class="sec sec--tight" data-screen-label="binary-cta">
@@ -221,7 +331,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-24">2026-09-24</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-10-14">2026-10-14</time></span>
     <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 

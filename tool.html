@@ -184,7 +184,48 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-12"
+      "dateModified": "2026-10-14"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://semaphore.bobochang.cn/tool#faq",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/tool#webpage"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does Semaphore upload images to any server during conversion?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Conversion runs 100% locally inside the browser using HTML5 Canvas and Web APIs. Semaphore enforces a strict Content Security Policy of connect-src 'none', preventing any network requests, telemetry, or data transmission."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which image formats are supported for ASCII art conversion?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Semaphore supports all standard raster image formats supported by your browser, including JPEG, PNG, WebP, GIF, SVG, and AVIF. All processing occurs in memory without file size limits imposed by network bandwidth."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I export or use the generated ASCII art?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can copy plain text directly to your clipboard, download a .txt file for terminal or code embedding, export a high-resolution .png terminal render with CRT scanline styling, or generate a share card modal preview."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between character ramp charsets and Braille mode?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ramp charsets (Standard, Detailed, Blocks, Minimal, Binary) map image luminance to a single monospace glyph per cell. Braille mode maps each cell to a 2×4 dot subgrid (Unicode U+2800–U+28FF) with Floyd–Steinberg dithering, achieving 8× spatial detail."
+          }
+        }
+      ]
     },
     {
       "@type": "BreadcrumbList",
@@ -561,6 +602,37 @@
     </div>
   </section>
 
+  <section class="sec" data-screen-label="tool-faq">
+    <div class="kicker">[ faq ]</div>
+    <h2 class="h2">Frequently asked questions</h2>
+    <div class="faq-list" style="margin-top:20px">
+      <details class="qa">
+        <summary class="qa-q">Does Semaphore upload images to any server during conversion?</summary>
+        <div class="qa-a">
+          <p>No. Conversion runs 100% locally inside the browser using HTML5 Canvas and Web APIs. Semaphore enforces a strict Content Security Policy of <code>connect-src 'none'</code>, preventing any network requests, telemetry, or data transmission.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary class="qa-q">Which image formats are supported for ASCII art conversion?</summary>
+        <div class="qa-a">
+          <p>Semaphore supports all standard raster image formats supported by your browser, including JPEG, PNG, WebP, GIF, SVG, and AVIF. All processing occurs in memory without file size limits imposed by network bandwidth.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary class="qa-q">How do I export or use the generated ASCII art?</summary>
+        <div class="qa-a">
+          <p>You can copy plain text directly to your clipboard, download a <code>.txt</code> file for terminal or code embedding, export a high-resolution <code>.png</code> terminal render with CRT scanline styling, or generate a share card modal preview.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary class="qa-q">What is the difference between character ramp charsets and Braille mode?</summary>
+        <div class="qa-a">
+          <p>Ramp charsets (Standard, Detailed, Blocks, Minimal, Binary) map image luminance to a single monospace glyph per cell. Braille mode maps each cell to a 2×4 dot subgrid (Unicode U+2800–U+28FF) with Floyd–Steinberg dithering, achieving 8× spatial detail.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
   <div class="sec sec--tight" data-screen-label="tool-guides">
     <nav class="row" aria-label="ASCII converter guides">
       <span class="field-label">guides</span>
@@ -572,7 +644,7 @@
   </div>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-12">2026-09-12</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-10-14">2026-10-14</time></span>
     <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/zh">中文</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 

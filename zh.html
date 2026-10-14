@@ -80,7 +80,41 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-24"
+      "dateModified": "2026-10-14"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://semaphore.bobochang.cn/zh#faq",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/zh#webpage"
+      },
+      "inLanguage": "zh-CN",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Semaphore 会将我的图片上传到远程服务器吗？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "绝对不会。Semaphore 转换全程运行在用户本地浏览器的 Canvas 引擎中，生产环境配置了强安全性策略 connect-src 'none'，页面无法对外发起任何网络请求，零数据泄漏风险。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "如何选择最适合的 ASCII 字符集？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "人像与精细照片推荐 Detailed（68阶）或 Braille（盲文点阵，8倍细节）；通用终端与代码注释推荐 Standard（经典10阶）或 Minimal（极简5阶）；像素与海报推荐 Blocks（方块元素）；极客终端与剪影推荐 Binary（01二值化）。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "生成的字符画可以在哪些场景使用？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "可直接一键复制纯文本或导出 .txt，嵌入 GitHub README 项目介绍、代码注释头、Linux 服务器 SSH 登录欢迎图（MOTD）、纯文本邮件或论坛聊天窗口；亦可导出高分辨率 CRT 终端风格 PNG 图片。"
+          }
+        }
+      ]
     },
     {
       "@type": "BreadcrumbList",
@@ -199,6 +233,31 @@
     <p class="fs-s text-faint" style="margin-top:18px">列数可在 40 至 240 之间调节，默认 120；亮度与对比度各为 -100 至 +100。等宽字符单元大约宽三份、高五份，所以方形图在 120 列下会输出 72 行——粘贴到度量不同的字体里会被拉伸，字符是对的，网格不是。</p>
   </section>
 
+  <section class="sec" data-screen-label="zh-faq">
+    <div class="kicker">[ 常见问答 ]</div>
+    <h2 class="h2">常见问题解答</h2>
+    <div class="faq-list" style="margin-top:20px">
+      <details class="qa">
+        <summary class="qa-q">Semaphore 会将我的图片上传到远程服务器吗？</summary>
+        <div class="qa-a">
+          <p>绝对不会。Semaphore 转换全程运行在用户本地浏览器的 Canvas 引擎中，生产环境配置了强安全性策略 <code>connect-src 'none'</code>，页面无法对外发起任何网络请求，零数据泄漏风险。</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary class="qa-q">如何选择最适合的 ASCII 字符集？</summary>
+        <div class="qa-a">
+          <p>人像与精细照片推荐 Detailed（68阶）或 Braille（盲文点阵，8倍细节）；通用终端与代码注释推荐 Standard（经典10阶）或 Minimal（极简5阶）；像素与海报推荐 Blocks（方块元素）；极客终端与剪影推荐 Binary（01二值化）。</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary class="qa-q">生成的字符画可以在哪些场景使用？</summary>
+        <div class="qa-a">
+          <p>可直接一键复制纯文本或导出 <code>.txt</code>，嵌入 GitHub README 项目介绍、代码注释头、Linux 服务器 SSH 登录欢迎图（MOTD）、纯文本邮件或论坛聊天窗口；亦可导出高分辨率 CRT 终端风格 PNG 图片。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
   <section class="sec" data-screen-label="zh-cta">
     <div class="kicker">[ 开始 ]</div>
     <h2 class="h2">立刻转换</h2>
@@ -210,7 +269,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · 作者 <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">源码</a> · MIT 许可 · 更新于 <time datetime="2026-09-24">2026-09-24</time></span>
+    <span>© 2026 Semaphore — plain text is forever · 作者 <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">源码</a> · MIT 许可 · 更新于 <time datetime="2026-10-14">2026-10-14</time></span>
     <nav>
       <a href="/">home</a>
       <a href="/usecases">usecases</a>

@@ -32,6 +32,17 @@ Six presets, all mapped dark-to-bright by luminance:
 - `binary` — ` 01`, for cyberpunk and code-rain looks
 - `braille` — 2×4 Unicode braille dots with Floyd–Steinberg dithering, the highest detail
 
+### Intent-to-Charset Recommendation Matrix
+| User Intent / Scenario | Recommended Charset | Recommended Width | Rationale |
+| :--- | :--- | :--- | :--- |
+| High-detail portraits, photos, faces | `braille` | 100–160 cols | 8× spatial density via 2×4 dot subgrid + error diffusion dithering |
+| Continuous-tone photograph in pure ASCII | `detailed` | 140–200 cols | 68 grayscale levels smoothly render cheekbones and soft gradients |
+| GitHub README banner / Project marquee | `standard` or `blocks` | 60–80 cols | 60 cols fits mobile viewports without sideways scrolling; standard has 100% font support |
+| SSH MOTD login splash / Server banner | `standard` | 64 cols | 7-bit ASCII never breaks headless serial links or legacy terminal emulators |
+| Code comment headers / Docstrings | `minimal` or `standard` | 40–60 cols | Sparse glyphs leave room for language comment delimiters within standard 80-col line |
+| Pixel art, 8-bit retro gaming, posters | `blocks` | 80–120 cols | Unicode block elements (░▒▓█) form solid contiguous fills without glyph gaps |
+| Cyberpunk, Matrix code rain, 1-bit logos | `binary` | 80–120 cols | 3-step {space, 0, 1} reduction collapses midtones into stark silhouette contours |
+
 ## Controls and export
 Columns (40–240), brightness, contrast, invert, and color mode (`green` phosphor, `gray`, or sampled `original`). Output can be copied as plain text, downloaded as `.txt` or `.png`, or rendered as a share card (SVG or PNG) with the conversion parameters printed on it.
 

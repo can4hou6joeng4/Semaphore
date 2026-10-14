@@ -95,7 +95,40 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-24"
+      "dateModified": "2026-10-14"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://semaphore.bobochang.cn/charsets/detailed#faq",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/charsets/detailed#webpage"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why does the 68-step ramp require high column counts?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because adjacent steps differ by only ~1.5% in brightness, resolving subtle facial contours requires at least 140 to 200 characters per row. At narrow widths, neighboring punctuation marks collide into visual noise."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does detailed ASCII compare to braille mode?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The detailed ramp uses 100% standard 7-bit ASCII characters supported by every font on earth, whereas Braille uses 2x4 Unicode dot patterns that require fallback system fonts."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What subject matter works best with the detailed ramp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Portraits, photographic landscapes, and continuous-tone grayscale images with natural lighting gradients benefit most from the 68 distinct optical density levels."
+          }
+        }
+      ]
     },
     {
       "@type": "BreadcrumbList",
@@ -213,6 +246,74 @@
     <h2 class="h2">Tone out of glyph density</h2>
     <p class="lede" style="margin-top:18px">Sixty-eight glyphs, from a bare space to <code>$</code>, ordered by how much of the cell each one inks. Adjacent steps differ by about one and a half percent of brightness, which is why a cheekbone survives. At arm's length the punctuation reads as a photograph; up close it reads as text.</p>
     <p class="lede" style="margin-top:18px">It wants 140–200 columns. Fewer than that and consecutive glyphs sit too close for the eye to separate, so the face turns to speckle. Every glyph is ordinary text. The six charsets compared: <a href="/#charsets">home page</a>.</p>
+
+    <div class="table-wrap" tabindex="0">
+      <table class="tbl">
+        <caption>detailed 68-character tonal progression tiers</caption>
+        <thead>
+          <tr>
+            <th scope="col">tier</th>
+            <th scope="col">glyphs in tier</th>
+            <th scope="col">step range</th>
+            <th scope="col">optical weight</th>
+            <th scope="col">visual rendering purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td class="ramp"> [space]</td><td class="num">0</td><td class="num">0.0%</td><td>Empty background, specular highlights (or deep shadow if inverted).</td></tr>
+          <tr><td class="num">2</td><td class="ramp">.'`^"</td><td class="num">1–5</td><td class="num">1.5–8.8%</td><td>Ultra-sparse punctuation. Highlights cheekbones, glass reflections, and hair wisps.</td></tr>
+          <tr><td class="num">3</td><td class="ramp">,:;Il!i~+_-?</td><td class="num">6–17</td><td class="num">10.3–26.5%</td><td>Light punctuation and slender strokes. Subtle midtone skin gradients.</td></tr>
+          <tr><td class="num">4</td><td class="ramp">][}{1)(|\/</td><td class="num">18–27</td><td class="num">27.9–41.2%</td><td>Geometric brackets and slashes. Moderate midtone structure and clothing fabric.</td></tr>
+          <tr><td class="num">5</td><td class="ramp">tfjrxnuvcz</td><td class="num">28–37</td><td class="num">42.6–55.9%</td><td>Lowercase ascender/descender glyphs. Solid midtone mass.</td></tr>
+          <tr><td class="num">6</td><td class="ramp">XYUJCLQ0OZmwqpdbkhao</td><td class="num">38–57</td><td class="num">57.4–85.3%</td><td>Uppercase letters and round lowercase bowls. Deep shadow boundaries.</td></tr>
+          <tr><td class="num">7</td><td class="ramp">*#MW&amp;8%B@$</td><td class="num">58–67</td><td class="num">86.8–100.0%</td><td>Dense compound glyphs ending in dollar sign. Maximum black ink fill.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="detailed-practices">
+    <div class="kicker">[ portrait_and_photo_tuning ]</div>
+    <h2 class="h2">Optimizing photographic detail</h2>
+    <div class="grid-3" style="margin-top:24px">
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> resolution threshold</h3>
+        <p>Run at 140–200 columns for portraits. At narrow column counts (under 100), adjacent punctuation marks blend together into visual noise. Width gives the 68 steps room to breathe.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> font weight sensitivity</h3>
+        <p>Because optical density depends on character line thickness, a bold terminal face darkens light steps. Regular or book weight monospace preserves designed tonal balance.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> neutral contrast</h3>
+        <p>Leave contrast at 0 initially. Extreme contrast pushes intermediate characters out of the picture, reducing your 68-step ramp to an accidental 4-step posterization.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="detailed-faq">
+    <div class="kicker">[ faq ]</div>
+    <h2 class="h2">Detailed ramp questions</h2>
+    <div class="stack" style="margin-top:24px">
+      <details class="qa">
+        <summary>Why does the 68-step ramp require high column counts?</summary>
+        <div class="qa-a">
+          <p>Because adjacent steps differ by only ~1.5% in brightness, resolving subtle facial contours requires at least 140 to 200 characters per row. At narrow widths, neighboring punctuation marks collide into visual noise.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary>How does detailed ASCII compare to braille mode?</summary>
+        <div class="qa-a">
+          <p>The detailed ramp uses 100% standard 7-bit ASCII characters supported by every font on earth, whereas Braille uses 2x4 Unicode dot patterns that require fallback system fonts.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary>What subject matter works best with the detailed ramp?</summary>
+        <div class="qa-a">
+          <p>Portraits, photographic landscapes, and continuous-tone grayscale images with natural lighting gradients benefit most from the 68 distinct optical density levels.</p>
+        </div>
+      </details>
+    </div>
   </section>
 
   <section class="sec sec--tight" data-screen-label="detailed-cta">
@@ -222,7 +323,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-24">2026-09-24</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-10-14">2026-10-14</time></span>
     <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 

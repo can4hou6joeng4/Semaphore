@@ -94,7 +94,40 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-24"
+      "dateModified": "2026-10-14"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://semaphore.bobochang.cn/charsets/minimal#faq",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/charsets/minimal#webpage"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why use only 5 characters for ASCII conversion?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The minimal ramp ( .:*#) is optimized for compact sizes between 40 and 80 columns. At small dimensions, subtle gradients break down, but five widely spaced steps preserve immediate recognizable shapes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does the minimal ramp compare to the block charset?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Both use five steps, but minimal uses classic 7-bit ASCII punctuation rather than solid Unicode tiles, making it feel like an airy wireframe sketch that never clutters code comments."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What contrast setting is recommended for the minimal ramp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Increase contrast by +20 to +40 to firmly push background pixels into empty space and foreground subjects into asterisk and hash marks."
+          }
+        }
+      ]
     },
     {
       "@type": "BreadcrumbList",
@@ -212,6 +245,72 @@
     <h2 class="h2">One space, four marks, no grey</h2>
     <p class="lede" style="margin-top:18px">The ramp is a space, then <code>.</code>, <code>:</code>, <code>*</code> and <code>#</code>. The jumps between them are wide, so a value between two slots is rounded, never blended. At 40–80 columns those jumps still draw an edge. A sixty-eight step ramp at the same width puts consecutive glyphs too close together, and the picture turns to speckle.</p>
     <p class="lede" style="margin-top:18px">Raise contrast until the subject separates from the background, and switch invert on when the subject is light on a dark field. All five characters are 7-bit ASCII. The other five ramps are listed on the <a href="/#charsets">home page</a>.</p>
+
+    <div class="table-wrap" tabindex="0">
+      <table class="tbl">
+        <caption>minimal 5-step wireframe ramp mapping</caption>
+        <thead>
+          <tr>
+            <th scope="col">step</th>
+            <th scope="col">glyph</th>
+            <th scope="col">luma range</th>
+            <th scope="col">character role</th>
+            <th scope="col">sketch aesthetic</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">0</td><td class="ramp">[space]</td><td class="num">0–20%</td><td>negative space</td><td>Leaves canvas transparent or uninked.</td></tr>
+          <tr><td class="num">1</td><td class="ramp">.</td><td class="num">20–40%</td><td>sparse stipple</td><td>Whisper of shadow or faint outline.</td></tr>
+          <tr><td class="num">2</td><td class="ramp">:</td><td class="num">40–60%</td><td>balanced separator</td><td>Linear boundary between foreground and background.</td></tr>
+          <tr><td class="num">3</td><td class="ramp">*</td><td class="num">60–80%</td><td>textured fill</td><td>Medium ink coverage with airy crossbars.</td></tr>
+          <tr><td class="num">4</td><td class="ramp">#</td><td class="num">80–100%</td><td>structural core</td><td>Dense hash grid forming solid silhouettes.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="minimal-practices">
+    <div class="kicker">[ sparse_and_compact_rendering ]</div>
+    <h2 class="h2">Where minimal ASCII excels</h2>
+    <div class="grid-3" style="margin-top:24px">
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> narrow columns</h3>
+        <p>Ideal between 40 and 80 columns. While longer ramps need width to avoid speckling, 5 sparse characters hold clear geometry inside narrow windows or mobile feeds.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> code comments</h3>
+        <p>Because there are no heavy ink blocks, minimal art integrates cleanly into source code docstrings, git commit trailers, and terminal splash banners without distracting.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> contrast tuning</h3>
+        <p>Increase contrast by +20 to +40 to decisively bin image pixels into either empty paper or structured hash lines, sharpening your visual icon.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="minimal-faq">
+    <div class="kicker">[ faq ]</div>
+    <h2 class="h2">Minimal ramp questions</h2>
+    <div class="stack" style="margin-top:24px">
+      <details class="qa">
+        <summary>Why use only 5 characters for ASCII conversion?</summary>
+        <div class="qa-a">
+          <p>The minimal ramp ( .:*#) is optimized for compact sizes between 40 and 80 columns. At small dimensions, subtle gradients break down, but five widely spaced steps preserve immediate recognizable shapes.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary>How does the minimal ramp compare to the block charset?</summary>
+        <div class="qa-a">
+          <p>Both use five steps, but minimal uses classic 7-bit ASCII punctuation rather than solid Unicode tiles, making it feel like an airy wireframe sketch that never clutters code comments.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary>What contrast setting is recommended for the minimal ramp?</summary>
+        <div class="qa-a">
+          <p>Increase contrast by +20 to +40 to firmly push background pixels into empty space and foreground subjects into asterisk and hash marks.</p>
+        </div>
+      </details>
+    </div>
   </section>
 
   <section class="sec sec--tight" data-screen-label="minimal-cta">
@@ -221,7 +320,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-24">2026-09-24</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-10-14">2026-10-14</time></span>
     <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 

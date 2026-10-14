@@ -94,7 +94,40 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-24"
+      "dateModified": "2026-10-14"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://semaphore.bobochang.cn/charsets/standard#faq",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/charsets/standard#webpage"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why use 10 characters instead of a 68-step detailed ramp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The 10-step ramp prioritizes legibility and portability. At narrower widths (under 80 columns), subtle steps in a 68-character ramp blur together into visual noise. The standard ramp keeps each step visually distinct."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Semaphore calculate character luminance?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The engine samples canvas pixel data using standard Rec. 709 luma weights (Y = 0.2126*R + 0.7152*G + 0.0722*B), matching human perception of green, red, and blue brightness."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How to paste standard ASCII art into GitHub README without breaking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Always place the copied text inside a fenced code block opened with ```text. Standard Markdown collapses multiple consecutive spaces outside code blocks, which would destroy the spacing that forms the picture."
+          }
+        }
+      ]
     },
     {
       "@type": "BreadcrumbList",
@@ -212,6 +245,77 @@
     <h2 class="h2">How does the standard ramp map brightness to characters?</h2>
     <p class="lede" style="margin-top:18px">The ramp is the ten characters <code> .:-=+*#%@</code>, ordered by ink. Each cell is one <a href="https://www.itu.int/rec/R-REC-BT.709">Rec. 709</a> luma value, and that value picks one of the ten: a dark cell is a space, a mid-tone lands on <code>=</code> or <code>+</code>, a highlight on <code>%</code> or <code>@</code>. All ten are 7-bit ASCII.</p>
     <p class="lede" style="margin-top:18px">Start at 100–140 columns. Below that the ten steps still read, and the mid-tones hold if you raise contrast. The full comparison of all six charsets is on the <a href="/#charsets">home page</a>.</p>
+
+    <div class="table-wrap" tabindex="0">
+      <table class="tbl">
+        <caption>standard ramp 10-step luminance mapping</caption>
+        <thead>
+          <tr>
+            <th scope="col">step</th>
+            <th scope="col">glyph</th>
+            <th scope="col">luma range</th>
+            <th scope="col">tonal role</th>
+            <th scope="col">visual density description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">0</td><td class="ramp">[space]</td><td class="num">0–10%</td><td>shadow / background</td><td>Zero ink coverage. Leaves background clear.</td></tr>
+          <tr><td class="num">1</td><td class="ramp">.</td><td class="num">10–20%</td><td>deep shadow</td><td>Single baseline dot. Subtle boundary accent.</td></tr>
+          <tr><td class="num">2</td><td class="ramp">:</td><td class="num">20–30%</td><td>soft shadow</td><td>Two stacked dots. Defines low-contrast contour lines.</td></tr>
+          <tr><td class="num">3</td><td class="ramp">-</td><td class="num">30–40%</td><td>low midtone</td><td>Horizontal dash. Bridges shadows toward central values.</td></tr>
+          <tr><td class="num">4</td><td class="ramp">=</td><td class="num">40–50%</td><td>mid midtone</td><td>Double horizontal bar. Optical center of the 10-step ramp.</td></tr>
+          <tr><td class="num">5</td><td class="ramp">+</td><td class="num">50–60%</td><td>upper midtone</td><td>Cross shape. Balanced horizontal and vertical density.</td></tr>
+          <tr><td class="num">6</td><td class="ramp">*</td><td class="num">60–70%</td><td>low highlight</td><td>Six-point star. Textured transition into bright fields.</td></tr>
+          <tr><td class="num">7</td><td class="ramp">#</td><td class="num">70–80%</td><td>mid highlight</td><td>Four-line hash grid. Solidifies facial structure and shape.</td></tr>
+          <tr><td class="num">8</td><td class="ramp">%</td><td class="num">80–90%</td><td>high highlight</td><td>Dense diagonal stroke with dual loops. High ink fill.</td></tr>
+          <tr><td class="num">9</td><td class="ramp">@</td><td class="num">90–100%</td><td>peak highlight</td><td>Heaviest 7-bit glyph. Maximum optical mass in a monospace cell.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="standard-practices">
+    <div class="kicker">[ tuning_and_compatibility ]</div>
+    <h2 class="h2">Where the standard ramp excels</h2>
+    <div class="grid-3" style="margin-top:24px">
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> 7-bit universal safety</h3>
+        <p>Every glyph resides within classic US-ASCII (hex 0x20 to 0x7E). It renders without distortion across serial consoles, legacy VT100 terminals, commit messages, and plain-text emails.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> optimal column widths</h3>
+        <p>Use 100–140 columns for full-width desktop terminals. For mobile screens or GitHub README code blocks, keep the output within 60–72 columns to prevent horizontal scrolling.</p>
+      </article>
+      <article class="card">
+        <h3 class="card-title"><span class="p" aria-hidden="true">$</span> contrast tuning</h3>
+        <p>Because ten steps have wide tonal gaps, boosting contrast by +15 to +30 pushes indistinct midtones outward, yielding crisp edges and immediate visual readability.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" data-screen-label="standard-faq">
+    <div class="kicker">[ faq ]</div>
+    <h2 class="h2">Standard ramp questions</h2>
+    <div class="stack" style="margin-top:24px">
+      <details class="qa">
+        <summary>Why use 10 characters instead of a 68-step detailed ramp?</summary>
+        <div class="qa-a">
+          <p>The 10-step ramp prioritizes legibility and portability. At narrower widths (under 80 columns), subtle steps in a 68-character ramp blur together into visual noise. The standard ramp keeps each step visually distinct.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary>How does Semaphore calculate character luminance?</summary>
+        <div class="qa-a">
+          <p>The engine samples canvas pixel data using standard Rec. 709 luma weights (<code>Y = 0.2126*R + 0.7152*G + 0.0722*B</code>), matching human perception of green, red, and blue brightness.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary>How to paste standard ASCII art into GitHub README without breaking?</summary>
+        <div class="qa-a">
+          <p>Always place the copied text inside a fenced code block opened with <code>```text</code>. Standard Markdown collapses multiple consecutive spaces outside code blocks, which would destroy the spacing that forms the picture.</p>
+        </div>
+      </details>
+    </div>
   </section>
 
   <section class="sec sec--tight" data-screen-label="standard-cta">
@@ -221,7 +325,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-24">2026-09-24</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-10-14">2026-10-14</time></span>
     <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 

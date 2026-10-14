@@ -122,7 +122,40 @@
           "(/html/body//p[contains(concat(' ', normalize-space(@class), ' '), ' lede ')])[1]"
         ]
       },
-      "dateModified": "2026-09-22"
+      "dateModified": "2026-10-14"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://semaphore.bobochang.cn/charsets/braille#faq",
+      "isPartOf": {
+        "@id": "https://semaphore.bobochang.cn/charsets/braille#webpage"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why does Unicode braille ASCII art have higher resolution than character ramps?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each standard ASCII character represents a single sampled cell, whereas a Unicode braille pattern character represents a 2×4 dot subgrid (8 dots total). At the same column width, braille provides 2× horizontal and 4× vertical resolution, yielding eight times the spatial detail."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does braille art require Floyd–Steinberg error diffusion dithering?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because each braille dot is strictly binary (on or off) without innate grayscale value, simple thresholding creates posterized, harsh edges. Floyd–Steinberg dithering diffuses quantization errors across neighboring pixels (7/16 right, 3/16 down-left, 5/16 down, 1/16 down-right), reproducing smooth continuous tones."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does braille ASCII render differently in some fonts or terminals?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Braille patterns span Unicode U+2800 to U+28FF. Fonts like JetBrains Mono omit braille glyphs, prompting OS fallback rendering. Most modern systems (macOS, Windows 10/11, Linux with DejaVu Sans) render these fallback glyphs uniformly, though cell height and width ratios may slightly differ across terminal emulators."
+          }
+        }
+      ]
     },
     {
       "@type": "BreadcrumbList",
@@ -345,6 +378,31 @@
     </div>
   </section>
 
+  <section class="sec" data-screen-label="braille-faq">
+    <div class="kicker">[ faq ]</div>
+    <h2 class="h2">Frequently asked questions</h2>
+    <div class="faq-list" style="margin-top:20px">
+      <details class="qa">
+        <summary class="qa-q">Why does Unicode braille ASCII art have higher resolution than character ramps?</summary>
+        <div class="qa-a">
+          <p>Each standard ASCII character represents a single sampled cell, whereas a Unicode braille pattern character represents a 2×4 dot subgrid (8 dots total). At the same column width, braille provides 2× horizontal and 4× vertical resolution, yielding eight times the spatial detail.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary class="qa-q">Why does braille art require Floyd–Steinberg error diffusion dithering?</summary>
+        <div class="qa-a">
+          <p>Because each braille dot is strictly binary (on or off) without innate grayscale value, simple thresholding creates posterized, harsh edges. Floyd–Steinberg dithering diffuses quantization errors across neighboring pixels (7/16 right, 3/16 down-left, 5/16 down, 1/16 down-right), reproducing smooth continuous tones.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary class="qa-q">Why does braille ASCII render differently in some fonts or terminals?</summary>
+        <div class="qa-a">
+          <p>Braille patterns span Unicode U+2800 to U+28FF. Fonts like JetBrains Mono omit braille glyphs, prompting OS fallback rendering. Most modern systems (macOS, Windows 10/11, Linux with DejaVu Sans) render these fallback glyphs uniformly, though cell height and width ratios may slightly differ across terminal emulators.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
   <section class="sec sec--tight" data-screen-label="braille-cta">
     <h2 class="h2">Make the dots yours.</h2>
     <p class="lede" style="margin-top:16px">Open the converter, select braille, and tune the same live controls used to render the portrait above. Your image bytes never leave the tab.</p>
@@ -352,7 +410,7 @@
   </section>
 
   <footer class="site-foot">
-    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-09-22">2026-09-22</time></span>
+    <span>© 2026 Semaphore — plain text is forever · built by <a href="https://bobochang.cn">bobochang</a> · <a href="https://github.com/can4hou6joeng4/Semaphore">source</a> · MIT · updated <time datetime="2026-10-14">2026-10-14</time></span>
     <nav><a href="/">home</a><a href="/usecases">usecases</a><a href="/charsets/braille">charsets</a><a href="/faq">faq</a><a href="/privacy">privacy</a><a href="/tool">image to ASCII</a></nav>
   </footer>
 
