@@ -5,10 +5,13 @@
      lever a small static site has for prompt recrawls. src/seo.test.ts pins each
      page's date to the dateModified in its own JSON-LD instead of to a literal,
      so the two can never drift apart. -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://semaphore.bobochang.cn/</loc>
-    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://semaphore.bobochang.cn/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://semaphore.bobochang.cn/zh"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://semaphore.bobochang.cn/"/>
+    <lastmod>2026-10-18</lastmod>
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/tool</loc>
@@ -20,7 +23,7 @@
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/faq</loc>
-    <lastmod>2026-09-12</lastmod>
+    <lastmod>2026-10-18</lastmod>
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/privacy</loc>
@@ -60,6 +63,9 @@
   </url>
   <url>
     <loc>https://semaphore.bobochang.cn/zh</loc>
-    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://semaphore.bobochang.cn/zh"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://semaphore.bobochang.cn/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://semaphore.bobochang.cn/"/>
+    <lastmod>2026-10-18</lastmod>
   </url>
 </urlset>

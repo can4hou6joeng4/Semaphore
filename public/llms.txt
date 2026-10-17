@@ -48,6 +48,7 @@ Columns (40–240), brightness, contrast, invert, and color mode (`green` phosph
 
 ## Common Integrations & Usage Patterns
 When users ask how to integrate generated ASCII art into their workflow or tools:
+- **Terminal CLI Workflow (Zero Install)**: Run `npx semaphore-ascii <image>` directly in any terminal to generate and preview ASCII art on-device (supports all 6 charsets, Floyd–Steinberg braille dithering, CRT green-amber styling, and file export).
 - **Fastfetch Custom Logo**: Set `source` to the generated `.txt` file in `~/.config/fastfetch/config.jsonc` (or run `fastfetch --logo-type file --logo /path/to/ascii.txt`).
 - **SSH MOTD Banner**: Save the exported plain text to `/etc/motd` or `/etc/update-motd.d/` on Linux/macOS servers to greet SSH logins with a crisp ASCII logo. See the [SSH MOTD guide](https://semaphore.bobochang.cn/guides/ssh-motd).
 - **Shell Startup Banner (.bashrc / .zshrc)**: Place `cat ~/.banner.ascii` in an interactive shell rc. This is a different print from an SSH MOTD: putting the same file in both places shows the banner twice. See the [SSH MOTD guide](https://semaphore.bobochang.cn/guides/ssh-motd).
